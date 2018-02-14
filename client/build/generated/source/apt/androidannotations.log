@@ -1,0 +1,25 @@
+16:15:54.782 [Daemon worker Thread 6] INFO  o.a.AndroidAnnotationProcessor:84 - Initialize AndroidAnnotations 3.1 with options {}
+16:15:54.916 [Daemon worker Thread 6] INFO  o.a.AndroidAnnotationProcessor:108 - Start processing for 17 annotations on 16 elements
+16:15:54.957 [Daemon worker Thread 6] ERROR o.a.h.AndroidManifestFinder:134 - Could not find the AndroidManifest.xml file, going up from path [C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\generated\source\apt\debug] found using dummy file [] (max atempts: file:///C:/Users/ajx25_000/Downloads/BulletZone_FullAnnotations%20(1)/BulletZone_FullAnnotations/client/build/generated/source/apt/debug/dummy1518470154956)
+16:15:54.959 [Daemon worker Thread 6] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 43 ms], [Extract Annotations = 36 ms], [Extract Manifest = 5 ms], 
+16:15:54.960 [Daemon worker Thread 6] INFO  o.a.AndroidAnnotationProcessor:122 - Finish processing
+16:17:30.467 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:84 - Initialize AndroidAnnotations 3.1 with options {}
+16:17:30.581 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:108 - Start processing for 17 annotations on 16 elements
+16:17:30.591 [Daemon worker Thread 7] ERROR o.a.h.AndroidManifestFinder:134 - Could not find the AndroidManifest.xml file, going up from path [C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\generated\source\apt\debug] found using dummy file [] (max atempts: file:///C:/Users/ajx25_000/Downloads/BulletZone_FullAnnotations%20(1)/BulletZone_FullAnnotations/client/build/generated/source/apt/debug/dummy1518470250591)
+16:17:30.592 [Daemon worker Thread 7] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 11 ms], [Extract Annotations = 6 ms], [Extract Manifest = 3 ms], 
+16:17:30.592 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:122 - Finish processing
+16:17:56.188 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:84 - Initialize AndroidAnnotations 3.1 with options {}
+16:17:56.355 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:108 - Start processing for 17 annotations on 16 elements
+16:17:56.365 [Daemon worker Thread 7] ERROR o.a.h.AndroidManifestFinder:134 - Could not find the AndroidManifest.xml file, going up from path [C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\generated\source\apt\debug] found using dummy file [] (max atempts: file:///C:/Users/ajx25_000/Downloads/BulletZone_FullAnnotations%20(1)/BulletZone_FullAnnotations/client/build/generated/source/apt/debug/dummy1518470276365)
+16:17:56.366 [Daemon worker Thread 7] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 12 ms], [Extract Annotations = 7 ms], [Extract Manifest = 3 ms], 
+16:17:56.366 [Daemon worker Thread 7] INFO  o.a.AndroidAnnotationProcessor:122 - Finish processing
+16:45:13.743 [Daemon worker Thread 13] ERROR o.a.i.p.ModelValidator:77 - org.androidannotations.rest.spring.annotations.RestService can only be used on an element annotated with @org.androidannotations.rest.spring.annotations.Rest
+16:45:13.751 [Daemon worker Thread 13] WARN  o.a.i.p.ModelValidator:88 - Element restClient invalidated by RestServiceHandler
+16:49:01.719 [Daemon worker Thread 14] ERROR o.a.i.p.ModelValidator:77 - org.androidannotations.rest.spring.annotations.Put annotated method has an url variable which name could not be found in the method parameters: tankId
+16:49:01.722 [Daemon worker Thread 14] WARN  o.a.i.p.ModelValidator:88 - Element move(long,byte) invalidated by PutHandler
+16:49:01.723 [Daemon worker Thread 14] ERROR o.a.i.p.ModelValidator:77 - org.androidannotations.rest.spring.annotations.Put annotated method has an url variable which name could not be found in the method parameters: tankId
+16:49:01.724 [Daemon worker Thread 14] WARN  o.a.i.p.ModelValidator:88 - Element turn(long,byte) invalidated by PutHandler
+16:49:01.725 [Daemon worker Thread 14] ERROR o.a.i.p.ModelValidator:77 - org.androidannotations.rest.spring.annotations.Put annotated method has an url variable which name could not be found in the method parameters: bulletType
+16:49:01.726 [Daemon worker Thread 14] WARN  o.a.i.p.ModelValidator:88 - Element fire(long,int) invalidated by PutHandler
+16:49:01.727 [Daemon worker Thread 14] ERROR o.a.i.p.ModelValidator:77 - org.androidannotations.rest.spring.annotations.Delete annotated method has an url variable which name could not be found in the method parameters: tankId
+16:49:01.728 [Daemon worker Thread 14] WARN  o.a.i.p.ModelValidator:88 - Element leave(long) invalidated by DeleteHandler
