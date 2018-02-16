@@ -3,7 +3,6 @@ package edu.unh.cs.cs619.bulletzone;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
@@ -154,21 +153,21 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
-        restClient.fire(tankId, 2);
+        restClient.fire(tankId);
     }
 
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
         System.out.println("leaveGame() called, tank ID: "+tankId);
-        restClient.leave(tankId);
         BackgroundExecutor.cancelAll("grid_poller_task", true);
+        restClient.leave(tankId);
     }
 
     @Background
     void leaveAsync(long tankId) {
         System.out.println("Leave called, tank ID: " + tankId);
-        restClient.leave(tankId);
         BackgroundExecutor.cancelAll("grid_poller_task", true);
+        restClient.leave(tankId);
     }
 }

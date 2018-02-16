@@ -23,7 +23,7 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  * Created by simon on 10/1/14.
  */
 
-@Rest(rootUrl = "http://stman1.cs.unh.edu:6191/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
         // TODO: disable intercepting and logging
         // , interceptors = { HttpLoggerInterceptor.class }
@@ -43,8 +43,8 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     @Put("/{tankId}/turn/{direction}")
     BooleanWrapper turn(@Path long tankId, @Path byte direction);
 
-    @Put("/{tankId}/fire/{bulletType}")
-    BooleanWrapper fire(@Path long tankId, @Path int bulletType);
+    @Put("/{tankId}/fire")
+    BooleanWrapper fire(@Path long tankId);
 
     @Delete("/{tankId}/leave")
     BooleanWrapper leave(@Path long tankId);
