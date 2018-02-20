@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="com.android.support:support-v4-20.0.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/13199913de3ea522754881298a4e121c/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/13199913de3ea522754881298a4e121c/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/13199913de3ea522754881298a4e121c/jars/libs/internal_impl-20.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/a2dce0a41e9f96ae18c4705d609edc67/jars/libs/internal_impl-20.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/a2dce0a41e9f96ae18c4705d609edc67/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-20.0.0.aar/a2dce0a41e9f96ae18c4705d609edc67/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://A:/Programs/Android/sdk/extras/android/m2repository/com/android/support/support-v4/20.0.0/support-v4-20.0.0-javadoc.jar!/" />

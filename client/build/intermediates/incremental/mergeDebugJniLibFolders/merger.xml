@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\src\debug\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\mdp\Documents\CS_619_materials\BulletZone\client\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="D:\mdp\Documents\CS_619_materials\BulletZone\client\src\debug\jniLibs"/></dataSet></merger>

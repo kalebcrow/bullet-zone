@@ -1,17 +1,17 @@
 #Internal package file, do not edit.
-#Mon Feb 12 16:51:45 EST 2018
-2.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\14
+#Tue Feb 20 12:13:41 EST 2018
+2.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\15
 5.set=DEX
 0.path=classes.dex
 2.baseType=DIRECTORY
-3.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\11
+3.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\12
 2.set=DEX
 1.path=classes.dex
-4.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\13
+4.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\13
 count=6
 5.baseType=DIRECTORY
 2.path=classes.dex
-5.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\16
+5.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\11
 4.set=DEX
 3.path=classes.dex
 3.baseType=DIRECTORY
@@ -19,9 +19,9 @@ count=6
 4.path=classes.dex
 1.baseType=DIRECTORY
 5.path=classes.dex
-0.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\15
+0.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\16
 0.baseType=DIRECTORY
 3.set=DEX
-1.base=C\:\\Users\\ajx25_000\\Downloads\\BulletZone_FullAnnotations (1)\\BulletZone_FullAnnotations\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\12
+1.base=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\14
 4.baseType=DIRECTORY
 0.set=DEX

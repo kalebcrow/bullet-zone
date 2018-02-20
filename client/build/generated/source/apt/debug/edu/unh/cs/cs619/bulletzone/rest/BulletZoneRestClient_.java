@@ -29,7 +29,7 @@ public final class BulletZoneRestClient_
     private RestTemplate restTemplate;
 
     public BulletZoneRestClient_(Context context) {
-        rootUrl = "http://stman1.cs.unh.edu:6191/games";
+        rootUrl = "http://132.177.15.150:6192/games";
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().clear();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
@@ -115,14 +115,13 @@ public final class BulletZoneRestClient_
     }
 
     @Override
-    public BooleanWrapper fire(long tankId, int bulletType) {
+    public BooleanWrapper fire(long tankId) {
         try {
             LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
             HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(parameters);
             HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-            urlVariables.put("bulletType", bulletType);
             urlVariables.put("tankId", tankId);
-            return restTemplate.exchange(rootUrl.concat("/{tankId}/fire/{bulletType}"), HttpMethod.PUT, requestEntity, BooleanWrapper.class, urlVariables).getBody();
+            return restTemplate.exchange(rootUrl.concat("/{tankId}/fire"), HttpMethod.PUT, requestEntity, BooleanWrapper.class, urlVariables).getBody();
         } catch (final NestedRuntimeException e) {
             if (restErrorHandler!= null) {
                 restErrorHandler.onRestClientExceptionThrown(e);

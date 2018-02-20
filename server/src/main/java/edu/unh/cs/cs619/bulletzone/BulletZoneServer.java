@@ -16,14 +16,11 @@
 
 package edu.unh.cs.cs619.bulletzone;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.context.annotation.*;
 
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
+@SpringBootApplication
 public class BulletZoneServer {
     public static void main(String[] args) {
         SpringApplication.run(BulletZoneServer.class, args);

@@ -5,68 +5,84 @@
     build-mode="COLD"
     density="xhdpi"
     format="10"
+    ir-eligibility="COMPATIBLE"
     plugin-version="3.0.1"
-    timestamp="1518472391314"
-    token="-4313138086426143608"
+    timestamp="1519147005459"
+    token="-5140882885220106842"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="971" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="14" />
     <task
         name="verifier"
-        duration="0" />
+        duration="12" />
+
+    <artifact
+        location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_7.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\outputs\apk\debug\client-debug.apk"
+        type="SPLIT_MAIN" />
 
     <build
         build-mode="FULL"
-        timestamp="1518472244275"
+        timestamp="1519146802229"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\dep\dependencies.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\dep\dependencies.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_1.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_2.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_4.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_5.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_6.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_7.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_8.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_9.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\ajx25_000\Downloads\BulletZone_FullAnnotations (1)\BulletZone_FullAnnotations\client\build\outputs\apk\debug\client-debug.apk"
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\outputs\apk\debug\client-debug.apk"
             type="SPLIT_MAIN" />
     </build>
     <build
         build-mode="COLD"
-        timestamp="1518472391314"
-        verifier="COLD_SWAP_REQUESTED" />
+        ir-eligibility="COMPATIBLE"
+        timestamp="1519147005459"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\mdp\Documents\CS_619_materials\BulletZone\client\build\outputs\apk\debug\client-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
 
 </instant-run>
