@@ -4,42 +4,30 @@
             "outputFile": "D:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sr\\values-sr.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\41afd5a843dfbf9850d01d602af49f11\\res\\values-sr\\values.xml",
+                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\78ac0b264834940c51e43e35c2a5ce2c\\res\\values-sr\\values-sr.xml",
                     "from": {
-                        "startLines": "3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "56,165,268,374,460,564,682,787,895,996,1100,1208,1309",
-                        "endColumns": "108,102,105,85,103,117,104,107,100,103,107,100,127",
-                        "endOffsets": "160,263,369,455,559,677,782,890,991,1095,1203,1304,1432"
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
                     },
                     "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,164,267,373,459,563,681,786,894,995,1099,1207,1308",
-                        "endColumns": "108,102,105,85,103,117,104,107,100,103,107,100,127",
-                        "endOffsets": "159,262,368,454,558,676,781,889,990,1094,1202,1303,1431"
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "1955",
+                        "endColumns": "100",
+                        "endOffsets": "2051"
                     }
-                }
-            ]
-        },
-        {
-            "outputFile": "D:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\res\\merged\\debug\\values-sr\\values-sr.xml",
-            "map": [
+                },
                 {
-                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\41afd5a843dfbf9850d01d602af49f11\\res\\values-sr\\values.xml",
+                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\fe3163240808e2c1897eec321705a800\\res\\values-sr\\values-sr.xml",
                     "from": {
-                        "startLines": "3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "56,165,268,374,460,564,682,787,895,996,1100,1208,1309",
-                        "endColumns": "108,102,105,85,103,117,104,107,100,103,107,100,127",
-                        "endOffsets": "160,263,369,455,559,677,782,890,991,1095,1203,1304,1432"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,164,267,373,459,563,681,786,894,995,1099,1207,1308",
-                        "endColumns": "108,102,105,85,103,117,104,107,100,103,107,100,127",
-                        "endOffsets": "159,262,368,454,558,676,781,889,990,1094,1202,1303,1431"
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,214,317,423,509,613,731,812,892,980,1085,1193,1294,1398,1506,1607,1774,1871",
+                        "endColumns": "108,102,105,85,103,117,80,79,87,104,107,100,103,107,100,166,96,83",
+                        "endOffsets": "209,312,418,504,608,726,807,887,975,1080,1188,1289,1393,1501,1602,1769,1866,1950"
                     }
                 }
             ]

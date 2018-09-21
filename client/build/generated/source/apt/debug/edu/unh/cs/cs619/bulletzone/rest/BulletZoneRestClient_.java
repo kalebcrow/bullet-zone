@@ -29,7 +29,7 @@ public final class BulletZoneRestClient_
     private RestTemplate restTemplate;
 
     public BulletZoneRestClient_(Context context) {
-        rootUrl = "http://132.177.15.150:6192/games";
+        rootUrl = "http://stman1.cs.unh.edu:6192/games";
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().clear();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());

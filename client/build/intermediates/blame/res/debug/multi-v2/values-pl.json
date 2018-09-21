@@ -1,45 +1,33 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\res\\merged\\debug\\values-pl\\values-pl.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\41afd5a843dfbf9850d01d602af49f11\\res\\values-pl\\values.xml",
-                    "from": {
-                        "startLines": "3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "56,172,274,382,468,577,696,805,914,1013,1122,1233,1341",
-                        "endColumns": "115,101,107,85,108,118,108,108,98,108,110,107,122",
-                        "endOffsets": "167,269,377,463,572,691,800,909,1008,1117,1228,1336,1459"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,171,273,381,467,576,695,804,913,1012,1121,1232,1340",
-                        "endColumns": "115,101,107,85,108,118,108,108,98,108,110,107,122",
-                        "endOffsets": "166,268,376,462,571,690,799,908,1007,1116,1227,1335,1458"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "D:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pl\\values-pl.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\41afd5a843dfbf9850d01d602af49f11\\res\\values-pl\\values.xml",
+                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\fe3163240808e2c1897eec321705a800\\res\\values-pl\\values-pl.xml",
                     "from": {
-                        "startLines": "3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "56,172,274,382,468,577,696,805,914,1013,1122,1233,1341",
-                        "endColumns": "115,101,107,85,108,118,108,108,98,108,110,107,122",
-                        "endOffsets": "167,269,377,463,572,691,800,909,1008,1117,1228,1336,1459"
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,221,323,431,517,626,745,823,900,982,1091,1200,1299,1408,1519,1627,1790,1886",
+                        "endColumns": "115,101,107,85,108,118,77,76,81,108,108,98,108,110,107,162,95,81",
+                        "endOffsets": "216,318,426,512,621,740,818,895,977,1086,1195,1294,1403,1514,1622,1785,1881,1963"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\78ac0b264834940c51e43e35c2a5ce2c\\res\\values-pl\\values-pl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
                     },
                     "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,171,273,381,467,576,695,804,913,1012,1121,1232,1340",
-                        "endColumns": "115,101,107,85,108,118,108,108,98,108,110,107,122",
-                        "endOffsets": "166,268,376,462,571,690,799,908,1007,1116,1227,1335,1458"
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "1968",
+                        "endColumns": "100",
+                        "endOffsets": "2064"
                     }
                 }
             ]

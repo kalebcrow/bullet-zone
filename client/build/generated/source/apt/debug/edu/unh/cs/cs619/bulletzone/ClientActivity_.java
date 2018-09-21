@@ -9,8 +9,6 @@ package edu.unh.cs.cs619.bulletzone;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -312,21 +310,13 @@ public final class ClientActivity_
                 fragmentSupport_.startActivityForResult(intent, requestCode);
             } else {
                 if (fragment_!= null) {
-                    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-                        fragment_.startActivityForResult(intent, requestCode, lastOptions);
-                    } else {
-                        fragment_.startActivityForResult(intent, requestCode);
-                    }
+                    fragment_.startActivityForResult(intent, requestCode, lastOptions);
                 } else {
                     if (context instanceof Activity) {
                         Activity activity = ((Activity) context);
                         ActivityCompat.startActivityForResult(activity, intent, requestCode, lastOptions);
                     } else {
-                        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-                            context.startActivity(intent, lastOptions);
-                        } else {
-                            context.startActivity(intent);
-                        }
+                        context.startActivity(intent, lastOptions);
                     }
                 }
             }
