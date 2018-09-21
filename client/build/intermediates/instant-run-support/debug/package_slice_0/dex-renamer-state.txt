@@ -1,4 +1,0 @@
-#Tue Feb 20 12:13:38 EST 2018
-base.0=D\:\\mdp\\Documents\\CS_619_materials\\BulletZone\\client\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex
