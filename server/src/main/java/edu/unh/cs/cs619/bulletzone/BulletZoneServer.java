@@ -20,9 +20,19 @@ import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.annotation.*;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
+
+
 @SpringBootApplication
 public class BulletZoneServer {
     public static void main(String[] args) {
-        SpringApplication.run(BulletZoneServer.class, args);
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6195";
+        String username = "mdp";
+        String password = "Drag56kes";
+
+        BulletZoneData d = new BulletZoneData(url, username, password);
+        d.doit();
+        d.close();
+        //SpringApplication.run(BulletZoneServer.class, args);
     }
 }

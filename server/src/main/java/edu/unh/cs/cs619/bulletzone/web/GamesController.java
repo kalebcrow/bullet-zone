@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -83,6 +85,16 @@ class GamesController {
             throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.move(tankId, Direction.fromByte(direction))),
+                HttpStatus.ACCEPTED
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/fire", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    ResponseEntity<BooleanWrapper> fire(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.fire(tankId, 1)),
                 HttpStatus.ACCEPTED
         );
     }

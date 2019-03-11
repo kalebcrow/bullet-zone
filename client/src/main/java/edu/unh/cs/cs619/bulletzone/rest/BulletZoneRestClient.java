@@ -24,6 +24,7 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  */
 
 @Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
         // TODO: disable intercepting and logging
         // , interceptors = { HttpLoggerInterceptor.class }
@@ -43,7 +44,7 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     @Put("/{tankId}/turn/{direction}")
     BooleanWrapper turn(@Path long tankId, @Path byte direction);
 
-    @Put("/{tankId}/fire")
+    @Put("/{tankId}/fire/1")
     BooleanWrapper fire(@Path long tankId);
 
     @Delete("/{tankId}/leave")

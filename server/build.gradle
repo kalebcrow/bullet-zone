@@ -28,14 +28,16 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.guava:guava:22.0'
-    compile('org.springframework.boot:spring-boot-starter-web')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.google.guava:guava:22.0'
+    implementation('org.springframework.boot:spring-boot-starter-web')
 
-    testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile 'junit:junit:4.+'
-    testCompile('org.springframework.boot:spring-boot-starter-test') {
+    testImplementation 'org.mockito:mockito-all:1.9.5'
+    testImplementation 'junit:junit:4.+'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude(group: 'commons-logging', module: 'commons-logging')
     }
-    testCompile 'com.jayway.jsonpath:json-path:0.9.1'
+    testImplementation 'com.jayway.jsonpath:json-path:0.9.1'
+
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
 }
