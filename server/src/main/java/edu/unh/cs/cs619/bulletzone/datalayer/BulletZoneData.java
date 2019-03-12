@@ -46,27 +46,41 @@ public class BulletZoneData {
     }
 
     protected void initializeData() {
+        executeScript("/CreateTables.sql", "Cannot create tables!");
+        executeScript("/PopulateTables.sql", "Cannot populate tables!");
+    }
+
+    protected void rebuildData() {
+        executeScript("/DropTables.sql", "Cannot drop all tables!");
+        initializeData();
+    }
+
+    protected ResultSet executeScript(String resourceName, String errorMessage)
+    {
+        ResultSet resultSet = null;
         try {
             Statement statement = mDataConnection.createStatement();
-            InputStream in = getClass().getResourceAsStream("/CreateTables.sql");
+            InputStream in = getClass().getResourceAsStream(resourceName);
             if (in == null)
                 System.out.println("missing resource file");
             else {
                 String createQuery = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
-                ResultSet resultSet = statement.executeQuery(createQuery);
+                resultSet = statement.executeQuery(createQuery);
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot create tables!", e);
+            throw new IllegalStateException(errorMessage, e);
         }
+        return resultSet;
     }
 
-    public void doit() {
+    public void listTables() {
         try {
             Statement statement = mDataConnection.createStatement();
             ResultSet resultSet = statement.executeQuery("show tables");
             System.out.println("Database tables:");
             while (resultSet.next())
                 System.out.println(resultSet.getString(1));
+
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot show tables!", e);
         }

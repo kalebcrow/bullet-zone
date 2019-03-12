@@ -31,7 +31,7 @@ public class BulletZoneServer {
         String password = "Drag56kes";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
-        d.doit();
+        d.listTables();
         d.close();
         //SpringApplication.run(BulletZoneServer.class, args);
     }

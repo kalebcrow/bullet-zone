@@ -20,7 +20,7 @@ BEGIN NOT ATOMIC
     CREATE TABLE IF NOT EXISTS ItemPropertyType
     (
       ItemPropertyTypeID INT NOT NULL,
-      Name INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
       PRIMARY KEY (ItemPropertyTypeID)
     );
 
@@ -71,28 +71,27 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (ItemPropertyID3) REFERENCES ItemProperty(ItemPropertyID)
     );
 
-    CREATE TABLE IF NOT EXISTS Item_Description
+    CREATE TABLE ItemType
     (
-      ItemType INT NOT NULL,
+      ItemTypeID INT NOT NULL,
       Name VARCHAR(40) NOT NULL,
+      ItemCategoryID INT NOT NULL,
       Size FLOAT NOT NULL,
       Weight FLOAT NOT NULL,
-      PowerUse FLOAT NOT NULL,
       Price FLOAT NOT NULL,
       PropertyVal1 FLOAT NOT NULL,
       PropertyVal2 FLOAT NOT NULL,
       PropertyVal3 FLOAT NOT NULL,
-      ItemCategoryID INT NOT NULL,
-      PRIMARY KEY (ItemType),
+      PRIMARY KEY (ItemTypeID),
       FOREIGN KEY (ItemCategoryID) REFERENCES ItemCategory(ItemCategoryID)
     );
 
-    CREATE TABLE IF NOT EXISTS Item
+    CREATE TABLE Item
     (
       ItemID INT NOT NULL,
-      ItemType INT NOT NULL,
+      ItemTypeID INT NOT NULL,
       PRIMARY KEY (ItemID),
-      FOREIGN KEY (ItemType) REFERENCES Item_Description(ItemType)
+      FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID)
     );
 
     CREATE TABLE IF NOT EXISTS ItemContainer
