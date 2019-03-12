@@ -19,7 +19,7 @@ public class BulletZoneData {
     {
         try {
             mDataConnection = DriverManager.getConnection(url, username, password);
-            System.out.println("Database connected!");
+            System.out.println("Database connected.");
         } catch (
                 SQLException e) {
             throw new IllegalStateException("Cannot connect to the database!", e);
@@ -36,10 +36,23 @@ public class BulletZoneData {
 
     }
 
+    public void listTables() {
+        try {
+            Statement statement = mDataConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery("show tables");
+            System.out.println("Database tables:");
+            while (resultSet.next())
+                System.out.println(resultSet.getString(1));
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot show tables!", e);
+        }
+    }
+
     public void close() {
         try {
             mDataConnection.close();
-            System.out.println("Database connection closed!");
+            System.out.println("Database connection closed.");
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot close the database!", e);
         }
@@ -50,12 +63,12 @@ public class BulletZoneData {
         executeScript("/PopulateTables.sql", "Cannot populate tables!");
     }
 
-    protected void rebuildData() {
+    public void rebuildData() {
         executeScript("/DropTables.sql", "Cannot drop all tables!");
         initializeData();
     }
 
-    protected ResultSet executeScript(String resourceName, String errorMessage)
+    ResultSet executeScript(String resourceName, String errorMessage)
     {
         ResultSet resultSet = null;
         try {
@@ -71,18 +84,5 @@ public class BulletZoneData {
             throw new IllegalStateException(errorMessage, e);
         }
         return resultSet;
-    }
-
-    public void listTables() {
-        try {
-            Statement statement = mDataConnection.createStatement();
-            ResultSet resultSet = statement.executeQuery("show tables");
-            System.out.println("Database tables:");
-            while (resultSet.next())
-                System.out.println(resultSet.getString(1));
-
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot show tables!", e);
-        }
     }
 }

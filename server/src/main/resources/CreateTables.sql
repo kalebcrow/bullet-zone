@@ -90,6 +90,7 @@ BEGIN NOT ATOMIC
     (
       ItemID INT NOT NULL,
       ItemTypeID INT NOT NULL,
+      UsageMonitor FLOAT NOT NULL,
       PRIMARY KEY (ItemID),
       FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID)
     );
@@ -106,6 +107,9 @@ BEGIN NOT ATOMIC
     (
       ItemID INT NOT NULL,
       Container_ItemID INT NOT NULL,
+      StartSlot INT NOT NULL,
+      EndSlot INT NOT NULL,
+      Modifier INT NOT NULL,
       FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
       FOREIGN KEY (Container_ItemID) REFERENCES ItemContainer(ItemID)
     );
