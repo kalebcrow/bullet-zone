@@ -26,7 +26,7 @@ BEGIN NOT ATOMIC
     INSERT INTO ItemCategory
         ( ItemCategoryID, Name, ItemPropertyID1, ItemPropertyID2, ItemPropertyID3)
     VALUES
-        (1, 'Vehicle Frame', 1, 2, 0),
+        (1, 'Frame', 1, 2, 0),
         (2, 'Weapon', 3, 6, 4),
         (3, 'Generator', 5, 0, 0),
         (4, 'Engine', 7, 6, 0),

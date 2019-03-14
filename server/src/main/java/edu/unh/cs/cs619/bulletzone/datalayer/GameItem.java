@@ -4,7 +4,9 @@ public class GameItem {
     protected int itemID;
     protected ItemType itemType;
 
-    String getTypeName(){
-        return itemType.niceName();
+    protected float usageMonitor;
+
+    public String getTypeName(){
+        return itemType.getName();
     }
 }
