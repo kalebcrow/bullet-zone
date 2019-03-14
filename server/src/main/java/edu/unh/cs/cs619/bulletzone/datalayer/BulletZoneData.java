@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 
 public class BulletZoneData {
     private Connection dataConnection;
-    ItemTypeRepository repo = new ItemTypeRepository();
+    ItemTypeRepository typeRepo = new ItemTypeRepository();
+    GameItemRepository itemRepo = new GameItemRepository();
 
     public BulletZoneData(String url, String username, String password)
     {
@@ -36,7 +37,8 @@ public class BulletZoneData {
             throw new IllegalStateException("Cannot access tables!", e);
         }
 
-        repo.readStaticInfo(dataConnection);
+        typeRepo.readStaticInfo(dataConnection);
+        itemRepo.refresh(dataConnection, typeRepo);
     }
 
     public void listTables() {
@@ -61,32 +63,40 @@ public class BulletZoneData {
         }
     }
 
+    public Collection<GameItemContainer> getContainers() {
+        return itemRepo.containerMap.values();
+    }
+
+    public Collection<GameItem> getGameItems() {
+        return itemRepo.itemMap.values();
+    }
+
     public Collection<ItemCategory> getItemCategories() {
-        return repo.categoryMap.values();
+        return typeRepo.categoryMap.values();
     }
 
     public Collection<ItemType> getItemTypes() {
-        return repo.typeMap.values();
+        return typeRepo.typeMap.values();
     }
 
     public Collection<FrameType> getFrameTypes() {
-        return repo.frameMap.values();
+        return typeRepo.frameMap.values();
     }
 
     public Collection<WeaponType> getWeaponTypes() {
-        return repo.weaponMap.values();
+        return typeRepo.weaponMap.values();
     }
 
     public Collection<GeneratorType> getGeneratorTypes() {
-        return repo.generatorMap.values();
+        return typeRepo.generatorMap.values();
     }
 
     public Collection<EngineType> getEngineTypes() {
-        return repo.engineMap.values();
+        return typeRepo.engineMap.values();
     }
 
     public Collection<DriveType> getDriveTypes() {
-        return repo.driveMap.values();
+        return typeRepo.driveMap.values();
     }
 
     private void initializeData() {

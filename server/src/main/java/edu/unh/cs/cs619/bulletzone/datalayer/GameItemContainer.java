@@ -3,14 +3,17 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import java.util.Set;
 
 public class GameItemContainer extends GameItem {
+    protected String name;
     protected double capacity;
     protected double armor;
     protected Set<GameItem> containedItems;
 
-    public GameItemContainer(double maxCapacity, double currentArmor)
-    {
-        capacity = maxCapacity;
-        armor = currentArmor;
+    public GameItemContainer(GameItemRecord rec, String containerName) {
+        super(rec);
+        name = containerName;
+        FrameType frameType = (FrameType)this.itemType;
+        capacity = frameType.getCapacity();
+        armor = frameType.getArmor();
     }
 
     public void addItem(GameItem child)

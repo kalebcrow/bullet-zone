@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-public class ItemTypeRepository {
+class ItemTypeRepository {
     HashMap<Integer, ItemCategory> categoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<Integer, ItemType> typeMap = new HashMap<Integer, ItemType>();
     HashMap<Integer, FrameType> frameMap = new HashMap<Integer, FrameType>();
@@ -18,13 +18,13 @@ public class ItemTypeRepository {
     void readStaticInfo(Connection dataConnection) {
         try {
             Statement statement = dataConnection.createStatement();
-            ResultSet itemTypeResult = statement.executeQuery("SELECT * FROM ItemType");
             ResultSet itemCategoryResult = statement.executeQuery("SELECT * FROM ItemCategory");
             while (itemCategoryResult.next()) {
                 int id = itemCategoryResult.getInt("ItemCategoryID");
                 categoryMap.put(id, new ItemCategory(id, itemCategoryResult.getString("Name")));
             }
-            System.out.println("Item types:");
+
+            ResultSet itemTypeResult = statement.executeQuery("SELECT * FROM ItemType");
             while (itemTypeResult.next()) {
                 ItemTypeRecord rec = new ItemTypeRecord();
                 rec.itemTypeID = itemTypeResult.getInt("ItemTypeID");

@@ -31,7 +31,6 @@ public class BulletZoneServer {
         BulletZoneData d = new BulletZoneData(url, username, password);
         //d.rebuildData();
         //d.listTables();
-        d.listWeaponTypes();
         d.close();
 
         //SpringApplication.run(BulletZoneServer.class, args);

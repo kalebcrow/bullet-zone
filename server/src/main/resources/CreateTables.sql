@@ -26,8 +26,10 @@ BEGIN NOT ATOMIC
 
     CREATE TABLE IF NOT EXISTS ItemContainer_User_Permissions
     (
+      ItemID INT NOT NULL,
       UserID INT NOT NULL,
       PermissionID INT NOT NULL,
+      FOREIGN KEY (ItemID) REFERENCES ItemContainer(ItemID)
       FOREIGN KEY (UserID) REFERENCES User(UserID),
       FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID)
     );
