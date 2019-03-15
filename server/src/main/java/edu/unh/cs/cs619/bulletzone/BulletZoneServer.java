@@ -19,6 +19,7 @@ package edu.unh.cs.cs619.bulletzone;
 import org.springframework.boot.autoconfigure.*;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
+import edu.unh.cs.cs619.bulletzone.datalayer.GameItem;
 
 
 @SpringBootApplication
@@ -31,6 +32,7 @@ public class BulletZoneServer {
         BulletZoneData d = new BulletZoneData(url, username, password);
         //d.rebuildData();
         //d.listTables();
+        GameItem bay = d.createItem("Garage bay");
         d.close();
 
         //SpringApplication.run(BulletZoneServer.class, args);

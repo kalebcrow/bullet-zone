@@ -1,4 +1,16 @@
 BEGIN NOT ATOMIC
+    INSERT INTO Common
+        ( Version)
+    VALUES
+        ( '0.1');
+
+    INSERT INTO Status
+        ( StatusID, Name)
+    VALUES
+        ( 1, 'Active'),
+        ( 2, 'Disabled'),
+        ( 3, 'Deleted');
+
     INSERT INTO ItemPropertyType
         ( ItemPropertyTypeID, Name)
     VALUES

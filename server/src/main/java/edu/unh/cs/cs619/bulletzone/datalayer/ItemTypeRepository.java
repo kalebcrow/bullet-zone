@@ -14,6 +14,7 @@ class ItemTypeRepository {
     HashMap<Integer, GeneratorType> generatorMap = new HashMap<Integer, GeneratorType>();
     HashMap<Integer, EngineType> engineMap = new HashMap<Integer, EngineType>();
     HashMap<Integer, DriveType> driveMap = new HashMap<Integer, DriveType>();
+    HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
 
     void readStaticInfo(Connection dataConnection) {
         try {
@@ -74,5 +75,6 @@ class ItemTypeRepository {
                 itemType = new ItemType(rec);
         }
         typeMap.put(id, itemType);
+        nameToTypeMap.put(rec.name, itemType);
     }
 }

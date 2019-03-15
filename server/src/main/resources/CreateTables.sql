@@ -1,9 +1,23 @@
 BEGIN NOT ATOMIC
+    CREATE TABLE IF NOT EXISTS Common
+    (
+      Version VARCHAR(40) NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS Status
+    (
+      StatusID INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
+      PRIMARY KEY (StatusID)
+    );
+
     CREATE TABLE IF NOT EXISTS User
     (
-      UserID INT NOT NULL,
+      UserID INT NOT NULL AUTO_INCREMENT,
       Name VARCHAR(40) NOT NULL,
-      PRIMARY KEY (UserID)
+      StatusID INT NOT NULL,
+      PRIMARY KEY (UserID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
     CREATE TABLE IF NOT EXISTS Permission
@@ -24,21 +38,13 @@ BEGIN NOT ATOMIC
       PRIMARY KEY (ItemPropertyTypeID)
     );
 
-    CREATE TABLE IF NOT EXISTS ItemContainer_User_Permissions
-    (
-      ItemID INT NOT NULL,
-      UserID INT NOT NULL,
-      PermissionID INT NOT NULL,
-      FOREIGN KEY (ItemID) REFERENCES ItemContainer(ItemID)
-      FOREIGN KEY (UserID) REFERENCES User(UserID),
-      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID)
-    );
-
     CREATE TABLE IF NOT EXISTS BankAccount
     (
-      BankAccountID INT NOT NULL,
+      BankAccountID INT NOT NULL AUTO_INCREMENT,
       Credits FLOAT NOT NULL,
-      PRIMARY KEY (BankAccountID)
+      StatusID INT NOT NULL,
+      PRIMARY KEY (BankAccountID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
     CREATE TABLE IF NOT EXISTS BankAccount_User_Permissions
@@ -90,17 +96,19 @@ BEGIN NOT ATOMIC
 
     CREATE TABLE Item
     (
-      ItemID INT NOT NULL,
+      ItemID INT NOT NULL AUTO_INCREMENT,
       ItemTypeID INT NOT NULL,
       UsageMonitor FLOAT NOT NULL,
+      StatusID INT NOT NULL,
       PRIMARY KEY (ItemID),
-      FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID)
+      FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
     CREATE TABLE IF NOT EXISTS ItemContainer
     (
-      Name VARCHAR(40) NOT NULL,
       ItemID INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
       PRIMARY KEY (ItemID),
       FOREIGN KEY (ItemID) REFERENCES Item(ItemID)
     );
@@ -114,6 +122,16 @@ BEGIN NOT ATOMIC
       Modifier INT NOT NULL,
       FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
       FOREIGN KEY (Container_ItemID) REFERENCES ItemContainer(ItemID)
+    );
+
+    CREATE TABLE IF NOT EXISTS ItemContainer_User_Permissions
+    (
+      ItemID INT NOT NULL,
+      UserID INT NOT NULL,
+      PermissionID INT NOT NULL,
+      FOREIGN KEY (ItemID) REFERENCES ItemContainer(ItemID),
+      FOREIGN KEY (UserID) REFERENCES User(UserID),
+      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID)
     );
 
 END

@@ -71,9 +71,18 @@ public class BulletZoneData {
         return itemRepo.itemMap.values();
     }
 
-    public Collection<ItemCategory> getItemCategories() {
-        return typeRepo.categoryMap.values();
+    public GameItem createItem(ItemType type) { return itemRepo.create(type);}
+
+    public GameItem createItem(String typeName) { return createItem(getTypeFromName(typeName)); }
+
+    public ItemType getTypeFromName(String typeName) {
+        ItemType type = typeRepo.nameToTypeMap.get(typeName);
+        if (type == null)
+            throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
+        return type;
     }
+
+    public Collection<ItemCategory> getItemCategories() { return typeRepo.categoryMap.values(); }
 
     public Collection<ItemType> getItemTypes() {
         return typeRepo.typeMap.values();

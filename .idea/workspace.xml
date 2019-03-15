@@ -9,17 +9,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Factored out ItemTypeRepository">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" afterDir="false" />
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Started implementing GameItemRepository--needs testing, more creation/update methods.">
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -127,41 +128,43 @@
     <session id="-962962837">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.11" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.16" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="16" />
           <entry key="gradle" value="12" />
-          <entry key="java" value="10653" />
-          <entry key="sql" value="2690" />
-          <entry key="txt" value="304" />
+          <entry key="java" value="11967" />
+          <entry key="sql" value="3026" />
+          <entry key="txt" value="396" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="DBN-SQL" value="2690" />
+          <entry key="DBN-SQL" value="3026" />
           <entry key="Groovy" value="12" />
-          <entry key="JAVA" value="10653" />
-          <entry key="PLAIN_TEXT" value="320" />
+          <entry key="JAVA" value="11967" />
+          <entry key="PLAIN_TEXT" value="412" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="24" />
-          <entry key="psql" value="3" />
-          <entry key="sql" value="7" />
+          <entry key="java" value="27" />
+          <entry key="psql" value="18" />
+          <entry key="sql" value="9" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="DBN-SQL" value="9" />
-          <entry key="JAVA" value="24" />
+          <entry key="DBN-SQL" value="26" />
+          <entry key="JAVA" value="27" />
           <entry key="SQL" value="1" />
           <entry key="XML" value="1" />
         </counts>
@@ -173,28 +176,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1585">
-              <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+            <state relative-caret-position="263">
+              <caret line="79" column="25" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2292#2293#0" expanded="true" />
-                <element signature="e#2344#2345#0" expanded="true" />
-                <element signature="e#2413#2414#0" expanded="true" />
-                <element signature="e#2466#2467#0" expanded="true" />
-                <element signature="e#2907#2908#0" expanded="true" />
-                <element signature="e#2940#2941#0" expanded="true" />
-                <element signature="e#3016#3017#0" expanded="true" />
-                <element signature="e#3059#3060#0" expanded="true" />
-                <element signature="e#2942#2943#0" expanded="true" />
-                <element signature="e#2981#2982#0" expanded="true" />
-                <element signature="e#3036#3037#0" expanded="true" />
-                <element signature="e#3076#3077#0" expanded="true" />
-                <element signature="e#3131#3132#0" expanded="true" />
-                <element signature="e#3171#3172#0" expanded="true" />
-                <element signature="e#3235#3236#0" expanded="true" />
-                <element signature="e#3275#3276#0" expanded="true" />
-                <element signature="e#3330#3331#0" expanded="true" />
-                <element signature="e#3370#3371#0" expanded="true" />
+                <element signature="e#2901#2902#0" expanded="true" />
+                <element signature="e#2949#2950#0" expanded="true" />
+                <element signature="e#3001#3002#0" expanded="true" />
+                <element signature="e#3050#3051#0" expanded="true" />
+                <element signature="e#3104#3105#0" expanded="true" />
+                <element signature="e#3154#3155#0" expanded="true" />
+                <element signature="e#3214#3215#0" expanded="true" />
+                <element signature="e#3267#3268#0" expanded="true" />
+                <element signature="e#3321#3322#0" expanded="true" />
+                <element signature="e#3371#3372#0" expanded="true" />
+                <element signature="e#3423#3424#0" expanded="true" />
+                <element signature="e#3472#3473#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -203,38 +200,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/GamesController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="102">
+              <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -242,8 +209,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="33" column="18" lean-forward="true" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+            <state relative-caret-position="306">
+              <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -252,19 +219,42 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/Item">
+          <provider selected="true" editor-type-id="1.DATA">
+            <state row-count="1" readonly="false">
+              <columns>
+                <column name="ItemID" position="0" visible="true" />
+                <column name="ItemTypeID" position="1" visible="true" />
+                <column name="UsageMonitor" position="2" visible="true" />
+                <column name="StatusID" position="3" visible="true" />
+              </columns>
+              <sorting />
+              <content-types />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemContainer">
+          <provider selected="true" editor-type-id="1.DATA">
+            <state row-count="1" readonly="false">
+              <columns>
+                <column name="ItemID" position="0" visible="true" />
+                <column name="Name" position="1" visible="true" />
+              </columns>
+              <sorting />
+              <content-types />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="102">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#154#177#0" expanded="true" />
-                <element signature="e#241#260#0" expanded="true" />
-                <element signature="e#326#346#0" expanded="true" />
-                <element signature="e#414#435#0" expanded="true" />
-                <element signature="e#509#533#0" expanded="true" />
-                <element signature="e#601#622#0" expanded="true" />
-                <element signature="e#688#708#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -273,21 +263,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="255">
+              <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
+            <state relative-caret-position="263">
+              <caret line="30" column="99" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="99" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#154#173#0" expanded="true" />
-                <element signature="e#243#271#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -296,8 +284,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="28" column="30" lean-forward="true" selection-start-line="25" selection-start-column="3" selection-end-line="28" selection-end-column="30" />
+            <state relative-caret-position="136">
+              <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -308,6 +305,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -2979,12 +2977,10 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/GamesController.java" />
         <option value="$PROJECT_DIR$/server/build.gradle" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/CreateTables.sql" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemFactory.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/TypeInfo.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeInfo.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/WeaponType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/EngineType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/DriveType.java" />
@@ -2992,14 +2988,17 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
       </list>
     </option>
   </component>
@@ -3011,8 +3010,8 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="270" />
-    <option name="y" value="41" />
+    <option name="x" value="152" />
+    <option name="y" value="64" />
     <option name="width" value="1542" />
     <option name="height" value="930" />
   </component>
@@ -3022,6 +3021,22 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
+              <item name="client" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
+              <item name="server" type="616d4139:PackageViewModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="AndroidView" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <expand>
@@ -3042,22 +3057,6 @@
               <item name="Root" type="cbb8eebc:String" user="Root" />
               <item name="client" type="cbb8eebc:String" user="client" />
               <item name="client" type="cbb8eebc:String" user="client" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
-              <item name="client" type="616d4139:PackageViewModuleNode" />
-            </path>
-            <path>
-              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
-              <item name="server" type="616d4139:PackageViewModuleNode" />
             </path>
           </expand>
           <select />
@@ -3104,16 +3103,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="bulletzone" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bulletzone" type="462c0819:PsiDirectoryNode" />
-              <item name="datalayer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
@@ -3411,15 +3400,22 @@
       <option name="project" value="LOCAL" />
       <updated>1552591861674</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Started implementing GameItemRepository--needs testing, more creation/update methods.">
+      <created>1552597944632</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1552597944632</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="270" y="41" width="1542" height="930" extended-state="0" />
+    <frame x="152" y="64" width="1542" height="930" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="DB Browser" order="0" weight="0.22537112" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17881241" />
+      <window_info active="true" id="DB Browser" order="0" visible="true" weight="0.22537112" />
+      <window_info content_ui="combo" id="Project" order="1" weight="0.17881241" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="3" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -3430,7 +3426,7 @@
       <window_info anchor="bottom" id="DB Execution Console" order="0" weight="0.3324709" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.329927" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.24450193" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.24513619" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -3464,40 +3460,10 @@
     <MESSAGE value="Started adding classes for data access" />
     <MESSAGE value="BulletZoneData now provides basic ItemType and ItemCategory information." />
     <MESSAGE value="Factored out ItemTypeRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="Factored out ItemTypeRepository" />
+    <MESSAGE value="Started implementing GameItemRepository--needs testing, more creation/update methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Started implementing GameItemRepository--needs testing, more creation/update methods." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/appcompat-v7-20.0.0.aar/8975bb1b9e3d298b17a25743de60ee47/res/values/values.xml" />
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/util/GridWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BZRestErrorhandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/model/FieldEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/appcompat-v7-20.0.0.aar/41afd5a843dfbf9850d01d602af49f11/res/values/values.xml" />
     <entry file="file://$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/GridPollerTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -3599,19 +3565,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/session_browsers/stman1 Sessions">
-      <provider selected="true" editor-type-id="0.SESSION_BROWSER">
-        <state>
-          <refresh-interval value="0" />
-          <sorting />
-          <filter>
-            <user value="mdp" />
-            <host value="" />
-            <status value="" />
-          </filter>
-        </state>
-      </provider>
-    </entry>
     <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemPropertyType">
       <provider selected="true" editor-type-id="1.DATA">
         <state row-count="0" readonly="false">
@@ -3637,25 +3590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemType">
-      <provider selected="true" editor-type-id="1.DATA">
-        <state row-count="0" readonly="false">
-          <columns>
-            <column name="ItemTypeID" position="0" visible="true" />
-            <column name="Name" position="1" visible="true" />
-            <column name="ItemCategoryID" position="2" visible="true" />
-            <column name="Size" position="3" visible="true" />
-            <column name="Weight" position="4" visible="true" />
-            <column name="Price" position="5" visible="true" />
-            <column name="PropertyVal1" position="6" visible="true" />
-            <column name="PropertyVal2" position="7" visible="true" />
-            <column name="PropertyVal3" position="8" visible="true" />
-          </columns>
-          <sorting />
-          <content-types />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/model/FieldHolder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -3667,13 +3601,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -3799,41 +3726,136 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemFactory.java" />
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#154#177#0" expanded="true" />
-            <element signature="e#241#260#0" expanded="true" />
-            <element signature="e#326#346#0" expanded="true" />
-            <element signature="e#414#435#0" expanded="true" />
-            <element signature="e#509#533#0" expanded="true" />
-            <element signature="e#601#622#0" expanded="true" />
-            <element signature="e#688#708#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="44" lean-forward="true" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+        <state relative-caret-position="306">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/GamesController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
+        <state relative-caret-position="408">
           <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/session_browsers/stman1 Sessions">
+      <provider selected="true" editor-type-id="0.SESSION_BROWSER">
+        <state>
+          <refresh-interval value="5" />
+          <sorting />
+          <filter>
+            <user value="mdp" />
+            <host value="" />
+            <status value="" />
+          </filter>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="40" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/Common">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="4" readonly="false">
+          <columns>
+            <column name="Version" position="0" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemCategory">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="0" readonly="false">
+          <columns>
+            <column name="ItemCategoryID" position="0" visible="true" />
+            <column name="Name" position="1" visible="true" />
+            <column name="ItemPropertyID1" position="2" visible="true" />
+            <column name="ItemPropertyID2" position="3" visible="true" />
+            <column name="ItemPropertyID3" position="4" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/Permission">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="0" readonly="false">
+          <columns>
+            <column name="PermissionID" position="0" visible="true" />
+            <column name="Name" position="1" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemType">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="21" readonly="false">
+          <columns>
+            <column name="ItemTypeID" position="0" visible="true" />
+            <column name="Name" position="1" visible="true" />
+            <column name="ItemCategoryID" position="2" visible="true" />
+            <column name="Size" position="3" visible="true" />
+            <column name="Weight" position="4" visible="true" />
+            <column name="Price" position="5" visible="true" />
+            <column name="PropertyVal1" position="6" visible="true" />
+            <column name="PropertyVal2" position="7" visible="true" />
+            <column name="PropertyVal3" position="8" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="30" column="99" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="99" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -3842,79 +3864,73 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1585">
-          <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+        <state relative-caret-position="263">
+          <caret line="79" column="25" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2292#2293#0" expanded="true" />
-            <element signature="e#2344#2345#0" expanded="true" />
-            <element signature="e#2413#2414#0" expanded="true" />
-            <element signature="e#2466#2467#0" expanded="true" />
-            <element signature="e#2907#2908#0" expanded="true" />
-            <element signature="e#2940#2941#0" expanded="true" />
-            <element signature="e#3016#3017#0" expanded="true" />
-            <element signature="e#3059#3060#0" expanded="true" />
-            <element signature="e#2942#2943#0" expanded="true" />
-            <element signature="e#2981#2982#0" expanded="true" />
-            <element signature="e#3036#3037#0" expanded="true" />
-            <element signature="e#3076#3077#0" expanded="true" />
-            <element signature="e#3131#3132#0" expanded="true" />
-            <element signature="e#3171#3172#0" expanded="true" />
-            <element signature="e#3235#3236#0" expanded="true" />
-            <element signature="e#3275#3276#0" expanded="true" />
-            <element signature="e#3330#3331#0" expanded="true" />
-            <element signature="e#3370#3371#0" expanded="true" />
+            <element signature="e#2901#2902#0" expanded="true" />
+            <element signature="e#2949#2950#0" expanded="true" />
+            <element signature="e#3001#3002#0" expanded="true" />
+            <element signature="e#3050#3051#0" expanded="true" />
+            <element signature="e#3104#3105#0" expanded="true" />
+            <element signature="e#3154#3155#0" expanded="true" />
+            <element signature="e#3214#3215#0" expanded="true" />
+            <element signature="e#3267#3268#0" expanded="true" />
+            <element signature="e#3321#3322#0" expanded="true" />
+            <element signature="e#3371#3372#0" expanded="true" />
+            <element signature="e#3423#3424#0" expanded="true" />
+            <element signature="e#3472#3473#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="28" column="30" lean-forward="true" selection-start-line="25" selection-start-column="3" selection-end-line="28" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="255">
+          <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="238">
+          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="33" column="18" lean-forward="true" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+        <state relative-caret-position="306">
+          <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#154#173#0" expanded="true" />
-            <element signature="e#243#271#0" expanded="true" />
-          </folding>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/Item">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="1" readonly="false">
+          <columns>
+            <column name="ItemID" position="0" visible="true" />
+            <column name="ItemTypeID" position="1" visible="true" />
+            <column name="UsageMonitor" position="2" visible="true" />
+            <column name="StatusID" position="3" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
+        </state>
+      </provider>
+    </entry>
+    <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemContainer">
+      <provider selected="true" editor-type-id="1.DATA">
+        <state row-count="1" readonly="false">
+          <columns>
+            <column name="ItemID" position="0" visible="true" />
+            <column name="Name" position="1" visible="true" />
+          </columns>
+          <sorting />
+          <content-types />
         </state>
       </provider>
     </entry>
