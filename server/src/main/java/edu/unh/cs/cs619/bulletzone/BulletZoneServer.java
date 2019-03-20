@@ -30,7 +30,7 @@ public class BulletZoneServer {
         String password = "Drag56kes";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
-        //d.rebuildData();
+        d.rebuildData();
         //d.listTables();
         GameItem bay = d.createItem("Garage bay");
         d.close();

@@ -1,6 +1,9 @@
+/**
+ * Public class for accessing data for individual types in the ItemType table
+ */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
-class ItemType {
+public class ItemType {
     protected final ItemTypeRecord info;
 
     ItemType(ItemTypeRecord rec) {

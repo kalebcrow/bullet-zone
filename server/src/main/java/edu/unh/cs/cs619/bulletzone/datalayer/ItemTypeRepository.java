@@ -1,3 +1,6 @@
+/**
+ * Internal package class for interpreting (and creating?) database data corresponding to ItemTypes
+ */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.sql.Connection;
@@ -16,6 +19,12 @@ class ItemTypeRepository {
     HashMap<Integer, DriveType> driveMap = new HashMap<Integer, DriveType>();
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
 
+    /**
+     * Reads the database and fills the HashMaps as appropriate with information about
+     * ItemCategories and ItemTypes. Intended to be called once at time of initialization.
+     *
+     * @param dataConnection connection on which to make SQL queries
+     */
     void readStaticInfo(Connection dataConnection) {
         try {
             Statement statement = dataConnection.createStatement();
@@ -45,7 +54,11 @@ class ItemTypeRepository {
         }
     }
 
-    ///Factory method for generating an ItemTypes based on a record
+    /**
+     * Internal factory method for generating an ItemType based on information in the passed
+     * ItemTypeRecord and inserting it into the appropriate HashMap.
+     * @param rec   reference to an ItemTypeRecord that's the result of an SQL query
+     */
     private void recordItemType(ItemTypeRecord rec) {
         ItemType itemType;
         int id = rec.itemTypeID;

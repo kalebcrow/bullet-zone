@@ -1,3 +1,6 @@
+/**
+ * Internal package class for creating and interpreting database data corresponding to GameItems
+ */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.sql.Connection;
@@ -12,6 +15,13 @@ class GameItemRepository {
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     Connection dataConnection;
 
+    /**
+     * Create a new GameItem of type itemType and insert it into the database and the appropriate
+     * hashmap. This method can create both GameItemContainers and GameItems.
+     * @param itemType  Individual type to be created
+     * @return  GameItem representation of the item that was inserted into the database.
+     * @throws IllegalStateException for any database errors encountered.
+     */
     GameItem create(ItemType itemType) {
         GameItemRecord rec = new GameItemRecord();
         rec.itemType = itemType;
@@ -59,6 +69,13 @@ class GameItemRepository {
         return newItem;
     }
 
+    /**
+     * Reads the database and fills the HashMaps as appropriate. Intended to be called once
+     * at time of initialization.
+     *
+     * @param sqlDataConnection connection on which to make all future SQL queries
+     * @param itemTypeRepo      reference to an already-initialized ItemTypeRepository
+     */
     void refresh(Connection sqlDataConnection, ItemTypeRepository itemTypeRepo) {
         dataConnection = sqlDataConnection;
         try {
@@ -99,6 +116,13 @@ class GameItemRepository {
         }
     }
 
+    /**
+     * Converts a ResultSet to a GameItemRecord for further processing. It assumes that the record
+     * it should be getting data for was labeled with the name "i".
+     * @param itemResult    The ResultSet that's the result of an SQL query with item labeled "i"
+     * @param itemTypeRepo  Reference to an initialized ItemTypeRepository
+     * @return GameItemRecord filled with data from the current item in the ResultSet.
+     */
     private GameItemRecord makeItemRecordFromResultSet(ResultSet itemResult, ItemTypeRepository itemTypeRepo) {
         GameItemRecord rec = new GameItemRecord();
         try {

@@ -1,5 +1,10 @@
+/**
+ * Public class for accessing data for individual items in the ItemContainer table
+ */
+
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.util.Collection;
 import java.util.Set;
 
 public class GameItemContainer extends GameItem {
@@ -25,4 +30,6 @@ public class GameItemContainer extends GameItem {
     {
         containedItems.remove(child);
     }
+
+    public Collection<GameItem> getItems() { return containedItems;}
 }

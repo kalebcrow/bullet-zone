@@ -1,3 +1,6 @@
+/**
+ * Public class for accessing data for individual items in the Item table
+ */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 public class GameItem {
