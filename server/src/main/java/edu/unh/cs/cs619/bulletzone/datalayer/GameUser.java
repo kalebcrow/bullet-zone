@@ -5,6 +5,7 @@ import java.util.Set;
 public class GameUser {
     protected int userID;
     protected String name;
+    protected String username;
     //password info not stored in game
     protected int statusID;
     protected Set<GameItemContainer> ownedItems;

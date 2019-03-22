@@ -1,10 +1,17 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class GameUserRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
@@ -12,6 +19,56 @@ public class GameUserRepository {
     GameItemRepository itemRepo;
 
     GameUser getUser(int userID) { return userMap.get(userID); }
+
+    //need create user, with login and password arguments...
+
+    /**
+     * Returns the GameUser associated with a given username if the password matches
+     * @param username  Username for the desired user
+     * @param password  Password for the desired user
+     * @return  GameUser corresponding to the username/password, or
+     *          null if not found or wrong password
+     */
+    GameUser validateLogin(String username, String password) {
+        GameUserRecord userRecord = null;
+        try {
+            Statement statement = dataConnection.createStatement();
+            // Read users that aren't deleted
+            ResultSet userResult = statement.executeQuery(
+                    "SELECT * FROM User WHERE StatusID != " + Status.Deleted.ordinal() + " AND Username = " + username);
+            if (userResult.isBeforeFirst()) //empty result list
+                userRecord = makeUserRecordFromResultSet(userResult);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Unable to access user table for password validation!", e);
+        }
+        if (userRecord == null)
+            return null;
+
+        //The following is adapted from https://www.baeldung.com/java-password-hashing
+        try {
+            final int iterations = 65536;
+            final int keySize = 128;
+            final int saltSize = 16;
+
+            /*
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[saltSize];
+            random.nextBytes(salt);
+            */
+            byte[] salt = userRecord.passwordSalt;
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keySize);
+
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            if (hash == userRecord.passwordHash)
+                return getUser(userRecord.userID); //matches!
+            //else fall through
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new IllegalStateException("Unable to attempt password validation!", e);
+        }
+
+        return null;
+    }
 
     /**
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
@@ -62,6 +119,9 @@ public class GameUserRepository {
         try {
             rec.userID = userResult.getInt("u.UserID");
             rec.name = userResult.getString("u.Name");
+            rec.username = userResult.getString("u.Username");
+            rec.passwordHash = userResult.getBytes("u.passwordHash");
+            rec.passwordSalt = userResult.getBytes("u.passwordSalt");
             rec.statusID = userResult.getInt("u.StatusID");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);
