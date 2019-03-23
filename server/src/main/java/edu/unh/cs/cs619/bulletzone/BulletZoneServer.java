@@ -16,6 +16,7 @@
 
 package edu.unh.cs.cs619.bulletzone;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
@@ -25,6 +26,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.GameItem;
 @SpringBootApplication
 public class BulletZoneServer {
     public static void main(String[] args) {
+        /*
         String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6195";
         String username = "mdp";
         String password = "Drag56kes";
@@ -34,7 +36,7 @@ public class BulletZoneServer {
         //d.listTables();
         GameItem bay = d.createItem("Garage bay");
         d.close();
-
-        //SpringApplication.run(BulletZoneServer.class, args);
+*/
+        SpringApplication.run(BulletZoneServer.class, args);
     }
 }
