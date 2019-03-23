@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_out_top.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_slide_out_top.xml"
+    },
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_in_top.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_slide_in_top.xml"
+    },
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_out_bottom.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_in_bottom.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_fade_out.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_fade_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\mdp\\Documents\\CS619\\BulletZone\\client\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_fade_in.xml",
+        "source": "C:\\Users\\mdp\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-20.0.0.aar\\ff1ce6d896cc7cf7258f80cfd4763221\\res\\anim\\abc_fade_in.xml"
+    }
+]

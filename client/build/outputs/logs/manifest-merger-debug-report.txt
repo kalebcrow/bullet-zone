@@ -1,0 +1,100 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+MERGED from [com.android.support:appcompat-v7:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.0.aar\cdd502b084b8b5d19aace5bf59a147f9\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.0.aar\bf95781a2ca870ad610dcd883d3fb8b0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.0.aar\84229e0a4d407f008e2b966bcea6574d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.0.aar\32a7b3c714a34f105c06c5080096bcb4\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.0.aar\e69557d8a780b3a9857d59f377293497\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.0.aar\d6c3054b6b78c5d1087bb6864ba206ea\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.0.aar\e34a8ad70b9004e3a09690e8a8937d07\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\9b548d74aef711cb3205738ff3d5bb27\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\8bfb6afb62aee0d9d967dfa3437206f9\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\ba07ff9144c770d0c917bd3e77c89675\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5a9b309406288742532d5d328de17626\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+	package
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:3:5-42
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:1-23:12
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:5:5-19:19
+	android:label
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:8:9-41
+	android:icon
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:7:9-45
+	android:allowBackup
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:9:9-40
+activity#edu.unh.cs.cs619.bulletzone.ClientActivity_
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:10:9-18:20
+	android:label
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:12:13-45
+	android:name
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:11:13-44
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:13:13-17:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:14:17-69
+	android:name
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:14:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:16:17-77
+	android:name
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:16:27-74
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:21:5-67
+	android:name
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml:21:22-64
+uses-sdk
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+MERGED from [com.android.support:appcompat-v7:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.0.aar\cdd502b084b8b5d19aace5bf59a147f9\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.0.aar\cdd502b084b8b5d19aace5bf59a147f9\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.0.aar\bf95781a2ca870ad610dcd883d3fb8b0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.0.aar\bf95781a2ca870ad610dcd883d3fb8b0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.0.aar\84229e0a4d407f008e2b966bcea6574d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.0.aar\84229e0a4d407f008e2b966bcea6574d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.0.aar\32a7b3c714a34f105c06c5080096bcb4\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.0.aar\32a7b3c714a34f105c06c5080096bcb4\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.0.aar\e69557d8a780b3a9857d59f377293497\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.0.aar\e69557d8a780b3a9857d59f377293497\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.0.aar\d6c3054b6b78c5d1087bb6864ba206ea\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.0.aar\d6c3054b6b78c5d1087bb6864ba206ea\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.0.aar\e34a8ad70b9004e3a09690e8a8937d07\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.0.aar\e34a8ad70b9004e3a09690e8a8937d07\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\9b548d74aef711cb3205738ff3d5bb27\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\9b548d74aef711cb3205738ff3d5bb27\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\8bfb6afb62aee0d9d967dfa3437206f9\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\8bfb6afb62aee0d9d967dfa3437206f9\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\ba07ff9144c770d0c917bd3e77c89675\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\ba07ff9144c770d0c917bd3e77c89675\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5a9b309406288742532d5d328de17626\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\mdp\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5a9b309406288742532d5d328de17626\AndroidManifest.xml:20:5-44
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		ADDED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\mdp\Documents\CS619\BulletZone\client\src\main\AndroidManifest.xml
