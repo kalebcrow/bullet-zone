@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,9 +19,63 @@ public class GameUserRepository {
     Connection dataConnection;
     GameItemRepository itemRepo;
 
+    final int iterations = 65536;
+    final int keySize = 128;
+    final int saltSize = 16;
+
     GameUser getUser(int userID) { return userMap.get(userID); }
 
     //need create user, with login and password arguments...
+    GameUser createUser(String name, String username, String password) {
+        GameUserRecord newRecord = new GameUserRecord();
+        GameUser newUser = null;
+        newRecord.name = name;
+        newRecord.username = username;
+        newRecord.statusID = Status.Active.ordinal();
+        //The following is adapted from https://www.baeldung.com/java-password-hashing
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[saltSize];
+        random.nextBytes(salt);
+
+        try {
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keySize);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            newRecord.passwordHash = hash;
+            newRecord.passwordSalt = salt;
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new IllegalStateException("Unable to attempt password creation!", e);
+        }
+
+        try {
+            // Create base item
+            PreparedStatement insertStatement = dataConnection.prepareStatement(
+                    " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID )\n" +
+                            "    VALUES (" + newRecord.name + ", "
+                            + newRecord.username + ", "
+                            + newRecord.passwordHash + ", "
+                            + newRecord.passwordSalt + ", "
+                            + newRecord.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
+            int affectedRows = insertStatement.executeUpdate();
+            if (affectedRows == 0)
+                throw new SQLException("Creating User " + newRecord.username + " failed.");
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                newRecord.userID = generatedKeys.getInt(1);
+            }
+            else {
+                throw new SQLException("Created user " + newRecord.username + " but failed to obtain ID.");
+            }
+
+            newUser = new GameUser(newRecord);
+            userMap.put(newRecord.userID, newUser);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while creating item!", e);
+        }
+        System.out.println("New user " + username + " added with ID " + newRecord.userID);
+        return newUser;
+    }
 
     /**
      * Returns the GameUser associated with a given username if the password matches
@@ -46,15 +101,6 @@ public class GameUserRepository {
 
         //The following is adapted from https://www.baeldung.com/java-password-hashing
         try {
-            final int iterations = 65536;
-            final int keySize = 128;
-            final int saltSize = 16;
-
-            /*
-            SecureRandom random = new SecureRandom();
-            byte[] salt = new byte[saltSize];
-            random.nextBytes(salt);
-            */
             byte[] salt = userRecord.passwordSalt;
             KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keySize);
 

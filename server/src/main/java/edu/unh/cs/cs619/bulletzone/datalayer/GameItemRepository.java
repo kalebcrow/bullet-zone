@@ -36,8 +36,8 @@ class GameItemRepository {
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
                     " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID )\n" +
-                            "    VALUES (" + rec.itemType.getID() + ", " +
-                                           + rec.usageMonitor + ", " +
+                            "    VALUES (" + rec.itemType.getID() + ", "
+                                           + rec.usageMonitor + ", "
                                            + rec.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
