@@ -15,6 +15,9 @@ class GameItemRepository {
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     Connection dataConnection;
 
+    GameItem getItem(int itemID) { return itemMap.get(itemID); }
+    GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
+
     /**
      * Create a new GameItem of type itemType and insert it into the database and the appropriate
      * hashmap. This method can create both GameItemContainers and GameItems.
@@ -33,8 +36,8 @@ class GameItemRepository {
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
                     " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID )\n" +
-                            "    VALUES (" + rec.itemType.getID() + ", " +
-                                           + rec.usageMonitor + ", " +
+                            "    VALUES (" + rec.itemType.getID() + ", "
+                                           + rec.usageMonitor + ", "
                                            + rec.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
@@ -106,8 +109,8 @@ class GameItemRepository {
                 int containerID = mappingResult.getInt("Container_ItemID");
                 int itemID = mappingResult.getInt("ItemID");
                 // not worrying about StartSlot, EndSlot, or Modifier right now...
-                GameItemContainer container = containerMap.get(containerID);
-                GameItem item = itemMap.get(itemID);
+                GameItemContainer container = getContainer(containerID);
+                GameItem item = getItem(itemID);
                 container.addItem(item);
             }
 

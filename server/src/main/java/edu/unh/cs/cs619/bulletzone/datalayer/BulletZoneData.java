@@ -218,4 +218,16 @@ public class BulletZoneData {
         }
         return resultSet;
     }
+
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6195";
+        String username = "mdp";
+        String password = "Drag56kes";
+
+        BulletZoneData d = new BulletZoneData(url, username, password);
+        d.rebuildData();
+        //d.listTables();
+        GameItem bay = d.createItem("Garage bay");
+        d.close();
+    }
 }

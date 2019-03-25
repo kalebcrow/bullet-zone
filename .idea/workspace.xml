@@ -10,21 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Item creation works now. Common and Status tables added.">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/package-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Permission.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -144,7 +139,7 @@
         <counts>
           <entry key="dummy" value="16" />
           <entry key="gradle" value="12" />
-          <entry key="java" value="17176" />
+          <entry key="java" value="17188" />
           <entry key="sql" value="5018" />
           <entry key="txt" value="464" />
         </counts>
@@ -153,22 +148,22 @@
         <counts>
           <entry key="DBN-SQL" value="5018" />
           <entry key="Groovy" value="12" />
-          <entry key="JAVA" value="17176" />
+          <entry key="JAVA" value="17188" />
           <entry key="PLAIN_TEXT" value="480" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="40" />
+          <entry key="java" value="51" />
           <entry key="psql" value="18" />
-          <entry key="sql" value="9" />
+          <entry key="sql" value="10" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="DBN-SQL" value="26" />
-          <entry key="JAVA" value="40" />
+          <entry key="DBN-SQL" value="27" />
+          <entry key="JAVA" value="51" />
           <entry key="SQL" value="1" />
           <entry key="XML" value="1" />
         </counts>
@@ -177,43 +172,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#0#90#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-              <folding>
-                <element signature="e#128#129#0" expanded="true" />
-                <element signature="e#154#155#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -227,11 +185,7 @@
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="1" column="30" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
-              <folding>
-                <element signature="e#140#141#0" expanded="true" />
-                <element signature="e#166#167#0" expanded="true" />
-              </folding>
+              <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -245,7 +199,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
@@ -255,12 +209,45 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2567">
+              <caret line="151" column="91" selection-start-line="151" selection-start-column="91" selection-end-line="151" selection-end-column="91" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="505">
+              <caret line="231" column="5" selection-start-line="231" selection-start-column="5" selection-end-line="231" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
+              <folding>
+                <element signature="e#921#922#0" expanded="true" />
+                <element signature="e#988#989#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="3" lean-forward="true" selection-end-line="2" selection-end-column="3" />
+            <state>
+              <caret line="2" column="3" selection-end-line="2" selection-end-column="3" />
               <folding>
-                <element signature="e#0#103#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -270,10 +257,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
+            <state relative-caret-position="884">
               <caret line="58" column="68" selection-start-line="58" selection-start-column="68" selection-end-line="58" selection-end-column="68" />
               <folding>
-                <element signature="e#0#104#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -283,10 +269,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1180">
-              <caret line="78" selection-start-line="71" selection-end-line="78" />
+            <state relative-caret-position="1258">
+              <caret line="81" selection-start-line="81" selection-end-line="81" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -315,6 +300,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="db_dev" />
+      </map>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
@@ -2982,9 +2972,7 @@
         <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/package-info.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" />
@@ -2994,6 +2982,8 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" />
       </list>
     </option>
   </component>
@@ -3005,8 +2995,8 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="249" />
-    <option name="y" value="82" />
+    <option name="x" value="170" />
+    <option name="y" value="65" />
     <option name="width" value="1542" />
     <option name="height" value="930" />
   </component>
@@ -3016,22 +3006,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
-              <item name="client" type="616d4139:PackageViewModuleNode" />
-            </path>
-            <path>
-              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
-              <item name="server" type="616d4139:PackageViewModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="AndroidView" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <expand>
@@ -3057,6 +3031,22 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
+              <item name="client" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="BulletZone" type="58d84e3e:PackageViewProjectNode" />
+              <item name="server" type="616d4139:PackageViewModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -3147,6 +3137,561 @@
       <recent name="D:\mdp\Documents\CS_619_materials\BulletZone\server\src\main\resources" />
     </key>
   </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/build.gradle</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build.gradle</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/client.iml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/local.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/server.iml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/fileContent/fileContent.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/javaCompile/javaCompile.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/javaCompile/taskHistory.bin</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/javaCompile/taskJars.bin</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/gradle.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/generated/mockable-android-20.v3.jar</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/generated/source/apt/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/generated/source/apt/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/generated/source/r/debug/android/support/v7/appcompat/R.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/generated/source/r/debug/edu/unh/cs/cs619/bulletzone/R.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-af.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-am.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ar.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-bg.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ca.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-cs.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-da.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-de.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-el.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-en-rGB.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-en-rIN.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-es-rUS.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-es.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-et-rEE.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-fa.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-fi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-fr-rCA.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-fr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-hi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-hr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-hu.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-hy-rAM.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-in.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-it.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-iw.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ja.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ka-rGE.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-km-rKH.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ko.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-land.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-large-v14.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-large-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-lo-rLA.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-lt.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-lv.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-mn-rMN.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ms-rMY.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-nb.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-nl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-pl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-pt-rPT.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-pt.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ro.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-ru.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sk.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sv.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sw.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-sw600dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-th.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-tl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-tr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-uk.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-v11.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-v14.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-vi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-w360dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-w480dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-w500dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-w600dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-w720dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-xlarge-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-zh-rCN.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-zh-rHK.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-zh-rTW.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values-zu.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/multi-v2/values.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/anim.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/color.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/drawable-hdpi-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/drawable-mdpi-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/drawable-xhdpi-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/drawable-xxhdpi-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/drawable.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/layout-v11.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/layout-v14.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/androidTest/debug/single/layout.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/debug.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-af.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-am.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ar.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-bg.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ca.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-cs.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-da.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-de.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-el.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-en-rGB.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-en-rIN.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-es-rUS.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-es.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-fa.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-fi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-fr-rCA.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-fr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-hi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-hr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-hu.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-in.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-it.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-iw.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ja.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ko.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-land.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-large-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-lt.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-lv.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-nb.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-nl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-pl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-pt-rPT.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-pt.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ro.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-ru.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sk.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sv.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sw.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-sw600dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-th.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-tl.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-tr.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-uk.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-vi.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-w820dp-v13.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-xlarge-v4.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-zh-rCN.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-zh-rHK.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-zh-rTW.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values-zu.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/multi-v2/values.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/blame/res/debug/single/debug.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/build-info/debug/build-info.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/android/support/v7/appcompat/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$1.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$10.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$11.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$12.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$2.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$3.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$4.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$5.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$6.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$7.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$8.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$9.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$IntentBuilder_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$NonConfigurationInstancesHolder.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$menu.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/classes/debug/edu/unh/cs/cs619/bulletzone/ui/GridAdapter.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-runtime-classes/debug/instant-run.jar</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/android/support/v7/appcompat/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$1.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$10.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$11.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$12.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$2.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$3.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$4.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$5.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$6.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$7.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$8.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$9.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$IntentBuilder_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_$NonConfigurationInstancesHolder.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ClientActivity_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$menu.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental-verifier/debug/edu/unh/cs/cs619/bulletzone/ui/GridAdapter.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/debug-mergeJavaRes/merge-state</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/debug-mergeJniLibs/merge-state</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugAndroidTestResources/compile-file-map.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugAndroidTestResources/merger.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugAssets/merger.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-af/values-af.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-am/values-am.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ar/values-ar.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-bg/values-bg.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ca/values-ca.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-cs/values-cs.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-da/values-da.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-de/values-de.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-el/values-el.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rIN/values-en-rIN.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-es-rUS/values-es-rUS.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-es/values-es.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fa/values-fa.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fi/values-fi.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fr-rCA/values-fr-rCA.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fr/values-fr.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hi/values-hi.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hu/values-hu.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-in/values-in.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-it/values-it.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-iw/values-iw.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ja/values-ja.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ko/values-ko.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-large-v4/values-large-v4.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-lt/values-lt.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-lv/values-lv.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-nb/values-nb.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-nl/values-nl.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pl/values-pl.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt-rPT/values-pt-rPT.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt/values-pt.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ro/values-ro.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ru/values-ru.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sk/values-sk.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sl/values-sl.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sr/values-sr.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sv/values-sv.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sw/values-sw.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-th/values-th.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-tl/values-tl.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-tr/values-tr.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-uk/values-uk.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-vi/values-vi.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rCN/values-zh-rCN.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rHK/values-zh-rHK.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rTW/values-zh-rTW.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zu/values-zu.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugResources/merger.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/mergeDebugShaders/merger.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/packageDebug/debug/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/packageDebug/debug/file-input-save-data.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/incremental/packageInstantRunResourcesDebug/debug/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-resources/output.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-resources/resources-debug.ir.ap_</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_dependencies/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_0/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_1/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_2/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_3/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_4/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_5/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_6/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_7/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_8/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/instant-run-support/debug/package_slice_9/dex-renamer-state.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/manifests/full/debug/AndroidManifest.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/manifests/full/debug/output.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/manifests/instant-run/debug/AndroidManifest.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/manifests/instant-run/debug/output.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/res/debug/output.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/res/debug/resources-debug.ap_</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/res/symbol-table-with-package/debug/package-aware-r.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/dep/dependencies.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_0.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_1.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_2.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_3.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_4.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_5.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_6.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_7.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_8.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/split-apk/debug/slices/slice_9.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/symbols/debug/R.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/dexMerger/debug/__content__.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/externalLibsDexMerger/debug/0/classes.dex</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/android/support/v7/appcompat/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$1.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$10.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$11.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$12.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$2.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$3.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$4.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$5.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$6.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$7.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$8.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$9.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$IntentBuilder_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_$NonConfigurationInstancesHolder.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ClientActivity_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$menu.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/0/edu/unh/cs/cs619/bulletzone/ui/GridAdapter.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRun/debug/__content__.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/2/android/support/v7/appcompat/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/3/edu/unh/cs/cs619/bulletzone/ui/GridAdapter.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$1.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$10.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$11.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$12.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$2.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$3.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$4.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$5.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$6.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$7.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$8.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$9.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$IntentBuilder_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_$NonConfigurationInstancesHolder.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/ClientActivity_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$anim.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$attr.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$bool.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$color.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$dimen.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$drawable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$id.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$integer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$layout.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$menu.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$string.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$style.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/R$styleable.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/7/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/instantRunSlicer/debug/__content__.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/mergeJavaRes/debug/__content__.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/intermediates/transforms/mergeJniLibs/debug/__content__.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/outputs/apk/debug/client-debug.apk</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/outputs/apk/debug/output.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/client/build/outputs/logs/manifest-merger-debug-report.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/build/classes/java/main/edu/unh/cs/cs619/bulletzone/BulletZoneServer.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/build/libs/bullet-zone-server-2.0.jar</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/build/libs/bullet-zone-server-2.0.jar.original</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -3159,7 +3704,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BulletZoneServer">
+  <component name="RunManager" selected="Application.BulletZoneData">
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="HTML_FILE_NAME" />
@@ -3235,6 +3780,20 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BulletZoneData" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData" />
+      <module name="server" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.datalayer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="BulletZoneServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -3353,12 +3912,15 @@
       <item itemvalue="Gradle.BulletZone:server [testClasses]" />
       <item itemvalue="Application.BulletZoneServer" />
       <item itemvalue="Gradle.BulletZone:server [jar]" />
+      <item itemvalue="Application.BulletZoneData" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BulletZoneData" />
         <item itemvalue="Application.BulletZoneServer" />
         <item itemvalue="Gradle.BulletZone:server [jar]" />
         <item itemvalue="Gradle.BulletZone:server [testClasses]" />
+        <item itemvalue="Application.BulletZoneServer" />
       </list>
     </recent_temporary>
   </component>
@@ -3433,11 +3995,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="249" y="82" width="1542" height="930" extended-state="0" />
+    <frame x="170" y="65" width="1542" height="930" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="DB Browser" order="0" weight="0.22537112" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17881241" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.2388664" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="3" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -3448,7 +4010,7 @@
       <window_info anchor="bottom" id="DB Execution Console" order="0" weight="0.3324709" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.329927" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.24450193" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.24450193" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -3457,7 +4019,7 @@
       <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54950047" side_tool="true" weight="0.32846716" />
       <window_info anchor="bottom" id="Logcat" order="11" weight="0.32729626" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3270073" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3260026" />
       <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.4008529" weight="0.31329924" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.8641148" weight="0.3260026" />
       <window_info anchor="bottom" id="Build" order="15" weight="0.25614488" />
@@ -3609,16 +4171,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="34" lean-forward="true" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#197#198#0" expanded="true" />
-            <element signature="e#341#342#0" expanded="true" />
-            <element signature="e#368#369#0" expanded="true" />
-            <element signature="e#416#417#0" expanded="true" />
-            <element signature="e#443#444#0" expanded="true" />
-            <element signature="e#412#413#0" expanded="true" />
-            <element signature="e#439#440#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3626,14 +4178,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="5" lean-forward="true" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#197#198#0" expanded="true" />
-            <element signature="e#337#338#0" expanded="true" />
-            <element signature="e#364#365#0" expanded="true" />
-            <element signature="e#408#409#0" expanded="true" />
-            <element signature="e#435#436#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3641,14 +4185,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
-          <folding>
-            <element signature="e#128#129#0" expanded="true" />
-            <element signature="e#195#196#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#407#408#0" expanded="true" />
-            <element signature="e#434#435#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3656,12 +4192,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-          <folding>
-            <element signature="e#136#137#0" expanded="true" />
-            <element signature="e#203#204#0" expanded="true" />
-            <element signature="e#340#341#0" expanded="true" />
-            <element signature="e#367#368#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3786,13 +4316,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2516">
-          <caret line="148" column="91" selection-start-line="148" selection-start-column="91" selection-end-line="148" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/repository/GameRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -3824,68 +4347,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="27" column="65" lean-forward="true" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3417">
-          <caret line="201" column="64" selection-start-line="201" selection-start-column="64" selection-end-line="201" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#3762#3763#0" expanded="true" />
-            <element signature="e#3815#3816#0" expanded="true" />
-            <element signature="e#3865#3866#0" expanded="true" />
-            <element signature="e#3913#3914#0" expanded="true" />
-            <element signature="e#5350#5351#0" expanded="true" />
-            <element signature="e#5398#5399#0" expanded="true" />
-            <element signature="e#5450#5451#0" expanded="true" />
-            <element signature="e#5499#5500#0" expanded="true" />
-            <element signature="e#5553#5554#0" expanded="true" />
-            <element signature="e#5603#5604#0" expanded="true" />
-            <element signature="e#5663#5664#0" expanded="true" />
-            <element signature="e#5716#5717#0" expanded="true" />
-            <element signature="e#5770#5771#0" expanded="true" />
-            <element signature="e#5820#5821#0" expanded="true" />
-            <element signature="e#5872#5873#0" expanded="true" />
-            <element signature="e#5921#5922#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1180">
-          <caret line="78" selection-start-line="71" selection-end-line="78" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="3" lean-forward="true" selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#103#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="255">
+          <caret line="17" selection-start-line="11" selection-end-line="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="102">
           <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
           <folding>
             <element signature="e#128#129#0" expanded="true" />
@@ -3896,11 +4367,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
+        <state relative-caret-position="17">
           <caret line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3911,6 +4379,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -3918,42 +4393,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#0#90#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" column="81" selection-start-line="1" selection-start-column="81" selection-end-line="1" selection-end-column="81" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="30" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        <state>
+          <caret line="2" column="3" selection-end-line="2" selection-end-column="3" />
           <folding>
-            <element signature="e#140#141#0" expanded="true" />
-            <element signature="e#166#167#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
+        <state relative-caret-position="884">
           <caret line="58" column="68" selection-start-line="58" selection-start-column="68" selection-end-line="58" selection-end-column="68" />
           <folding>
-            <element signature="e#0#104#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="81" selection-start-line="1" selection-start-column="81" selection-end-line="1" selection-end-column="81" />
+        <state relative-caret-position="1258">
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2567">
+          <caret line="151" column="91" selection-start-line="151" selection-start-column="91" selection-end-line="151" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#921#922#0" expanded="true" />
+            <element signature="e#988#989#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="505">
+          <caret line="231" column="5" selection-start-line="231" selection-start-column="5" selection-end-line="231" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
