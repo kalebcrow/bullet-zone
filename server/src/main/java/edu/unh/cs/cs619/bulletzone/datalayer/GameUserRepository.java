@@ -26,7 +26,7 @@ public class GameUserRepository {
     GameUser getUser(int userID) { return userMap.get(userID); }
 
     //need create user, with login and password arguments...
-    GameUser createUser(String name, String username, String password) {
+    public GameUser createUser(String name, String username, String password) {
         GameUserRecord newRecord = new GameUserRecord();
         GameUser newUser = null;
         newRecord.name = name;
@@ -51,10 +51,10 @@ public class GameUserRepository {
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
                     " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID )\n" +
-                            "    VALUES (" + newRecord.name + ", "
-                            + newRecord.username + ", "
-                            + newRecord.passwordHash + ", "
-                            + newRecord.passwordSalt + ", "
+                            "    VALUES ('" + newRecord.name + "', '"
+                            + newRecord.username + "', '"
+                            + newRecord.passwordHash + "', '"
+                            + newRecord.passwordSalt + "', "
                             + newRecord.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
@@ -84,15 +84,18 @@ public class GameUserRepository {
      * @return  GameUser corresponding to the username/password, or
      *          null if not found or wrong password
      */
-    GameUser validateLogin(String username, String password) {
+    public GameUser validateLogin(String username, String password) {
         GameUserRecord userRecord = null;
         try {
             Statement statement = dataConnection.createStatement();
             // Read users that aren't deleted
             ResultSet userResult = statement.executeQuery(
-                    "SELECT * FROM User WHERE StatusID != " + Status.Deleted.ordinal() + " AND Username = " + username);
-            if (userResult.isBeforeFirst()) //empty result list
+                    "SELECT * FROM User u WHERE StatusID != " + Status.Deleted.ordinal()
+                            + " AND u.Username = '" + username + "'");
+            if (userResult.next()) //else, is empty result list
+            {
                 userRecord = makeUserRecordFromResultSet(userResult);
+            }
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to access user table for password validation!", e);
         }
@@ -115,6 +118,8 @@ public class GameUserRepository {
 
         return null;
     }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
@@ -166,8 +171,8 @@ public class GameUserRepository {
             rec.userID = userResult.getInt("u.UserID");
             rec.name = userResult.getString("u.Name");
             rec.username = userResult.getString("u.Username");
-            rec.passwordHash = userResult.getBytes("u.passwordHash");
-            rec.passwordSalt = userResult.getBytes("u.passwordSalt");
+            rec.passwordHash = userResult.getBytes("u.PasswordHash");
+            rec.passwordSalt = userResult.getBytes("u.PasswordSalt");
             rec.statusID = userResult.getInt("u.StatusID");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);

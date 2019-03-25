@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
 
 class ItemTypeRepository {
@@ -18,6 +19,67 @@ class ItemTypeRepository {
     HashMap<Integer, EngineType> engineMap = new HashMap<Integer, EngineType>();
     HashMap<Integer, DriveType> driveMap = new HashMap<Integer, DriveType>();
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
+
+    /**
+     * Gives the ItemType associated with the passed name
+     * @param typeName  Name of the desired type (case-sensitive)
+     * @return  ItemType object corresponding to the typeName
+     */
+    public ItemType get(String typeName) {
+        ItemType type = nameToTypeMap.get(typeName);
+        if (type == null)
+            throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
+        return type;
+    }
+
+    /**
+     * @return A collection of all ItemCategories in the database
+     */
+    public Collection<ItemCategory> getCategories() { return categoryMap.values(); }
+
+    /**
+     * @return A collection of all ItemTypes in the database
+     */
+    public Collection<ItemType> getTypes() {
+        return typeMap.values();
+    }
+
+    /**
+     * @return A collection of only the FrameTypes in the database
+     */
+    public Collection<FrameType> getFrames() {
+        return frameMap.values();
+    }
+
+    /**
+     * @return A collection of only the WeaponTypes in the database
+     */
+    public Collection<WeaponType> getWeapons() {
+        return weaponMap.values();
+    }
+
+    /**
+     * @return A collection of only the GeneratorTypes in the database
+     */
+    public Collection<GeneratorType> getGenerators() {
+        return generatorMap.values();
+    }
+
+    /**
+     * @return A collection of only the EngineTypes in the database
+     */
+    public Collection<EngineType> getEngines() {
+        return engineMap.values();
+    }
+
+    /**
+     * @return A collection of only the DriveTypes in the database
+     */
+    public Collection<DriveType> getDrives() {
+        return driveMap.values();
+    }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
      * Reads the database and fills the HashMaps as appropriate with information about

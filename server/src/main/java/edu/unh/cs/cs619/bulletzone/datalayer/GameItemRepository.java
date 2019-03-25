@@ -8,15 +8,68 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
 
 class GameItemRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
+    ItemTypeRepository typeRepo;
     Connection dataConnection;
 
-    GameItem getItem(int itemID) { return itemMap.get(itemID); }
-    GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
+    /**
+     * Return the GameItem associated with the passed internal ID (does not return containers)
+     * @param itemID    ID for the item being requested
+     * @return  GameItem corresponding to the passed itemID
+     */
+    public GameItem getItem(int itemID) { return itemMap.get(itemID); }
+
+    /**
+     * Return the GameItemContainer associated with teh passed internal ID
+     * @param itemID    ID for the container being requested
+     * @return  GameItemContainer corresponding to the passed itemID;
+     */
+    public GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
+
+    /**
+     * Return the GameItem associated with teh passed internal ID (may be a container)
+     * @param itemID    ID for the item/container being requested
+     * @return  GameItem corresponding to the passed itemID;
+     */
+    public GameItem getItemOrContainer(int itemID) {
+        GameItem item = itemMap.get(itemID);
+        if (item == null)
+            item = containerMap.get(itemID);
+        return item;
+    }
+
+    /**
+     * Return a collection of all containers that are not deleted
+     *
+     * @return  Collection of all GameItemContainers that do not have a "Deleted" status
+     */
+    public Collection<GameItemContainer> getContainers() {
+        return containerMap.values();
+    }
+
+    /**
+     * Return a collection of all non-container items that are not deleted
+     *
+     * @return  Collection of all GameItems that do not have a "Deleted" status
+     */
+    public Collection<GameItem> getGameItems() {
+        return itemMap.values();
+    }
+
+    /**
+     * Create an item of the passed type and insert it into the database
+     *
+     * @param typeName  The name of the type for the item to be created (can be a container)
+     * @return          An appropriate GameItem representing what was added to the database
+     */
+    public GameItem create(String typeName) { return create(typeRepo.get(typeName)); }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
      * Create a new GameItem of type itemType and insert it into the database and the appropriate
@@ -80,6 +133,7 @@ class GameItemRepository {
      * @param itemTypeRepo      reference to an already-initialized ItemTypeRepository
      */
     void refresh(Connection sqlDataConnection, ItemTypeRepository itemTypeRepo) {
+        typeRepo = itemTypeRepo;
         dataConnection = sqlDataConnection;
         try {
             Statement statement = dataConnection.createStatement();

@@ -26,8 +26,9 @@ import java.util.stream.Collectors;
 
 public class BulletZoneData {
     private Connection dataConnection;
-    ItemTypeRepository typeRepo = new ItemTypeRepository();
-    GameItemRepository itemRepo = new GameItemRepository();
+    public ItemTypeRepository types = new ItemTypeRepository();
+    public GameItemRepository items = new GameItemRepository();
+    public GameUserRepository users = new GameUserRepository();
 
     /**
      * Opens the database at the specified URL and initializes internal structures
@@ -54,8 +55,9 @@ public class BulletZoneData {
             throw new IllegalStateException("Cannot access tables!", e);
         }
 
-        typeRepo.readStaticInfo(dataConnection);
-        itemRepo.refresh(dataConnection, typeRepo);
+        types.readStaticInfo(dataConnection);
+        items.refresh(dataConnection, types);
+        users.refresh(dataConnection, items);
     }
 
     /**
@@ -88,93 +90,7 @@ public class BulletZoneData {
         }
     }
 
-    /**
-     * Return a collection of all containers that are not deleted
-     *
-     * @return  Collection of all GameItemContainers that do not have a "Deleted" status
-     */
-    public Collection<GameItemContainer> getContainers() {
-        return itemRepo.containerMap.values();
-    }
-
-    /**
-     * Return a collection of all non-container items that are not deleted
-     *
-     * @return  Collection of all GameItems that do not have a "Deleted" status
-     */
-    public Collection<GameItem> getGameItems() {
-        return itemRepo.itemMap.values();
-    }
-
-    /**
-     * Create an item of the passed type and insert it into the database
-     *
-     * @param type  The individual type for the item to be created (can be a container)
-     * @return      An appropriate GameItem representing what was added to the database
-     */
-    public GameItem createItem(ItemType type) { return itemRepo.create(type);}
-
-    /**
-     * Create an item of the passed type and insert it into the database
-     *
-     * @param typeName  The name of the type for the item to be created (can be a container)
-     * @return          An appropriate GameItem representing what was added to the database
-     */
-    public GameItem createItem(String typeName) { return createItem(getTypeFromName(typeName)); }
-
-    public ItemType getTypeFromName(String typeName) {
-        ItemType type = typeRepo.nameToTypeMap.get(typeName);
-        if (type == null)
-            throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
-        return type;
-    }
-
-    /**
-     * @return A collection of all ItemCategories in the database
-     */
-    public Collection<ItemCategory> getItemCategories() { return typeRepo.categoryMap.values(); }
-
-    /**
-     * @return A collection of all ItemTypes in the database
-     */
-    public Collection<ItemType> getItemTypes() {
-        return typeRepo.typeMap.values();
-    }
-
-    /**
-     * @return A collection of only the FrameTypes in the database
-     */
-    public Collection<FrameType> getFrameTypes() {
-        return typeRepo.frameMap.values();
-    }
-
-    /**
-     * @return A collection of only the WeaponTypes in the database
-     */
-    public Collection<WeaponType> getWeaponTypes() {
-        return typeRepo.weaponMap.values();
-    }
-
-    /**
-     * @return A collection of only the GeneratorTypes in the database
-     */
-    public Collection<GeneratorType> getGeneratorTypes() {
-        return typeRepo.generatorMap.values();
-    }
-
-    /**
-     * @return A collection of only the EngineTypes in the database
-     */
-    public Collection<EngineType> getEngineTypes() {
-        return typeRepo.engineMap.values();
-    }
-
-    /**
-     * @return A collection of only the DriveTypes in the database
-     */
-    public Collection<DriveType> getDriveTypes() {
-        return typeRepo.driveMap.values();
-    }
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
      * Assuming an empty database, creates all the appropriate tables and then populates
@@ -227,7 +143,11 @@ public class BulletZoneData {
         BulletZoneData d = new BulletZoneData(url, username, password);
         d.rebuildData();
         //d.listTables();
-        GameItem bay = d.createItem("Garage bay");
+        GameItem bay = d.items.create("Garage bay");
+        GameUser user = d.users.createUser("Test User", "testuser", "testPass");
+        GameUser user2 = d.users.validateLogin("testuser", "testPass");
+        if (user == user2)
+            System.out.println("User creation/validation successful");
         d.close();
     }
 }
