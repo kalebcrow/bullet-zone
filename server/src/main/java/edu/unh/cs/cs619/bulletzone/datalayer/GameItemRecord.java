@@ -3,9 +3,14 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.sql.Timestamp;
+
 class GameItemRecord {
     public int itemID;
     public ItemType itemType;
     public double usageMonitor;
     public int statusID;
+    public Timestamp created;
+    public Timestamp deleted;
+
 }

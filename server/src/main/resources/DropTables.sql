@@ -1,5 +1,6 @@
 BEGIN NOT ATOMIC
     SET FOREIGN_KEY_CHECKS = 0;
+    DROP TABLE IF EXISTS AccountTransferHistory;
     DROP TABLE IF EXISTS BankAccount;
     DROP TABLE IF EXISTS BankAccount_User_Permissions;
     DROP TABLE IF EXISTS Common;

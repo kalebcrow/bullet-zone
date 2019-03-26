@@ -23,6 +23,8 @@ BEGIN NOT ATOMIC
       PasswordHash VARCHAR(32) NOT NULL,
       PasswordSalt VARCHAR(32) NOT NULL,
       StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
       PRIMARY KEY (UserID),
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
@@ -54,6 +56,8 @@ BEGIN NOT ATOMIC
       BankAccountID INT NOT NULL AUTO_INCREMENT,
       Credits FLOAT NOT NULL,
       StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
       PRIMARY KEY (BankAccountID),
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
@@ -65,9 +69,29 @@ BEGIN NOT ATOMIC
       BankAccountID INT NOT NULL,
       UserID INT NOT NULL,
       PermissionID INT NOT NULL,
+      StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
       FOREIGN KEY (BankAccountID) REFERENCES BankAccount(BankAccountID),
       FOREIGN KEY (UserID) REFERENCES User(UserID),
-      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID)
+      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+    );
+
+    # AccountTransferHistory table -- Records details about movement of money from one
+    #                                 bank account to another
+    CREATE TABLE AccountTransferHistory
+    (
+      AccountTransferHistoryID INT NOT NULL,
+      SourceBankAccountID INT NOT NULL,
+      SourceBalancePrior FLOAT NOT NULL,
+      DestBankAccountID INT NOT NULL,
+      DestBalancePrior FLOAT NOT NULL,
+      TransferAmount FLOAT NOT NULL,
+      Timestamp DATETIME NOT NULL,
+      PRIMARY KEY (AccountTransferHistoryID),
+      FOREIGN KEY (SourceBankAccountID) REFERENCES BankAccount(BankAccountID),
+      FOREIGN KEY (DestBankAccountID) REFERENCES BankAccount(BankAccountID)
     );
 
     # ItemProperty table -- enumeration of properties that some game
@@ -118,6 +142,8 @@ BEGIN NOT ATOMIC
       ItemTypeID INT NOT NULL,
       UsageMonitor FLOAT NOT NULL,
       StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
       PRIMARY KEY (ItemID),
       FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID),
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
@@ -152,9 +178,13 @@ BEGIN NOT ATOMIC
       ItemID INT NOT NULL,  -- should be an ItemContainer ItemID only, not individual items
       UserID INT NOT NULL,
       PermissionID INT NOT NULL,
+      StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
       FOREIGN KEY (ItemID) REFERENCES ItemContainer(ItemID),
       FOREIGN KEY (UserID) REFERENCES User(UserID),
-      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID)
+      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
 END

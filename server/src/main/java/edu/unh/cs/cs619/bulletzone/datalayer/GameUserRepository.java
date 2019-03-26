@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.crypto.SecretKeyFactory;
@@ -34,6 +36,8 @@ public class GameUserRepository {
         newRecord.name = name;
         newRecord.username = username;
         newRecord.statusID = Status.Active.ordinal();
+        Date date = new Date();
+        newRecord.created = new Timestamp(date.getTime());
         //The following is adapted from https://www.baeldung.com/java-password-hashing
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[saltSize];
@@ -53,12 +57,13 @@ public class GameUserRepository {
 
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID )\n" +
+                    " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID, Created )\n" +
                             "    VALUES ('" + newRecord.name + "', '"
                             + newRecord.username + "', '"
                             + encodeBytesAsHex(newRecord.passwordHash) + "', '"
                             + encodeBytesAsHex(newRecord.passwordSalt) + "', "
-                            + newRecord.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
+                            + newRecord.statusID + ", '"
+                            + newRecord.created + "'); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
                 throw new SQLException("Creating User " + newRecord.username + " failed.");
@@ -177,6 +182,8 @@ public class GameUserRepository {
             rec.passwordHash = decocdeBytesAsHex(userResult.getString("u.PasswordHash"));
             rec.passwordSalt = decocdeBytesAsHex(userResult.getString("u.PasswordSalt"));
             rec.statusID = userResult.getInt("u.StatusID");
+            rec.created = userResult.getTimestamp("u.Created");
+            rec.deleted = userResult.getTimestamp("u.Deleted");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);
         }

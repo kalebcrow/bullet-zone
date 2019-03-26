@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 class GameItemRepository {
@@ -83,15 +85,18 @@ class GameItemRepository {
         rec.itemType = itemType;
         rec.usageMonitor = 0;
         rec.statusID = Status.Active.ordinal();
+        Date date = new Date();
+        rec.created = new Timestamp(date.getTime());
         String name = "[Unnamed]";
         GameItem newItem;
         try {
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID )\n" +
+                    " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID, Created )\n" +
                             "    VALUES (" + rec.itemType.getID() + ", "
                                            + rec.usageMonitor + ", "
-                                           + rec.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
+                                           + rec.statusID + ", '"
+                                           + rec.created + "'); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
                 throw new SQLException("Creating Item of type " + itemType.getName() + " failed.");
@@ -187,6 +192,8 @@ class GameItemRepository {
             rec.itemType = itemTypeRepo.typeMap.get(itemResult.getInt("i.ItemTypeID"));
             rec.usageMonitor = itemResult.getDouble("i.UsageMonitor");
             rec.statusID = itemResult.getInt("i.StatusID");
+            rec.created = itemResult.getTimestamp("i.Created");
+            rec.deleted = itemResult.getTimestamp("i.Deleted");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data fom item result set", e);
         }
