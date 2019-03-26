@@ -142,7 +142,7 @@ public class BulletZoneData {
 
         BulletZoneData d = new BulletZoneData(url, username, password);
         d.rebuildData();
-        //d.listTables();
+        d.listTables();
         GameItem bay = d.items.create("Garage bay");
         GameUser user = d.users.createUser("Test User", "testuser", "testPass");
         GameUser user2 = d.users.validateLogin("testuser", "testPass");

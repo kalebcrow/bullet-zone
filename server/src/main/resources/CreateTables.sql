@@ -20,8 +20,8 @@ BEGIN NOT ATOMIC
       UserID INT NOT NULL AUTO_INCREMENT,
       Name VARCHAR(40) NOT NULL,
       Username VARCHAR(40) NOT NULL,
-      PasswordHash VARCHAR(256) NOT NULL,
-      PasswordSalt VARCHAR(16) NOT NULL,
+      PasswordHash VARCHAR(32) NOT NULL,
+      PasswordSalt VARCHAR(32) NOT NULL,
       StatusID INT NOT NULL,
       PRIMARY KEY (UserID),
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)

@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.crypto.SecretKeyFactory;
@@ -48,13 +50,14 @@ public class GameUserRepository {
         }
 
         try {
+
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
                     " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID )\n" +
                             "    VALUES ('" + newRecord.name + "', '"
                             + newRecord.username + "', '"
-                            + newRecord.passwordHash + "', '"
-                            + newRecord.passwordSalt + "', "
+                            + encodeBytesAsHex(newRecord.passwordHash) + "', '"
+                            + encodeBytesAsHex(newRecord.passwordSalt) + "', "
                             + newRecord.statusID + "); ", Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
@@ -109,7 +112,7 @@ public class GameUserRepository {
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            if (hash == userRecord.passwordHash)
+            if (Arrays.equals(hash, userRecord.passwordHash))
                 return getUser(userRecord.userID); //matches!
             //else fall through
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -171,8 +174,8 @@ public class GameUserRepository {
             rec.userID = userResult.getInt("u.UserID");
             rec.name = userResult.getString("u.Name");
             rec.username = userResult.getString("u.Username");
-            rec.passwordHash = userResult.getBytes("u.PasswordHash");
-            rec.passwordSalt = userResult.getBytes("u.PasswordSalt");
+            rec.passwordHash = decocdeBytesAsHex(userResult.getString("u.PasswordHash"));
+            rec.passwordSalt = decocdeBytesAsHex(userResult.getString("u.PasswordSalt"));
             rec.statusID = userResult.getInt("u.StatusID");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);
@@ -180,4 +183,31 @@ public class GameUserRepository {
         return rec;
     }
 
+    /**
+     * Converts a byte array to a string of uppercase hexadecimal numbers with no spaces
+     * @param bytes The byte array to be encoded
+     * @return  A string of upper-case hexadecimal characters without spaces between them
+     */
+    private String encodeBytesAsHex(byte[] bytes) {
+        StringBuffer result = new StringBuffer();
+        for (byte b : bytes) {
+            result.append(String.format("%02X", b));
+        }
+        return result.toString();
+    }
+
+    /**
+     * Converts a hexadecimal string without spaces to a sequence of bytes
+     * @param hex   A string of hexadecimal characters without spaces between them
+     * @return  The corresponding byte array
+     */
+    private byte[] decocdeBytesAsHex(String hex) {
+        int length = hex.length();
+        byte[] result = new byte[length / 2];
+        for (int i = 0; i < length; i += 2) {
+            result[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) +
+                                    (Character.digit(hex.charAt(i+1), 16)));
+        }
+        return result;
+    }
 }
