@@ -143,7 +143,12 @@ public class BulletZoneData {
         BulletZoneData d = new BulletZoneData(url, username, password);
         d.rebuildData();
         d.listTables();
-        GameItem bay = d.items.create("Garage bay");
+        GameItemContainer bay = d.items.createContainer("Garage bay");
+        GameItemContainer tank1 = d.items.createContainer("Standard tank frame");
+        GameItemContainer tank2 = d.items.createContainer("Standard tank frame");
+        d.items.addItemToContainer(tank1, bay);
+        d.items.addItemToContainer(tank2, bay);
+        d.items.removeAllFromContainer(bay);
         GameUser user = d.users.createUser("Test User", "testuser", "testPass");
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2)

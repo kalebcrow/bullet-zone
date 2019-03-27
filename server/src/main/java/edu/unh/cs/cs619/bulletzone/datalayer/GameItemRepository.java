@@ -71,6 +71,143 @@ class GameItemRepository {
      */
     public GameItem create(String typeName) { return create(typeRepo.get(typeName)); }
 
+    /**
+     * Create an container of the passed type and insert it into the database
+     *
+     * @param typeName  The name of the type for the item to be created (can be a container)
+     * @return          An appropriate GameItemContainer representing what was added to the database,
+     *                  or null if the type is not a container type.
+     */
+    public GameItemContainer createContainer(String typeName) {
+        ItemType type = typeRepo.get(typeName);
+        if (type.isContainer())
+            return (GameItemContainer)create(typeRepo.get(typeName));
+        else
+            return null;
+    }
+
+    /**
+     * Add the passed item to the passed container in both the database and in-memory
+     * representations. Note that it is up to the caller to ensure that capacity limits are
+     * not being exceeded--no checks are done here.
+     * @param item    GameItem to be added
+     * @param container   GameItemContainer we're adding into
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean addItemToContainer(GameItem item, GameItemContainer container) {
+        return addItemToContainer(item.itemID, container.itemID);
+    }
+
+    /**
+     * Add the referenced item to the referenced container in both the database and in-memory
+     * representations. Note that it is up to the caller to ensure that capacity limits are
+     * not being exceeded--no checks are done here.
+     * @param itemID    ID of the item to be added
+     * @param containerID   ID of the container we're adding into
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean addItemToContainer(int itemID, int containerID) {
+        GameItem item = itemMap.get(itemID);
+        GameItemContainer container = containerMap.get(containerID);
+        if (item == null || container == null)
+            return false;
+
+        ItemContainmentRecord rec = new ItemContainmentRecord();
+        rec.itemID = itemID;
+        rec.container_itemID = containerID;
+        try {
+            // Create base item
+            PreparedStatement insertStatement = dataConnection.prepareStatement(
+                    " INSERT INTO ItemContainer_Item ( Container_ItemID, ItemID, StartSlot, EndSlot, Modifier )\n" +
+                            "    VALUES (" + rec.container_itemID + ", "
+                            + rec.itemID + ", "
+                            + rec.startSlot + ", "
+                            + rec.endSlot + ", "
+                            + rec.modifier + "); ");
+            if (insertStatement.executeUpdate() == 0)
+                return false;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while adding item to container.", e);
+        }
+
+        container.addItem(item);
+        return true;
+    }
+
+    /**
+     * Removes the passed item from the passed container in both the database and in-memory
+     * representations.
+     * @param item    GameItem to be removed
+     * @param container   GameItemContainer we're removing from
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean removeItemFromContainer(GameItem item, GameItemContainer container) {
+        return removeItemFromContainer(item.itemID, container.itemID);
+    }
+
+    /**
+     * Removes the referenced item from the referenced container in both the database and in-memory
+     * representations.
+     * @param itemID    ID of the item to be removed
+     * @param containerID   ID of the container we're removing from
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean removeItemFromContainer(int itemID, int containerID) {
+        GameItem item = itemMap.get(itemID);
+        GameItemContainer container = containerMap.get(containerID);
+        if (item == null || container == null)
+            return false;
+
+        try {
+            PreparedStatement deleteStatement = dataConnection.prepareStatement(
+                    " DELETE FROM ItemContainer_Item WHERE " +
+                            " Container_ItemID=" + containerID + " AND " +
+                            " ItemID=" + itemID + "; ");
+            if (deleteStatement.executeUpdate() == 0)
+                return false; //nothing deleted
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while removing item from container.", e);
+        }
+
+        container.removeItem(item);
+        return true;
+    }
+
+    /**
+     * Removes all items from the passed container in both the database and in-memory
+     * representations.
+     * @param container   GameItemContainer we're removing from
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean removeAllFromContainer(GameItemContainer container) {
+        return removeAllFromContainer(container.itemID);
+    }
+
+    /**
+     * Removes all items from the referenced container in both the database and in-memory
+     * representations.
+     * @param containerID   ID of the container we're removing from
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean removeAllFromContainer(int containerID) {
+        GameItemContainer container = containerMap.get(containerID);
+        if (container == null)
+            return false;
+
+        try {
+            PreparedStatement deleteStatement = dataConnection.prepareStatement(
+                    " DELETE FROM ItemContainer_Item WHERE " +
+                            " Container_ItemID=" + containerID + "; ");
+            if (deleteStatement.executeUpdate() == 0)
+                return false; //nothing deleted
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while removing all items from container.", e);
+        }
+
+        container.removeAll();
+        return true;
+    }
+
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
