@@ -87,6 +87,63 @@ class GameItemRepository {
     }
 
     /**
+     * Create a new GameItem of type itemType and insert it into the database and the appropriate
+     * hashmap. This method can create both GameItemContainers and GameItems.
+     * @param itemType  Individual type to be created
+     * @return  GameItem representation of the item that was inserted into the database.
+     * @throws IllegalStateException for any database errors encountered.
+     */
+    public GameItem create(ItemType itemType) {
+        GameItemRecord rec = new GameItemRecord();
+        rec.itemType = itemType;
+        rec.usageMonitor = 0;
+        rec.statusID = Status.Active.ordinal();
+        Date date = new Date();
+        rec.created = new Timestamp(date.getTime());
+        String name = "[Unnamed]";
+        GameItem newItem;
+        try {
+            // Create base item
+            PreparedStatement insertStatement = dataConnection.prepareStatement(
+                    " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID, Created )\n" +
+                            "    VALUES (" + rec.itemType.getID() + ", "
+                            + rec.usageMonitor + ", "
+                            + rec.statusID + ", '"
+                            + rec.created + "'); ", Statement.RETURN_GENERATED_KEYS);
+            int affectedRows = insertStatement.executeUpdate();
+            if (affectedRows == 0)
+                throw new SQLException("Creating Item of type " + itemType.getName() + " failed.");
+
+            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                rec.itemID = generatedKeys.getInt(1);
+            }
+            else {
+                throw new SQLException("Created Item of type " + itemType.getName() + " but failed to obtain ID.");
+            }
+
+            // Create ItemContainer record if it's a container, then create actual GameItem/Container
+            if (itemType.isContainer()) {
+                PreparedStatement containerStatement = dataConnection.prepareStatement(
+                        "INSERT INTO ItemContainer ( ItemID, Name ) VALUES ( " + rec.itemID + ", '" + name + "');");
+                affectedRows = containerStatement.executeUpdate();
+                if (affectedRows == 0)
+                    throw new SQLException("Creating ItemContainer record for type " + itemType.getName() + " failed.");
+
+                newItem = new GameItemContainer(rec, name);
+                containerMap.put(rec.itemID, (GameItemContainer)newItem);
+            }
+            else
+                newItem = new GameItem(rec);
+            itemMap.put(rec.itemID, newItem);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while creating item!", e);
+        }
+        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.itemID);
+        return newItem;
+    }
+
+    /**
      * Add the passed item to the passed container in both the database and in-memory
      * representations. Note that it is up to the caller to ensure that capacity limits are
      * not being exceeded--no checks are done here.
@@ -208,64 +265,38 @@ class GameItemRepository {
         return true;
     }
 
-    //----------------------------------END OF PUBLIC METHODS--------------------------------------
-
     /**
-     * Create a new GameItem of type itemType and insert it into the database and the appropriate
-     * hashmap. This method can create both GameItemContainers and GameItems.
-     * @param itemType  Individual type to be created
-     * @return  GameItem representation of the item that was inserted into the database.
-     * @throws IllegalStateException for any database errors encountered.
+     * Deletes the referenced item from the referenced container in in-memory representation,
+     * and marks it as deleted in the database.
+     * @param itemID    ID of the item to be marked as deleted
+     * @return  true if the operation was successful, and false otherwise.
      */
-    GameItem create(ItemType itemType) {
-        GameItemRecord rec = new GameItemRecord();
-        rec.itemType = itemType;
-        rec.usageMonitor = 0;
-        rec.statusID = Status.Active.ordinal();
-        Date date = new Date();
-        rec.created = new Timestamp(date.getTime());
-        String name = "[Unnamed]";
-        GameItem newItem;
+    public boolean delete(int itemID) {
+        /*
+        boolean isContainer = containerMap.containsKey(itemID);
+        if (!isContainer && !itemMap.containsKey(itemID))
+            return false;
+
         try {
-            // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID, Created )\n" +
-                            "    VALUES (" + rec.itemType.getID() + ", "
-                                           + rec.usageMonitor + ", "
-                                           + rec.statusID + ", '"
-                                           + rec.created + "'); ", Statement.RETURN_GENERATED_KEYS);
-            int affectedRows = insertStatement.executeUpdate();
-            if (affectedRows == 0)
-                throw new SQLException("Creating Item of type " + itemType.getName() + " failed.");
-
-            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                rec.itemID = generatedKeys.getInt(1);
-            }
-            else {
-                throw new SQLException("Created Item of type " + itemType.getName() + " but failed to obtain ID.");
-            }
-
-            // Create ItemContainer record if it's a container, then create actual GameItem/Container
-            if (itemType.isContainer()) {
-                PreparedStatement containerStatement = dataConnection.prepareStatement(
-                        "INSERT INTO ItemContainer ( ItemID, Name ) VALUES ( " + rec.itemID + ", '" + name + "');");
-                affectedRows = containerStatement.executeUpdate();
-                if (affectedRows == 0)
-                    throw new SQLException("Creating ItemContainer record for type " + itemType.getName() + " failed.");
-
-                newItem = new GameItemContainer(rec, name);
-                containerMap.put(rec.itemID, (GameItemContainer)newItem);
-            }
-            else
-                newItem = new GameItem(rec);
-            itemMap.put(rec.itemID, newItem);
+            PreparedStatement deleteStatement = dataConnection.prepareStatement(
+                    " UDPATE ItemContainer_Item WHERE " +
+                            " Container_ItemID=" + containerID + " AND " +
+                            " ItemID=" + itemID + "; ");
+            if (deleteStatement.executeUpdate() == 0)
+                return false; //nothing deleted
         } catch (SQLException e) {
-            throw new IllegalStateException("Error while creating item!", e);
+            throw new IllegalStateException("Error while removing item from container.", e);
         }
-        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.itemID);
-        return newItem;
+
+        if (isContainer)
+            containerMap.remove(itemID);
+        else
+            itemMap.remove(itemID);
+            */
+        return true;
     }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once

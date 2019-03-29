@@ -16,7 +16,11 @@ jar {
     version = '2.0'
     manifest {
         attributes 'Implementation-Title': 'Bullet Zone Server',
-                'Implementation-Version': version
+                'Implementation-Version': version,
+                'Main-Class': 'edu.unh.cs.cs619.bulletzone.BulletZoneServer'
+    }
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
@@ -24,6 +28,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+}
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -31,6 +39,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.guava:guava:22.0'
     implementation('org.springframework.boot:spring-boot-starter-web')
+    extraLibs group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
     testImplementation 'org.mockito:mockito-all:1.9.5'
     testImplementation 'junit:junit:4.+'
