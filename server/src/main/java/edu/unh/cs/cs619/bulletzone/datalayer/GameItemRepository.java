@@ -266,33 +266,42 @@ class GameItemRepository {
     }
 
     /**
-     * Deletes the referenced item from the referenced container in in-memory representation,
-     * and marks it as deleted in the database.
+     * Deletes the referenced item from the in-memory representation,
+     * marks it as deleted in the database, and removes it from any containers in the database.
+     * NOTE: this method does not remove the item from its container in the in-memory representation.
      * @param itemID    ID of the item to be marked as deleted
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean delete(int itemID) {
-        /*
         boolean isContainer = containerMap.containsKey(itemID);
         if (!isContainer && !itemMap.containsKey(itemID))
             return false;
 
+        Date date = new Date();
+
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
-                    " UDPATE ItemContainer_Item WHERE " +
-                            " Container_ItemID=" + containerID + " AND " +
+                    " DELETE FROM ItemContainer_Item WHERE " +
                             " ItemID=" + itemID + "; ");
-            if (deleteStatement.executeUpdate() == 0)
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while deleting item from container.", e);
+        }
+        try {
+            PreparedStatement updateStatement = dataConnection.prepareStatement(
+                    " UPDATE Item SET StatusID=" + Status.Deleted.ordinal() +
+                                        ", Deleted='" + new Timestamp(date.getTime()) +
+                                        "' WHERE ItemID=" + itemID + "; ");
+            if (updateStatement.executeUpdate() == 0)
                 return false; //nothing deleted
         } catch (SQLException e) {
-            throw new IllegalStateException("Error while removing item from container.", e);
+            throw new IllegalStateException("Error while deleting item.", e);
         }
 
         if (isContainer)
             containerMap.remove(itemID);
         else
             itemMap.remove(itemID);
-            */
+
         return true;
     }
 
