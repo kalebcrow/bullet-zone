@@ -9,11 +9,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added methods to add/remove items to/from containers.">
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -132,25 +130,25 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="16" />
-          <entry key="gradle" value="189" />
+          <entry key="gradle" value="234" />
           <entry key="java" value="23066" />
           <entry key="sql" value="5196" />
-          <entry key="txt" value="889" />
+          <entry key="txt" value="1090" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="DBN-SQL" value="5196" />
-          <entry key="Groovy" value="189" />
+          <entry key="Groovy" value="234" />
           <entry key="JAVA" value="23066" />
-          <entry key="PLAIN_TEXT" value="905" />
+          <entry key="PLAIN_TEXT" value="1106" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="factories" value="1" />
           <entry key="gitignore" value="1" />
-          <entry key="gradle" value="2" />
+          <entry key="gradle" value="3" />
           <entry key="java" value="62" />
           <entry key="psql" value="36" />
           <entry key="sql" value="12" />
@@ -160,7 +158,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="DBN-SQL" value="47" />
-          <entry key="Groovy" value="2" />
+          <entry key="Groovy" value="3" />
           <entry key="JAVA" value="62" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="SQL" value="1" />
@@ -222,12 +220,19 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
               <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-408" />
           </provider>
         </entry>
       </file>
@@ -2952,7 +2957,6 @@
       <list>
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/client/build/generated/source/apt/debug/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient_.java" />
-        <option value="$PROJECT_DIR$/client/build.gradle" />
         <option value="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/GamesController.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/CreateTables.sql" />
@@ -2985,6 +2989,7 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
         <option value="$PROJECT_DIR$/server/build.gradle" />
         <option value="$PROJECT_DIR$/server/src/main/resources/META-INF/spring.factories" />
+        <option value="$PROJECT_DIR$/client/build.gradle" />
       </list>
     </option>
   </component>
@@ -3054,6 +3059,11 @@
             <path>
               <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
               <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="client" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
@@ -3705,7 +3715,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]">
+  <component name="RunManager" selected="Android App.client">
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="HTML_FILE_NAME" />
@@ -3723,6 +3733,15 @@
     </configuration>
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="All in server" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -3783,6 +3802,20 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BulletZoneServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.unh.cs.cs619.bulletzone.BulletZoneServer" />
+      <module name="server" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
@@ -3801,42 +3834,6 @@
         <option name="taskNames">
           <list>
             <option value="bootRepackage" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method v="2" />
-    </configuration>
-    <configuration name="D:/mdp/Documents/CS_619_materials/BulletZone/server [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildDependents" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method v="2" />
-    </configuration>
-    <configuration name="D:/mdp/Documents/CS_619_materials/BulletZone/server [buildNeeded]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildNeeded" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -3936,19 +3933,19 @@
     </configuration>
     <list>
       <item itemvalue="Android App.client" />
-      <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [buildDependents]" />
-      <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [buildNeeded]" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [classes]" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
+      <item itemvalue="Android JUnit.All in server" />
+      <item itemvalue="Application.BulletZoneServer" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BulletZoneServer" />
+        <item itemvalue="Android JUnit.All in server" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [classes]" />
-        <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [buildNeeded]" />
-        <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [buildDependents]" />
       </list>
     </recent_temporary>
   </component>
@@ -4054,8 +4051,20 @@
       <option name="project" value="LOCAL" />
       <updated>1553713227828</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it.">
+      <created>1553871545593</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1553871545593</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="All_in_server - 2019.03.29 at 11h 00m 37s.xml">
+      <configuration name="All in server" configurationId="AndroidJUnit" />
+    </history-entry>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -4068,9 +4077,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="61" y="85" width="1524" height="929" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="DB Browser" order="0" weight="0.22472678" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24180327" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24180327" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="3" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -4081,7 +4091,7 @@
       <window_info anchor="bottom" id="DB Execution Console" order="0" weight="0.3324709" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.329927" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.24481866" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.45049953" weight="0.24481866" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39974126" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -4093,7 +4103,7 @@
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.3260026" />
       <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.4008529" weight="0.31217617" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.8641148" weight="0.3260026" />
-      <window_info anchor="bottom" id="Build" order="15" weight="0.25518134" />
+      <window_info anchor="bottom" id="Build" order="15" visible="true" weight="0.25518134" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24966262" />
@@ -4122,7 +4132,8 @@
     <MESSAGE value="User validation now works." />
     <MESSAGE value="Added Created/Deleted components to Users, Items, BankAccounts, permission correlations, and added new AccountTransferHistory table." />
     <MESSAGE value="Added methods to add/remove items to/from containers." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added methods to add/remove items to/from containers." />
+    <MESSAGE value="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/settings.gradle">
@@ -4558,13 +4569,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
@@ -4613,6 +4617,11 @@
         <state relative-caret-position="323">
           <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-408" />
       </provider>
     </entry>
   </component>

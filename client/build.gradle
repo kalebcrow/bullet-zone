@@ -58,7 +58,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
-                        'androidManifestFile': 'client\\build\\intermediates\\merged_manifests\\debug\\processDebugManifest\\merged\\AndroidManifest.xml'
+                        'androidManifestFile': 'client/build/intermediates/merged_manifests/debug/AndroidManifest.xml'
                 ]
             }
         }
