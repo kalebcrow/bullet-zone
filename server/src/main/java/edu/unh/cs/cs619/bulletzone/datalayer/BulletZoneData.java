@@ -141,14 +141,17 @@ public class BulletZoneData {
         String password = "Drag56kes";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
-        d.rebuildData();
-        d.listTables();
+        //d.rebuildData();
+        //d.listTables();
         GameItemContainer bay = d.items.createContainer("Garage bay");
         GameItemContainer tank1 = d.items.createContainer("Standard tank frame");
         GameItemContainer tank2 = d.items.createContainer("Standard tank frame");
         d.items.addItemToContainer(tank1, bay);
         d.items.addItemToContainer(tank2, bay);
         d.items.removeAllFromContainer(bay);
+        d.items.delete(tank1.itemID);
+        if (d.items.getItemOrContainer(tank1.itemID) == null)
+            System.out.println("Successfully deleted tank1");
         GameUser user = d.users.createUser("Test User", "testuser", "testPass");
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2)

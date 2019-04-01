@@ -20,6 +20,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class GameUserRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
+    HashMap<String, GameUser> usernameToUserMap = new HashMap<>();
     Connection dataConnection;
     GameItemRepository itemRepo;
 
@@ -29,8 +30,20 @@ public class GameUserRepository {
 
     GameUser getUser(int userID) { return userMap.get(userID); }
 
-    //need create user, with login and password arguments...
+    GameUser getUser(String username) { return usernameToUserMap.get(username); }
+
+    /**
+     * Returns a new user, or null if an active user with the passed username already exists.
+     * @param name  New user's screen name
+     * @param username  User's username for the purpose of logging-in/authorizing
+     * @param password  User's password for the purpose of logging-in/authorizing
+     * @return  New GameUser object corresponding to the newly created user, or null if already
+     *          exists. Any database errors result in exceptions.
+     */
     public GameUser createUser(String name, String username, String password) {
+        if (getUser(username) != null)
+            return null;
+
         GameUserRecord newRecord = new GameUserRecord();
         GameUser newUser = null;
         newRecord.name = name;
@@ -78,6 +91,7 @@ public class GameUserRepository {
 
             newUser = new GameUser(newRecord);
             userMap.put(newRecord.userID, newUser);
+            usernameToUserMap.put(newRecord.username, newUser);
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating item!", e);
         }
@@ -145,7 +159,9 @@ public class GameUserRepository {
                     "SELECT * FROM User u WHERE StatusID != " + Status.Deleted.ordinal());
             while (userResult.next()) {
                 GameUserRecord rec = makeUserRecordFromResultSet(userResult);
-                userMap.put(rec.userID, new GameUser(rec));
+                GameUser user = new GameUser(rec);
+                userMap.put(rec.userID, user);
+                usernameToUserMap.put(rec.username, user);
             }
 
             // Read mapping of users to items that they own
