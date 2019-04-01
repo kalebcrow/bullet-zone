@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
-class GameItemRepository {
+public class GameItemRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     ItemTypeRepository typeRepo;

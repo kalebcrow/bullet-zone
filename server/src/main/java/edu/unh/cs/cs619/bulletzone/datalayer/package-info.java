@@ -1,6 +1,6 @@
 /**
  * Classes that provide object-oriented access to the BulletZone server-side database.
- * <p/>
+ *
  * The main point of access is BulletZoneData, which provides access to the main types of
  * objects you are likely to want to access: GameItems, GameItemContainers, Users,
  * and BankAccounts
