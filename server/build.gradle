@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.guava:guava:22.0'
     implementation('org.springframework.boot:spring-boot-starter-web')
     extraLibs group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    extraLibs group: 'com.google.guava', name: 'guava', version: '22.0'
 
     testImplementation 'org.mockito:mockito-all:1.9.5'
     testImplementation 'junit:junit:4.+'

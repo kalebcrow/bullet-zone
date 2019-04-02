@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
+import com.google.common.base.Preconditions;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;

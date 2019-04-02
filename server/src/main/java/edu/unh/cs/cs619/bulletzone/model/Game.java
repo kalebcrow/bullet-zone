@@ -1,7 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public final class Game {
 
                     entities.add(Optional.<FieldEntity>of(entity));
                 } else {
-                    entities.add(Optional.<FieldEntity>absent());
+                    entities.add(Optional.<FieldEntity>empty());
                 }
             }
             return entities;
