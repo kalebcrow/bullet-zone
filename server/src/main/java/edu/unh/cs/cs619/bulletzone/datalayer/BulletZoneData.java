@@ -29,6 +29,7 @@ public class BulletZoneData {
     public ItemTypeRepository types = new ItemTypeRepository();
     public GameItemRepository items = new GameItemRepository();
     public GameUserRepository users = new GameUserRepository();
+    public PermissionManager permissions = new PermissionManager();
 
     /**
      * Opens the database at the specified URL and initializes internal structures
@@ -58,6 +59,7 @@ public class BulletZoneData {
         types.readStaticInfo(dataConnection);
         items.refresh(dataConnection, types);
         users.refresh(dataConnection, items);
+        permissions.refresh(dataConnection, items, users);
     }
 
     /**
@@ -156,6 +158,8 @@ public class BulletZoneData {
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2)
             System.out.println("User creation/validation successful");
+        d.permissions.setOwner(tank2, user2);
+        d.permissions.deleteOwner(tank2);
         d.close();
     }
 }

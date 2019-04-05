@@ -22,7 +22,6 @@ public class GameUserRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
     HashMap<String, GameUser> usernameToUserMap = new HashMap<>();
     Connection dataConnection;
-    GameItemRepository itemRepo;
 
     final int iterations = 65536;
     final int keySize = 128;
@@ -150,7 +149,6 @@ public class GameUserRepository {
      * @param sqlDataConnection connection on which to make all future SQL queries
      */
     void refresh(Connection sqlDataConnection, GameItemRepository gameItemRepo) {
-        itemRepo = gameItemRepo;
         dataConnection = sqlDataConnection;
         try {
             Statement statement = dataConnection.createStatement();
@@ -163,21 +161,6 @@ public class GameUserRepository {
                 userMap.put(rec.userID, user);
                 usernameToUserMap.put(rec.username, user);
             }
-
-            // Read mapping of users to items that they own
-            ResultSet mappingResult = statement.executeQuery(
-                    "SELECT * FROM ItemContainer_User_Permissions WHERE PermissionID = "
-                            + Permission.Owner.ordinal());
-            while (mappingResult.next()) {
-                int itemID = mappingResult.getInt("ItemID");
-                int userID = mappingResult.getInt("UserID");
-
-                // not worrying about StartSlot, EndSlot, or Modifier right now...
-                GameItemContainer container = itemRepo.getContainer(itemID);
-                GameUser user = getUser(userID);
-                user.addItem(container);
-            }
-
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot read static info!", e);
         }

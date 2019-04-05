@@ -11,6 +11,11 @@ BEGIN NOT ATOMIC
         ( 2, 'Disabled'),
         ( 3, 'Deleted');
 
+    INSERT INTO Permission
+        ( PermissionID, Name)
+    VALUES
+        ( 1, 'Owner');
+
     INSERT INTO ItemPropertyType
         ( ItemPropertyTypeID, Name)
     VALUES

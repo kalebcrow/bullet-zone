@@ -8,6 +8,17 @@ public class GameItem {
     protected ItemType itemType;
     protected double usageMonitor;
     protected int statusID;
+    protected GameUser owner;
+
+    public ItemType getType() { return itemType; }
+
+    public String getTypeName(){
+        return itemType.getName();
+    }
+
+    public GameUser getOwner() { return owner; }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     GameItem(GameItemRecord rec) {
         itemID = rec.itemID;
@@ -16,8 +27,5 @@ public class GameItem {
         statusID = rec.statusID;
     }
 
-    public ItemType getType() { return itemType; }
-    public String getTypeName(){
-        return itemType.getName();
-    }
+    void setOwner(GameUser user) { owner = user; }
 }

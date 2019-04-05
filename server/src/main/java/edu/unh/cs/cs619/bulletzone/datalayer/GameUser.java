@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.util.Collection;
 import java.util.Set;
 
 public class GameUser {
@@ -11,6 +12,16 @@ public class GameUser {
     protected Set<GameItemContainer> ownedItems;
     //protected Set<BankAccount> ownedAccounts;
 
+    int getUserID() { return userID; }
+
+    String getName() { return name; }
+
+    String getUsername() { return username; }
+
+    Collection<GameItemContainer> getOwnedItems() { return ownedItems; }
+
+    //----------------------------------END OF PUBLIC METHODS--------------------------------------
+
     GameUser(GameUserRecord rec) {
         userID = rec.userID;
         name = rec.name;
@@ -18,6 +29,8 @@ public class GameUser {
     }
 
     void addItem(GameItemContainer item) { ownedItems.add(item); }
+
+    void removeItem(GameItemContainer item) { ownedItems.remove(item); }
 
     //void addAccount(BankAccount account) { ownedAccounts.add(account); }
 }
