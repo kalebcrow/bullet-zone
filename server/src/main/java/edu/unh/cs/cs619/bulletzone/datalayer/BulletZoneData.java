@@ -21,7 +21,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class BulletZoneData {
@@ -156,10 +155,10 @@ public class BulletZoneData {
             System.out.println("Successfully deleted tank1");
         GameUser user = d.users.createUser("Test User", "testuser", "testPass");
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
-        if (user == user2)
+        if (user == user2 && user2 != null)
             System.out.println("User creation/validation successful");
         d.permissions.setOwner(tank2, user2);
-        d.permissions.deleteOwner(tank2);
+        //d.permissions.removeOwner(tank2);
         d.close();
     }
 }

@@ -17,8 +17,8 @@ public class PermissionManager {
         setOwner(item.itemID, user.userID);
     }
 
-    public void deleteOwner(GameItemContainer item) {
-        deleteOwner(item.itemID, item.getOwner().userID);
+    public void removeOwner(GameItemContainer item) {
+        removeOwner(item.itemID, item.getOwner().userID);
     }
 
     /**
@@ -28,7 +28,7 @@ public class PermissionManager {
      * @param oldUserID ID of the user who no longer owns the item
      * @return  true if the operation was successful, and false otherwise.
      */
-    public boolean deleteOwner(int itemID, int oldUserID) {
+    public boolean removeOwner(int itemID, int oldUserID) {
         GameItemContainer item = itemRepo.getContainer(itemID);
         GameUser user = userRepo.getUser(oldUserID);
         if (item == null || user == null)
@@ -66,7 +66,7 @@ public class PermissionManager {
             return false;
         GameUser oldOwner = item.getOwner();
         if (oldOwner != null)
-            deleteOwner(itemID, oldOwner.userID);
+            removeOwner(itemID, oldOwner.userID);
 
         ItemPermissionRecord rec = new ItemPermissionRecord();
         rec.itemID = itemID;

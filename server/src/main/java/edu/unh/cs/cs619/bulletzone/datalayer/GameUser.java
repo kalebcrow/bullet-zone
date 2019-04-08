@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public class GameUser {
@@ -9,7 +10,7 @@ public class GameUser {
     protected String username;
     //password info not stored in game
     protected int statusID;
-    protected Set<GameItemContainer> ownedItems;
+    protected HashSet<GameItemContainer> ownedItems = new HashSet<GameItemContainer>();
     //protected Set<BankAccount> ownedAccounts;
 
     int getUserID() { return userID; }
