@@ -52,7 +52,7 @@ public class GridAdapter extends BaseAdapter {
         int col = position % 16;
 
         int val = mEntities[row][col];
-
+// TODO tank widget adjustment here
         if (convertView instanceof TextView) {
             synchronized (monitor) {
                 if (val > 0) {
@@ -61,7 +61,25 @@ public class GridAdapter extends BaseAdapter {
                     } else if (val >= 2000000 && val <= 3000000) {
                         ((TextView) convertView).setText("B");
                     } else if (val >= 10000000 && val <= 20000000) {
-                        ((TextView) convertView).setText("T");
+                        // we have a tank
+                        // next two lines stolen from red's GridAdapter
+                        // int passedTankId = (val % 10000000) / 10000;
+                        int passedDirection = val % 10;
+                        if (passedDirection == 0) {
+                            ((TextView) convertView).setText("^");
+                        }
+                        else if (passedDirection == 2) {
+                            ((TextView) convertView).setText(">");
+                        }
+                        else if (passedDirection == 4) {
+                            ((TextView) convertView).setText("v");
+                        }
+                        else if (passedDirection == 6) {
+                            ((TextView) convertView).setText("<");
+                        }
+                        else {
+                            ((TextView) convertView).setText("?");
+                        }
                     }
                 } else {
                     ((TextView) convertView).setText("");

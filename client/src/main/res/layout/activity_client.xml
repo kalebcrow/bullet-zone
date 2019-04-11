@@ -25,6 +25,16 @@
         android:layout_weight="1">
 
         <Button
+            android:id="@+id/buttonTurnLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="-1dp"
+            android:layout_marginBottom="49dp"
+            android:layout_toLeftOf="@+id/buttonDown"
+            android:text="TURN LEFT" />
+
+        <Button
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +66,16 @@
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/buttonDown"
             android:text="@string/right" />
+
+        <Button
+            android:id="@+id/buttonTurnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="1dp"
+            android:layout_marginBottom="56dp"
+            android:layout_toRightOf="@+id/buttonDown"
+            android:text="TURN RIGHT" />
 
         <Button
             android:id="@+id/buttonFire"

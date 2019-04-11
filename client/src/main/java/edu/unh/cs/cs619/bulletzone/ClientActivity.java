@@ -140,6 +140,36 @@ public class ClientActivity extends Activity {
         this.moveAsync(tankId, direction);
     }
 
+    @Click({R.id.buttonTurnLeft, R.id.buttonTurnRight})
+    protected void onButtonTurn(View view) {
+        final int viewId = view.getId();
+        byte direction = 0;
+
+        System.out.println("old direction");
+        byte oldDirection = (byte) (tankId % 10);
+        System.out.println(oldDirection);
+
+        switch (viewId) {
+            case R.id.buttonTurnLeft:
+                if (oldDirection == 0) {
+                    direction = (byte) (6);
+                }
+                else {
+                    direction = (byte) ((oldDirection - 2) % 8);
+                }
+                break;
+            case R.id.buttonTurnRight:
+                direction = (byte) ((oldDirection + 2) % 8);
+                break;
+            default:
+                Log.e(TAG, "Unknown turn button id: " + viewId);
+                break;
+        }
+        System.out.println("new direction");
+        System.out.println(direction);
+        this.turnAsync(tankId, direction);
+    }
+
     @Background
     void moveAsync(long tankId, byte direction) {
         restClient.move(tankId, direction);
@@ -149,7 +179,7 @@ public class ClientActivity extends Activity {
     void turnAsync(long tankId, byte direction) {
         restClient.turn(tankId, direction);
     }
-
+// TODO want to call above, similar to how moveAsync is called above, to implement turns
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
