@@ -140,26 +140,27 @@ public class ClientActivity extends Activity {
         this.moveAsync(tankId, direction);
     }
 
-    @Click({R.id.buttonTurnLeft, R.id.buttonTurnRight})
+    @Click({R.id.buttonTurnLeft, R.id.buttonTurnRight, R.id.buttonTurnUp, R.id.buttonTurnDown})
     protected void onButtonTurn(View view) {
         final int viewId = view.getId();
         byte direction = 0;
 
         System.out.println("old direction");
-        byte oldDirection = (byte) (tankId % 10);
+        byte oldDirection = (byte) (tankId & 0x6);
         System.out.println(oldDirection);
 
         switch (viewId) {
             case R.id.buttonTurnLeft:
-                if (oldDirection == 0) {
-                    direction = (byte) (6);
-                }
-                else {
-                    direction = (byte) ((oldDirection - 2) % 8);
-                }
+                direction = (byte) (6);
                 break;
             case R.id.buttonTurnRight:
-                direction = (byte) ((oldDirection + 2) % 8);
+                direction = (byte) (2);
+                break;
+            case R.id.buttonTurnUp:
+                direction = (byte) (0);
+                break;
+            case R.id.buttonTurnDown:
+                direction = (byte) (4);
                 break;
             default:
                 Log.e(TAG, "Unknown turn button id: " + viewId);

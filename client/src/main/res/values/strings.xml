@@ -11,5 +11,9 @@
     <string name="join">JOIN</string>
     <string name="leave">LEAVE</string>
     <string name="title_activity_my">MyActivity</string>
+    <string name="turnDown">v</string>
+    <string name="turnRight"><![CDATA[>]]></string>
+    <string name="turnLeft"><![CDATA[<]]></string>
+    <string name="turnUp">^</string>
 
 </resources>

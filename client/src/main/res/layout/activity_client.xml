@@ -25,16 +25,6 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/buttonTurnLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="-1dp"
-            android:layout_marginBottom="49dp"
-            android:layout_toLeftOf="@+id/buttonDown"
-            android:text="TURN LEFT" />
-
-        <Button
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,16 +58,6 @@
             android:text="@string/right" />
 
         <Button
-            android:id="@+id/buttonTurnRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="1dp"
-            android:layout_marginBottom="56dp"
-            android:layout_toRightOf="@+id/buttonDown"
-            android:text="TURN RIGHT" />
-
-        <Button
             android:id="@+id/buttonFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,6 +65,45 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/buttonRight"
             android:text="@string/fire" />
+
+        <Button
+            android:id="@+id/buttonTurnUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonFire"
+            android:layout_alignLeft="@+id/buttonFire"
+            android:text="@string/turnUp" />
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sideTurnButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonTurnUp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/buttonTurnLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/turnLeft" />
+
+            <Button
+                android:id="@+id/buttonTurnRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/buttonTurnLeft"
+                android:text="@string/turnRight" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonTurnDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sideTurnButtons"
+            android:layout_alignLeft="@+id/buttonTurnUp"
+            android:text="@string/turnDown" />
 
         <Button
             android:id="@+id/buttonLeave"

@@ -23,9 +23,11 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  * Created by simon on 10/1/14.
  */
 
-//@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
-@Rest(rootUrl = "http://stman1.cs.unh.edu:61901/games",
-//@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:61901/games", // alpha group
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games", // foxtrot group
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:61903/games", // green group
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:61904/games", // red group
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
         // TODO: disable intercepting and logging
         // , interceptors = { HttpLoggerInterceptor.class }
