@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class PermissionManager {
     Connection dataConnection;
     GameItemRepository itemRepo;
     GameUserRepository userRepo;
+    HashMap<Integer, AccessibleItems> permissions = new HashMap<>();
 
     public void setOwner(GameItemContainer item, GameUser user) {
         setOwner(item.itemID, user.userID);
@@ -95,7 +98,47 @@ public class PermissionManager {
         return true;
     }
 
+    /**
+     * Determines whether or not the passed user has specified permission on the passed item.
+     * @param userID    ID of the user being checked
+     * @param itemID    ID of the item being checked
+     * @param p         Permission being verified
+     * @return
+     */
+    public boolean check(int userID, int itemID, Permission p){
+        if (p == Permission.Owner){
+            GameItemContainer item = itemRepo.getContainer(itemID);
+            if (item == null)
+                return false;
+            return (item.getOwner().userID == userID);
+        }
+        if (permissions.containsKey(userID)) {
+            return permissions.get(userID).hasPermission(itemID, p);
+        }
+        return false;
+    }
+
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
+
+    class AccessibleItems {
+        final int maxPermissions = 4;
+        public void addPermission(int itemID, Permission p) {
+            if (!itemPermissions.containsKey(itemID))
+                itemPermissions.put(itemID, new HashSet<>(maxPermissions));
+            itemPermissions.get(itemID).add(p);
+        }
+        public void removePermission(int itemID, Permission p) {
+            if (itemPermissions.containsKey(itemID))
+                itemPermissions.remove(p);
+        }
+        public boolean hasPermission(int itemID, Permission p) {
+            if (itemPermissions.containsKey(itemID))
+                return itemPermissions.get(itemID).contains(p);
+            else
+                return false;
+        }
+        private HashMap<Integer, HashSet<Permission>> itemPermissions;
+    }
 
     /**
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
@@ -114,17 +157,27 @@ public class PermissionManager {
 
             // Read mapping of users to items that they own
             ResultSet mappingResult = statement.executeQuery(
-                    "SELECT * FROM ItemContainer_User_Permissions WHERE PermissionID = "
-                            + Permission.Owner.ordinal());
+                    "SELECT * FROM ItemContainer_User_Permissions WHERE StatusID != "
+                            + Status.Deleted.ordinal());
+            Permission perms[] = Permission.values();
             while (mappingResult.next()) {
                 int itemID = mappingResult.getInt("ItemID");
                 int userID = mappingResult.getInt("UserID");
+                Permission permission = perms[mappingResult.getInt("PermissionID")];
 
-                // not worrying about StartSlot, EndSlot, or Modifier right now...
-                GameItemContainer container = itemRepo.getContainer(itemID);
-                GameUser user = userRepo.getUser(userID);
-                user.addItem(container);
-                container.setOwner(user);
+                if (permission == Permission.Owner) {
+                    // not worrying about StartSlot, EndSlot, or Modifier right now...
+                    GameItemContainer container = itemRepo.getContainer(itemID);
+                    GameUser user = userRepo.getUser(userID);
+                    user.addItem(container);
+                    container.setOwner(user);
+                }
+                else
+                {
+                    if (!permissions.containsKey(userID))
+                        permissions.put(userID, new AccessibleItems());
+                    permissions.get(userID).addPermission(itemID, permission);
+                }
             }
 
         } catch (SQLException e) {

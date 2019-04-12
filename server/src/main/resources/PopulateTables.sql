@@ -14,7 +14,11 @@ BEGIN NOT ATOMIC
     INSERT INTO Permission
         ( PermissionID, Name)
     VALUES
-        ( 1, 'Owner');
+        ( 1, 'Owner'),
+        ( 2, 'Add'),
+        ( 3, 'Remove'),
+        ( 4, 'Use'),
+        ( 5, 'Transfer');
 
     INSERT INTO ItemPropertyType
         ( ItemPropertyTypeID, Name)

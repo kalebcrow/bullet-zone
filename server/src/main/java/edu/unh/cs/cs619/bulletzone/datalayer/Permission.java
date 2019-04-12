@@ -5,5 +5,5 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 public enum Permission {
-    Invalid, Owner; //No actual permissions defined yet besides Owner...
+    Invalid, Owner, Add, Remove, Use, Transfer;
 }
