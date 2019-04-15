@@ -24,6 +24,18 @@ public class PermissionManager {
         removeOwner(item.itemID, item.getOwner().userID);
     }
 
+    public boolean check(GameItemContainer item, GameUser user, Permission p) {
+        return check(item.itemID, user.userID, p);
+    }
+
+    public boolean grant(GameItemContainer item, GameUser user, Permission p) {
+        return grant(item.itemID, user.userID, p);
+    }
+
+    public boolean revoke(GameItemContainer item, GameUser user, Permission p) {
+        return revoke(item.itemID, user.userID, p);
+    }
+
     /**
      * Deletes the all permission relationships between oldUser and item from the in-memory
      * representation and marks them as deleted in the database.
@@ -37,18 +49,8 @@ public class PermissionManager {
         if (item == null || user == null)
             return false;
 
-        Date date = new Date();
-
-        try {
-            PreparedStatement updateStatement = dataConnection.prepareStatement(
-                    " UPDATE ItemContainer_User_Permissions SET StatusID=" + Status.Deleted.ordinal() +
-                            ", Deleted='" + new Timestamp(date.getTime()) +
-                            "' WHERE ItemID=" + itemID + " AND UserID=" + oldUserID + "; ");
-            if (updateStatement.executeUpdate() == 0)
-                return false; //nothing deleted
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error while removing ownership.", e);
-        }
+        if (!deletePermission(itemID, oldUserID, Permission.Owner))
+            return false;
 
         item.setOwner(null);
         user.removeItem(item);
@@ -71,27 +73,8 @@ public class PermissionManager {
         if (oldOwner != null)
             removeOwner(itemID, oldOwner.userID);
 
-        ItemPermissionRecord rec = new ItemPermissionRecord();
-        rec.itemID = itemID;
-        rec.userID = userID;
-        rec.permissionID = Permission.Owner.ordinal();
-        rec.statusID = Status.Active.ordinal();
-        Date date = new Date();
-        rec.created = new Timestamp(date.getTime());
-
-        try {
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO ItemContainer_User_Permissions ( ItemID, UserID, PermissionID, StatusID, Created )\n" +
-                            "    VALUES (" + rec.itemID + ", "
-                            + rec.userID + ", "
-                            + rec.permissionID + ", "
-                            + rec.statusID + ", '"
-                            + rec.created + "'); ");
-            if (insertStatement.executeUpdate() == 0)
-                return false;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error while setting ownership.", e);
-        }
+        if (!insertPermission(itemID, userID, Permission.Owner))
+            return false;
 
         item.setOwner(user);
         user.addItem(item);
@@ -100,12 +83,12 @@ public class PermissionManager {
 
     /**
      * Determines whether or not the passed user has specified permission on the passed item.
-     * @param userID    ID of the user being checked
      * @param itemID    ID of the item being checked
+     * @param userID    ID of the user being checked
      * @param p         Permission being verified
-     * @return
+     * @return  true if the user has the permission, false otherwise.
      */
-    public boolean check(int userID, int itemID, Permission p){
+    public boolean check(int itemID, int userID, Permission p){
         if (p == Permission.Owner){
             GameItemContainer item = itemRepo.getContainer(itemID);
             if (item == null)
@@ -116,6 +99,50 @@ public class PermissionManager {
             return permissions.get(userID).hasPermission(itemID, p);
         }
         return false;
+    }
+
+    /**
+     * Grants the passed user the specified permission for the specified item
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is being given the permission
+     * @param p         Permission being added
+     * @return  true if the permission was granted, false otherwise (including if the
+     *          permission was already active)
+     */
+    public boolean grant(int itemID, int userID, Permission p) {
+        if (check(itemID, userID, p)) //if the permission is already active, do nothing
+            return false;
+        if (p == Permission.Owner){
+            return setOwner(itemID, userID);
+        }
+
+        if (!insertPermission(itemID, userID, p))
+            return false;
+
+        addPermission(itemID, userID, p);
+        return true;
+    }
+
+    /**
+     * Revokes from the passed user the specified permission for the specified item
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is losing the permission
+     * @param p         Permission being removed
+     * @return  true if the permission was granted, false otherwise (including if the
+     *          permission was already active)
+     */
+    public boolean revoke(int itemID, int userID, Permission p) {
+        if (!check(itemID, userID, p)) //if the permission is already inactive, do nothing
+            return false;
+        if (p == Permission.Owner){
+            return removeOwner(itemID, userID);
+        }
+
+        if (!deletePermission(itemID, userID, p))
+            return false;
+
+        removePermission(itemID, userID, p);
+        return true;
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
@@ -137,7 +164,84 @@ public class PermissionManager {
             else
                 return false;
         }
-        private HashMap<Integer, HashSet<Permission>> itemPermissions;
+        private HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
+    }
+
+    /**
+     * Update internal structure to account for a new permission
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is being given the permission
+     * @param p         Permission being added
+     */
+    void addPermission(int itemID, int userID, Permission p) {
+        if (!permissions.containsKey(userID))
+            permissions.put(userID, new AccessibleItems());
+        permissions.get(userID).addPermission(itemID, p);
+    }
+
+    /**
+     * Update internal structure to account for a revoked permission
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is having the permission revoked
+     * @param p         Permission being removed
+     */
+    void removePermission(int itemID, int userID, Permission p) {
+        if (permissions.containsKey(userID))
+            permissions.get(userID).removePermission(itemID, p);
+    }
+
+    /**
+     * Insert a new permission record into the database
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is being given the permission
+     * @param p         Permission being added
+     */
+    boolean insertPermission(int itemID, int userID, Permission p) {
+        ItemPermissionRecord rec = new ItemPermissionRecord();
+        rec.itemID = itemID;
+        rec.userID = userID;
+        rec.permissionID = p.ordinal();
+        rec.statusID = Status.Active.ordinal();
+        Date date = new Date();
+        rec.created = new Timestamp(date.getTime());
+
+        try {
+            PreparedStatement insertStatement = dataConnection.prepareStatement(
+                    " INSERT INTO ItemContainer_User_Permissions ( ItemID, UserID, PermissionID, StatusID, Created )\n" +
+                            "    VALUES (" + rec.itemID + ", "
+                            + rec.userID + ", "
+                            + rec.permissionID + ", "
+                            + rec.statusID + ", '"
+                            + rec.created + "'); ");
+            if (insertStatement.executeUpdate() == 0)
+                return false;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while permission " + p.name() + ".", e);
+        }
+        return true;
+    }
+
+    /**
+     * Mark a permission record in the database as deleted
+     * @param itemID    ID of the item whose permissions are being changed
+     * @param userID    ID of the user who is having the permission revoked
+     * @param p         Permission being revoked
+     */
+    boolean deletePermission(int itemID, int userID, Permission p) {
+        Date date = new Date();
+
+        try {
+            PreparedStatement updateStatement = dataConnection.prepareStatement(
+                    " UPDATE ItemContainer_User_Permissions SET StatusID=" + Status.Deleted.ordinal() +
+                            ", Deleted='" + new Timestamp(date.getTime()) +
+                            "' WHERE ItemID=" + itemID + " AND UserID=" + userID +
+                            " AND PermissionID=" + p.ordinal() + "; ");
+            if (updateStatement.executeUpdate() == 0)
+                return false; //nothing deleted
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while removing ownership.", e);
+        }
+        return true;
     }
 
     /**
@@ -174,9 +278,7 @@ public class PermissionManager {
                 }
                 else
                 {
-                    if (!permissions.containsKey(userID))
-                        permissions.put(userID, new AccessibleItems());
-                    permissions.get(userID).addPermission(itemID, permission);
+                    addPermission(itemID, userID, permission);
                 }
             }
 

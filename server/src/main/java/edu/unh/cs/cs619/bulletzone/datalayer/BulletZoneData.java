@@ -158,6 +158,28 @@ public class BulletZoneData {
         if (user == user2 && user2 != null)
             System.out.println("User creation/validation successful");
         d.permissions.setOwner(tank2, user2);
+        GameUser user3 = d.users.createUser("Second User", "user2", "xyzzy");
+        user3 = d.users.validateLogin("user2", "xyzzy");
+        if (!d.permissions.grant(tank2, user3, Permission.Add))
+            System.out.println("Add permission not granted");
+        if (!d.permissions.check(tank2, user3, Permission.Add))
+            System.out.println("Add permission granted but doesn't check");
+        if (!d.permissions.grant(tank2, user3, Permission.Remove))
+            System.out.println("Remove permission not granted");
+        if (!d.permissions.check(tank2, user3, Permission.Remove))
+            System.out.println("Remove permission granted but doesn't check");
+        if (!d.permissions.grant(tank2, user3, Permission.Use))
+            System.out.println("Use permission not granted");
+        if (!d.permissions.check(tank2, user3, Permission.Use))
+            System.out.println("Use permission granted but doesn't check");
+        if (d.permissions.grant(tank2, user3, Permission.Use))
+            System.out.println("Use permission granted twice");
+        if (!d.permissions.revoke(tank2, user3, Permission.Remove))
+            System.out.println("Remove permission not revoked");
+        if (d.permissions.check(tank2, user3, Permission.Transfer))
+            System.out.println("Transfer permission never granted but somehow checks");
+        if (d.permissions.revoke(tank2, user3, Permission.Transfer))
+            System.out.println("Nonexistant transfer permission somehow revoked");
         //d.permissions.removeOwner(tank2);
         d.close();
     }
