@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -27,6 +28,15 @@ public class GameUserRepository {
     final int keySize = 128;
     final int saltSize = 16;
 
+    /**
+     * @return A collection of all ItemCategories in the database
+     */
+    public Collection<GameUser> getUsers() { return userMap.values(); }
+
+    /**
+     * @param userID    ID of the user to get
+     * @return  GameUser corresponding to passed ID
+     */
     GameUser getUser(int userID) { return userMap.get(userID); }
 
     GameUser getUser(String username) { return usernameToUserMap.get(username); }

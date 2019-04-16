@@ -100,7 +100,7 @@ public class GameItemRepository {
         rec.statusID = Status.Active.ordinal();
         Date date = new Date();
         rec.created = new Timestamp(date.getTime());
-        String name = "[Unnamed]";
+        String name = "[Unnamed " + itemType.getName() + "]";
         GameItem newItem;
         try {
             // Create base item

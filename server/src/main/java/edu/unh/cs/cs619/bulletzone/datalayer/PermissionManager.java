@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +15,42 @@ public class PermissionManager {
     Connection dataConnection;
     GameItemRepository itemRepo;
     GameUserRepository userRepo;
+    public class AccessibleItems {
+        final int maxPermissions = 4;
+        public boolean hasPermission(int itemID, Permission p) {
+            if (itemPermissions.containsKey(itemID))
+                return itemPermissions.get(itemID).contains(p);
+            else
+                return false;
+        }
+
+        public Collection<GameItemContainer> getItems() {
+            HashSet<GameItemContainer> items = new HashSet<>();
+            for (int itemID: itemPermissions.keySet()) {
+                items.add(itemRepo.getContainer(itemID));
+            }
+            return items;
+        }
+
+        public Collection<Permission> getPermissionsOnItem(int itemID) {
+            if (itemPermissions.containsKey(itemID))
+                return itemPermissions.get(itemID);
+            else
+                return new HashSet<Permission>();
+        }
+
+        //----Package-level methods---
+        void addPermission(int itemID, Permission p) {
+            if (!itemPermissions.containsKey(itemID))
+                itemPermissions.put(itemID, new HashSet<>(maxPermissions));
+            itemPermissions.get(itemID).add(p);
+        }
+        void removePermission(int itemID, Permission p) {
+            if (itemPermissions.containsKey(itemID))
+                itemPermissions.get(itemID).remove(p);
+        }
+        private HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
+    }
     HashMap<Integer, AccessibleItems> permissions = new HashMap<>();
 
     public void setOwner(GameItemContainer item, GameUser user) {
@@ -34,6 +71,14 @@ public class PermissionManager {
 
     public boolean revoke(GameItemContainer item, GameUser user, Permission p) {
         return revoke(item.itemID, user.userID, p);
+    }
+
+    public AccessibleItems getUserPermissions(GameUser user) {
+        return getUserPermissions(user.userID);
+    }
+
+    public AccessibleItems getUserPermissions(int userID) {
+        return permissions.get(userID);
     }
 
     /**
@@ -119,7 +164,6 @@ public class PermissionManager {
         if (!insertPermission(itemID, userID, p))
             return false;
 
-        addPermission(itemID, userID, p);
         return true;
     }
 
@@ -141,31 +185,10 @@ public class PermissionManager {
         if (!deletePermission(itemID, userID, p))
             return false;
 
-        removePermission(itemID, userID, p);
         return true;
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
-
-    class AccessibleItems {
-        final int maxPermissions = 4;
-        public void addPermission(int itemID, Permission p) {
-            if (!itemPermissions.containsKey(itemID))
-                itemPermissions.put(itemID, new HashSet<>(maxPermissions));
-            itemPermissions.get(itemID).add(p);
-        }
-        public void removePermission(int itemID, Permission p) {
-            if (itemPermissions.containsKey(itemID))
-                itemPermissions.remove(p);
-        }
-        public boolean hasPermission(int itemID, Permission p) {
-            if (itemPermissions.containsKey(itemID))
-                return itemPermissions.get(itemID).contains(p);
-            else
-                return false;
-        }
-        private HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
-    }
 
     /**
      * Update internal structure to account for a new permission
@@ -218,6 +241,7 @@ public class PermissionManager {
         } catch (SQLException e) {
             throw new IllegalStateException("Error while permission " + p.name() + ".", e);
         }
+        addPermission(itemID, userID, p);
         return true;
     }
 
@@ -241,6 +265,7 @@ public class PermissionManager {
         } catch (SQLException e) {
             throw new IllegalStateException("Error while removing ownership.", e);
         }
+        removePermission(itemID, userID, p);
         return true;
     }
 
@@ -276,10 +301,7 @@ public class PermissionManager {
                     user.addItem(container);
                     container.setOwner(user);
                 }
-                else
-                {
-                    addPermission(itemID, userID, permission);
-                }
+                addPermission(itemID, userID, permission);
             }
 
         } catch (SQLException e) {
