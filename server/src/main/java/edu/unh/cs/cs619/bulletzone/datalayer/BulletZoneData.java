@@ -55,10 +55,15 @@ public class BulletZoneData {
             throw new IllegalStateException("Cannot access tables!", e);
         }
 
-        types.readStaticInfo(dataConnection);
-        items.refresh(dataConnection, types);
-        users.refresh(dataConnection, items);
-        permissions.refresh(dataConnection, items, users);
+        try {
+            types.readStaticInfo(dataConnection);
+            items.refresh(dataConnection, types);
+            users.refresh(dataConnection, items);
+            permissions.refresh(dataConnection, items, users);
+        } catch (IllegalStateException e) {
+            System.out.println("Unable to read initial data. Exception listed below, but coninuing...");
+            System.out.println(e.toString());
+        }
     }
 
     /**
