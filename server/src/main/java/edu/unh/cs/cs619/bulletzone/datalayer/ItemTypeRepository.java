@@ -45,6 +45,12 @@ class ItemTypeRepository {
     }
 
     /**
+     * @param typeID    Type ID for the requested type (used in other objects)
+     * @return  ItemType corresponding to the passed typeID
+     */
+    public ItemType getType(int typeID) { return typeMap.get(typeID); }
+
+    /**
      * @return A collection of only the FrameTypes in the database
      */
     public Collection<FrameType> getFrames() {
