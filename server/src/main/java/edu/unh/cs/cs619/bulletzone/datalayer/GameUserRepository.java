@@ -22,7 +22,7 @@ import javax.crypto.spec.PBEKeySpec;
 public class GameUserRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
     HashMap<String, GameUser> usernameToUserMap = new HashMap<>();
-    Connection dataConnection;
+    BulletZoneData data;
 
     final int iterations = 65536;
     final int keySize = 128;
@@ -76,6 +76,9 @@ public class GameUserRepository {
         }
 
         try {
+            Connection dataConnection = data.getConnection();
+            if (dataConnection == null)
+                return null;
 
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
@@ -98,6 +101,7 @@ public class GameUserRepository {
                 throw new SQLException("Created user " + newRecord.username + " but failed to obtain ID.");
             }
 
+            dataConnection.close();
             newUser = new GameUser(newRecord);
             userMap.put(newRecord.userID, newUser);
             usernameToUserMap.put(newRecord.username, newUser);
@@ -116,6 +120,10 @@ public class GameUserRepository {
      *          null if not found or wrong password
      */
     public GameUser validateLogin(String username, String password) {
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return null;
+
         GameUserRecord userRecord = null;
         try {
             Statement statement = dataConnection.createStatement();
@@ -127,6 +135,7 @@ public class GameUserRepository {
             {
                 userRecord = makeUserRecordFromResultSet(userResult);
             }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to access user table for password validation!", e);
         }
@@ -155,11 +164,15 @@ public class GameUserRepository {
     /**
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
      * at time of initialization.
-     *
-     * @param sqlDataConnection connection on which to make all future SQL queries
+     * @param bzData        reference to BulletZoneData class to use for SQL queries
+     * @param gameItemRepo  reference to already-initialized GameItemRepository
      */
-    void refresh(Connection sqlDataConnection, GameItemRepository gameItemRepo) {
-        dataConnection = sqlDataConnection;
+    void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo) {
+        data = bzData;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return;
+
         try {
             Statement statement = dataConnection.createStatement();
             // Read users that aren't deleted
@@ -171,6 +184,7 @@ public class GameUserRepository {
                 userMap.put(rec.userID, user);
                 usernameToUserMap.put(rec.username, user);
             }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot read static info!", e);
         }

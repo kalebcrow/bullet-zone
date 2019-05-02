@@ -24,7 +24,9 @@ import java.sql.Statement;
 import java.util.stream.Collectors;
 
 public class BulletZoneData {
-    private Connection dataConnection;
+    private String _url;
+    private String _username;
+    private String _password;
     public ItemTypeRepository types = new ItemTypeRepository();
     public GameItemRepository items = new GameItemRepository();
     public GameUserRepository users = new GameUserRepository();
@@ -38,13 +40,12 @@ public class BulletZoneData {
      */
     public BulletZoneData(String url, String username, String password)
     {
-        try {
-            dataConnection = DriverManager.getConnection(url, username, password);
-            System.out.println("Database connected.");
-        } catch (
-                SQLException e) {
-            throw new IllegalStateException("Cannot connect to the database!", e);
-        }
+        _url = url;
+        _username = username;
+        _password = password;
+        Connection dataConnection = getConnection();
+        if (dataConnection == null)
+            return;
 
         try {
             Statement statement = dataConnection.createStatement();
@@ -57,9 +58,9 @@ public class BulletZoneData {
 
         try {
             types.readStaticInfo(dataConnection);
-            items.refresh(dataConnection, types);
-            users.refresh(dataConnection, items);
-            permissions.refresh(dataConnection, items, users);
+            items.refresh(this, types);
+            users.refresh(this, items);
+            permissions.refresh(this , items, users);
         } catch (IllegalStateException e) {
             System.out.println("Unable to read initial data. Exception listed below, but coninuing...");
             System.out.println(e.toString());
@@ -72,31 +73,36 @@ public class BulletZoneData {
      */
     public void listTables() {
         try {
+            Connection dataConnection = getConnection();
+            if (dataConnection == null)
+                return;
             Statement statement = dataConnection.createStatement();
             ResultSet resultSet = statement.executeQuery("show tables");
             System.out.println("Database tables:");
             while (resultSet.next())
                 System.out.println(resultSet.getString(1));
-
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot show tables!", e);
         }
     }
 
-    /**
-     * Close the database connection. Calls to other methods after this method is called
-     * will have undefined behavior and may cause an exception.
-     */
-    public void close() {
-        try {
-            dataConnection.close();
-            System.out.println("Database connection closed.");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot close the database!", e);
-        }
-    }
-
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
+
+    /**
+     * Package-level method for getting an appropriate database connection
+     * @return Connection to SQL database that can be used for further queries. Note that
+     *         the caller should close the connection when finished.
+     */
+    Connection getConnection() {
+        Connection dataConnection;
+        try {
+            dataConnection = DriverManager.getConnection(_url, _username, _password);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect to the database!", e);
+        }
+        return dataConnection;
+    }
 
     /**
      * Assuming an empty database, creates all the appropriate tables and then populates
@@ -125,7 +131,12 @@ public class BulletZoneData {
      */
     ResultSet executeScript(String resourceName, String errorMessage)
     {
+        Connection dataConnection = getConnection();
         ResultSet resultSet = null;
+
+        if (dataConnection == null)
+            return resultSet;
+
         try {
             Statement statement = dataConnection.createStatement();
             InputStream in = getClass().getResourceAsStream(resourceName);
@@ -149,6 +160,7 @@ public class BulletZoneData {
         BulletZoneData d = new BulletZoneData(url, username, password);
         //d.rebuildData();
         //d.listTables();
+
         GameItemContainer bay = d.items.createContainer("Garage bay");
         GameItemContainer tank1 = d.items.createContainer("Standard tank frame");
         GameItemContainer tank2 = d.items.createContainer("Standard tank frame");
@@ -196,6 +208,11 @@ public class BulletZoneData {
             }
         }
         //d.permissions.removeOwner(tank2);
-        d.close();
+        for (ItemType t : d.types.getTypes())
+        {
+            System.out.println("Type " + t.getName() + " has type ID " + t.getID());
+        }
+        System.out.println("Type 13 is " + d.types.getType(13).getName());
+
     }
 }

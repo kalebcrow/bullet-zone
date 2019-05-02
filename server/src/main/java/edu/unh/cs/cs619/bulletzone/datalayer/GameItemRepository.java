@@ -17,7 +17,7 @@ public class GameItemRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     ItemTypeRepository typeRepo;
-    Connection dataConnection;
+    BulletZoneData data;
 
     /**
      * Return the GameItem associated with the passed internal ID (does not return containers)
@@ -94,6 +94,10 @@ public class GameItemRepository {
      * @throws IllegalStateException for any database errors encountered.
      */
     public GameItem create(ItemType itemType) {
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return null;
+
         GameItemRecord rec = new GameItemRecord();
         rec.itemType = itemType;
         rec.usageMonitor = 0;
@@ -136,6 +140,7 @@ public class GameItemRepository {
             else
                 newItem = new GameItem(rec);
             itemMap.put(rec.itemID, newItem);
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating item!", e);
         }
@@ -168,6 +173,9 @@ public class GameItemRepository {
         GameItemContainer container = containerMap.get(containerID);
         if (item == null || container == null)
             return false;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
 
         ItemContainmentRecord rec = new ItemContainmentRecord();
         rec.itemID = itemID;
@@ -181,8 +189,11 @@ public class GameItemRepository {
                             + rec.startSlot + ", "
                             + rec.endSlot + ", "
                             + rec.modifier + "); ");
-            if (insertStatement.executeUpdate() == 0)
+            if (insertStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false;
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while adding item to container.", e);
         }
@@ -214,14 +225,20 @@ public class GameItemRepository {
         GameItemContainer container = containerMap.get(containerID);
         if (item == null || container == null)
             return false;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
 
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
                     " DELETE FROM ItemContainer_Item WHERE " +
                             " Container_ItemID=" + containerID + " AND " +
                             " ItemID=" + itemID + "; ");
-            if (deleteStatement.executeUpdate() == 0)
+            if (deleteStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false; //nothing deleted
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while removing item from container.", e);
         }
@@ -250,13 +267,19 @@ public class GameItemRepository {
         GameItemContainer container = containerMap.get(containerID);
         if (container == null)
             return false;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
 
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
                     " DELETE FROM ItemContainer_Item WHERE " +
                             " Container_ItemID=" + containerID + "; ");
-            if (deleteStatement.executeUpdate() == 0)
+            if (deleteStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false; //nothing deleted
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while removing all items from container.", e);
         }
@@ -276,6 +299,9 @@ public class GameItemRepository {
         boolean isContainer = containerMap.containsKey(itemID);
         if (!isContainer && !itemMap.containsKey(itemID))
             return false;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
 
         Date date = new Date();
 
@@ -291,8 +317,11 @@ public class GameItemRepository {
                     " UPDATE Item SET StatusID=" + Status.Deleted.ordinal() +
                                         ", Deleted='" + new Timestamp(date.getTime()) +
                                         "' WHERE ItemID=" + itemID + "; ");
-            if (updateStatement.executeUpdate() == 0)
+            if (updateStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false; //nothing deleted
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while deleting item.", e);
         }
@@ -311,12 +340,15 @@ public class GameItemRepository {
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
      * at time of initialization.
      *
-     * @param sqlDataConnection connection on which to make all future SQL queries
-     * @param itemTypeRepo      reference to an already-initialized ItemTypeRepository
+     * @param bzData        reference to BulletZoneData class to use for SQL queries
+     * @param itemTypeRepo  reference to an already-initialized ItemTypeRepository
      */
-    void refresh(Connection sqlDataConnection, ItemTypeRepository itemTypeRepo) {
+    void refresh(BulletZoneData bzData, ItemTypeRepository itemTypeRepo) {
         typeRepo = itemTypeRepo;
-        dataConnection = sqlDataConnection;
+        data = bzData;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return;
         try {
             Statement statement = dataConnection.createStatement();
 
@@ -350,6 +382,7 @@ public class GameItemRepository {
                 container.addItem(item);
             }
 
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot read static info!", e);
         }

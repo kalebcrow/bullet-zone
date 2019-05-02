@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class PermissionManager {
-    Connection dataConnection;
+    BulletZoneData data;
     GameItemRepository itemRepo;
     GameUserRepository userRepo;
     public class AccessibleItems {
@@ -220,6 +220,10 @@ public class PermissionManager {
      * @param p         Permission being added
      */
     boolean insertPermission(int itemID, int userID, Permission p) {
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
+
         ItemPermissionRecord rec = new ItemPermissionRecord();
         rec.itemID = itemID;
         rec.userID = userID;
@@ -236,8 +240,11 @@ public class PermissionManager {
                             + rec.permissionID + ", "
                             + rec.statusID + ", '"
                             + rec.created + "'); ");
-            if (insertStatement.executeUpdate() == 0)
+            if (insertStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false;
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while permission " + p.name() + ".", e);
         }
@@ -252,6 +259,9 @@ public class PermissionManager {
      * @param p         Permission being revoked
      */
     boolean deletePermission(int itemID, int userID, Permission p) {
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
         Date date = new Date();
 
         try {
@@ -260,8 +270,11 @@ public class PermissionManager {
                             ", Deleted='" + new Timestamp(date.getTime()) +
                             "' WHERE ItemID=" + itemID + " AND UserID=" + userID +
                             " AND PermissionID=" + p.ordinal() + "; ");
-            if (updateStatement.executeUpdate() == 0)
+            if (updateStatement.executeUpdate() == 0) {
+                dataConnection.close();
                 return false; //nothing deleted
+            }
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while removing ownership.", e);
         }
@@ -273,14 +286,17 @@ public class PermissionManager {
      * Reads the database and fills the HashMaps as appropriate. Intended to be called once
      * at time of initialization.
      *
-     * @param sqlDataConnection connection on which to make all future SQL queries
+     * @param bzData       reference to BulletZoneData for making further SQL queries
      * @param gameItemRepo repository of items that can be owned
      * @param gameUserRepo repository of users that can own things
      */
-    void refresh(Connection sqlDataConnection, GameItemRepository gameItemRepo, GameUserRepository gameUserRepo) {
+    void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo, GameUserRepository gameUserRepo) {
         itemRepo = gameItemRepo;
         userRepo = gameUserRepo;
-        dataConnection = sqlDataConnection;
+        data = bzData;
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return;
         try {
             Statement statement = dataConnection.createStatement();
 
@@ -303,7 +319,7 @@ public class PermissionManager {
                 }
                 addPermission(itemID, userID, permission);
             }
-
+            dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot read static info!", e);
         }
