@@ -70,6 +70,8 @@ BEGIN NOT ATOMIC
         (11, 'Standard tank frame', 1, 6.0, 6.0, 350.0, 16.0, 100.0, 0.0),
         (12, 'Standard truck frame', 1, 4.0, 1.0, 150.0, 4.0, 15.0, 0.0),
         (13, 'Standard battle suit', 1, 0.0, 0.1, 40.0, 0.5, 6.0, 0.0),
+        (16, 'Vehicle expansion frame', 1, 1.0, 1.0, 5.0, 3.0, 1.0, 0.0),
+        (17, 'Battle suit expansion frame', 1, 0.1, 0.1, 4.0, 0.4, 1.0, 0.0),
         -- Weapons
         (21, 'Standard tank cannon', 2, 3.0, 4.0, 200.0, 30.0, 4.0, 2),
         (22, 'Plasma cannon', 2, 1.0, 1.0, 120.0, 5.0, 1.0, 4),
