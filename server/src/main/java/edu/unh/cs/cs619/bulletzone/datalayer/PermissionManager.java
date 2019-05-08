@@ -78,6 +78,8 @@ public class PermissionManager {
     }
 
     public AccessibleItems getUserPermissions(int userID) {
+        if (!permissions.containsKey(userID))
+            permissions.put(userID, new AccessibleItems());
         return permissions.get(userID);
     }
 
