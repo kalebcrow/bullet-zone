@@ -197,6 +197,8 @@ public class BulletZoneData {
             System.out.println("Transfer permission never granted but somehow checks");
         if (d.permissions.revoke(tank2, user3, Permission.Transfer))
             System.out.println("Nonexistent transfer permission somehow revoked");
+        GameUser user4 = d.users.createUser("UserF", "userF", "xyzzy");
+        //d.permissions.setOwner(bay, user4);
         for (GameUser u : d.users.getUsers()) {
             PermissionManager.AccessibleItems ip = d.permissions.getUserPermissions(u);
             for (GameItemContainer container : ip.getItems()) {
@@ -206,6 +208,10 @@ public class BulletZoneData {
                 }
                 System.out.println();
             }
+        }
+        for (Permission p : Permission.values()) {
+            System.out.println(user4.name + " Permission check for " + p.name() + ": " + d.permissions.check(tank2, user4, p));
+            System.out.println(user4.name + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.itemID, user4.userID, p));
         }
         //d.permissions.removeOwner(tank2);
         for (ItemType t : d.types.getTypes())

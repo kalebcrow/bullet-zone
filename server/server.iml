@@ -4,6 +4,8 @@
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
         <option name="GRADLE_PROJECT_PATH" value=":server" />
+        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" />
+        <option name="LAST_KNOWN_AGP_VERSION" />
       </configuration>
     </facet>
     <facet type="java-gradle" name="Java-Gradle">
@@ -48,7 +50,6 @@
     <orderEntry type="library" exported="" name="Gradle: spring-beans-4.3.14.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-expression-4.3.14.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-core-4.3.14.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: snakeyaml-1.17" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tomcat-embed-websocket-8.5.27" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tomcat-embed-core-8.5.27" level="project" />
     <orderEntry type="library" exported="" name="Gradle: tomcat-embed-el-8.5.27" level="project" />
@@ -77,6 +78,7 @@
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: jsonassert-1.4.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: spring-test-4.3.14.RELEASE" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: json-smart-1.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: snakeyaml-1.17" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: objenesis-2.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: android-json-0.0.20131108.vaadin1" level="project" />
   </component>

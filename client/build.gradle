@@ -6,10 +6,11 @@ buildscript {
             name 'Google'
         }
         google()
+        jcenter()
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 }
 
