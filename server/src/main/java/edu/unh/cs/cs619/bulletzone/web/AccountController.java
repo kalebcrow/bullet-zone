@@ -28,6 +28,7 @@ import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
+import edu.unh.cs.cs619.bulletzone.util.StringArrayWrapper;
 
 @RestController
 @RequestMapping(value = "/games/account")
@@ -83,6 +84,47 @@ public class AccountController {
         /*
         return new ResponseEntity<LongWrapper>(new LongWrapper(
                 TODO: something that invokes users.validateLogin(name, password)
+                ),
+                HttpStatus.ACCEPTED);
+         */
+        return null;
+    }
+
+    /**
+     * Handles a GET request to return all category
+     * @return a response includes String array
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "getCategories", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public ResponseEntity<StringArrayWrapper> getCategory(){
+        // Log the request
+        log.debug("getCategories");
+        // Return the response (list of strings)
+        /*
+        return new ResponseEntity<StringArrayWrapper>(new StringArrayWrapper(
+                TODO: something that invokes types.getCategories()
+                ),
+                HttpStatus.ACCEPTED);
+         */
+        return null;
+    }
+
+    /**
+     * Handles a GET request to return different component types in a given category
+     * @param category The category
+     * @return a response includes String array
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "getTypes/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public ResponseEntity<StringArrayWrapper> getItem(@PathVariable String category){
+        // Log the request
+        log.debug("getTypes '" + category + "'");
+        // Return the response (list of strings)
+        /*
+        return new ResponseEntity<StringArrayWrapper>(new StringArrayWrapper(
+                TODO: something that invokes types.get*()
                 ),
                 HttpStatus.ACCEPTED);
          */

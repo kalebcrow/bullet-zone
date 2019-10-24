@@ -158,7 +158,7 @@ public class BulletZoneData {
         String password = "Drag56kes";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
-        //d.rebuildData();
+        d.rebuildData();
         //d.listTables();
 
         GameItemContainer bay = d.items.createContainer("Garage bay");

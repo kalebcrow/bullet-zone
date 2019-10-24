@@ -10,8 +10,9 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 
-class ItemTypeRepository {
+public class ItemTypeRepository {
     HashMap<Integer, ItemCategory> categoryMap = new HashMap<Integer, ItemCategory>();
+    HashMap<Integer, ItemCategory> baseCategoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<Integer, ItemType> typeMap = new HashMap<Integer, ItemType>();
     HashMap<Integer, FrameType> frameMap = new HashMap<Integer, FrameType>();
     HashMap<Integer, WeaponType> weaponMap = new HashMap<Integer, WeaponType>();
@@ -35,7 +36,7 @@ class ItemTypeRepository {
     /**
      * @return A collection of all ItemCategories in the database
      */
-    public Collection<ItemCategory> getCategories() { return categoryMap.values(); }
+    public Collection<ItemCategory> getCategories() { return baseCategoryMap.values(); }
 
     /**
      * @return A collection of all ItemTypes in the database
@@ -99,7 +100,10 @@ class ItemTypeRepository {
             ResultSet itemCategoryResult = statement.executeQuery("SELECT * FROM ItemCategory");
             while (itemCategoryResult.next()) {
                 int id = itemCategoryResult.getInt("ItemCategoryID");
-                categoryMap.put(id, new ItemCategory(id, itemCategoryResult.getString("Name")));
+                ItemCategory ic = new ItemCategory(id, itemCategoryResult.getString("Name"));
+                categoryMap.put(id, ic);
+                if (id < 10)
+                    baseCategoryMap.put(id, ic);
             }
 
             ResultSet itemTypeResult = statement.executeQuery("SELECT * FROM ItemType");
