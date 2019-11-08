@@ -79,11 +79,11 @@ BEGIN NOT ATOMIC
         -- Generators
         (31, 'Standard tank generator', 3, 4.0, 6.0, 150.0, 4.0, 0.0, 0.0),
         (32, 'Standard truck generator', 3, 1.0, 1.0, 40.0, 1.0, 0.0, 0.0),
-        (33, 'Portable generator', 3, 0.1, 0.2, 5.0, 0.2, 0.0, 0.0),
+        (33, 'Portable generator', 3, 0.1, 0.1, 5.0, 0.2, 0.0, 0.0),
         -- Engines
-        (41, 'Standard tank enigne', 4, 4.0, 6.0, 100.0, 4.0, 0.0, 0.0),
+        (41, 'Standard tank enigne', 4, 4.0, 6.0, 100.0, 2.0, 0.0, 0.0),
         (42, 'Standard truck engine', 4, 2.0, 2.0, 60.0, 2.0, 0.0, 0.0),
-        (43, 'Battle-suit power converter', 4, 0.1, 0.1, 7.0, 0.1, 0.1, 0.0),
+        (43, 'Battle-suit power converter', 4, 0.1, 0.1, 7.0, 0.5, 0.1, 0.0),
         -- Drives
         (51, 'Standard tank drive tracks', 5, 4.0, 3.0, 60.0, 4.0, 25.0, 1.0),
         (52, 'Standard truck drive wheels', 5, 1.0, 1.0, 20.0, 2.0, 12.0, 10.0),
