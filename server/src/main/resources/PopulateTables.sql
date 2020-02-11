@@ -58,7 +58,7 @@ BEGIN NOT ATOMIC
         (4, 'Engine', 17, 16, -1),
         (5, 'Drive', 18, 19, 12),
         -- Power-ups
-        (11, 'Anti-gravity', 16, 20, -1),
+        (11, 'Anti-gravity', 15, 20, -1),
         (12, 'Weapon-boosting generator', 15, 14, -1),
         (13, 'Shield/Repair', 15, 12, 21);
 
@@ -92,8 +92,8 @@ BEGIN NOT ATOMIC
         (52, 'Standard truck drive wheels', 5, 1.0, 1.0, 20.0, 2.0, 12.0, 10.0),
         (53, 'Battle-suit leg assists', 5, 0.1, 0.1, 7.0, 0.1, 0.5, 2.0),
         -- ** Power-ups **
-        (111, 'Grav-assist', 11, 1.0, 0.0, 300.0, 0.4, 0.5, 0.0),
+        (111, 'Grav-assist', 11, 1.0, 0.0, 300.0, -0.4, 0.5, 0.0),
         (121, 'Fusion generator', 12, 1.0, 2.0, 400.0, 2.0, 10.0, 0.0),
-        (131, 'Deflector shield', 13, 1.0, 2.0, 300.0, 1.0, 100.0, 0.5),
-        (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, 0.5, 0.0, 1.0);
+        (131, 'Deflector shield', 13, 1.0, 2.0, 300.0, -1.0, 100.0, 0.5),
+        (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, -0.5, 0.0, 1.0);
 END
