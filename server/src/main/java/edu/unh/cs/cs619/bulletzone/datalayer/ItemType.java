@@ -3,11 +3,13 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
-public class ItemType {
+public class ItemType implements Describable {
     protected final ItemTypeRecord info;
+    protected final boolean container_flag;
 
     ItemType(ItemTypeRecord rec) {
         info = rec;
+        container_flag = (rec.category.getName().equals("Frame"));
     }
 
     public int getID() {
@@ -23,18 +25,23 @@ public class ItemType {
     }
 
     public boolean isContainer() {
-        return false;
+        return container_flag;
     }
 
-    public double getSize() {
-        return info.size;
+    public double getProperty(ItemProperty property) {
+        if (info.category.propertyMap.containsKey(property))
+            return info.val[info.category.propertyMap.get(property)];
+        //otherwise, produce a default value
+        return property.getIdentity();
     }
+
+    public double getSize() { return info.val[ItemProperty.ID.Size.ordinal()]; }
 
     public double getWeight() {
-        return info.weight;
+        return info.val[ItemProperty.ID.Weight.ordinal()];
     }
 
     public double getPrice() {
-        return info.price;
+        return info.val[ItemProperty.ID.Price.ordinal()];
     }
 }

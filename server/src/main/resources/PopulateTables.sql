@@ -32,32 +32,35 @@ BEGIN NOT ATOMIC
     INSERT INTO ItemProperty
         ( ItemPropertyID, Name, ItemPropertyTypeID)
     VALUES
-        (0, 'None', 0),
-        (1, 'Capacity', 1),
-        (2, 'Armor', 1),
-        (3, 'Damage', 1),
-        (4, 'Instance Limit', 2),
-        (5, 'Electric Power', 1),
-        (6, 'Electric Power Used', 1),
-        (7, 'Drive Power', 1),
-        (8, 'Drive Power Used', 1),
-        (9, 'Movement-to-weight ratio', 1),
-        (10, 'Weight modifier', 3),
-        (11, 'Armor modifier', 4),
-        (12, 'Terrain-obstacle sensitivity', 2);
+        (-1, 'None', 0),
+        (0, 'Size', 1),
+        (1, 'Weight', 1),
+        (2, 'Price', 1),
+        (11, 'Capacity', 1),
+        (12, 'Armor', 1),
+        (13, 'Damage', 1),
+        (14, 'Instance Limit', 2),
+        (15, 'Electric Power', 1),
+        (16, 'Electric Power Used', 1),
+        (17, 'Drive Power', 1),
+        (18, 'Drive Power Used', 1),
+        (19, 'Movement-to-weight ratio', 1),
+        (20, 'Weight modifier', 3),
+        (21, 'Armor modifier', 4),
+        (22, 'Terrain-obstacle sensitivity', 2);
 
     INSERT INTO ItemCategory
         ( ItemCategoryID, Name, ItemPropertyID1, ItemPropertyID2, ItemPropertyID3)
     VALUES
-        (1, 'Frame', 1, 2, 0),
-        (2, 'Weapon', 3, 6, 4),
-        (3, 'Generator', 5, 0, 0),
-        (4, 'Engine', 7, 6, 0),
-        (5, 'Drive', 8, 9, 12),
+        (1, 'Frame', 11, 12, -1),
+        (2, 'Weapon', 13, 16, 14),
+        (3, 'Generator', 15, -1, -1),
+        (4, 'Engine', 17, 16, -1),
+        (5, 'Drive', 18, 19, 12),
         -- Power-ups
-        (11, 'Anti-gravity', 6, 10, 0),
-        (12, 'Weapon-boosting generator', 5, 4, 0),
-        (13, 'Shield/Repair', 5, 2, 11);
+        (11, 'Anti-gravity', 16, 20, -1),
+        (12, 'Weapon-boosting generator', 15, 14, -1),
+        (13, 'Shield/Repair', 15, 12, 21);
 
     INSERT INTO ItemType
         ( ItemTypeID, Name, ItemCategoryID, Size, Weight, Price, PropertyVal1, PropertyVal2, PropertyVal3)

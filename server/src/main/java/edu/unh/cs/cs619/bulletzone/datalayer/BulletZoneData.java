@@ -62,7 +62,7 @@ public class BulletZoneData {
             users.refresh(this, items);
             permissions.refresh(this , items, users);
         } catch (IllegalStateException e) {
-            System.out.println("Unable to read initial data. Exception listed below, but coninuing...");
+            System.out.println("Unable to read initial data. Exception listed below, but continuing...");
             System.out.println(e.toString());
         }
     }

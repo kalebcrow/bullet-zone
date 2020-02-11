@@ -14,11 +14,11 @@ public class ItemTypeRepository {
     HashMap<Integer, ItemCategory> categoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<Integer, ItemCategory> baseCategoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<Integer, ItemType> typeMap = new HashMap<Integer, ItemType>();
-    HashMap<Integer, FrameType> frameMap = new HashMap<Integer, FrameType>();
-    HashMap<Integer, WeaponType> weaponMap = new HashMap<Integer, WeaponType>();
-    HashMap<Integer, GeneratorType> generatorMap = new HashMap<Integer, GeneratorType>();
-    HashMap<Integer, EngineType> engineMap = new HashMap<Integer, EngineType>();
-    HashMap<Integer, DriveType> driveMap = new HashMap<Integer, DriveType>();
+    HashMap<Integer, ItemType> frameMap = new HashMap<Integer, ItemType>();
+    HashMap<Integer, ItemType> weaponMap = new HashMap<Integer, ItemType>();
+    HashMap<Integer, ItemType> generatorMap = new HashMap<Integer, ItemType>();
+    HashMap<Integer, ItemType> engineMap = new HashMap<Integer, ItemType>();
+    HashMap<Integer, ItemType> driveMap = new HashMap<Integer, ItemType>();
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
 
     /**
@@ -54,35 +54,35 @@ public class ItemTypeRepository {
     /**
      * @return A collection of only the FrameTypes in the database
      */
-    public Collection<FrameType> getFrames() {
+    public Collection<ItemType> getFrames() {
         return frameMap.values();
     }
 
     /**
      * @return A collection of only the WeaponTypes in the database
      */
-    public Collection<WeaponType> getWeapons() {
+    public Collection<ItemType> getWeapons() {
         return weaponMap.values();
     }
 
     /**
      * @return A collection of only the GeneratorTypes in the database
      */
-    public Collection<GeneratorType> getGenerators() {
+    public Collection<ItemType> getGenerators() {
         return generatorMap.values();
     }
 
     /**
      * @return A collection of only the EngineTypes in the database
      */
-    public Collection<EngineType> getEngines() {
+    public Collection<ItemType> getEngines() {
         return engineMap.values();
     }
 
     /**
      * @return A collection of only the DriveTypes in the database
      */
-    public Collection<DriveType> getDrives() {
+    public Collection<ItemType> getDrives() {
         return driveMap.values();
     }
 
@@ -97,10 +97,22 @@ public class ItemTypeRepository {
     void readStaticInfo(Connection dataConnection) {
         try {
             Statement statement = dataConnection.createStatement();
+
+            ResultSet itemPropertyResult = statement.executeQuery("SELECT * FROM ItemProperty");
+            while (itemPropertyResult.next()) {
+                int id = itemPropertyResult.getInt("ItemPropertyID");
+                int type = itemPropertyResult.getInt("ItemPropertyTypeID");
+                String name = itemPropertyResult.getString("Name");
+                ItemProperty ip = new ItemProperty(id, name, ItemProperty.PropertyType.values()[type]);
+            }
+
             ResultSet itemCategoryResult = statement.executeQuery("SELECT * FROM ItemCategory");
             while (itemCategoryResult.next()) {
                 int id = itemCategoryResult.getInt("ItemCategoryID");
-                ItemCategory ic = new ItemCategory(id, itemCategoryResult.getString("Name"));
+                int properties[] = new int[3];
+                for (int i = 0; i < 3; i++)
+                    properties[i] = itemCategoryResult.getInt("ItemPropertyID" + (i + 1));
+                ItemCategory ic = new ItemCategory(id, itemCategoryResult.getString("Name"), properties);
                 categoryMap.put(id, ic);
                 if (id < 10)
                     baseCategoryMap.put(id, ic);
@@ -112,12 +124,9 @@ public class ItemTypeRepository {
                 rec.itemTypeID = itemTypeResult.getInt("ItemTypeID");
                 rec.name = itemTypeResult.getString("Name");
                 rec.category = categoryMap.get(itemTypeResult.getInt("ItemCategoryID"));
-                rec.size = itemTypeResult.getDouble("Size");
-                rec.weight = itemTypeResult.getDouble("Weight");
-                rec.price = itemTypeResult.getDouble("Price");
-                rec.val1 = itemTypeResult.getDouble("PropertyVal1");
-                rec.val2 = itemTypeResult.getDouble("PropertyVal2");
-                rec.val3 = itemTypeResult.getDouble("PropertyVal3");
+                rec.val = new double[ItemProperty.ID.values().length];
+                for (ItemProperty.ID id : ItemProperty.ID.values())
+                    rec.val[id.ordinal()] = itemTypeResult.getDouble(id.name());
                 recordItemType(rec);
             }
 
@@ -134,32 +143,27 @@ public class ItemTypeRepository {
     private void recordItemType(ItemTypeRecord rec) {
         ItemType itemType;
         int id = rec.itemTypeID;
+        boolean idFrame = (rec.category.getName() == "Frame");
+        itemType = new ItemType(rec);
+        typeMap.put(id, itemType);
+        nameToTypeMap.put(rec.name, itemType);
         switch (rec.category.getName())
         {
             case "Frame":
-                frameMap.put(id, new FrameType(rec));
-                itemType = frameMap.get(id);
+                frameMap.put(id, itemType);
                 break;
             case "Weapon":
-                weaponMap.put(id, new WeaponType(rec));
-                itemType = weaponMap.get(id);
+                weaponMap.put(id, itemType);
                 break;
             case "Generator":
-                generatorMap.put(id, new GeneratorType(rec));
-                itemType = generatorMap.get(id);
+                generatorMap.put(id, itemType);
                 break;
             case "Engine":
-                engineMap.put(id, new EngineType(rec));
-                itemType = engineMap.get(id);
+                engineMap.put(id, itemType);
                 break;
             case "Drive":
-                driveMap.put(id, new DriveType(rec));
-                itemType = driveMap.get(id);
+                driveMap.put(id, itemType);
                 break;
-            default:
-                itemType = new ItemType(rec);
         }
-        typeMap.put(id, itemType);
-        nameToTypeMap.put(rec.name, itemType);
     }
 }

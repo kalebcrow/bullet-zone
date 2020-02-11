@@ -3,7 +3,7 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
-public class GameItem {
+public class GameItem implements Describable {
     protected int itemID;
     protected ItemType itemType;
     protected double usageMonitor;
@@ -17,6 +17,14 @@ public class GameItem {
     }
 
     public GameUser getOwner() { return owner; }
+
+    public boolean isContainer() {return itemType.isContainer();}
+
+    public double getProperty(ItemProperty property) {return itemType.getProperty(property);}
+
+    public double getSize() {return itemType.getSize();}
+    public double getWeight() {return itemType.getWeight();}
+    public double getPrice() {return itemType.getPrice();}
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
