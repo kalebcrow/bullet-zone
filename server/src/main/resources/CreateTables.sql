@@ -1,12 +1,12 @@
 BEGIN NOT ATOMIC
-    # Common table -- lists global unrelated constants in a single row
+    -- Common table -- lists global unrelated constants in a single row
     CREATE TABLE IF NOT EXISTS Common
     (
       Version VARCHAR(40) NOT NULL
     );
 
-    # Status table -- enumeration of statuses for items/accounts
-    #                 that can be made inactive or deleted
+    -- Status table -- enumeration of statuses for items/accounts
+    --                 that can be made inactive or deleted
     CREATE TABLE IF NOT EXISTS Status
     (
       StatusID INT NOT NULL,
@@ -14,7 +14,7 @@ BEGIN NOT ATOMIC
       PRIMARY KEY (StatusID)
     );
 
-    # User table -- basic information for user accounts
+    -- User table -- basic information for user accounts
     CREATE TABLE IF NOT EXISTS User
     (
       UserID INT NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
-    # Permission table -- enumeration of access permissions that users can have on items/accounts
+    -- Permission table -- enumeration of access permissions that users can have on items/accounts
     CREATE TABLE IF NOT EXISTS Permission
     (
       PermissionID INT NOT NULL,
@@ -37,12 +37,12 @@ BEGIN NOT ATOMIC
       PRIMARY KEY (PermissionID)
     );
 
-    #CREATE TABLE IF NOT EXISTS Location/Map
-    #(
-    #);
+    -- CREATE TABLE IF NOT EXISTS Location/Map
+    -- (
+    -- );
 
-    # ItemPropertyType table -- enumeration of the way in which a given property
-    #                           combines when two items of the same type share a property
+    -- ItemPropertyType table -- enumeration of the way in which a given property
+    --                           combines when two items of the same type share a property
     CREATE TABLE IF NOT EXISTS ItemPropertyType
     (
       ItemPropertyTypeID INT NOT NULL,
@@ -50,7 +50,7 @@ BEGIN NOT ATOMIC
       PRIMARY KEY (ItemPropertyTypeID)
     );
 
-    # BankAccount table -- vital information for bank accounts in the game
+    -- BankAccount table -- vital information for bank accounts in the game
     CREATE TABLE IF NOT EXISTS BankAccount
     (
       BankAccountID INT NOT NULL AUTO_INCREMENT,
@@ -62,8 +62,8 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
-    # BankAccount_User_Permissions table -- correlation showing which users have which
-    #                                       permissions on a given bank account
+    -- BankAccount_User_Permissions table -- correlation showing which users have which
+    --                                       permissions on a given bank account
     CREATE TABLE IF NOT EXISTS BankAccount_User_Permissions
     (
       BankAccountID INT NOT NULL,
@@ -78,8 +78,8 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
-    # AccountTransferHistory table -- Records details about movement of money from one
-    #                                 bank account to another
+    -- AccountTransferHistory table -- Records details about movement of money from one
+    --                                 bank account to another
     CREATE TABLE AccountTransferHistory
     (
       AccountTransferHistoryID INT NOT NULL,
@@ -94,8 +94,8 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (DestBankAccountID) REFERENCES BankAccount(BankAccountID)
     );
 
-    # ItemProperty table -- enumeration of properties that some game
-    #                       items can have but that most don't have
+    -- ItemProperty table -- enumeration of properties that some game
+    --                       items can have but that most don't have
     CREATE TABLE IF NOT EXISTS ItemProperty
     (
       ItemPropertyID INT NOT NULL,
@@ -105,7 +105,7 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (ItemPropertyTypeID) REFERENCES ItemPropertyType(ItemPropertyTypeID)
     );
 
-    # ItemCategory table -- enumeration of major classifications for item typess
+    -- ItemCategory table -- enumeration of major classifications for item typess
     CREATE TABLE IF NOT EXISTS ItemCategory
     (
       ItemCategoryID INT NOT NULL,
@@ -119,7 +119,7 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (ItemPropertyID3) REFERENCES ItemProperty(ItemPropertyID)
     );
 
-    # ItemType table -- vital information on individual item types
+    -- ItemType table -- vital information on individual item types
     CREATE TABLE ItemType
     (
       ItemTypeID INT NOT NULL,
@@ -135,7 +135,7 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (ItemCategoryID) REFERENCES ItemCategory(ItemCategoryID)
     );
 
-    # Item table -- vital information on individual items
+    -- Item table -- vital information on individual items
     CREATE TABLE Item
     (
       ItemID INT NOT NULL AUTO_INCREMENT,
@@ -149,7 +149,7 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
-    # Item container -- additional information for containers beyond what is in the item table
+    -- Item container -- additional information for containers beyond what is in the item table
     CREATE TABLE IF NOT EXISTS ItemContainer
     (
       ItemID INT NOT NULL, -- must have matching ItemID in Item table to be valid
@@ -158,8 +158,8 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (ItemID) REFERENCES Item(ItemID)
     );
 
-    # ItemContainer_Item -- correlation indicating which items are in which containers,
-    #                       with an indication of how the item is situated in the container
+    -- ItemContainer_Item -- correlation indicating which items are in which containers,
+    --                       with an indication of how the item is situated in the container
     CREATE TABLE IF NOT EXISTS ItemContainer_Item
     (
       ItemID INT NOT NULL,
@@ -171,8 +171,8 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (Container_ItemID) REFERENCES ItemContainer(ItemID)
     );
 
-    # ItemContainer_User_Permissions table -- correlation showing which users have which
-    #                                         permissions on a given container
+    -- ItemContainer_User_Permissions table -- correlation showing which users have which
+    --                                         permissions on a given container
     CREATE TABLE IF NOT EXISTS ItemContainer_User_Permissions
     (
       ItemID INT NOT NULL,  -- should be an ItemContainer ItemID only, not individual items

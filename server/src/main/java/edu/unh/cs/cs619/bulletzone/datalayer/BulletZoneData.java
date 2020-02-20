@@ -127,12 +127,12 @@ public class BulletZoneData {
      * at construction time has the appropriate permissions to execute whatever is in the script).
      * @param resourceName  Name of the Java resource file, usually of the form "/SomeFile.sql"
      * @param errorMessage  String to be printed
-     * @return  A SQL ResultSet with the raw result of the query.
+     * @return  Number of rows impacted by the query.
      */
-    ResultSet executeScript(String resourceName, String errorMessage)
+    int executeScript(String resourceName, String errorMessage)
     {
         Connection dataConnection = getConnection();
-        ResultSet resultSet = null;
+        int resultSet = 0;
 
         if (dataConnection == null)
             return resultSet;
@@ -144,7 +144,7 @@ public class BulletZoneData {
                 System.err.println("missing resource file");
             else {
                 String createQuery = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
-                resultSet = statement.executeQuery(createQuery);
+                resultSet = statement.executeUpdate(createQuery);
             }
         } catch (SQLException e) {
             throw new IllegalStateException(errorMessage, e);

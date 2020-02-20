@@ -17,25 +17,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added getCategories and getItems to API for AccountController, along with new StringArrayWrapper">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Describable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java" afterDir="false" />
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties.">
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/DriveType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/EngineType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GeneratorType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/WeaponType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -144,86 +132,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="149" selection-start-line="149" selection-end-line="149" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#588#607#0" expanded="true" />
-                <element signature="e#664#683#0" expanded="true" />
-                <element signature="e#743#762#0" expanded="true" />
-                <element signature="e#823#842#0" expanded="true" />
-                <element signature="e#900#919#0" expanded="true" />
-                <element signature="e#976#995#0" expanded="true" />
-                <element signature="e#2237#2238#0" expanded="true" />
-                <element signature="e#2277#2278#0" expanded="true" />
-                <element signature="e#2595#2596#0" expanded="true" />
-                <element signature="e#2639#2640#0" expanded="true" />
-                <element signature="e#2945#2946#0" expanded="true" />
-                <element signature="e#2985#2986#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="37" column="38" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#343#366#0" expanded="true" />
-                <element signature="e#3687#3688#0" expanded="true" />
-                <element signature="e#3724#3725#0" expanded="true" />
-                <element signature="e#3754#3755#0" expanded="true" />
-                <element signature="e#3781#3782#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-153">
-              <caret line="42" column="34" lean-forward="true" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="9" selection-start-line="9" selection-end-line="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="64" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
-              <folding>
-                <element signature="e#0#85#0" expanded="true" />
-                <element signature="e#499#500#0" expanded="true" />
-                <element signature="e#527#528#0" expanded="true" />
-                <element signature="e#1182#1183#0" expanded="true" />
-                <element signature="e#1216#1217#0" expanded="true" />
-                <element signature="e#1223#1224#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1666">
+              <caret line="98" selection-start-line="98" selection-end-line="98" />
             </state>
           </provider>
         </entry>
@@ -240,23 +152,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="30" column="24" lean-forward="true" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
+            <state relative-caret-position="459">
+              <caret line="30" column="24" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2229#2230#0" expanded="true" />
                 <element signature="e#2270#2271#0" expanded="true" />
+                <element signature="e#2484#2485#0" expanded="true" />
                 <element signature="e#2528#2529#0" expanded="true" />
+                <element signature="e#2674#2675#0" expanded="true" />
                 <element signature="e#2712#2713#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="175" column="70" lean-forward="true" selection-start-line="175" selection-start-column="70" selection-end-line="175" selection-end-column="70" />
+            <state relative-caret-position="300">
+              <caret line="158" selection-start-line="158" selection-end-line="158" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -265,9 +180,44 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="48" column="49" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
+            <state relative-caret-position="962">
               <caret line="82" selection-start-line="82" selection-end-line="82" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -284,6 +234,7 @@
         <option value="Enum" />
         <option value="Class" />
         <option value="Interface" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -318,6 +269,7 @@
       <find>propertyMap</find>
       <find>generatorMap</find>
       <find>coninuing</find>
+      <find>UserF</find>
     </findStrings>
     <replaceStrings>
       <replace>id</replace>
@@ -344,10 +296,8 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/DriveType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GeneratorType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRecord.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRecord.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemContainmentRecord.java" />
         <option value="$PROJECT_DIR$/server/src/main/resources/META-INF/spring.factories" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/package-info.java" />
@@ -358,20 +308,16 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemPermissionRecord.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Permission.java" />
-        <option value="$PROJECT_DIR$/server/build.gradle" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/PermissionManager.java" />
         <option value="$PROJECT_DIR$/client/build.gradle" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/AccountController.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/util/StringArrayWrapper.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/EngineType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Describable.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java" />
@@ -379,6 +325,13 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" />
+        <option value="$PROJECT_DIR$/server/build.gradle" />
+        <option value="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
       </list>
     </option>
   </component>
@@ -401,6 +354,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="PackagesPane">
         <subPane>
           <expand>
@@ -416,7 +370,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -597,10 +550,18 @@
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1537819400358" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="device.picker.selection" value="Nexus_7_API_23" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Spring_2020_GridSim" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="edu.unh.cs.cs619.bulletzone.datalayer" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
       <recent name="edu.unh.cs.cs619.bulletzone.datalayer" />
     </key>
@@ -623,7 +584,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BulletZoneData">
+  <component name="RunManager" selected="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin">
     <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -633,10 +594,18 @@
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
-    <configuration name="All in server" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.datalayer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.unh.cs.cs619.bulletzone.datalayer" />
+      <option name="MAIN_CLASS_NAME" value="edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneDataTest" />
+      <option name="METHOD_NAME" value="items_createUser_validatesLogin" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
@@ -838,19 +807,19 @@
     </configuration>
     <list>
       <item itemvalue="Android App.client" />
-      <item itemvalue="Android JUnit.All in server" />
       <item itemvalue="Application.BulletZoneServer" />
       <item itemvalue="Application.BulletZoneData" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
+      <item itemvalue="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin" />
         <item itemvalue="Application.BulletZoneData" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
         <item itemvalue="Application.BulletZoneServer" />
-        <item itemvalue="Android JUnit.All in server" />
       </list>
     </recent_temporary>
   </component>
@@ -1089,12 +1058,40 @@
       <option name="project" value="LOCAL" />
       <updated>1573246517013</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties.">
+      <created>1581437678908</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1581437678908</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TestHistory">
     <history-entry file="All_in_server - 2019.03.29 at 11h 00m 37s.xml">
       <configuration name="All in server" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 06m 41s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 19m 57s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 20m 30s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 23m 02s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 26m 05s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 26m 45s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.20 at 16h 41m 50s.xml">
+      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -1123,19 +1120,19 @@
       <window_info anchor="bottom" id="DB Execution Console" order="0" weight="0.3324709" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32816538" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.45049953" visible="true" weight="0.36434108" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.6345811" visible="true" weight="0.36434108" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39664084" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32988358" />
       <window_info anchor="bottom" id="Gradle Console" order="8" sideWeight="0.5019139" side_tool="true" weight="0.32951757" />
       <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54950047" side_tool="true" weight="0.32846716" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.36541888" side_tool="true" visible="true" weight="0.36434108" />
       <window_info anchor="bottom" id="Logcat" order="11" weight="0.32729626" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3260026" />
-      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.4008529" weight="0.31217617" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49821746" weight="0.3255814" />
+      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.40017825" weight="0.3113695" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.8641148" weight="0.3260026" />
-      <window_info anchor="bottom" id="Build" order="15" weight="0.21834625" />
+      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.49910873" weight="0.21834625" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24966262" />
@@ -1150,7 +1147,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Item creation works now. Common and Status tables added." />
     <MESSAGE value="Added some user and permission routines, moved main-testing to BulletZoneData" />
     <MESSAGE value="Changed interface to make more compartmentalized, stuck on user validation now..." />
     <MESSAGE value="User validation now works." />
@@ -1175,31 +1171,10 @@
     <MESSAGE value="Added jcenter() reference to build.gradle, started adding AccountController to server" />
     <MESSAGE value="Added getCategories and getItems to API for AccountController, along with new StringArrayWrapper" />
     <MESSAGE value="Modified database population values to make tank and battle-suit calculations more appropriate." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified database population values to make tank and battle-suit calculations more appropriate." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java</url>
-          <line>163</line>
-          <properties />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Status.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#132#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Permission.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1210,13 +1185,6 @@
     <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/User" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mariadb.jdbc/mariadb-java-client/2.1.2/2484a99a6a86491531d17d491c931de8942ae0/mariadb-java-client-2.1.2.jar!/org/mariadb/jdbc/MariaDbStatement.class" />
     <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6195/tables/ItemType" />
-    <entry file="file://$PROJECT_DIR$/server/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" selection-start-line="43" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1237,9 +1205,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/model/Tank.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
@@ -1257,9 +1222,6 @@
           <caret line="47" column="56" selection-start-line="47" selection-start-column="56" selection-end-line="47" selection-end-column="56" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/util/StringArrayWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1372,13 +1334,6 @@
     </entry>
     <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6191/tables/ItemCategory" />
     <entry file="db://96b6d638-58aa-45ad-9816-9f712dbffa6f/objects/schemas/cs6191/tables/ItemType" />
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="82" column="21" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemContainmentRecord.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1401,34 +1356,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/EngineType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GeneratorType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="17" lean-forward="true" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/DriveType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" selection-start-line="12" selection-end-line="19" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/EngineType.java" />
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GeneratorType.java" />
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/DriveType.java" />
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/FrameType.java" />
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -1436,10 +1367,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemPermissionRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2210">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="37" column="38" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRecord.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="11" column="64" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#85#0" expanded="true" />
+            <element signature="e#1159#1160#0" expanded="true" />
+            <element signature="e#1223#1224#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1452,71 +1429,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="30" column="24" lean-forward="true" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
+        <state relative-caret-position="459">
+          <caret line="30" column="24" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2229#2230#0" expanded="true" />
             <element signature="e#2270#2271#0" expanded="true" />
+            <element signature="e#2484#2485#0" expanded="true" />
             <element signature="e#2528#2529#0" expanded="true" />
+            <element signature="e#2674#2675#0" expanded="true" />
             <element signature="e#2712#2713#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java">
+    <entry file="file://$PROJECT_DIR$/server/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="37" column="38" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#343#366#0" expanded="true" />
-            <element signature="e#3687#3688#0" expanded="true" />
-            <element signature="e#3724#3725#0" expanded="true" />
-            <element signature="e#3754#3755#0" expanded="true" />
-            <element signature="e#3781#3782#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153">
-          <caret line="42" column="34" lean-forward="true" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#588#607#0" expanded="true" />
-            <element signature="e#664#683#0" expanded="true" />
-            <element signature="e#743#762#0" expanded="true" />
-            <element signature="e#823#842#0" expanded="true" />
-            <element signature="e#900#919#0" expanded="true" />
-            <element signature="e#976#995#0" expanded="true" />
-            <element signature="e#2237#2238#0" expanded="true" />
-            <element signature="e#2277#2278#0" expanded="true" />
-            <element signature="e#2595#2596#0" expanded="true" />
-            <element signature="e#2639#2640#0" expanded="true" />
-            <element signature="e#2945#2946#0" expanded="true" />
-            <element signature="e#2985#2986#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="324">
+          <caret line="48" column="49" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
+        <state relative-caret-position="962">
           <caret line="82" selection-start-line="82" selection-end-line="82" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1524,37 +1460,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="64" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#85#0" expanded="true" />
-            <element signature="e#499#500#0" expanded="true" />
-            <element signature="e#527#528#0" expanded="true" />
-            <element signature="e#1182#1183#0" expanded="true" />
-            <element signature="e#1216#1217#0" expanded="true" />
-            <element signature="e#1223#1224#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="181">
+          <caret line="203" column="47" selection-start-line="203" selection-start-column="47" selection-end-line="203" selection-end-column="47" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemPermissionRecord.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
+        <state relative-caret-position="306">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1666">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="175" column="70" lean-forward="true" selection-start-line="175" selection-start-column="70" selection-end-line="175" selection-end-column="70" />
+        <state relative-caret-position="300">
+          <caret line="158" selection-start-line="158" selection-end-line="158" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
