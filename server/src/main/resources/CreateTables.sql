@@ -1,4 +1,4 @@
-BEGIN NOT ATOMIC
+-- BEGIN NOT ATOMIC
     -- Common table -- lists global unrelated constants in a single row
     CREATE TABLE IF NOT EXISTS Common
     (
@@ -187,4 +187,4 @@ BEGIN NOT ATOMIC
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
-END
+-- END

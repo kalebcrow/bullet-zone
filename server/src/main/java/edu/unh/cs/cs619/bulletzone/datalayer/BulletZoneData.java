@@ -27,6 +27,8 @@ public class BulletZoneData {
     private String _url;
     private String _username;
     private String _password;
+    private String _commandPrefix = "";
+    private String _commandSuffix = "";
     public ItemTypeRepository types = new ItemTypeRepository();
     public GameItemRepository items = new GameItemRepository();
     public GameUserRepository users = new GameUserRepository();
@@ -43,31 +45,53 @@ public class BulletZoneData {
         _url = url;
         _username = username;
         _password = password;
+        _commandPrefix = "BEGIN NOT ATOMIC\n";
+        _commandSuffix = "\nEND\n";
         Connection dataConnection = getConnection();
         if (dataConnection == null)
             return;
 
-        try {
-            Statement statement = dataConnection.createStatement();
-            ResultSet resultSet = statement.executeQuery("show tables");
-            if (!resultSet.next()) //no next row means we don't have any tables
-                initializeData();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot access tables!", e);
-        }
-
-        try {
-            types.readStaticInfo(dataConnection);
-            items.refresh(this, types);
-            users.refresh(this, items);
-            permissions.refresh(this , items, users);
-        } catch (IllegalStateException e) {
-            System.out.println("Unable to read initial data. Exception listed below, but continuing...");
-            System.out.println(e.toString());
-        }
+        initialize(dataConnection);
     }
 
     /**
+     * Opens an in-memory database (for testing purposes) and initializes internal structures
+     */
+    public BulletZoneData() {
+        _url = "jdbc:h2:mem:testDb;DB_CLOSE_DELAY=-1";
+        //_url = "jdbc:derby:memory:testDB;create=true";
+        _username = "sa";
+        _password = "sa";
+
+        try {
+            Class.forName("org.h2.Driver");
+            //Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Connection dataConnection = getConnection();
+        if (dataConnection == null)
+            return;
+/*
+        try {
+            Statement statement = dataConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SHOW DATABASES;");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot show in-memory databases", e);
+        }
+
+        try {
+            Statement statement = dataConnection.createStatement();
+            statement.executeUpdate("CREATE DATABASE testDB;");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot create in-memory database", e);
+        }
+*/
+        initialize(dataConnection);
+    }
+
+     /**
      * Lists the names of all tables in the currently open database to System.out, one per line.
      * This is intended to be a debugging method only.
      */
@@ -104,6 +128,32 @@ public class BulletZoneData {
         return dataConnection;
     }
 
+    /**
+     * Shared construction details for ensuring the tables for the database exist
+     * and filling the in-memory data structures
+     * @param dataConnection Connection to an existing database
+     */
+    private void initialize(Connection dataConnection)
+    {
+        try {
+            Statement statement = dataConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery("show tables");
+            if (!resultSet.next()) //no next row means we don't have any tables
+                initializeData();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot access tables!", e);
+        }
+
+        try {
+            types.readStaticInfo(dataConnection);
+            items.refresh(this, types);
+            users.refresh(this, items);
+            permissions.refresh(this , items, users);
+        } catch (IllegalStateException e) {
+            System.out.println("Unable to read initial data. Exception listed below, but continuing...");
+            System.out.println(e.toString());
+        }
+    }
     /**
      * Assuming an empty database, creates all the appropriate tables and then populates
      * them with appropriate data (especially for enumeration tables).
@@ -144,7 +194,7 @@ public class BulletZoneData {
                 System.err.println("missing resource file");
             else {
                 String createQuery = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
-                resultSet = statement.executeUpdate(createQuery);
+                resultSet = statement.executeUpdate(_commandPrefix + createQuery + _commandSuffix);
             }
         } catch (SQLException e) {
             throw new IllegalStateException(errorMessage, e);

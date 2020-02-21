@@ -8,6 +8,7 @@ import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -191,22 +192,24 @@ public class GameUserRepository {
     }
 
     /**
-     * Converts a ResultSet to a GameUserRecord for further processing. It assumes that the record
-     * it should be getting data for was labeled with the name "u".
-     * @param userResult    The ResultSet that's the result of an SQL query with item labeled "u"
+     * Converts a ResultSet to a GameUserRecord for further processing.
+     * @param userResult    The ResultSet that's the result of an SQL query
      * @return GameItemRecord filled with data from the current item in the ResultSet.
      */
     private GameUserRecord makeUserRecordFromResultSet(ResultSet userResult) {
         GameUserRecord rec = new GameUserRecord();
         try {
-            rec.userID = userResult.getInt("u.UserID");
-            rec.name = userResult.getString("u.Name");
-            rec.username = userResult.getString("u.Username");
-            rec.passwordHash = decocdeBytesAsHex(userResult.getString("u.PasswordHash"));
-            rec.passwordSalt = decocdeBytesAsHex(userResult.getString("u.PasswordSalt"));
-            rec.statusID = userResult.getInt("u.StatusID");
-            rec.created = userResult.getTimestamp("u.Created");
-            rec.deleted = userResult.getTimestamp("u.Deleted");
+            ResultSetMetaData rsmd = userResult.getMetaData();
+            String firstColumnName = rsmd.getColumnName(1);
+            System.out.println(firstColumnName);
+            rec.userID = userResult.getInt("UserID");
+            rec.name = userResult.getString("Name");
+            rec.username = userResult.getString("Username");
+            rec.passwordHash = decocdeBytesAsHex(userResult.getString("PasswordHash"));
+            rec.passwordSalt = decocdeBytesAsHex(userResult.getString("PasswordSalt"));
+            rec.statusID = userResult.getInt("StatusID");
+            rec.created = userResult.getTimestamp("Created");
+            rec.deleted = userResult.getTimestamp("Deleted");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);
         }

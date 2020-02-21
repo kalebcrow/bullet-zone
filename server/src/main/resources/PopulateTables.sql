@@ -1,4 +1,4 @@
-BEGIN NOT ATOMIC
+-- BEGIN NOT ATOMIC
     INSERT INTO Common
         ( Version)
     VALUES
@@ -96,4 +96,4 @@ BEGIN NOT ATOMIC
         (121, 'Fusion generator', 12, 1.0, 2.0, 400.0, 2.0, 10.0, 0.0),
         (131, 'Deflector shield', 13, 1.0, 2.0, 300.0, -1.0, 100.0, 0.5),
         (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, -0.5, 0.0, 1.0);
-END
+-- END
