@@ -199,9 +199,9 @@ public class GameUserRepository {
     private GameUserRecord makeUserRecordFromResultSet(ResultSet userResult) {
         GameUserRecord rec = new GameUserRecord();
         try {
-            ResultSetMetaData rsmd = userResult.getMetaData();
-            String firstColumnName = rsmd.getColumnName(1);
-            System.out.println(firstColumnName);
+            //ResultSetMetaData rsmd = userResult.getMetaData();
+            //String firstColumnName = rsmd.getColumnName(1);
+            //System.out.println(firstColumnName);
             rec.userID = userResult.getInt("UserID");
             rec.name = userResult.getString("Name");
             rec.username = userResult.getString("Username");

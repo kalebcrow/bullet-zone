@@ -26,6 +26,7 @@ public class GameUser {
     GameUser(GameUserRecord rec) {
         userID = rec.userID;
         name = rec.name;
+        username = rec.username;
         statusID = rec.statusID;
     }
 

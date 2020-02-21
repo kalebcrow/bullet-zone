@@ -17,14 +17,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Fixed some SQL syntax to be more compatible with in-memory processors, but still running into trouble with BEGIN NOT ATOMIC...">
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Found something that seems to work for an in-memory database. Still need to make actual tests.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -160,20 +158,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/resources/DropTables.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+            <state relative-caret-position="368">
+              <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -181,11 +170,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="25" column="34" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="207" column="54" selection-start-line="207" selection-start-column="54" selection-end-line="207" selection-end-column="54" />
+            <state relative-caret-position="232">
+              <caret line="105" column="27" selection-start-line="105" selection-start-column="27" selection-end-line="105" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -202,8 +203,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="226">
+              <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -324,7 +325,6 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/web/GamesController.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/PermissionRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemPermissionRecord.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Permission.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/BulletZoneServer.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemRepository.java" />
@@ -345,11 +345,12 @@
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" />
         <option value="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" />
-        <option value="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" />
-        <option value="$PROJECT_DIR$/server/build.gradle" />
-        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" />
         <option value="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" />
         <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java" />
+        <option value="$PROJECT_DIR$/server/build.gradle" />
+        <option value="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java" />
       </list>
     </option>
   </component>
@@ -361,8 +362,8 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="177" />
-    <option name="y" value="83" />
+    <option name="x" value="207" />
+    <option name="y" value="56" />
     <option name="width" value="1524" />
     <option name="height" value="930" />
   </component>
@@ -491,6 +492,21 @@
               <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -498,7 +514,7 @@
               <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="bulletzone" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -507,28 +523,10 @@
               <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="bulletzone" type="462c0819:PsiDirectoryNode" />
               <item name="datalayer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bulletzone" type="462c0819:PsiDirectoryNode" />
-              <item name="repository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BulletZone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BulletZone" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -602,7 +600,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BulletZoneData">
+  <component name="RunManager" selected="Android JUnit.BulletZoneDataTest">
     <configuration name="&lt;template&gt;" type="JUnit" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -611,6 +609,22 @@
     </configuration>
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="BulletZoneDataTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.datalayer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.unh.cs.cs619.bulletzone.datalayer" />
+      <option name="MAIN_CLASS_NAME" value="edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneDataTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
@@ -702,20 +716,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.datalayer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BulletZoneServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="edu.unh.cs.cs619.bulletzone.BulletZoneServer" />
-      <module name="server" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="edu.unh.cs.cs619.bulletzone.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -825,19 +825,19 @@
     </configuration>
     <list>
       <item itemvalue="Android App.client" />
-      <item itemvalue="Application.BulletZoneServer" />
       <item itemvalue="Application.BulletZoneData" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
       <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
       <item itemvalue="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin" />
+      <item itemvalue="Android JUnit.BulletZoneDataTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Android JUnit.BulletZoneDataTest" />
         <item itemvalue="Application.BulletZoneData" />
         <item itemvalue="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [bootRepackage]" />
         <item itemvalue="Gradle.D:/mdp/Documents/CS_619_materials/BulletZone/server [jar]" />
-        <item itemvalue="Application.BulletZoneServer" />
       </list>
     </recent_temporary>
   </component>
@@ -1090,39 +1090,46 @@
       <option name="project" value="LOCAL" />
       <updated>1582235171877</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Found something that seems to work for an in-memory database. Still need to make actual tests.">
+      <created>1582314955763</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1582314955764</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 20m 03s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 17m 41s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 20m 36s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 18m 55s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 24m 16s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 20m 55s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 24m 51s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 21m 16s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 31m 32s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 22m 14s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 32m 20s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 24m 43s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 32m 48s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 29m 03s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 44m 53s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 30m 00s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 53m 17s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 35m 31s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="BulletZoneDataTest_items_createUser_validatesLogin - 2020.02.21 at 14h 54m 20s.xml">
-      <configuration name="BulletZoneDataTest.items_createUser_validatesLogin" configurationId="AndroidJUnit" />
+    <history-entry file="BulletZoneDataTest - 2020.02.21 at 15h 35m 56s.xml">
+      <configuration name="BulletZoneDataTest" configurationId="AndroidJUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -1135,7 +1142,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="177" y="83" width="1524" height="930" extended-state="0" />
+    <frame x="207" y="56" width="1524" height="930" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="DB Browser" order="0" weight="0.22472678" />
@@ -1151,19 +1158,19 @@
       <window_info anchor="bottom" id="DB Execution Console" order="0" weight="0.3324709" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32816538" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.627451" visible="true" weight="0.36434108" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.78342247" visible="true" weight="0.36434108" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39664084" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32988358" />
       <window_info anchor="bottom" id="Gradle Console" order="8" sideWeight="0.5019139" side_tool="true" weight="0.32951757" />
       <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.37254903" side_tool="true" visible="true" weight="0.36434108" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.21657754" side_tool="true" visible="true" weight="0.36434108" />
       <window_info anchor="bottom" id="Logcat" order="11" sideWeight="0.49821746" weight="0.3268734" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49821746" weight="0.3255814" />
       <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.399287" weight="0.3113695" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.8641148" weight="0.3260026" />
-      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.49108735" weight="0.21834625" />
+      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.4893048" weight="0.21834625" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24966262" />
@@ -1178,7 +1185,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changed interface to make more compartmentalized, stuck on user validation now..." />
     <MESSAGE value="User validation now works." />
     <MESSAGE value="Added Created/Deleted components to Users, Items, BankAccounts, permission correlations, and added new AccountTransferHistory table." />
     <MESSAGE value="Added methods to add/remove items to/from containers." />
@@ -1203,7 +1209,8 @@
     <MESSAGE value="Modified database population values to make tank and battle-suit calculations more appropriate." />
     <MESSAGE value="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties." />
     <MESSAGE value="Fixed some SQL syntax to be more compatible with in-memory processors, but still running into trouble with BEGIN NOT ATOMIC..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed some SQL syntax to be more compatible with in-memory processors, but still running into trouble with BEGIN NOT ATOMIC..." />
+    <MESSAGE value="Found something that seems to work for an in-memory database. Still need to make actual tests." />
+    <option name="LAST_COMMIT_MESSAGE" value="Found something that seems to work for an in-memory database. Still need to make actual tests." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/Permission.java">
@@ -1333,16 +1340,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/repository/InMemoryGameRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-187">
@@ -1462,13 +1459,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameItemContainer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -1505,16 +1495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/resources/CreateTables.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="821">
@@ -1532,10 +1512,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="47" column="6" selection-start-line="47" selection-start-column="6" selection-end-line="47" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="207" column="54" selection-start-line="207" selection-start-column="54" selection-end-line="207" selection-end-column="54" />
+        <state relative-caret-position="232">
+          <caret line="105" column="27" selection-start-line="105" selection-start-column="27" selection-end-line="105" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/GameUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="25" column="34" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
