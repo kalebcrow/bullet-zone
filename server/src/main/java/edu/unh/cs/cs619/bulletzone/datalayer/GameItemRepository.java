@@ -79,9 +79,12 @@ public class GameItemRepository {
      *                  or null if the type is not a container type.
      */
     public GameItemContainer createContainer(String typeName) {
-        ItemType type = typeRepo.get(typeName);
-        if (type.isContainer())
-            return (GameItemContainer)create(typeRepo.get(typeName));
+        return createContainer(typeRepo.get(typeName));
+    }
+
+    public GameItemContainer createContainer(ItemType itemType) {
+        if (itemType.isContainer())
+            return (GameItemContainer)create(itemType);
         else
             return null;
     }

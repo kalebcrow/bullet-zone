@@ -1,4 +1,3 @@
--- BEGIN NOT ATOMIC
     INSERT INTO Common
         ( Version)
     VALUES
@@ -84,7 +83,7 @@
         (32, 'Standard truck generator', 3, 1.0, 1.0, 40.0, 1.0, 0.0, 0.0),
         (33, 'Portable generator', 3, 0.1, 0.1, 5.0, 0.2, 0.0, 0.0),
         -- Engines
-        (41, 'Standard tank enigne', 4, 4.0, 6.0, 100.0, 2.0, 0.0, 0.0),
+        (41, 'Standard tank engine', 4, 4.0, 6.0, 100.0, 2.0, 0.0, 0.0),
         (42, 'Standard truck engine', 4, 2.0, 2.0, 60.0, 2.0, 0.0, 0.0),
         (43, 'Battle-suit power converter', 4, 0.1, 0.1, 7.0, 0.5, 0.1, 0.0),
         -- Drives
@@ -96,4 +95,3 @@
         (121, 'Fusion generator', 12, 1.0, 2.0, 400.0, 2.0, 10.0, 0.0),
         (131, 'Deflector shield', 13, 1.0, 2.0, 300.0, -1.0, 100.0, 0.5),
         (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, -0.5, 0.0, 1.0);
--- END

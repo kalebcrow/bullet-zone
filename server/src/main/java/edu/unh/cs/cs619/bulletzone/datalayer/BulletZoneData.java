@@ -29,7 +29,7 @@ public class BulletZoneData {
     private String _password;
     private String _commandPrefix = "";
     private String _commandSuffix = "";
-    public ItemTypeRepository types = new ItemTypeRepository();
+    public ItemTypeRepository types;
     public GameItemRepository items = new GameItemRepository();
     public GameUserRepository users = new GameUserRepository();
     public PermissionManager permissions = new PermissionManager();
@@ -45,7 +45,7 @@ public class BulletZoneData {
         _url = url;
         _username = username;
         _password = password;
-        _commandPrefix = "BEGIN NOT ATOMIC\n";
+        _commandPrefix = "BEGIN NOT ATOMIC\n"; //needed for MairaDB, for whatever reason
         _commandSuffix = "\nEND\n";
         Connection dataConnection = getConnection();
         if (dataConnection == null)
@@ -58,6 +58,7 @@ public class BulletZoneData {
      * Opens an in-memory database (for testing purposes) and initializes internal structures
      */
     public BulletZoneData() {
+        // see https://www.baeldung.com/java-in-memory-databases for other in-memory DB options
         _url = "jdbc:h2:mem:testDb;DB_CLOSE_DELAY=-1";
         //_url = "jdbc:derby:memory:testDB;create=true";
         _username = "sa";
@@ -73,21 +74,7 @@ public class BulletZoneData {
         Connection dataConnection = getConnection();
         if (dataConnection == null)
             return;
-/*
-        try {
-            Statement statement = dataConnection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SHOW DATABASES;");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot show in-memory databases", e);
-        }
 
-        try {
-            Statement statement = dataConnection.createStatement();
-            statement.executeUpdate("CREATE DATABASE testDB;");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot create in-memory database", e);
-        }
-*/
         initialize(dataConnection);
     }
 
@@ -145,7 +132,7 @@ public class BulletZoneData {
         }
 
         try {
-            types.readStaticInfo(dataConnection);
+            types = new ItemTypeRepository(dataConnection);
             items.refresh(this, types);
             users.refresh(this, items);
             permissions.refresh(this , items, users);
@@ -211,8 +198,8 @@ public class BulletZoneData {
         d.rebuildData();
         //d.listTables();
 
-        GameItemContainer bay = d.items.createContainer("Garage bay");
-        GameItemContainer tank1 = d.items.createContainer("Standard tank frame");
+        GameItemContainer bay = d.items.createContainer(d.types.GarageBay);
+        GameItemContainer tank1 = d.items.createContainer(d.types.TankFrame);
         GameItemContainer tank2 = d.items.createContainer("Standard tank frame");
         d.items.addItemToContainer(tank1, bay);
         d.items.addItemToContainer(tank2, bay);

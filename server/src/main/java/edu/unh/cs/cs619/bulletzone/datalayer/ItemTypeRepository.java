@@ -21,6 +21,43 @@ public class ItemTypeRepository {
     HashMap<Integer, ItemType> driveMap = new HashMap<Integer, ItemType>();
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
 
+    final public ItemType GarageBay, StorageContainer;
+    final public ItemType TankFrame, TruckFrame, BattleSuit;
+    final public ItemType VehicleExpansionFrame, BattleSuitExpansionFrame;
+    final public ItemType TankCannon, PlasmaCannon, ParticleBeamGun;
+    final public ItemType TankGenerator, TruckGenerator, PortableGenerator;
+    final public ItemType TankEngine, TruckEngine, BattleSuitPowerConverter;
+    final public ItemType TankDriveTracks, TruckDriveTracks, BattleSuitLegAssists;
+    final public ItemType GravAssist, FusionGenerator, DeflectorShield, AutomatedRepairKit;
+
+    public ItemTypeRepository(Connection dataConnection) {
+        readStaticInfo(dataConnection);
+
+        GarageBay = nameToTypeMap.get("Garage bay");
+        StorageContainer = nameToTypeMap.get("Storage container");
+        TankFrame = nameToTypeMap.get("Standard tank frame");
+        TruckFrame = nameToTypeMap.get("Standard truck frame");
+        BattleSuit = nameToTypeMap.get("Standard battle suit");
+        VehicleExpansionFrame = nameToTypeMap.get("Vehicle expansion frame");
+        BattleSuitExpansionFrame = nameToTypeMap.get("Battle suit expansion frame");
+        TankCannon = nameToTypeMap.get("Standard tank cannon");
+        PlasmaCannon = nameToTypeMap.get("Plasma cannon");
+        ParticleBeamGun = nameToTypeMap.get("Particle beam gun");
+        TankGenerator = nameToTypeMap.get("Standard tank generator");
+        TruckGenerator = nameToTypeMap.get("Standard truck generator");
+        PortableGenerator = nameToTypeMap.get("Portable generator");
+        TankEngine = nameToTypeMap.get("Standard tank engine");
+        TruckEngine = nameToTypeMap.get("Standard truck engine");
+        BattleSuitPowerConverter = nameToTypeMap.get("Battle-suit power converter");
+        TankDriveTracks = nameToTypeMap.get("Standard tank drive tracks");
+        TruckDriveTracks = nameToTypeMap.get("Standard truck drive wheels");
+        BattleSuitLegAssists = nameToTypeMap.get("Battle-suit leg assists");
+        GravAssist = nameToTypeMap.get("Grav-assist");
+        FusionGenerator = nameToTypeMap.get("Fusion generator");
+        DeflectorShield = nameToTypeMap.get("Deflector shield");
+        AutomatedRepairKit = nameToTypeMap.get("Automated repair kit");
+    }
+
     /**
      * Gives the ItemType associated with the passed name
      * @param typeName  Name of the desired type (case-sensitive)
@@ -94,7 +131,7 @@ public class ItemTypeRepository {
      *
      * @param dataConnection connection on which to make SQL queries
      */
-    void readStaticInfo(Connection dataConnection) {
+    private void readStaticInfo(Connection dataConnection) {
         try {
             Statement statement = dataConnection.createStatement();
 
