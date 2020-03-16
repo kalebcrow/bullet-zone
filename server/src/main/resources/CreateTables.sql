@@ -187,4 +187,18 @@
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
 
+    -- TerrainType table -- vital information about terrain types
+    CREATE TABLE IF NOT EXISTS TerrainType
+    (
+      TerrainTypeID INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
+      Solid BOOLEAN NOT NULL,    -- Land, basically
+      Liquid BOOLEAN NOT NULL,   -- Water/magma/etc... coast is both water & land
+      Difficulty FLOAT,          -- roughness; NULL = units cannot enter
+      MaxSize FLOAT,             -- NULL = no limit; forests might allow trucks/soldiers, fortifications only soldiers, walls nothing
+      Strength FLOAT,            -- blocks bullets if non-null; becomes debris at/below zero
+      Hardness FLOAT,            -- to drilling/bombardment. Blocks bullets if not null; divide damage by this amount
+      Damage FLOAT               -- inflicted per second on unit present; repairs if negative
+    );
+
 -- END
