@@ -22,12 +22,12 @@ public class ItemTypeRepository {
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
 
     final public ItemType GarageBay, StorageContainer;
-    final public ItemType TankFrame, TruckFrame, BattleSuit;
+    final public ItemType TankFrame, TruckFrame, BattleSuit, ShipFrame;
     final public ItemType VehicleExpansionFrame, BattleSuitExpansionFrame;
-    final public ItemType TankCannon, PlasmaCannon, ParticleBeamGun;
-    final public ItemType TankGenerator, TruckGenerator, PortableGenerator;
-    final public ItemType TankEngine, TruckEngine, BattleSuitPowerConverter;
-    final public ItemType TankDriveTracks, TruckDriveTracks, BattleSuitLegAssists;
+    final public ItemType TankCannon, PlasmaCannon, ParticleBeamGun, LargePlasmaCannon;
+    final public ItemType TankGenerator, TruckGenerator, PortableGenerator, ShipGenerator;
+    final public ItemType TankEngine, TruckEngine, BattleSuitPowerConverter, ShipEngine;
+    final public ItemType TankDriveTracks, TruckDriveTracks, BattleSuitLegAssists, ShipDriveImpellers;
     final public ItemType GravAssist, FusionGenerator, DeflectorShield, AutomatedRepairKit;
 
     public ItemTypeRepository(Connection dataConnection) {
@@ -38,20 +38,25 @@ public class ItemTypeRepository {
         TankFrame = nameToTypeMap.get("Standard tank frame");
         TruckFrame = nameToTypeMap.get("Standard truck frame");
         BattleSuit = nameToTypeMap.get("Standard battle suit");
+        ShipFrame = nameToTypeMap.get("Standard ship frame");
         VehicleExpansionFrame = nameToTypeMap.get("Vehicle expansion frame");
         BattleSuitExpansionFrame = nameToTypeMap.get("Battle suit expansion frame");
         TankCannon = nameToTypeMap.get("Standard tank cannon");
         PlasmaCannon = nameToTypeMap.get("Plasma cannon");
         ParticleBeamGun = nameToTypeMap.get("Particle beam gun");
+        LargePlasmaCannon = nameToTypeMap.get("Large Plasma cannon");
         TankGenerator = nameToTypeMap.get("Standard tank generator");
         TruckGenerator = nameToTypeMap.get("Standard truck generator");
         PortableGenerator = nameToTypeMap.get("Portable generator");
+        ShipGenerator = nameToTypeMap.get("Standard ship generator");
         TankEngine = nameToTypeMap.get("Standard tank engine");
         TruckEngine = nameToTypeMap.get("Standard truck engine");
         BattleSuitPowerConverter = nameToTypeMap.get("Battle-suit power converter");
+        ShipEngine = nameToTypeMap.get("Standard ship engine");
         TankDriveTracks = nameToTypeMap.get("Standard tank drive tracks");
         TruckDriveTracks = nameToTypeMap.get("Standard truck drive wheels");
         BattleSuitLegAssists = nameToTypeMap.get("Battle-suit leg assists");
+        ShipDriveImpellers = nameToTypeMap.get("Standard ship drive impellers");
         GravAssist = nameToTypeMap.get("Grav-assist");
         FusionGenerator = nameToTypeMap.get("Fusion generator");
         DeflectorShield = nameToTypeMap.get("Deflector shield");

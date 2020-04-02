@@ -54,6 +54,7 @@ public class BulletZoneDataTest {
         types.add(db.types.TankFrame);
         types.add(db.types.TruckFrame);
         types.add(db.types.BattleSuit);
+        types.add(db.types.ShipFrame);
         types.add(db.types.VehicleExpansionFrame);
         types.add(db.types.BattleSuitExpansionFrame);
         for(ItemType t : types) {
@@ -70,15 +71,19 @@ public class BulletZoneDataTest {
         types.add(db.types.TankCannon);
         types.add(db.types.PlasmaCannon);
         types.add(db.types.ParticleBeamGun);
+        types.add(db.types.LargePlasmaCannon);
         types.add(db.types.TankGenerator);
         types.add(db.types.TruckGenerator);
         types.add(db.types.PortableGenerator);
+        types.add(db.types.ShipGenerator);
         types.add(db.types.TankEngine);
         types.add(db.types.TruckEngine);
         types.add(db.types.BattleSuitPowerConverter);
+        types.add(db.types.ShipEngine);
         types.add(db.types.TankDriveTracks);
         types.add(db.types.TruckDriveTracks);
         types.add(db.types.BattleSuitLegAssists);
+        types.add(db.types.ShipDriveImpellers);
         types.add(db.types.GravAssist);
         types.add(db.types.FusionGenerator);
         types.add(db.types.DeflectorShield);

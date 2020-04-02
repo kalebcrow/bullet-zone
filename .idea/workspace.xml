@@ -17,21 +17,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Found something that seems to work for an in-memory database. Still need to make actual tests.">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added ships, altered drives, added terrain types to database; updates to gradle files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/CreateTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/DropTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/PopulateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,6 +52,9 @@
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$/client">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -69,6 +65,11 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
                 <item name="server" type="2d1252cf:ModuleNode" />
               </path>
               <path>
@@ -76,6 +77,13 @@
                 <item name="BulletZone" type="f1a62948:ProjectNode" />
                 <item name="server" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="server" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="application" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -83,6 +91,34 @@
                 <item name="server" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="server" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="documentation" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="server" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="help" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="server" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BulletZone" type="f1a62948:ProjectNode" />
+                <item name="server" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="verification" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -130,6 +166,7 @@
     <property name="device.picker.selection" value="Nexus_7_API_23" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Spring_2020_GridSim" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -419,9 +456,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Android JUnit.BulletZoneDataTest" />
-        <item itemvalue="Android App.ClientActivity" />
-        <item itemvalue="Application.BulletZoneServer" />
         <item itemvalue="Application.BulletZoneData" />
+        <item itemvalue="Application.BulletZoneServer" />
+        <item itemvalue="Android App.ClientActivity" />
         <item itemvalue="Android JUnit.BulletZoneDataTest.items_createUser_validatesLogin" />
       </list>
     </recent_temporary>
@@ -682,7 +719,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582314955764</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Added ships, altered drives, added terrain types to database; updates to gradle files">
+      <created>1584383674203</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1584383674203</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TodoView">
@@ -708,7 +752,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="User validation now works." />
     <MESSAGE value="Added Created/Deleted components to Users, Items, BankAccounts, permission correlations, and added new AccountTransferHistory table." />
     <MESSAGE value="Added methods to add/remove items to/from containers." />
     <MESSAGE value="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it." />
@@ -733,6 +776,7 @@
     <MESSAGE value="Added Describable interface and ItemProperty, and revised type system. Made GameItemContainers able to report aggregate properties." />
     <MESSAGE value="Fixed some SQL syntax to be more compatible with in-memory processors, but still running into trouble with BEGIN NOT ATOMIC..." />
     <MESSAGE value="Found something that seems to work for an in-memory database. Still need to make actual tests." />
-    <option name="LAST_COMMIT_MESSAGE" value="Found something that seems to work for an in-memory database. Still need to make actual tests." />
+    <MESSAGE value="Added ships, altered drives, added terrain types to database; updates to gradle files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ships, altered drives, added terrain types to database; updates to gradle files" />
   </component>
 </project>
