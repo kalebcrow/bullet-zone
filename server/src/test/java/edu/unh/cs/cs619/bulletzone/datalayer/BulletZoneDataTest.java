@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -67,31 +68,33 @@ public class BulletZoneDataTest {
     @Test
     public void items$create_hardCodedItemTypeGiven_returnsAppropriateItem()
     {
-        ArrayList<ItemType> types = new ArrayList<>();
-        types.add(db.types.TankCannon);
-        types.add(db.types.PlasmaCannon);
-        types.add(db.types.ParticleBeamGun);
-        types.add(db.types.LargePlasmaCannon);
-        types.add(db.types.TankGenerator);
-        types.add(db.types.TruckGenerator);
-        types.add(db.types.PortableGenerator);
-        types.add(db.types.ShipGenerator);
-        types.add(db.types.TankEngine);
-        types.add(db.types.TruckEngine);
-        types.add(db.types.BattleSuitPowerConverter);
-        types.add(db.types.ShipEngine);
-        types.add(db.types.TankDriveTracks);
-        types.add(db.types.TruckDriveTracks);
-        types.add(db.types.BattleSuitLegAssists);
-        types.add(db.types.ShipDriveImpellers);
-        types.add(db.types.GravAssist);
-        types.add(db.types.FusionGenerator);
-        types.add(db.types.DeflectorShield);
-        types.add(db.types.AutomatedRepairKit);
-        for(ItemType t : types) {
+        HashMap<ItemType, ItemCategory> typeCategories = new HashMap<>();
+        typeCategories.put(db.types.TankCannon, db.categories.Weapon);
+        typeCategories.put(db.types.PlasmaCannon, db.categories.Weapon);
+        typeCategories.put(db.types.ParticleBeamGun, db.categories.Weapon);
+        typeCategories.put(db.types.LargePlasmaCannon, db.categories.Weapon);
+        typeCategories.put(db.types.TankGenerator, db.categories.Generator);
+        typeCategories.put(db.types.TruckGenerator, db.categories.Generator);
+        typeCategories.put(db.types.PortableGenerator, db.categories.Generator);
+        typeCategories.put(db.types.ShipGenerator, db.categories.Generator);
+        typeCategories.put(db.types.TankEngine, db.categories.Engine);
+        typeCategories.put(db.types.TruckEngine, db.categories.Engine);
+        typeCategories.put(db.types.BattleSuitPowerConverter, db.categories.Engine);
+        typeCategories.put(db.types.ShipEngine, db.categories.Engine);
+        typeCategories.put(db.types.TankDriveTracks, db.categories.Drive);
+        typeCategories.put(db.types.TruckDriveTracks, db.categories.Drive);
+        typeCategories.put(db.types.BattleSuitLegAssists, db.categories.Drive);
+        typeCategories.put(db.types.ShipDriveImpellers, db.categories.Drive);
+        typeCategories.put(db.types.GravAssist, db.categories.AntiGravity);
+        typeCategories.put(db.types.FusionGenerator, db.categories.WeaponBoostingGenerator);
+        typeCategories.put(db.types.DeflectorShield, db.categories.ShieldRepair);
+        typeCategories.put(db.types.AutomatedRepairKit, db.categories.ShieldRepair);
+        for(ItemType t : typeCategories.keySet()) {
             GameItem item = db.items.create(t);
             assertThat(item, is(notNullValue()));
-            assertThat(item.getType(), is(t));
+            ItemType it = item.getType();
+            assertThat(it, is(t));
+            assertThat(it.getCategory(), is(typeCategories.get(t)));
         }
     }
 }

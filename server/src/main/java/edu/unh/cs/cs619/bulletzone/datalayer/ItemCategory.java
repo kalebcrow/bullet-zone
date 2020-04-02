@@ -11,14 +11,17 @@ public class ItemCategory {
     //private final int itemPropertyID[];
     public final HashMap<ItemProperty, Integer> propertyMap = new HashMap<ItemProperty, Integer>();
 
-    ItemCategory(int id, String categoryName, int itemProperties[]) {
+    ItemCategory(int id, String categoryName, ItemProperty itemProperties[]) {
         itemCategoryID = id;
         name = categoryName;
         //itemPropertyID = itemProperties;
         int index = 0;
-        for (int propID : itemProperties)
-            propertyMap.put(ItemProperty.get(propID), index++);
+        for (ItemProperty prop : itemProperties)
+            propertyMap.put(prop, index++);
     }
+
+    @Override
+    public String toString() { return name; }
 
     public int getID() {
         return itemCategoryID;

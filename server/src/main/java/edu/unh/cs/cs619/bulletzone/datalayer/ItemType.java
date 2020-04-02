@@ -12,6 +12,9 @@ public class ItemType implements Describable {
         container_flag = (rec.category.getName().equals("Frame"));
     }
 
+    @Override
+    public String toString() { return info.name; }
+
     public int getID() {
         return info.itemTypeID;
     }

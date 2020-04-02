@@ -11,8 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class ItemTypeRepository {
-    HashMap<Integer, ItemCategory> categoryMap = new HashMap<Integer, ItemCategory>();
-    HashMap<Integer, ItemCategory> baseCategoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<Integer, ItemType> typeMap = new HashMap<Integer, ItemType>();
     HashMap<Integer, ItemType> frameMap = new HashMap<Integer, ItemType>();
     HashMap<Integer, ItemType> weaponMap = new HashMap<Integer, ItemType>();
@@ -30,8 +28,8 @@ public class ItemTypeRepository {
     final public ItemType TankDriveTracks, TruckDriveTracks, BattleSuitLegAssists, ShipDriveImpellers;
     final public ItemType GravAssist, FusionGenerator, DeflectorShield, AutomatedRepairKit;
 
-    public ItemTypeRepository(Connection dataConnection) {
-        readStaticInfo(dataConnection);
+    public ItemTypeRepository(Connection dataConnection, ItemCategoryRepository categories) {
+        readStaticInfo(dataConnection, categories);
 
         GarageBay = nameToTypeMap.get("Garage bay");
         StorageContainer = nameToTypeMap.get("Storage container");
@@ -74,11 +72,6 @@ public class ItemTypeRepository {
             throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
         return type;
     }
-
-    /**
-     * @return A collection of all ItemCategories in the database
-     */
-    public Collection<ItemCategory> getCategories() { return baseCategoryMap.values(); }
 
     /**
      * @return A collection of all ItemTypes in the database
@@ -136,36 +129,16 @@ public class ItemTypeRepository {
      *
      * @param dataConnection connection on which to make SQL queries
      */
-    private void readStaticInfo(Connection dataConnection) {
+    private void readStaticInfo(Connection dataConnection, ItemCategoryRepository categories) {
         try {
             Statement statement = dataConnection.createStatement();
-
-            ResultSet itemPropertyResult = statement.executeQuery("SELECT * FROM ItemProperty");
-            while (itemPropertyResult.next()) {
-                int id = itemPropertyResult.getInt("ItemPropertyID");
-                int type = itemPropertyResult.getInt("ItemPropertyTypeID");
-                String name = itemPropertyResult.getString("Name");
-                ItemProperty ip = new ItemProperty(id, name, ItemProperty.PropertyType.values()[type]);
-            }
-
-            ResultSet itemCategoryResult = statement.executeQuery("SELECT * FROM ItemCategory");
-            while (itemCategoryResult.next()) {
-                int id = itemCategoryResult.getInt("ItemCategoryID");
-                int properties[] = new int[3];
-                for (int i = 0; i < 3; i++)
-                    properties[i] = itemCategoryResult.getInt("ItemPropertyID" + (i + 1));
-                ItemCategory ic = new ItemCategory(id, itemCategoryResult.getString("Name"), properties);
-                categoryMap.put(id, ic);
-                if (id < 10)
-                    baseCategoryMap.put(id, ic);
-            }
 
             ResultSet itemTypeResult = statement.executeQuery("SELECT * FROM ItemType");
             while (itemTypeResult.next()) {
                 ItemTypeRecord rec = new ItemTypeRecord();
                 rec.itemTypeID = itemTypeResult.getInt("ItemTypeID");
                 rec.name = itemTypeResult.getString("Name");
-                rec.category = categoryMap.get(itemTypeResult.getInt("ItemCategoryID"));
+                rec.category = categories.getCategory(itemTypeResult.getInt("ItemCategoryID"));
                 rec.val = new double[ItemProperty.ID.values().length];
                 for (ItemProperty.ID id : ItemProperty.ID.values())
                     rec.val[id.ordinal()] = itemTypeResult.getDouble(id.name());
@@ -173,7 +146,7 @@ public class ItemTypeRepository {
             }
 
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot read static info!", e);
+            throw new IllegalStateException("Cannot read static type info!", e);
         }
     }
 

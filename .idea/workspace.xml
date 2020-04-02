@@ -17,12 +17,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added ships, altered drives, added terrain types to database; updates to gradle files">
+    <list default="true" id="9e3ce6fd-8509-4df2-9e6f-0f532ab91d3b" name="Default" comment="Added ship items to ItemTypeRepository and related test.">
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemPropertyRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/edu/unh/cs/cs619/bulletzone/rest/BulletZoneRestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/unh/cs/cs619/bulletzone/datalayer/ItemTypeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/unh/cs/cs619/bulletzone/datalayer/BulletZoneDataTest.java" afterDir="false" />
     </list>
@@ -131,9 +133,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -726,7 +728,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584383674203</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Added ship items to ItemTypeRepository and related test.">
+      <created>1585857140724</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1585857140725</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TodoView">
@@ -752,7 +761,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added Created/Deleted components to Users, Items, BankAccounts, permission correlations, and added new AccountTransferHistory table." />
     <MESSAGE value="Added methods to add/remove items to/from containers." />
     <MESSAGE value="Changed server build configuration to include spring framework in .jar file. Note that you may have to run the &quot;bootRepackage&quot; task on the gradle tab to generate it." />
     <MESSAGE value="Updated the andoirdManifestFile path in build.gradle." />
@@ -777,6 +785,7 @@
     <MESSAGE value="Fixed some SQL syntax to be more compatible with in-memory processors, but still running into trouble with BEGIN NOT ATOMIC..." />
     <MESSAGE value="Found something that seems to work for an in-memory database. Still need to make actual tests." />
     <MESSAGE value="Added ships, altered drives, added terrain types to database; updates to gradle files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ships, altered drives, added terrain types to database; updates to gradle files" />
+    <MESSAGE value="Added ship items to ItemTypeRepository and related test." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ship items to ItemTypeRepository and related test." />
   </component>
 </project>

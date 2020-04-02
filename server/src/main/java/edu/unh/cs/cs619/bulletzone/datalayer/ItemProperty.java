@@ -3,43 +3,9 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 public class ItemProperty {
     public enum PropertyType {Null, Additive, Average, Multiplicative, Restorative};
-    static private HashMap<Integer, ItemProperty> propertyMap = new HashMap<Integer, ItemProperty>();
-    static private HashMap<String, ItemProperty> nameToPropertyMap = new HashMap<>();
     public enum ID {Size, Weight, Price, PropertyVal1, PropertyVal2, PropertyVal3};
-
-    /**
-     * @return A collection of all ItemProperties in the database
-     */
-    static public Collection<ItemProperty> getAll() { return propertyMap.values(); }
-
-    /**
-     * Gives the ItemProperty associated with the passed name
-     * @param propertyName  Name of the desired type (case-sensitive)
-     * @return  ItemType object corresponding to the typeName
-     */
-    static public ItemProperty get(String propertyName) {
-        ItemProperty property = nameToPropertyMap.get(propertyName);
-        if (property == null)
-            throw new NullPointerException("Unable to resolve " + propertyName + " to a valid ItemProperty.");
-        return property;
-    }
-
-    /**
-     * Gives the ItemProperty associated with the passed property ID
-     * @param propertyID  ID of the desired type (from the database)
-     * @return  ItemType object corresponding to the typeName
-     */
-    static public ItemProperty get(int propertyID) {
-        ItemProperty property = propertyMap.get(propertyID);
-        if (property == null)
-            throw new NullPointerException("Unable to resolve " + propertyID + " to a valid ItemProperty.");
-        return property;
-    }
 
     private final int itemPropertyID;
     private final String name;
@@ -49,9 +15,10 @@ public class ItemProperty {
         itemPropertyID = id;
         name = propertyName;
         propertyType = pType;
-        propertyMap.put(id, this);
-        nameToPropertyMap.put(name, this);
     }
+
+    @Override
+    public String toString() { return name; }
 
     /**
      * Initializes an accumulator for this property type

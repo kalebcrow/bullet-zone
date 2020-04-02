@@ -29,6 +29,8 @@ public class BulletZoneData {
     private String _password;
     private String _commandPrefix = "";
     private String _commandSuffix = "";
+    public ItemPropertyRepository properties;
+    public ItemCategoryRepository categories;
     public ItemTypeRepository types;
     public GameItemRepository items = new GameItemRepository();
     public GameUserRepository users = new GameUserRepository();
@@ -132,7 +134,9 @@ public class BulletZoneData {
         }
 
         try {
-            types = new ItemTypeRepository(dataConnection);
+            properties = new ItemPropertyRepository(dataConnection);
+            categories = new ItemCategoryRepository(dataConnection, properties);
+            types = new ItemTypeRepository(dataConnection, categories);
             items.refresh(this, types);
             users.refresh(this, items);
             permissions.refresh(this , items, users);
