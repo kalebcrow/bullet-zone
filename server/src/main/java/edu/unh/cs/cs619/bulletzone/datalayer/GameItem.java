@@ -10,6 +10,9 @@ public class GameItem implements Describable {
     protected int statusID;
     protected GameUser owner;
 
+    @Override
+    public String toString() { return getTypeName() + " (ID: " + itemID + ")"; }
+
     public ItemType getType() { return itemType; }
 
     public String getTypeName(){

@@ -2,9 +2,11 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.cache.support.NullValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,5 +98,19 @@ public class BulletZoneDataTest {
             assertThat(it, is(t));
             assertThat(it.getCategory(), is(typeCategories.get(t)));
         }
+    }
+
+    @Test
+    public void items$delete_newlyCreatedItem_removesItemFromRepository() {
+        GameItem item = db.items.create(db.types.TankCannon);
+        db.items.delete(item);
+        assertThat(db.items.getItem(item.itemID), is(nullValue()));
+    }
+
+    @Test
+    public void items$delete_newlyCreatedItemContainer_removesContainerFromRepository() {
+        GameItemContainer item = db.items.createContainer(db.types.TankFrame);
+        db.items.delete(item);
+        assertThat(db.items.getItemOrContainer(item.itemID), is(nullValue()));
     }
 }

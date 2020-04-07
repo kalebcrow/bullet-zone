@@ -16,6 +16,9 @@ public class GameItemContainer extends GameItem {
         name = containerName;
     }
 
+    @Override
+    public String toString() { return getTypeName() + " " + name + " (ID: " + itemID + ")"; }
+
     public Collection<GameItem> getItems() { return containedItems;}
 
     /**

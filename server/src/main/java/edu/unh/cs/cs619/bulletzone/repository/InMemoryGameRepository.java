@@ -242,26 +242,26 @@ public class InMemoryGameRepository implements GameRepository {
                         boolean isVisible = currentField.isPresent()
                                 && (currentField.getEntity() == bullet);
 
-                        if (nextField.isPresent()) {
-                            // Something is there, hit it
-                            nextField.getEntity().hit(bullet.getDamage());
 
-                            if ( nextField.getEntity() instanceof  Tank){
-                                Tank t = (Tank) nextField.getEntity();
-                                System.out.println("tank is hit, tank life: " + t.getLife());
-                                if (t.getLife() <= 0 ){
-                                    t.getParent().clearField();
-                                    t.setParent(null);
-                                    game.removeTank(t.getId());
-                                }
-                            }
-                            else if ( nextField.getEntity() instanceof  Wall){
-                                Wall w = (Wall) nextField.getEntity();
-                                if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
-                                    game.getHolderGrid().get(w.getPos()).clearField();
-                                }
-                            }
+                            if (nextField.isPresent()) {
+                                // Something is there, hit it
+                                nextField.getEntity().hit(bullet.getDamage());
 
+                                if ( nextField.getEntity() instanceof  Tank){
+                                    Tank t = (Tank) nextField.getEntity();
+                                    System.out.println("tank is hit, tank life: " + t.getLife());
+                                    if (t.getLife() <= 0 ){
+                                        t.getParent().clearField();
+                                        t.setParent(null);
+                                        game.removeTank(t.getId());
+                                    }
+                                }
+                                else if ( nextField.getEntity() instanceof  Wall){
+                                    Wall w = (Wall) nextField.getEntity();
+                                    if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
+                                        game.getHolderGrid().get(w.getPos()).clearField();
+                                    }
+                                }
                             if (isVisible) {
                                 // Remove bullet from field
                                 currentField.clearField();

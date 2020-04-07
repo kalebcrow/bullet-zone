@@ -295,6 +295,17 @@ public class GameItemRepository {
      * Deletes the referenced item from the in-memory representation,
      * marks it as deleted in the database, and removes it from any containers in the database.
      * NOTE: this method does not remove the item from its container in the in-memory representation.
+     * @param item    GameItem to be marked as deleted
+     * @return  true if the operation was successful, and false otherwise.
+     */
+    public boolean delete(GameItem item) {
+        return delete(item.itemID);
+    }
+
+    /**
+     * Deletes the referenced item from the in-memory representation,
+     * marks it as deleted in the database, and removes it from any containers in the database.
+     * NOTE: this method does not remove the item from its container in the in-memory representation.
      * @param itemID    ID of the item to be marked as deleted
      * @return  true if the operation was successful, and false otherwise.
      */
@@ -331,8 +342,7 @@ public class GameItemRepository {
 
         if (isContainer)
             containerMap.remove(itemID);
-        else
-            itemMap.remove(itemID);
+        itemMap.remove(itemID);
 
         return true;
     }
