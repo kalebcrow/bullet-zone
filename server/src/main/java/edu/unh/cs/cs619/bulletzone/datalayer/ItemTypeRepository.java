@@ -135,13 +135,7 @@ public class ItemTypeRepository {
 
             ResultSet itemTypeResult = statement.executeQuery("SELECT * FROM ItemType");
             while (itemTypeResult.next()) {
-                ItemTypeRecord rec = new ItemTypeRecord();
-                rec.itemTypeID = itemTypeResult.getInt("ItemTypeID");
-                rec.name = itemTypeResult.getString("Name");
-                rec.category = categories.getCategory(itemTypeResult.getInt("ItemCategoryID"));
-                rec.val = new double[ItemProperty.ID.values().length];
-                for (ItemProperty.ID id : ItemProperty.ID.values())
-                    rec.val[id.ordinal()] = itemTypeResult.getDouble(id.name());
+                ItemTypeRecord rec = new ItemTypeRecord(itemTypeResult, categories);
                 recordItemType(rec);
             }
 

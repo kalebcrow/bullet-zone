@@ -54,13 +54,9 @@ public class GameUserRepository {
         if (getUser(username) != null)
             return null;
 
-        GameUserRecord newRecord = new GameUserRecord();
+        GameUserRecord newRecord = new GameUserRecord(name, username);
         GameUser newUser = null;
-        newRecord.name = name;
-        newRecord.username = username;
-        newRecord.statusID = Status.Active.ordinal();
-        Date date = new Date();
-        newRecord.created = new Timestamp(date.getTime());
+
         //The following is adapted from https://www.baeldung.com/java-password-hashing
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[saltSize];
@@ -83,13 +79,7 @@ public class GameUserRepository {
 
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID, Created )\n" +
-                            "    VALUES ('" + newRecord.name + "', '"
-                            + newRecord.username + "', '"
-                            + encodeBytesAsHex(newRecord.passwordHash) + "', '"
-                            + encodeBytesAsHex(newRecord.passwordSalt) + "', "
-                            + newRecord.statusID + ", '"
-                            + newRecord.created + "'); ", Statement.RETURN_GENERATED_KEYS);
+                    newRecord.getInsertString(), Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
                 throw new SQLException("Creating User " + newRecord.username + " failed.");
@@ -134,7 +124,7 @@ public class GameUserRepository {
                             + " AND u.Username = '" + username + "'");
             if (userResult.next()) //else, is empty result list
             {
-                userRecord = makeUserRecordFromResultSet(userResult);
+                userRecord = new GameUserRecord(userResult);
             }
             dataConnection.close();
         } catch (SQLException e) {
@@ -180,7 +170,7 @@ public class GameUserRepository {
             ResultSet userResult = statement.executeQuery(
                     "SELECT * FROM User u WHERE StatusID != " + Status.Deleted.ordinal());
             while (userResult.next()) {
-                GameUserRecord rec = makeUserRecordFromResultSet(userResult);
+                GameUserRecord rec = new GameUserRecord(userResult);
                 GameUser user = new GameUser(rec);
                 userMap.put(rec.userID, user);
                 usernameToUserMap.put(rec.username, user);
@@ -191,56 +181,4 @@ public class GameUserRepository {
         }
     }
 
-    /**
-     * Converts a ResultSet to a GameUserRecord for further processing.
-     * @param userResult    The ResultSet that's the result of an SQL query
-     * @return GameItemRecord filled with data from the current item in the ResultSet.
-     */
-    private GameUserRecord makeUserRecordFromResultSet(ResultSet userResult) {
-        GameUserRecord rec = new GameUserRecord();
-        try {
-            //ResultSetMetaData rsmd = userResult.getMetaData();
-            //String firstColumnName = rsmd.getColumnName(1);
-            //System.out.println(firstColumnName);
-            rec.userID = userResult.getInt("UserID");
-            rec.name = userResult.getString("Name");
-            rec.username = userResult.getString("Username");
-            rec.passwordHash = decocdeBytesAsHex(userResult.getString("PasswordHash"));
-            rec.passwordSalt = decocdeBytesAsHex(userResult.getString("PasswordSalt"));
-            rec.statusID = userResult.getInt("StatusID");
-            rec.created = userResult.getTimestamp("Created");
-            rec.deleted = userResult.getTimestamp("Deleted");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Unable to extract data from user result set", e);
-        }
-        return rec;
-    }
-
-    /**
-     * Converts a byte array to a string of uppercase hexadecimal numbers with no spaces
-     * @param bytes The byte array to be encoded
-     * @return  A string of upper-case hexadecimal characters without spaces between them
-     */
-    private String encodeBytesAsHex(byte[] bytes) {
-        StringBuffer result = new StringBuffer();
-        for (byte b : bytes) {
-            result.append(String.format("%02X", b));
-        }
-        return result.toString();
-    }
-
-    /**
-     * Converts a hexadecimal string without spaces to a sequence of bytes
-     * @param hex   A string of hexadecimal characters without spaces between them
-     * @return  The corresponding byte array
-     */
-    private byte[] decocdeBytesAsHex(String hex) {
-        int length = hex.length();
-        byte[] result = new byte[length / 2];
-        for (int i = 0; i < length; i += 2) {
-            result[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) +
-                                    (Character.digit(hex.charAt(i+1), 16)));
-        }
-        return result;
-    }
 }

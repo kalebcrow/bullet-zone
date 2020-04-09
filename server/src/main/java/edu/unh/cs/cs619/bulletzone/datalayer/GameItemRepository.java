@@ -101,22 +101,13 @@ public class GameItemRepository {
         if (dataConnection == null)
             return null;
 
-        GameItemRecord rec = new GameItemRecord();
-        rec.itemType = itemType;
-        rec.usageMonitor = 0;
-        rec.statusID = Status.Active.ordinal();
-        Date date = new Date();
-        rec.created = new Timestamp(date.getTime());
+        GameItemRecord rec = new GameItemRecord(itemType);
         String name = "[Unnamed " + itemType.getName() + "]";
         GameItem newItem;
         try {
             // Create base item
             PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO Item ( ItemTypeID, UsageMonitor, StatusID, Created )\n" +
-                            "    VALUES (" + rec.itemType.getID() + ", "
-                            + rec.usageMonitor + ", "
-                            + rec.statusID + ", '"
-                            + rec.created + "'); ", Statement.RETURN_GENERATED_KEYS);
+                    rec.getInsertString(), Statement.RETURN_GENERATED_KEYS);
             int affectedRows = insertStatement.executeUpdate();
             if (affectedRows == 0)
                 throw new SQLException("Creating Item of type " + itemType.getName() + " failed.");
@@ -180,18 +171,10 @@ public class GameItemRepository {
         if (dataConnection == null)
             return false;
 
-        ItemContainmentRecord rec = new ItemContainmentRecord();
-        rec.itemID = itemID;
-        rec.container_itemID = containerID;
+        ItemContainmentRecord rec = new ItemContainmentRecord(itemID, containerID);
         try {
             // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO ItemContainer_Item ( Container_ItemID, ItemID, StartSlot, EndSlot, Modifier )\n" +
-                            "    VALUES (" + rec.container_itemID + ", "
-                            + rec.itemID + ", "
-                            + rec.startSlot + ", "
-                            + rec.endSlot + ", "
-                            + rec.modifier + "); ");
+            PreparedStatement insertStatement = dataConnection.prepareStatement(rec.getInsertString());
             if (insertStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return false;
@@ -370,7 +353,7 @@ public class GameItemRepository {
                     "SELECT * FROM ItemContainer c, Item i WHERE c.ItemID = i.ItemID" +
                             " AND i.StatusID != " + Status.Deleted.ordinal());
             while (itemContainerResult.next()) {
-                GameItemRecord rec = makeItemRecordFromResultSet(itemContainerResult, itemTypeRepo);
+                GameItemRecord rec = new GameItemRecord(itemContainerResult, itemTypeRepo);
                 GameItemContainer container = new GameItemContainer(rec, itemContainerResult.getString("c.Name"));
                 containerMap.put(rec.itemID, container);
                 itemMap.put(rec.itemID, container);
@@ -380,18 +363,17 @@ public class GameItemRepository {
             ResultSet itemResult = statement.executeQuery(
                     "SELECT * FROM Item i WHERE ItemTypeID >= 20 AND StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
-                GameItemRecord rec = makeItemRecordFromResultSet(itemResult, itemTypeRepo);
+                GameItemRecord rec = new GameItemRecord(itemResult, itemTypeRepo);
                 itemMap.put(rec.itemID, new GameItem(rec));
             }
 
             // Read mapping of collections to items that are inside them
             ResultSet mappingResult = statement.executeQuery("SELECT * FROM ItemContainer_Item"); //Non-frames
             while (mappingResult.next()) {
-                int containerID = mappingResult.getInt("Container_ItemID");
-                int itemID = mappingResult.getInt("ItemID");
+                ItemContainmentRecord rec = new ItemContainmentRecord(mappingResult);
                 // not worrying about StartSlot, EndSlot, or Modifier right now...
-                GameItemContainer container = getContainer(containerID);
-                GameItem item = getItem(itemID);
+                GameItemContainer container = getContainer(rec.container_itemID);
+                GameItem item = getItem(rec.itemID);
                 container.addItem(item);
             }
 
@@ -399,28 +381,6 @@ public class GameItemRepository {
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot read static info!", e);
         }
-    }
-
-    /**
-     * Converts a ResultSet to a GameItemRecord for further processing. It assumes that the record
-     * it should be getting data for was labeled with the name "i".
-     * @param itemResult    The ResultSet that's the result of an SQL query with item labeled "i"
-     * @param itemTypeRepo  Reference to an initialized ItemTypeRepository
-     * @return GameItemRecord filled with data from the current item in the ResultSet.
-     */
-    private GameItemRecord makeItemRecordFromResultSet(ResultSet itemResult, ItemTypeRepository itemTypeRepo) {
-        GameItemRecord rec = new GameItemRecord();
-        try {
-            rec.itemID = itemResult.getInt("i.ItemID");
-            rec.itemType = itemTypeRepo.typeMap.get(itemResult.getInt("i.ItemTypeID"));
-            rec.usageMonitor = itemResult.getDouble("i.UsageMonitor");
-            rec.statusID = itemResult.getInt("i.StatusID");
-            rec.created = itemResult.getTimestamp("i.Created");
-            rec.deleted = itemResult.getTimestamp("i.Deleted");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Unable to extract data fom item result set", e);
-        }
-        return rec;
     }
 
 }

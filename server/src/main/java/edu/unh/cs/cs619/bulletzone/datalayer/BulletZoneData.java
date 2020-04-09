@@ -33,6 +33,7 @@ public class BulletZoneData {
     public ItemCategoryRepository categories;
     public ItemTypeRepository types;
     public GameItemRepository items = new GameItemRepository();
+    public TerrainTypeRepository terrains;
     public GameUserRepository users = new GameUserRepository();
     public PermissionManager permissions = new PermissionManager();
 
@@ -138,6 +139,7 @@ public class BulletZoneData {
             categories = new ItemCategoryRepository(dataConnection, properties);
             types = new ItemTypeRepository(dataConnection, categories);
             items.refresh(this, types);
+            terrains = new TerrainTypeRepository(dataConnection);
             users.refresh(this, items);
             permissions.refresh(this , items, users);
         } catch (IllegalStateException e) {
@@ -259,7 +261,13 @@ public class BulletZoneData {
         {
             System.out.println("Type " + t.getName() + " has type ID " + t.getID());
         }
-        System.out.println("Type 13 is " + d.types.getType(13).getName());
+        System.out.println("BattleSuit Type is " + d.types.BattleSuit);
+
+        for (TerrainType t : d.terrains.getAll())
+        {
+            System.out.println("Terrain " + t.getName() + " has type ID " + t.getID());
+        }
+        System.out.println("Open Water Type is " + d.terrains.OpenWater);
 
     }
 }

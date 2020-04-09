@@ -226,22 +226,10 @@ public class PermissionManager {
         if (dataConnection == null)
             return false;
 
-        ItemPermissionRecord rec = new ItemPermissionRecord();
-        rec.itemID = itemID;
-        rec.userID = userID;
-        rec.permissionID = p.ordinal();
-        rec.statusID = Status.Active.ordinal();
-        Date date = new Date();
-        rec.created = new Timestamp(date.getTime());
+        ItemPermissionRecord rec = new ItemPermissionRecord(itemID, userID, p);
 
         try {
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    " INSERT INTO ItemContainer_User_Permissions ( ItemID, UserID, PermissionID, StatusID, Created )\n" +
-                            "    VALUES (" + rec.itemID + ", "
-                            + rec.userID + ", "
-                            + rec.permissionID + ", "
-                            + rec.statusID + ", '"
-                            + rec.created + "'); ");
+            PreparedStatement insertStatement = dataConnection.prepareStatement(rec.getInsertString());
             if (insertStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return false;

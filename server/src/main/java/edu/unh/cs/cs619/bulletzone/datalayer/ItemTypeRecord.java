@@ -3,9 +3,25 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 class ItemTypeRecord {
-    public int itemTypeID;
+    int itemTypeID;
     public String name;
-    public ItemCategory category;
-    public double val[];
+    ItemCategory category;
+    double val[];
+
+    ItemTypeRecord(ResultSet itemTypeResult, ItemCategoryRepository categories) {
+        try {
+            itemTypeID = itemTypeResult.getInt("ItemTypeID");
+            name = itemTypeResult.getString("Name");
+            category = categories.getCategory(itemTypeResult.getInt("ItemCategoryID"));
+            val = new double[ItemProperty.ID.values().length];
+            for (ItemProperty.ID id : ItemProperty.ID.values())
+                val[id.ordinal()] = itemTypeResult.getDouble(id.name());
+        } catch (SQLException e) {
+            throw new IllegalStateException("Unable to extract data from item type result set", e);
+        }
+    }
 }
