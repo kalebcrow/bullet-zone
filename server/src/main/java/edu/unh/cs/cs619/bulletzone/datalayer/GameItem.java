@@ -13,6 +13,8 @@ public class GameItem implements Describable {
     @Override
     public String toString() { return getTypeName() + " (ID: " + itemID + ")"; }
 
+    public int getItemID() { return itemID; }
+
     public ItemType getType() { return itemType; }
 
     public String getTypeName(){
