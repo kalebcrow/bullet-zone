@@ -13,13 +13,13 @@ public class GameUser {
     protected HashSet<GameItemContainer> ownedItems = new HashSet<GameItemContainer>();
     //protected Set<BankAccount> ownedAccounts;
 
-    int getUserID() { return userID; }
+    public int getUserID() { return userID; }
 
-    String getName() { return name; }
+    public String getName() { return name; }
 
-    String getUsername() { return username; }
+    public String getUsername() { return username; }
 
-    Collection<GameItemContainer> getOwnedItems() { return ownedItems; }
+    public Collection<GameItemContainer> getOwnedItems() { return ownedItems; }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 

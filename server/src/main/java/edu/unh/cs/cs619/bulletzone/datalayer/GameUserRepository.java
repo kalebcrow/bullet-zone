@@ -38,9 +38,9 @@ public class GameUserRepository {
      * @param userID    ID of the user to get
      * @return  GameUser corresponding to passed ID
      */
-    GameUser getUser(int userID) { return userMap.get(userID); }
+    public GameUser getUser(int userID) { return userMap.get(userID); }
 
-    GameUser getUser(String username) { return usernameToUserMap.get(username); }
+    public GameUser getUser(String username) { return usernameToUserMap.get(username); }
 
     /**
      * Returns a new user, or null if an active user with the passed username already exists.

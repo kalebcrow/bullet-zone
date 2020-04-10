@@ -54,7 +54,7 @@
         (1, 'Frame', 11, 12, -1),
         (2, 'Weapon', 13, 16, 14),
         (3, 'Generator', 15, -1, -1),
-        (4, 'Engine', 17, 16, -1),
+        (4, 'Engine', 17, 15, -1),
         (5, 'Drive', 18, 19, 22),
         -- Power-ups
         (11, 'Anti-gravity', 15, 20, -1),
@@ -78,7 +78,7 @@
         -- Weapons
         (21, 'Standard tank cannon', 2, 3.0, 4.0, 200.0, 30.0, 4.0, 2),
         (22, 'Plasma cannon', 2, 1.0, 1.0, 120.0, 5.0, 1.0, 4),
-        (23, 'Particle beam gun', 2, 0.1, 0.1, 50.0, 2.0, 0.1, 6),
+        (23, 'Particle beam gun', 2, 0.1, 0.1, 50.0, 2.0, 0.05, 6),
         (24, 'Large Plasma cannon', 2, 5.0, 8.0, 400.0, 50.0, 8.0, 2),
         -- Generators
         (31, 'Standard tank generator', 3, 4.0, 6.0, 150.0, 4.0, 0.0, 0.0),
@@ -88,7 +88,7 @@
         -- Engines
         (41, 'Standard tank engine', 4, 4.0, 6.0, 100.0, 2.0, 0.0, 0.0),
         (42, 'Standard truck engine', 4, 2.0, 2.0, 60.0, 2.0, 0.0, 0.0),
-        (43, 'Battle-suit power converter', 4, 0.1, 0.1, 7.0, 0.5, 0.1, 0.0),
+        (43, 'Battle-suit power converter', 4, 0.1, 0.1, 7.0, 0.5, -0.1, 0.0),
         (44, 'Standard ship engine', 4, 10.0, 15.0, 300.0, 6.0, 0.0, 0.0),
         -- Drives
         (51, 'Standard tank drive tracks', 5, 4.0, 3.0, 60.0, 4.0, 25.0, 0.1),
