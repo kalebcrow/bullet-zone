@@ -374,7 +374,8 @@ public class GameItemRepository {
                 // not worrying about StartSlot, EndSlot, or Modifier right now...
                 GameItemContainer container = getContainer(rec.container_itemID);
                 GameItem item = getItem(rec.itemID);
-                container.addItem(item);
+                if (container != null && item != null) //can happen if these were deleted
+                    container.addItem(item);
             }
 
             dataConnection.close();
