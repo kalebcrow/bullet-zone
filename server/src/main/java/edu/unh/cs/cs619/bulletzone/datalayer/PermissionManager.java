@@ -304,6 +304,8 @@ public class PermissionManager {
                     // not worrying about StartSlot, EndSlot, or Modifier right now...
                     GameItemContainer container = itemRepo.getContainer(itemID);
                     GameUser user = userRepo.getUser(userID);
+                    if (user == null || container == null) //could be null if user or container were marked as deleted
+                        continue; //just skip everything if something is null
                     user.addItem(container);
                     container.setOwner(user);
                 }
