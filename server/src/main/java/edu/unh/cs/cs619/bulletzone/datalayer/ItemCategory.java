@@ -11,11 +11,15 @@ public class ItemCategory {
     //private final int itemPropertyID[];
     public final HashMap<ItemProperty, Integer> propertyMap = new HashMap<ItemProperty, Integer>();
 
-    ItemCategory(int id, String categoryName, ItemProperty itemProperties[]) {
+    ItemCategory(int id, String categoryName, ItemPropertyRepository repository, ItemProperty itemProperties[]) {
         itemCategoryID = id;
         name = categoryName;
         //itemPropertyID = itemProperties;
         int index = 0;
+        propertyMap.put(repository.Size, index++);
+        propertyMap.put(repository.Weight, index++);
+        propertyMap.put(repository.Price, index++);
+
         for (ItemProperty prop : itemProperties)
             propertyMap.put(prop, index++);
     }

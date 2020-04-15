@@ -44,4 +44,35 @@ public class GameItemContainerTest {
         assertThat(garage.getLocalProperty(db.properties.Capacity), is(garageCapacity));
     }
 
+    @Test
+    public void getProperty_SizeWhenContainsContainers_returnsAggregateSize() {
+        final ItemProperty Size = db.properties.Size;
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        double tankSize = tank.getSize();
+        for (int i = 0; i < 3; i++)
+        {
+            GameItemContainer expand = db.items.createContainer(db.types.VehicleExpansionFrame);
+            db.items.addItemToContainer(expand, tank);
+            tankSize += expand.getSize();
+            GameItem weapon = db.items.create(db.types.TankCannon);
+            db.items.addItemToContainer(weapon, expand);
+            tankSize += weapon.getSize();
+        }
+        assertThat(tank.getProperty(db.properties.Size), is(tankSize));
+    }
+
+    @Test
+    public void getProperty_WeightModifierWhenContainsGravAssist_returnsAggregateWeightModifier() {
+        final ItemProperty prop = db.properties.WeightModifier;
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        double propVal = tank.getProperty(prop);
+        for (int i = 0; i < 3; i++)
+        {
+            GameItem add = db.items.create(db.types.GravAssist);
+            db.items.addItemToContainer(add, tank);
+            propVal *= add.getProperty(prop);
+        }
+        assertThat(tank.getProperty(prop), is(propVal));
+    }
+
 }

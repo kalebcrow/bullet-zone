@@ -28,15 +28,16 @@ public class GameItemContainer extends GameItem {
      */
     @Override
     public double getProperty(ItemProperty property) {
-        if (property.is(ItemProperty.ID.Size)) // our size is not dependent on our contents
-            return getSize();
-
         //accumulate the child properties
         double result = super.getProperty(property); // include our own property with children
+        //System.out.println(property + " is " + result);
         for (GameItem item : containedItems) {
             result = property.accumulate(result, item.getProperty(property));
+            //System.out.println(property + " is now " + result);
         }
         result = property.finalize(result, containedItems.size() + 1);
+        //System.out.println(property + " is finally " + result);
+
         return result;
     }
 
@@ -66,6 +67,18 @@ public class GameItemContainer extends GameItem {
         return price;
     }
 
+    @Override
+    /**
+     * More-efficient calculation of size
+     * @return the size of this container and all its children
+     */
+    public double getSize() {
+        double size = super.getSize();
+        for (GameItem item: containedItems) {
+            size += item.getSize();
+        }
+        return size;
+    }
     /**
      * Package-local version that adds an item to the collection without updating the database
      * @param child Item to be added to the collection

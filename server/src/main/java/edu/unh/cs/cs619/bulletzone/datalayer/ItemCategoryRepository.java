@@ -58,7 +58,7 @@ public class ItemCategoryRepository {
                 for (int i = 0; i < 3; i++)
                     categoryProperties[i] = properties.get(itemCategoryResult.getInt("ItemPropertyID" + (i + 1)));
                 String name = itemCategoryResult.getString("Name");
-                ItemCategory ic = new ItemCategory(id, name, categoryProperties);
+                ItemCategory ic = new ItemCategory(id, name, properties, categoryProperties);
                 categoryMap.put(id, ic);
                 nameToCategoryMap.put(name, ic);
                 if (id < 10)
