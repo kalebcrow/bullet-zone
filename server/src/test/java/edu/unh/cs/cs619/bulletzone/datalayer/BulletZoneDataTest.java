@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.cache.support.NullValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;

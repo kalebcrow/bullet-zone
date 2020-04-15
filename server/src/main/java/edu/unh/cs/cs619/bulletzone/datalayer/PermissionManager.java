@@ -27,7 +27,9 @@ public class PermissionManager {
         public Collection<GameItemContainer> getItems() {
             HashSet<GameItemContainer> items = new HashSet<>();
             for (int itemID: itemPermissions.keySet()) {
-                items.add(itemRepo.getContainer(itemID));
+                GameItemContainer c = itemRepo.getContainer(itemID);
+                if (c != null)
+                    items.add(c);
             }
             return items;
         }

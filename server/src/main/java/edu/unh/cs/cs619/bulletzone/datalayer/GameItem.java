@@ -23,9 +23,13 @@ public class GameItem implements Describable {
 
     public GameUser getOwner() { return owner; }
 
-    public boolean isContainer() {return itemType.isContainer();}
+    public boolean isContainer() { return itemType.isContainer();}
 
-    public double getProperty(ItemProperty property) {return itemType.getProperty(property);}
+    /** Returns the property of only the item, not all its contents */
+    public double getLocalProperty(ItemProperty property) { return itemType.getProperty(property); }
+
+    /** Returns the aggregate property of the item, including its contents (if any) */
+    public double getProperty(ItemProperty property) {return getLocalProperty(property);}
 
     public double getSize() {return itemType.getSize();}
     public double getWeight() {return itemType.getWeight();}

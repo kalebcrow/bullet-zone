@@ -268,6 +268,5 @@ public class BulletZoneData {
             System.out.println("Terrain " + t.getName() + " has type ID " + t.getID());
         }
         System.out.println("Open Water Type is " + d.terrains.OpenWater);
-
     }
 }
