@@ -81,6 +81,13 @@ public class BulletZoneData {
         initialize(dataConnection);
     }
 
+    /**
+     * Re-initializes the internal data structures from the database (primarily for testing purposes)
+     */
+    public void refresh() {
+        initialize(getConnection());
+    }
+
      /**
      * Lists the names of all tables in the currently open database to System.out, one per line.
      * This is intended to be a debugging method only.
@@ -144,9 +151,10 @@ public class BulletZoneData {
             permissions.refresh(this , items, users);
         } catch (IllegalStateException e) {
             System.out.println("Unable to read initial data. Exception listed below, but continuing...");
-            System.out.println(e.toString());
+            e.printStackTrace();
         }
     }
+
     /**
      * Assuming an empty database, creates all the appropriate tables and then populates
      * them with appropriate data (especially for enumeration tables).
@@ -201,6 +209,8 @@ public class BulletZoneData {
         String password = "Drag56kes";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
+        //d.listTables();
+
         d.rebuildData();
         //d.listTables();
 
@@ -268,5 +278,6 @@ public class BulletZoneData {
             System.out.println("Terrain " + t.getName() + " has type ID " + t.getID());
         }
         System.out.println("Open Water Type is " + d.terrains.OpenWater);
+
     }
 }

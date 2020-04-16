@@ -87,7 +87,7 @@ public class TerrainTypeRepository {
                 nameToTerrainMap.put(rec.name, tt);
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot read static type info!", e);
+            throw new IllegalStateException("Cannot read static terrain type info!", e);
         }
     }
 }

@@ -92,7 +92,7 @@ public class ItemPropertyRepository {
                 nameToPropertyMap.put(name, ip);
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot read static type info!", e);
+            throw new IllegalStateException("Cannot read static Property info!", e);
         }
     }
 }

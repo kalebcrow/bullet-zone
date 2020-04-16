@@ -26,14 +26,14 @@ class GameItemRecord {
 
     GameItemRecord(ResultSet itemResult, ItemTypeRepository itemTypeRepo){
         try {
-            itemID = itemResult.getInt("i.ItemID");
-            itemType = itemTypeRepo.typeMap.get(itemResult.getInt("i.ItemTypeID"));
-            usageMonitor = itemResult.getDouble("i.UsageMonitor");
-            statusID = itemResult.getInt("i.StatusID");
-            created = itemResult.getTimestamp("i.Created");
-            deleted = itemResult.getTimestamp("i.Deleted");
+            itemID = itemResult.getInt("ItemID");
+            itemType = itemTypeRepo.typeMap.get(itemResult.getInt("ItemTypeID"));
+            usageMonitor = itemResult.getDouble("UsageMonitor");
+            statusID = itemResult.getInt("StatusID");
+            created = itemResult.getTimestamp("Created");
+            deleted = itemResult.getTimestamp("Deleted");
         } catch (SQLException e) {
-            throw new IllegalStateException("Unable to extract data fom item result set", e);
+            throw new IllegalStateException("Unable to extract data from item result set", e);
         }
     }
 

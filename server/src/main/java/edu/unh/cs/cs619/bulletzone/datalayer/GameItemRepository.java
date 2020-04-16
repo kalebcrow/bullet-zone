@@ -354,7 +354,7 @@ public class GameItemRepository {
                             " AND i.StatusID != " + Status.Deleted.ordinal());
             while (itemContainerResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemContainerResult, itemTypeRepo);
-                GameItemContainer container = new GameItemContainer(rec, itemContainerResult.getString("c.Name"));
+                GameItemContainer container = new GameItemContainer(rec, itemContainerResult.getString("Name"));
                 containerMap.put(rec.itemID, container);
                 itemMap.put(rec.itemID, container);
             }

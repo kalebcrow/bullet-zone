@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -112,4 +114,34 @@ public class BulletZoneDataTest {
         db.items.delete(item);
         assertThat(db.items.getItemOrContainer(item.itemID), is(nullValue()));
     }
+
+    @Test
+    public void BulletZoneData_ItemsCreatedInOneInstance_PersistInAnotherInstance() {
+        GameUser user1 = db.users.createUser("PersistTest", "PersistTest", "password");
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        final int numItems = 5;
+        ItemType types[] = {db.types.TankCannon, db.types.TankEngine, db.types.TankDriveTracks, db.types.TankGenerator, db.types.DeflectorShield};
+        GameItem items[] = new GameItem[types.length];
+        ArrayList<Integer> itemIDs = new ArrayList<>();
+        for (int i = 0; i < items.length; i++) {
+            items[i] = db.items.create(types[i]);
+            itemIDs.add(items[i].getItemID());
+            db.items.addItemToContainer(items[i], tank);
+        }
+        db.permissions.setOwner(tank, user1);
+
+        db.refresh();
+        GameUser user2 = db.users.getUser("PersistTest");
+        System.out.println("Found user " + user2);
+        for (GameItemContainer c : user2.getOwnedItems()) {
+            System.out.println("Found container " + c);
+            assertThat(c.getItemID(), is(tank.getItemID()));
+            int i = 0;
+            for (GameItem item : c.getItems()) {
+                System.out.println("Found item " + item);
+                assertThat(itemIDs, hasItem(item.getItemID()));
+            }
+        }
+    }
+
 }
