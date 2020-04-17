@@ -75,4 +75,18 @@ public class GameItemContainerTest {
         assertThat(tank.getProperty(prop), is(propVal));
     }
 
+    @Test
+    public void getProperty_ArmorWhenContainsDeflectorShield_returnsAggregateArmor() {
+        final ItemProperty prop = db.properties.Armor;
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        double propVal = tank.getProperty(prop);
+        for (int i = 0; i < 3; i++)
+        {
+            GameItem add = db.items.create(db.types.DeflectorShield);
+            db.items.addItemToContainer(add, tank);
+            propVal += add.getProperty(prop);
+        }
+        assertThat(tank.getProperty(prop), is(propVal));
+    }
+
 }

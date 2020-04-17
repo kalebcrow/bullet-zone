@@ -143,6 +143,37 @@ public class GameItemRepository {
     }
 
     /**
+     * Sets the name of the passed container to the passed name (and updates the database)
+     * @param container GameItemContainer to be renamed
+     * @param name      String containing the new name of the container. It may not contain single quotes.
+     * @return true if successful, and false otherwise
+     */
+    public boolean renameContainer(GameItemContainer container, String name) {
+        if (container == null || name.contains("'"))
+            return false;
+
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
+
+        try {
+            PreparedStatement updateStatement = dataConnection.prepareStatement(
+                    " UPDATE ItemContainer SET Name='" + name +
+                            "' WHERE ItemID=" + container.getItemID() + "; ");
+            if (updateStatement.executeUpdate() == 0) {
+                dataConnection.close();
+                return false; //nothing deleted
+            }
+            dataConnection.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error while deleting item.", e);
+        }
+
+        container.name = name;
+        return true;
+    }
+
+    /**
      * Add the passed item to the passed container in both the database and in-memory
      * representations. Note that it is up to the caller to ensure that capacity limits are
      * not being exceeded--no checks are done here.

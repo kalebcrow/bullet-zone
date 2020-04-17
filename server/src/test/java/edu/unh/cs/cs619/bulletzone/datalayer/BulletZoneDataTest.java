@@ -116,6 +116,23 @@ public class BulletZoneDataTest {
     }
 
     @Test
+    public void items$renameContainer_validNameGiven_PersistsInAnotherInstance() {
+        String name = "Freddie";
+        GameItemContainer truck = db.items.createContainer(db.types.TruckFrame);
+        db.items.renameContainer(truck, name);
+        db.refresh();
+        GameItemContainer check = db.items.getContainer(truck.itemID);
+        assertThat(check.getName(), is(name));
+    }
+
+    @Test
+    public void items$renameContainer_invalidNameGiven_Fails() {
+        String name = "'injection attack!";
+        GameItemContainer truck = db.items.createContainer(db.types.TruckFrame);
+        assertThat(db.items.renameContainer(truck, name), is(false));
+    }
+
+    @Test
     public void BulletZoneData_ItemsCreatedInOneInstance_PersistInAnotherInstance() {
         GameUser user1 = db.users.createUser("PersistTest", "PersistTest", "password");
         GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
