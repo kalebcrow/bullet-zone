@@ -35,7 +35,7 @@ public class ItemType implements Describable {
         if (info.category.propertyMap.containsKey(property))
             return info.val[info.category.propertyMap.get(property)];
         //otherwise, produce a default value
-        return property.getIdentity();
+        return property.getIdentity().getResult();
     }
 
     public double getSize() { return info.val[ItemProperty.ID.Size.ordinal()]; }

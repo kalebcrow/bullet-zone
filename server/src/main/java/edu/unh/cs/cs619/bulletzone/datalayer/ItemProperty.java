@@ -20,38 +20,62 @@ public class ItemProperty {
     @Override
     public String toString() { return name; }
 
+    public class Accumulator {
+        private double value;
+        private int count;
+
+        Accumulator(double val) {
+            value = val;
+            count = 0;
+        }
+
+        /**
+         * Combines the passed operand with what's already been accumulated
+         * @param operand  Value to be accumulated next
+         * @return the accumulated value achieved by combining the operand with the existing acc(umulator)
+         */
+        public void accumulate(double operand) {
+            switch(propertyType) {
+                case Additive: case Restorative:
+                    value += operand;
+                    break;
+                case Average:
+                    if (Double.isNaN(operand))
+                        return; //do nothing
+                    count++;
+                    if (count == 1)
+                        value = operand; //Get rid of NaN
+                    else
+                        value += operand;
+                    break;
+                case Multiplicative:
+                    value *= operand;
+                    break;
+            }
+        }
+
+        /**
+         * If accumulating an average, return the average, otherwise return the value
+         * @return the accumulator value or the average (if this property accumulates to an average)
+         */
+        public double getResult() {
+            if (propertyType == PropertyType.Average)
+                return value / count;
+            return value;
+        }
+    }
+
     /**
      * Initializes an accumulator for this property type
      * @return the starting value for accumulating values of this property type
      */
-    public double getIdentity() { return (propertyType == ItemProperty.PropertyType.Multiplicative)? 1.0 : 0.0; }
-
-    /**
-     * Combines the passed operand with the starting accumulator value to return an accumulated result
-     * @param acc  Current value of the accumulator
-     * @param operand  Value to be accumulated next
-     * @return the accumulated value achieved by combining the operand with the existing acc(umulator)
-     */
-    public double accumulate(double acc, double operand) {
-        switch(propertyType) {
-            case Additive: case Restorative: case Average:
-                return acc + operand;
-            case Multiplicative:
-                return acc * operand;
-        }
-        return acc; //unchanged
-    }
-
-    /**
-     * If this property accumulates an average, finalize the accumulator by returning the average (else do nothing)
-     * @param acc  Current value of the accumulator
-     * @param count  How many values are in the accumulator
-     * @return the starting accumulator value or the average (if this property accumulates to an average)
-     */
-    public double finalize(double acc, int count) {
-        if (propertyType == PropertyType.Average)
-            return acc / count;
-        return acc;
+    public Accumulator getIdentity() {
+        double initValue = 0.0;
+        if (propertyType == PropertyType.Multiplicative)
+            initValue = 1.0;
+        else if (propertyType == PropertyType.Average)
+            initValue = Double.NaN;
+        return new Accumulator(initValue);
     }
 
     /**

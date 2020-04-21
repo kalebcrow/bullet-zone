@@ -26,18 +26,19 @@ public class GameItemContainer extends GameItem {
     /**
      * Calculates and returns the appropriate value for the passed property
      * @param property  ItemProperty to get the calculated value for
-     * @return the sum/product/etc. of child properties with our own (unless it's Size)
+     * @return the sum/product/etc. of child properties with our own
      */
     @Override
     public double getProperty(ItemProperty property) {
         //accumulate the child properties
-        double result = super.getProperty(property); // include our own property with children
+        ItemProperty.Accumulator acc = property.getIdentity();
+        acc.accumulate(super.getProperty(property)); // include our own property with children
         //System.out.println(property + " is " + result);
         for (GameItem item : containedItems) {
-            result = property.accumulate(result, item.getProperty(property));
+            acc.accumulate(item.getProperty(property));
             //System.out.println(property + " is now " + result);
         }
-        result = property.finalize(result, containedItems.size() + 1);
+        double result = acc.getResult();
         //System.out.println(property + " is finally " + result);
 
         return result;

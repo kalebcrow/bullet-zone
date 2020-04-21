@@ -89,4 +89,19 @@ public class GameItemContainerTest {
         assertThat(tank.getProperty(prop), is(propVal));
     }
 
+    @Test
+    public void getProperty_InstanceLimitWhenContainsFusionGenerator_returnsAggregateInstanceLimit() {
+        final ItemProperty prop = db.properties.InstanceLimit;
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        GameItem cannon = db.items.create(db.types.TankCannon);
+        db.items.addItemToContainer(cannon, tank);
+        double propVal = tank.getProperty(prop);
+        for (int i = 0; i < 3; i++)
+        {
+            GameItem add = db.items.create(db.types.FusionGenerator);
+            db.items.addItemToContainer(add, tank);
+            propVal += add.getProperty(prop);
+        }
+        assertThat(tank.getProperty(prop), is(propVal / 4.0));
+    }
 }
