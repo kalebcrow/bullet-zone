@@ -121,6 +121,6 @@
         (902, 'Building', TRUE, FALSE, 0.5, 10.0, 25.0, 1.0, NULL),
 
         -- ** Fortifications **
-        (1000, 'Indestructible Wall', TRUE, FALSE, NULL, NULL, NULL, NULL, NULL),
+        (1000, 'Indestructible Wall', TRUE, FALSE, NULL, NULL, NULL, 1000.0, NULL),
         (1001, 'Fortification', TRUE, FALSE, 0.5, 1.0, 100.0, 1.0, NULL),
         (2000, 'Wall', TRUE, FALSE, NULL, NULL, 100.0, 1.0, NULL);
