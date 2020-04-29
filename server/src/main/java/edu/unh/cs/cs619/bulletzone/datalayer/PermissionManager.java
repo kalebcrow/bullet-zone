@@ -48,8 +48,12 @@ public class PermissionManager {
             itemPermissions.get(itemID).add(p);
         }
         void removePermission(int itemID, Permission p) {
-            if (itemPermissions.containsKey(itemID))
-                itemPermissions.get(itemID).remove(p);
+            if (itemPermissions.containsKey(itemID)) {
+                HashSet<Permission> permSet = itemPermissions.get(itemID);
+                permSet.remove(p);
+                if (permSet.isEmpty())
+                    itemPermissions.remove(itemID);
+            }
         }
         private HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
     }
