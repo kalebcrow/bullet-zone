@@ -204,7 +204,7 @@ public class BulletZoneData {
     }
 
     public static void main(String[] args) {
-        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6195";
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6190";
         String username = "mdp";
         String password = "Drag56kes";
 
