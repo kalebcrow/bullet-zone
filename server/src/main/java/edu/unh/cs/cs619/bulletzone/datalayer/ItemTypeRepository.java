@@ -18,6 +18,7 @@ public class ItemTypeRepository {
     HashMap<Integer, ItemType> engineMap = new HashMap<Integer, ItemType>();
     HashMap<Integer, ItemType> driveMap = new HashMap<Integer, ItemType>();
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
+    HashMap<String, HashMap<Integer, ItemType> >  categoryItems = new HashMap<String, HashMap<Integer, ItemType> >();
 
     final public ItemType GarageBay, StorageContainer;
     final public ItemType TankFrame, TruckFrame, BattleSuit, ShipFrame;
@@ -59,6 +60,12 @@ public class ItemTypeRepository {
         FusionGenerator = nameToTypeMap.get("Fusion generator");
         DeflectorShield = nameToTypeMap.get("Deflector shield");
         AutomatedRepairKit = nameToTypeMap.get("Automated repair kit");
+
+        categoryItems.put("Frame", frameMap);
+        categoryItems.put("Weapon", weaponMap);
+        categoryItems.put("Drive", driveMap);
+        categoryItems.put("Generator", generatorMap);
+        categoryItems.put("Engine", engineMap);
     }
 
     /**
@@ -79,6 +86,13 @@ public class ItemTypeRepository {
     public Collection<ItemType> getTypes() {
         return typeMap.values();
     }
+
+    /**
+     * Returns a collection of all ItemTypes in the passed category
+     * @param category  Name of the desired category
+     * @return  Collection of ItemTypes in the category
+     */
+    public Collection<ItemType> getCategoryItems(String category) { return categoryItems.get(category).values(); }
 
     /**
      * @param typeID    Type ID for the requested type (used in other objects)

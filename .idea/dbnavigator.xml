@@ -89,6 +89,9 @@
         </database>
         <properties>
           <auto-commit value="false" />
+          <properties>
+            <property key="serverTimezone" value="EST5EDT" />
+          </properties>
         </properties>
         <ssh-settings>
           <active value="false" />
