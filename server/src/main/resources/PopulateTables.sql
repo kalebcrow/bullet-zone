@@ -70,7 +70,7 @@
         -- ** "Vehicle" items **
         -- Frames
         (11, 'Standard tank frame', 1, 6.0, 6.0, 350.0, 16.0, 100.0, 0.0),
-        (12, 'Standard truck frame', 1, 4.0, 1.0, 150.0, 4.0, 15.0, 0.0),
+        (12, 'Standard truck frame', 1, 4.0, 1.0, 150.0, 6.0, 15.0, 0.0),
         (13, 'Standard battle suit', 1, 0.0, 0.1, 40.0, 0.5, 6.0, 0.0),
         (14, 'Standard ship frame', 1, 20.0, 65.0, 500.0, 24.0, 120.0, 0.0),
         (16, 'Vehicle expansion frame', 1, 1.0, 1.0, 5.0, 3.0, 1.0, 0.0),
