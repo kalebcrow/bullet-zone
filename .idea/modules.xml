@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BulletZone.iml" filepath="$PROJECT_DIR$/.idea/BulletZone.iml" group="BulletZone" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client.iml" group="BulletZone/client" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server.iml" group="BulletZone/server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BulletZone.iml" filepath="$PROJECT_DIR$/.idea/modules/BulletZone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/BulletZone.client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/BulletZone.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/BulletZone.server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/BulletZone.server.iml" />
     </modules>
   </component>
 </project>

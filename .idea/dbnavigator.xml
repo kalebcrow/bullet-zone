@@ -42,12 +42,20 @@
         <condition column="ItemID" operator="&gt;=" value="137" active="true" />
       </filter>
     </filter-actions>
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6190.BankAccount" active-filter-id="" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.ItemContainer_Item" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.User" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.ItemType" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6190.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.ItemContainer_User_Permissions" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.User" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
