@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class PermissionManager {
     BulletZoneData data;
@@ -47,17 +48,20 @@ public class PermissionManager {
                 itemPermissions.put(itemID, new HashSet<>(maxPermissions));
             itemPermissions.get(itemID).add(p);
         }
-        void removePermission(int itemID, Permission p) {
+        boolean removePermission(int itemID, Permission p) {
             if (itemPermissions.containsKey(itemID)) {
                 HashSet<Permission> permSet = itemPermissions.get(itemID);
                 permSet.remove(p);
                 if (permSet.isEmpty())
                     itemPermissions.remove(itemID);
+                return !itemPermissions.isEmpty(); //"true" indicates non-empty
             }
+            return false; //"false" indicates it is empty
         }
-        private HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
+        private final HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
     }
     HashMap<Integer, AccessibleItems> permissions = new HashMap<>();
+    private final HashMap<Integer, Set<GameUser>> itemToPermissionHolders = new HashMap<>();
 
     public void setOwner(GameItemContainer item, GameUser user) {
         setOwner(item.itemID, user.userID);
@@ -89,6 +93,13 @@ public class PermissionManager {
         return permissions.get(userID);
     }
 
+    public Collection<GameUser> getUsersWithPermissionsOn(GameItem item) {
+        return getUsersWithPermissionsOn(item.itemID);
+    }
+
+    public Collection<GameUser> getUsersWithPermissionsOn(int itemID) {
+        return itemToPermissionHolders.get(itemID);
+    }
     /**
      * Deletes the all permission relationships between oldUser and item from the in-memory
      * representation and marks them as deleted in the database.
@@ -208,6 +219,9 @@ public class PermissionManager {
         if (!permissions.containsKey(userID))
             permissions.put(userID, new AccessibleItems());
         permissions.get(userID).addPermission(itemID, p);
+        if (!itemToPermissionHolders.containsKey(itemID))
+            itemToPermissionHolders.put(itemID, new HashSet<GameUser>());
+        itemToPermissionHolders.get(itemID).add(userRepo.getUser(userID));
     }
 
     /**
@@ -217,8 +231,10 @@ public class PermissionManager {
      * @param p         Permission being removed
      */
     void removePermission(int itemID, int userID, Permission p) {
-        if (permissions.containsKey(userID))
-            permissions.get(userID).removePermission(itemID, p);
+        if (permissions.containsKey(userID)) {
+            if (permissions.get(userID).removePermission(itemID, p) == false) //indicates empty
+                itemToPermissionHolders.get(itemID).remove(userRepo.getUser(userID));
+        }
     }
 
     /**
