@@ -89,6 +89,7 @@ public class GameItemContainer extends GameItem {
     void addItem(GameItem child)
     {
         containedItems.add(child);
+        child.setParent(this);
     }
 
     /**
@@ -97,6 +98,7 @@ public class GameItemContainer extends GameItem {
      */
     void removeItem(GameItem child)
     {
+        child.setParent(null);
         containedItems.remove(child);
     }
 
@@ -105,6 +107,9 @@ public class GameItemContainer extends GameItem {
      */
     void removeAll()
     {
+        for (GameItem item: containedItems) {
+            item.setParent(null);
+        }
         containedItems.clear();
     }
 

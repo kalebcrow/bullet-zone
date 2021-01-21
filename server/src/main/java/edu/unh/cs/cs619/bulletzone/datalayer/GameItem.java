@@ -9,6 +9,7 @@ public class GameItem implements Describable {
     protected double usageMonitor;
     protected int statusID;
     protected GameUser owner;
+    protected GameItemContainer parent;
 
     @Override
     public String toString() { return getTypeName() + " (ID: " + itemID + ")"; }
@@ -22,6 +23,8 @@ public class GameItem implements Describable {
     }
 
     public GameUser getOwner() { return owner; }
+
+    public GameItemContainer getParent() { return parent; }
 
     public boolean isContainer() { return itemType.isContainer();}
 
@@ -45,4 +48,8 @@ public class GameItem implements Describable {
     }
 
     void setOwner(GameUser user) { owner = user; }
+
+    protected void setParent(GameItemContainer container) {
+        parent = container;
+    }
 }

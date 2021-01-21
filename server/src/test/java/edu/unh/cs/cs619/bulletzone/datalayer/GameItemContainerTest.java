@@ -104,4 +104,27 @@ public class GameItemContainerTest {
         }
         assertThat(tank.getProperty(prop), is(propVal / 4.0));
     }
+
+    @Test
+    public void getParent_OnItemWithoutParentOrWithRemovedParent_returnsNull() {
+        GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        GameItem cannon = db.items.create(db.types.TankCannon);
+        assertNull(cannon.getParent());
+        db.items.addItemToContainer(cannon, tank);
+        db.items.removeItemFromContainer(cannon, tank);
+        assertNull(cannon.getParent());
+        assertNull(tank.getParent());
+    }
+
+    @Test
+    public void getParent_OnItemWithParentThatChagnes_returnsCorrectParent() {
+        GameItemContainer tank1 = db.items.createContainer(db.types.TankFrame);
+        GameItemContainer tank2 = db.items.createContainer(db.types.TankFrame);
+        GameItem cannon = db.items.create(db.types.TankCannon);
+        db.items.addItemToContainer(cannon, tank1);
+        assertThat(cannon.getParent(), is(tank1));
+        db.items.removeItemFromContainer(cannon, tank1);
+        db.items.addItemToContainer(cannon, tank2);
+        assertThat(cannon.getParent(), is(tank2));
+    }
 }
