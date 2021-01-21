@@ -211,9 +211,11 @@ public class BulletZoneData {
         BulletZoneData d = new BulletZoneData(url, username, password);
         //d.listTables();
 
+        // Drop all tables and rebuilds an empty database
         d.rebuildData();
         //d.listTables();
 
+        // Create a Garage bay and a couple of tanks to go in it, then remove them and delete the first tank
         GameItemContainer bay = d.items.createContainer(d.types.GarageBay);
         GameItemContainer tank1 = d.items.createContainer(d.types.TankFrame);
         GameItemContainer tank2 = d.items.createContainer("Standard tank frame");
@@ -223,11 +225,17 @@ public class BulletZoneData {
         d.items.delete(tank1.itemID);
         if (d.items.getItemOrContainer(tank1.itemID) == null)
             System.out.println("Successfully deleted tank1");
+
+        // Create a user and verify their credentials, then set tank2 to be owned by them
         GameUser user = d.users.createUser("Test User", "testuser", "testPass");
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2 && user2 != null)
             System.out.println("User creation/validation successful");
         d.permissions.setOwner(tank2, user2);
+
+        // Create another user (will fail if there already, but then the validation should work)
+        // Then grant this new user several permissions on tank2 (and check them). This part only prints
+        // something out if something goes wrong.
         GameUser user3 = d.users.createUser("Second User", "user2", "xyzzy");
         user3 = d.users.validateLogin("user2", "xyzzy");
         if (!d.permissions.grant(tank2, user3, Permission.Add))
@@ -250,6 +258,8 @@ public class BulletZoneData {
             System.out.println("Transfer permission never granted but somehow checks");
         if (d.permissions.revoke(tank2, user3, Permission.Transfer))
             System.out.println("Nonexistent transfer permission somehow revoked");
+
+        //Create another user, then loop through all users to see what permissions they have
         GameUser user4 = d.users.createUser("UserF", "userF", "xyzzy");
         //d.permissions.setOwner(bay, user4);
         for (GameUser u : d.users.getUsers()) {
@@ -262,17 +272,21 @@ public class BulletZoneData {
                 System.out.println();
             }
         }
+        // Check what permissions our latest user has on tank2 by looping through valid permissions
         for (Permission p : Permission.values()) {
             System.out.println(user4.name + " Permission check for " + p.name() + ": " + d.permissions.check(tank2, user4, p));
             System.out.println(user4.name + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.itemID, user4.userID, p));
         }
         //d.permissions.removeOwner(tank2);
+
+        // List the type names and ID's for all ItemTypes
         for (ItemType t : d.types.getTypes())
         {
             System.out.println("Type " + t.getName() + " has type ID " + t.getID());
         }
         System.out.println("BattleSuit Type is " + d.types.BattleSuit);
 
+        // List the terrain names and ID's for all TerrainTypes
         for (TerrainType t : d.terrains.getAll())
         {
             System.out.println("Terrain " + t.getName() + " has type ID " + t.getID());
