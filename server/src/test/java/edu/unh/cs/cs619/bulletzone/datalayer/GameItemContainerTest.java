@@ -3,6 +3,8 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 

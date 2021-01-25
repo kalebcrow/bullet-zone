@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
+
 class GameItemRecord {
     int itemID;
     ItemType itemType;
@@ -27,7 +30,7 @@ class GameItemRecord {
     GameItemRecord(ResultSet itemResult, ItemTypeRepository itemTypeRepo){
         try {
             itemID = itemResult.getInt("ItemID");
-            itemType = itemTypeRepo.typeMap.get(itemResult.getInt("ItemTypeID"));
+            itemType = itemTypeRepo.getType(itemResult.getInt("ItemTypeID"));
             usageMonitor = itemResult.getDouble("UsageMonitor");
             statusID = itemResult.getInt("StatusID");
             created = itemResult.getTimestamp("Created");

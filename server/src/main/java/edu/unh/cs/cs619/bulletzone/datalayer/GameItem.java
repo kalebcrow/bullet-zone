@@ -3,6 +3,10 @@
  */
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.Describable;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
+
 public class GameItem implements Describable {
     protected int itemID;
     protected ItemType itemType;

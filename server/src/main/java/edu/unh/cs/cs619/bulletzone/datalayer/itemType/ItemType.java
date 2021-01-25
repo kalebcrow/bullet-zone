@@ -1,7 +1,7 @@
 /**
  * Public class for accessing data for individual types in the ItemType table
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.itemType;
 
 public class ItemType implements Describable {
     protected final ItemTypeRecord info;

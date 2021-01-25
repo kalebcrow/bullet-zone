@@ -13,6 +13,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
+
 public class GameItemRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();

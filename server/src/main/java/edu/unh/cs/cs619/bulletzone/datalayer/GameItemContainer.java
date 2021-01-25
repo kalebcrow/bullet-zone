@@ -7,6 +7,8 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import java.util.Collection;
 import java.util.HashSet;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
+
 public class GameItemContainer extends GameItem {
     protected String name;
     protected HashSet<GameItem> containedItems = new HashSet<>();

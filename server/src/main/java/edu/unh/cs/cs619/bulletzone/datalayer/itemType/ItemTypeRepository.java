@@ -1,7 +1,7 @@
 /**
  * Internal package class for interpreting (and creating?) database data corresponding to ItemTypes
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.itemType;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

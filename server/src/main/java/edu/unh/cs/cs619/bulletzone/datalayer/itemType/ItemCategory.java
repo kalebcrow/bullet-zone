@@ -1,7 +1,7 @@
 /**
  * Public class for accessing data for individual categories in the ItemCategory table
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.itemType;
 
 import java.util.HashMap;
 

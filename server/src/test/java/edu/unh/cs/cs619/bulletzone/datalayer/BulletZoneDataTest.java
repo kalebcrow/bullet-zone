@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategory;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 
 import static org.junit.Assert.*;
 

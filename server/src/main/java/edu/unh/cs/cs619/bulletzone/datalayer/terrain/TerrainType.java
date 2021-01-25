@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.terrain;
 
 public class TerrainType {
     protected final TerrainTypeRecord info;

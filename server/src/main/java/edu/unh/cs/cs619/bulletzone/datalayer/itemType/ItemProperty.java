@@ -1,7 +1,7 @@
 /**
  * Public class for accessing data for individual categories in the ItemCategory table
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.itemType;
 
 public class ItemProperty {
     public enum PropertyType {Null, Additive, Average, Multiplicative, Restorative};
