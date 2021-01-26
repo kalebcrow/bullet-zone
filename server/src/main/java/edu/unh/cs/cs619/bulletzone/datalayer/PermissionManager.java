@@ -18,50 +18,50 @@ public class PermissionManager {
     GameUserRepository userRepo;
     public class Accessible<T> {
         final int maxPermissions = 4;
-        public boolean hasPermission(int itemID, Permission p) {
-            if (itemPermissions.containsKey(itemID))
-                return itemPermissions.get(itemID).contains(p);
+        public boolean hasPermission(int targetID, Permission p) {
+            if (targetPermissions.containsKey(targetID))
+                return targetPermissions.get(targetID).contains(p);
             else
                 return false;
         }
 
         public Collection<T> getItems() {
             HashSet<T> items = new HashSet<>();
-            for (int itemID: itemPermissions.keySet()) {
-                PermissionTarget c = targetRepo.getTarget(itemID);
+            for (int targetID: targetPermissions.keySet()) {
+                PermissionTarget c = targetRepo.getTarget(targetID);
                 if (c != null)
                     items.add((T)c);
             }
             return items;
         }
 
-        public Collection<Permission> getPermissionsOnItem(int itemID) {
-            if (itemPermissions.containsKey(itemID))
-                return itemPermissions.get(itemID);
+        public Collection<Permission> getPermissionsOnItem(int targetID) {
+            if (targetPermissions.containsKey(targetID))
+                return targetPermissions.get(targetID);
             else
                 return new HashSet<Permission>();
         }
 
         //----Package-level methods---
-        void addPermission(int itemID, Permission p) {
-            if (!itemPermissions.containsKey(itemID))
-                itemPermissions.put(itemID, new HashSet<>(maxPermissions));
-            itemPermissions.get(itemID).add(p);
+        void addPermission(int targetID, Permission p) {
+            if (!targetPermissions.containsKey(targetID))
+                targetPermissions.put(targetID, new HashSet<>(maxPermissions));
+            targetPermissions.get(targetID).add(p);
         }
-        boolean removePermission(int itemID, Permission p) {
-            if (itemPermissions.containsKey(itemID)) {
-                HashSet<Permission> permSet = itemPermissions.get(itemID);
+        boolean removePermission(int targetID, Permission p) {
+            if (targetPermissions.containsKey(targetID)) {
+                HashSet<Permission> permSet = targetPermissions.get(targetID);
                 permSet.remove(p);
                 if (permSet.isEmpty())
-                    itemPermissions.remove(itemID);
-                return !itemPermissions.isEmpty(); //"true" indicates non-empty
+                    targetPermissions.remove(targetID);
+                return !targetPermissions.isEmpty(); //"true" indicates non-empty
             }
             return false; //"false" indicates it is empty
         }
-        private final HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
+        private final HashMap<Integer, HashSet<Permission>> targetPermissions = new HashMap<>();
     }
     HashMap<Integer, Accessible<GameItemContainer>> permissions = new HashMap<>(); //&&&
-    private final HashMap<Integer, Set<GameUser>> itemToPermissionHolders = new HashMap<>();
+    private final HashMap<Integer, Set<GameUser>> targetToPermissionHolders = new HashMap<>();
 
     public void setOwner(PermissionTarget target, GameUser user) {
         setOwner(target.getId(), user.userID);
@@ -98,7 +98,7 @@ public class PermissionManager {
     }
 
     public Collection<GameUser> getUsersWithPermissionsOn(int itemID) {
-        return itemToPermissionHolders.get(itemID);
+        return targetToPermissionHolders.get(itemID);
     }
     /**
      * Deletes the all permission relationships between oldUser and item from the in-memory
@@ -219,9 +219,9 @@ public class PermissionManager {
         if (!permissions.containsKey(userID))
             permissions.put(userID, new Accessible<>());
         permissions.get(userID).addPermission(itemID, p);
-        if (!itemToPermissionHolders.containsKey(itemID))
-            itemToPermissionHolders.put(itemID, new HashSet<GameUser>());
-        itemToPermissionHolders.get(itemID).add(userRepo.getUser(userID));
+        if (!targetToPermissionHolders.containsKey(itemID))
+            targetToPermissionHolders.put(itemID, new HashSet<GameUser>());
+        targetToPermissionHolders.get(itemID).add(userRepo.getUser(userID));
     }
 
     /**
@@ -233,7 +233,7 @@ public class PermissionManager {
     void removePermission(int itemID, int userID, Permission p) {
         if (permissions.containsKey(userID)) {
             if (permissions.get(userID).removePermission(itemID, p) == false) //indicates empty
-                itemToPermissionHolders.get(itemID).remove(userRepo.getUser(userID));
+                targetToPermissionHolders.get(itemID).remove(userRepo.getUser(userID));
         }
     }
 
@@ -306,7 +306,7 @@ public class PermissionManager {
         targetRepo = permissionTargetRepo;
         userRepo = gameUserRepo;
         data = bzData;
-        itemToPermissionHolders.clear();
+        targetToPermissionHolders.clear();
         permissions.clear();
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)
