@@ -238,6 +238,8 @@ public class BulletZoneData {
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2 && user2 != null)
             System.out.println("User creation/validation successful");
+        if (tank2 == null)
+            System.out.println("Somehow tank2 is null");
         d.permissions.setOwner(tank2, user2);
 
         // Create another user (will fail if there already, but then the validation should work)
