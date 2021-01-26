@@ -42,6 +42,7 @@ public class BulletZoneData {
     public GameItemRepository items = new GameItemRepository();
     public TerrainTypeRepository terrains;
     public GameUserRepository users = new GameUserRepository();
+    public BankAccountRepository accounts = new BankAccountRepository();
     public PermissionManager permissions = new PermissionManager();
 
     /**
@@ -155,6 +156,7 @@ public class BulletZoneData {
             items.refresh(this, types);
             terrains = new TerrainTypeRepository(dataConnection);
             users.refresh(this, items);
+            accounts.refresh(this);
             permissions.refresh(this , items, users);
         } catch (IllegalStateException e) {
             System.out.println("Unable to read initial data. Exception listed below, but continuing...");
@@ -180,6 +182,7 @@ public class BulletZoneData {
         initializeData();
         items.refresh(this, types);
         users.refresh(this, items);
+        accounts.refresh(this);
         permissions.refresh(this , items, users);
     }
 
@@ -246,6 +249,10 @@ public class BulletZoneData {
         if (tank2 == null)
             System.out.println("Somehow tank2 is null");
         d.permissions.setOwner(tank2, user2);
+
+        // Create a bank account for the user
+        BankAccount account = d.accounts.create();
+        account.setOwner(user2);
 
         // Create another user (will fail if there already, but then the validation should work)
         // Then grant this new user several permissions on tank2 (and check them). This part only prints
