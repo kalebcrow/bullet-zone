@@ -306,6 +306,8 @@ public class PermissionManager {
         targetRepo = permissionTargetRepo;
         userRepo = gameUserRepo;
         data = bzData;
+        itemToPermissionHolders.clear();
+        permissions.clear();
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)
             return;

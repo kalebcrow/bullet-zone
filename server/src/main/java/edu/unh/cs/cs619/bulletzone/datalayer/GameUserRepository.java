@@ -97,7 +97,7 @@ public class GameUserRepository {
             userMap.put(newRecord.userID, newUser);
             usernameToUserMap.put(newRecord.username, newUser);
         } catch (SQLException e) {
-            throw new IllegalStateException("Error while creating item!", e);
+            throw new IllegalStateException("Error while creating user!", e);
         }
         System.out.println("New user " + username + " added with ID " + newRecord.userID);
         return newUser;
@@ -160,6 +160,8 @@ public class GameUserRepository {
      */
     void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo) {
         data = bzData;
+        usernameToUserMap.clear();
+        userMap.clear();
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)
             return;

@@ -178,6 +178,9 @@ public class BulletZoneData {
     public void rebuildData() {
         executeScript("/DropTables.sql", "Cannot drop all tables!");
         initializeData();
+        items.refresh(this, types);
+        users.refresh(this, items);
+        permissions.refresh(this , items, users);
     }
 
     /**
@@ -238,6 +241,8 @@ public class BulletZoneData {
         GameUser user2 = d.users.validateLogin("testuser", "testPass");
         if (user == user2 && user2 != null)
             System.out.println("User creation/validation successful");
+        else
+            System.out.println("Problem: user is " + user + " and user2 is " + user2);
         if (tank2 == null)
             System.out.println("Somehow tank2 is null");
         d.permissions.setOwner(tank2, user2);

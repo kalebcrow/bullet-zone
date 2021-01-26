@@ -377,6 +377,8 @@ public class GameItemRepository implements PermissionTargetRepository {
     void refresh(BulletZoneData bzData, ItemTypeRepository itemTypeRepo) {
         typeRepo = itemTypeRepo;
         data = bzData;
+        containerMap.clear();
+        itemMap.clear();
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)
             return;
