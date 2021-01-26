@@ -270,7 +270,7 @@ public class BulletZoneData {
         GameUser user4 = d.users.createUser("UserF", "userF", "xyzzy");
         //d.permissions.setOwner(bay, user4);
         for (GameUser u : d.users.getUsers()) {
-            PermissionManager.AccessibleItems ip = d.permissions.getUserPermissions(u);
+            PermissionManager.Accessible<GameItemContainer> ip = d.permissions.getUserPermissions(u);
             for (GameItemContainer container : ip.getItems()) {
                 System.out.print(u.name + " has permissions for " + container.name + " (ID=" + container.itemID + "): ");
                 for (Permission p : ip.getPermissionsOnItem(container.itemID)) {

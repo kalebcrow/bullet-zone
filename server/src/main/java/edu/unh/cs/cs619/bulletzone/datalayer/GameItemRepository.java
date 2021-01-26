@@ -16,7 +16,7 @@ import java.util.HashMap;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 
-public class GameItemRepository {
+public class GameItemRepository implements PermissionTargetRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     ItemTypeRepository typeRepo;
@@ -35,6 +35,7 @@ public class GameItemRepository {
      * @return  GameItemContainer corresponding to the passed itemID;
      */
     public GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
+    public PermissionTarget getTarget(int id) { return getContainer(id); }
 
     /**
      * Return the GameItem associated with teh passed internal ID (may be a container)

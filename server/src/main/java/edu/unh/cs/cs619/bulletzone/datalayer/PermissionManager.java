@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class PermissionManager {
     BulletZoneData data;
-    GameItemRepository itemRepo;
+    PermissionTargetRepository targetRepo;
     GameUserRepository userRepo;
-    public class AccessibleItems {
+    public class Accessible<T> {
         final int maxPermissions = 4;
         public boolean hasPermission(int itemID, Permission p) {
             if (itemPermissions.containsKey(itemID))
@@ -25,12 +25,12 @@ public class PermissionManager {
                 return false;
         }
 
-        public Collection<GameItemContainer> getItems() {
-            HashSet<GameItemContainer> items = new HashSet<>();
+        public Collection<T> getItems() {
+            HashSet<T> items = new HashSet<>();
             for (int itemID: itemPermissions.keySet()) {
-                GameItemContainer c = itemRepo.getContainer(itemID);
+                PermissionTarget c = targetRepo.getTarget(itemID);
                 if (c != null)
-                    items.add(c);
+                    items.add((T)c);
             }
             return items;
         }
@@ -60,41 +60,41 @@ public class PermissionManager {
         }
         private final HashMap<Integer, HashSet<Permission>> itemPermissions = new HashMap<>();
     }
-    HashMap<Integer, AccessibleItems> permissions = new HashMap<>();
+    HashMap<Integer, Accessible<GameItemContainer>> permissions = new HashMap<>(); //&&&
     private final HashMap<Integer, Set<GameUser>> itemToPermissionHolders = new HashMap<>();
 
-    public void setOwner(GameItemContainer item, GameUser user) {
-        setOwner(item.itemID, user.userID);
+    public void setOwner(PermissionTarget target, GameUser user) {
+        setOwner(target.getId(), user.userID);
     }
 
-    public void removeOwner(GameItemContainer item) {
-        removeOwner(item.itemID, item.getOwner().userID);
+    public void removeOwner(PermissionTarget target) {
+        removeOwner(target.getId(), target.getOwningUser().userID);
     }
 
-    public boolean check(GameItemContainer item, GameUser user, Permission p) {
-        return check(item.itemID, user.userID, p);
+    public boolean check(PermissionTarget target, GameUser user, Permission p) {
+        return check(target.getId(), user.userID, p);
     }
 
-    public boolean grant(GameItemContainer item, GameUser user, Permission p) {
-        return grant(item.itemID, user.userID, p);
+    public boolean grant(PermissionTarget target, GameUser user, Permission p) {
+        return grant(target.getId(), user.userID, p);
     }
 
-    public boolean revoke(GameItemContainer item, GameUser user, Permission p) {
-        return revoke(item.itemID, user.userID, p);
+    public boolean revoke(PermissionTarget target, GameUser user, Permission p) {
+        return revoke(target.getId(), user.userID, p);
     }
 
-    public AccessibleItems getUserPermissions(GameUser user) {
+    public Accessible getUserPermissions(GameUser user) {
         return getUserPermissions(user.userID);
     }
 
-    public AccessibleItems getUserPermissions(int userID) {
+    public Accessible getUserPermissions(int userID) {
         if (!permissions.containsKey(userID))
-            permissions.put(userID, new AccessibleItems());
+            permissions.put(userID, new Accessible<>());
         return permissions.get(userID);
     }
 
-    public Collection<GameUser> getUsersWithPermissionsOn(GameItem item) {
-        return getUsersWithPermissionsOn(item.itemID);
+    public Collection<GameUser> getUsersWithPermissionsOn(PermissionTarget target) {
+        return getUsersWithPermissionsOn(target.getId());
     }
 
     public Collection<GameUser> getUsersWithPermissionsOn(int itemID) {
@@ -108,7 +108,7 @@ public class PermissionManager {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean removeOwner(int itemID, int oldUserID) {
-        GameItemContainer item = itemRepo.getContainer(itemID);
+        PermissionTarget item = targetRepo.getTarget(itemID);
         GameUser user = userRepo.getUser(oldUserID);
         if (item == null || user == null)
             return false;
@@ -116,8 +116,8 @@ public class PermissionManager {
         if (!deletePermission(itemID, oldUserID, Permission.Owner))
             return false;
 
-        item.setOwner(null);
-        user.removeItem(item);
+        item.setOwningUser(null);
+        user.removePermissionTarget(item);
         return true;
     }
 
@@ -129,19 +129,19 @@ public class PermissionManager {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean setOwner(int itemID, int userID) {
-        GameItemContainer item = itemRepo.getContainer(itemID);
+        PermissionTarget item = targetRepo.getTarget(itemID);
         GameUser user = userRepo.getUser(userID);
         if (item == null || user == null)
             return false;
-        GameUser oldOwner = item.getOwner();
+        GameUser oldOwner = item.getOwningUser();
         if (oldOwner != null)
             removeOwner(itemID, oldOwner.userID);
 
         if (!insertPermission(itemID, userID, Permission.Owner))
             return false;
 
-        item.setOwner(user);
-        user.addItem(item);
+        item.setOwningUser(user);
+        user.addPermissionTarget(item);
         return true;
     }
 
@@ -154,10 +154,10 @@ public class PermissionManager {
      */
     public boolean check(int itemID, int userID, Permission p){
         if (p == Permission.Owner){
-            GameItemContainer item = itemRepo.getContainer(itemID);
+            PermissionTarget item = targetRepo.getTarget(itemID);
             if (item == null)
                 return false;
-            return (item.getOwner().userID == userID);
+            return (item.getOwningUser().userID == userID);
         }
         if (permissions.containsKey(userID)) {
             return permissions.get(userID).hasPermission(itemID, p);
@@ -217,7 +217,7 @@ public class PermissionManager {
      */
     void addPermission(int itemID, int userID, Permission p) {
         if (!permissions.containsKey(userID))
-            permissions.put(userID, new AccessibleItems());
+            permissions.put(userID, new Accessible<>());
         permissions.get(userID).addPermission(itemID, p);
         if (!itemToPermissionHolders.containsKey(itemID))
             itemToPermissionHolders.put(itemID, new HashSet<GameUser>());
@@ -299,11 +299,11 @@ public class PermissionManager {
      * at time of initialization.
      *
      * @param bzData       reference to BulletZoneData for making further SQL queries
-     * @param gameItemRepo repository of items that can be owned
+     * @param permissionTargetRepo repository of items that can be owned
      * @param gameUserRepo repository of users that can own things
      */
-    void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo, GameUserRepository gameUserRepo) {
-        itemRepo = gameItemRepo;
+    void refresh(BulletZoneData bzData, PermissionTargetRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
+        targetRepo = permissionTargetRepo;
         userRepo = gameUserRepo;
         data = bzData;
         Connection dataConnection = data.getConnection();
@@ -324,12 +324,12 @@ public class PermissionManager {
 
                 if (permission == Permission.Owner) {
                     // not worrying about StartSlot, EndSlot, or Modifier right now...
-                    GameItemContainer container = itemRepo.getContainer(itemID);
+                    PermissionTarget container = targetRepo.getTarget(itemID);
                     GameUser user = userRepo.getUser(userID);
                     if (user == null || container == null) //could be null if user or container were marked as deleted
                         continue; //just skip everything if something is null
-                    user.addItem(container);
-                    container.setOwner(user);
+                    user.addPermissionTarget(container);
+                    container.setOwningUser(user);
                 }
                 addPermission(itemID, userID, permission);
             }
