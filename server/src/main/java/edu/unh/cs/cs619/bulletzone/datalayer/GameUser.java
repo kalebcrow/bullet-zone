@@ -11,8 +11,7 @@ public class GameUser {
     //password info not stored in game
     protected int statusID;
     protected HashSet<GameItemContainer> ownedItems = new HashSet<GameItemContainer>();
-    //protected HashSet<GameBankAccount> ownedAccounts = new HashSet<GameBankAccount>();
-    //protected Set<BankAccount> ownedAccounts;
+    protected HashSet<BankAccount> ownedAccounts = new HashSet<BankAccount>();
 
     public int getUserID() { return userID; }
 
@@ -33,14 +32,14 @@ public class GameUser {
 
     void addPermissionTarget(PermissionTarget pt) {
         if (pt.getPermissionType() == PermissionTargetType.BankAccount)
-            ;//ownedAccounts.add((BankAccount)pt);
+            ownedAccounts.add((BankAccount)pt);
         else
             ownedItems.add((GameItemContainer)pt);
     }
 
     void removePermissionTarget(PermissionTarget pt) {
         if (pt.getPermissionType() == PermissionTargetType.BankAccount)
-            ;//ownedAccounts.remove((BankAccount)pt);
+            ownedAccounts.remove((BankAccount)pt);
         else
             ownedItems.remove((GameItemContainer)pt);
 
