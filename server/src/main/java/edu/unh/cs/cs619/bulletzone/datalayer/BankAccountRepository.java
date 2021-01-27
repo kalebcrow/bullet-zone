@@ -1,16 +1,13 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 
-public class BankAccountRepository implements PermissionTargetRepository {
+public class BankAccountRepository implements OwnableEntityRepository {
     HashMap<Integer, BankAccount> accountMap = new HashMap<Integer, BankAccount>();
     BulletZoneData data;
 
@@ -20,7 +17,7 @@ public class BankAccountRepository implements PermissionTargetRepository {
      * @return  BankAccount corresponding to the passed accountID
      */
     public BankAccount getAccount(int accountID) { return accountMap.get(accountID); }
-    public PermissionTarget getTarget(int id) { return getAccount(id); }
+    public OwnableEntity getTarget(int id) { return getAccount(id); }
 
     /**
      * Return a collection of all bank accounts that are not deleted
@@ -46,27 +43,14 @@ public class BankAccountRepository implements PermissionTargetRepository {
         BankAccount newAccount;
         try {
             // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    rec.getInsertString(), Statement.RETURN_GENERATED_KEYS);
-            int affectedRows = insertStatement.executeUpdate();
-            if (affectedRows == 0)
-                throw new SQLException("Creating BankAccount failed.");
-
-            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                rec.bankAccountID = generatedKeys.getInt(1);
-            }
-            else {
-                throw new SQLException("Created BankAccount but failed to obtain ID.");
-            }
-
+            rec.insertInto(dataConnection);
             newAccount = new BankAccount(rec);
-            accountMap.put(rec.bankAccountID, newAccount);
+            accountMap.put(rec.entityID, newAccount);
             dataConnection.close();
         } catch (SQLException e) {
-            throw new IllegalStateException("Error while creating item!", e);
+            throw new IllegalStateException("Error while creating bank account!", e);
         }
-        System.out.println("New BankAccount added with ID " + rec.bankAccountID);
+        System.out.println("New BankAccount added with ID " + rec.entityID);
         return newAccount;
     }
 
@@ -77,7 +61,7 @@ public class BankAccountRepository implements PermissionTargetRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean delete(BankAccount account) {
-        return delete(account.accountID);
+        return delete(account.entityID);
     }
 
     /**
@@ -94,14 +78,8 @@ public class BankAccountRepository implements PermissionTargetRepository {
         if (dataConnection == null)
             return false;
 
-        Date date = new Date();
-
         try {
-            PreparedStatement updateStatement = dataConnection.prepareStatement(
-                    " UPDATE BankAccount SET StatusID=" + Status.Deleted.ordinal() +
-                            ", Deleted='" + new Timestamp(date.getTime()) +
-                            "' WHERE BankAccountID=" + accountID + "; ");
-            if (updateStatement.executeUpdate() == 0) {
+            if (!EntityRecord.markDeleted(accountID, dataConnection)) {
                 dataConnection.close();
                 return false; //nothing deleted
             }
@@ -133,10 +111,10 @@ public class BankAccountRepository implements PermissionTargetRepository {
 
             // Read accounts that aren't deleted
             ResultSet itemResult = statement.executeQuery(
-                    "SELECT * FROM BankAccount a WHERE StatusID != " + Status.Deleted.ordinal());
+                    "SELECT * FROM BankAccount a, Entity e WHERE a.entityID = e.entityID AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
                 BankAccountRecord rec = new BankAccountRecord(itemResult);
-                accountMap.put(rec.bankAccountID, new BankAccount(rec));
+                accountMap.put(rec.entityID, new BankAccount(rec));
             }
 
             dataConnection.close();

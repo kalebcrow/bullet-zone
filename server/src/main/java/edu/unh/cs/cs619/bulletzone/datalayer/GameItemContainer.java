@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
 
-public class GameItemContainer extends GameItem implements PermissionTarget {
+public class GameItemContainer extends GameItem {
     protected String name;
     protected HashSet<GameItem> containedItems = new HashSet<>();
 
@@ -19,17 +19,7 @@ public class GameItemContainer extends GameItem implements PermissionTarget {
     }
 
     @Override
-    public PermissionTargetType getPermissionType() {
-        return PermissionTargetType.ItemContainer;
-    }
-
-    @Override
-    public int getId() {
-        return getItemID();
-    }
-
-    @Override
-    public String toString() { return getTypeName() + " " + name + " (ID: " + itemID + ")"; }
+    public String toString() { return getTypeName() + " " + name + " (ID: " + entityID + ")"; }
 
     public String getName() { return name; }
 
@@ -124,21 +114,4 @@ public class GameItemContainer extends GameItem implements PermissionTarget {
         }
         containedItems.clear();
     }
-
-    /**
-     * DON'T USE THIS METHOD IN YOUR CODE. Intended-to-be package-local method for setting
-     * the owner (but doesn't update the database with that information). This method is
-     * public so that the interface works properly.
-     * @param user
-     */
-    public void setOwningUser(GameUser user) { setOwner(user); }
-
-    /**
-     * DON'T USE THIS METHOD IN YOUR CODE. Intended-to-be package-local method for getting
-     * the owner (but doesn't check the database with that information). This method is
-     * public so that the interface works properly.
-     * @return the user that owns this container
-     */
-    public GameUser getOwningUser() { return getOwner(); }
-
 }

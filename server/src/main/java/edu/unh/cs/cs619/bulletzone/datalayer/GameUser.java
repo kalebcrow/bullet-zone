@@ -2,18 +2,13 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
-public class GameUser {
-    protected int userID;
+public class GameUser extends Entity {
     protected String name;
     protected String username;
     //password info not stored in game
-    protected int statusID;
     protected HashSet<GameItemContainer> ownedItems = new HashSet<GameItemContainer>();
     protected HashSet<BankAccount> ownedAccounts = new HashSet<BankAccount>();
-
-    public int getUserID() { return userID; }
 
     public String getName() { return name; }
 
@@ -24,21 +19,20 @@ public class GameUser {
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     GameUser(GameUserRecord rec) {
-        userID = rec.userID;
+        super(rec);
         name = rec.name;
         username = rec.username;
-        statusID = rec.statusID;
     }
 
-    void addPermissionTarget(PermissionTarget pt) {
-        if (pt.getPermissionType() == PermissionTargetType.BankAccount)
+    void addPermissionTarget(Entity pt) {
+        if (pt.getEntityType() == EntityType.BankAccount)
             ownedAccounts.add((BankAccount)pt);
         else
             ownedItems.add((GameItemContainer)pt);
     }
 
-    void removePermissionTarget(PermissionTarget pt) {
-        if (pt.getPermissionType() == PermissionTargetType.BankAccount)
+    void removePermissionTarget(Entity pt) {
+        if (pt.getEntityType() == EntityType.BankAccount)
             ownedAccounts.remove((BankAccount)pt);
         else
             ownedItems.remove((GameItemContainer)pt);

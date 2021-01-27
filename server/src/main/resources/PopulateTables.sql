@@ -1,7 +1,7 @@
     INSERT INTO Common
         ( Version)
     VALUES
-        ( '0.1');
+        ( '1.0');
 
     INSERT INTO Status
         ( StatusID, Name)
@@ -9,6 +9,15 @@
         ( 1, 'Active'),
         ( 2, 'Disabled'),
         ( 3, 'Deleted');
+
+    INSERT INTO EntityType
+        ( EntityTypeID, Name)
+    VALUES
+        ( 0, 'Invalid'),
+        ( 1, 'User'),
+        ( 2, 'Item'),
+        ( 3, 'ItemContainer'),
+        ( 4, 'BankAccount');
 
     INSERT INTO Permission
         ( PermissionID, Name)

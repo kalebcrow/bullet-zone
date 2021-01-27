@@ -4,21 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 class ItemContainmentRecord {
-    int container_itemID;
-    int itemID;
+    int container_entityID;
+    int item_entityID;
     int startSlot;
     int endSlot;
     int modifier;
 
     ItemContainmentRecord(int icItemID, int icContainerID) {
-        itemID = icItemID;
-        container_itemID = icContainerID;
+        item_entityID = icItemID;
+        container_entityID = icContainerID;
     }
 
     ItemContainmentRecord(ResultSet mappingResult) {
         try {
-            container_itemID = mappingResult.getInt("Container_ItemID");
-            itemID = mappingResult.getInt("ItemID");
+            container_entityID = mappingResult.getInt("Container_EnitytID");
+            item_entityID = mappingResult.getInt("Item_EntityID");
             startSlot = mappingResult.getInt("startSlot");
             endSlot = mappingResult.getInt("endSlot");
             modifier = mappingResult.getInt("modifier");
@@ -28,9 +28,9 @@ class ItemContainmentRecord {
     }
 
     String getInsertString() {
-        return " INSERT INTO ItemContainer_Item ( Container_ItemID, ItemID, StartSlot, EndSlot, Modifier )\n" +
-                "    VALUES (" + container_itemID + ", "
-                + itemID + ", "
+        return " INSERT INTO ItemContainer_Item ( Container_EntityID, Item_EntityID, StartSlot, EndSlot, Modifier )\n" +
+                "    VALUES (" + container_entityID + ", "
+                + item_entityID + ", "
                 + startSlot + ", "
                 + endSlot + ", "
                 + modifier + "); ";

@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class PermissionManager {
     BulletZoneData data;
-    PermissionTargetRepository targetRepo;
+    OwnableEntityRepository targetRepo;
     GameUserRepository userRepo;
     public class Accessible<T> {
         final int maxPermissions = 4;
@@ -28,7 +28,7 @@ public class PermissionManager {
         public Collection<T> getItems() {
             HashSet<T> items = new HashSet<>();
             for (int targetID: targetPermissions.keySet()) {
-                PermissionTarget c = targetRepo.getTarget(targetID);
+                OwnableEntity c = targetRepo.getTarget(targetID);
                 if (c != null)
                     items.add((T)c);
             }
@@ -63,28 +63,28 @@ public class PermissionManager {
     HashMap<Integer, Accessible<GameItemContainer>> permissions = new HashMap<>(); //&&&
     private final HashMap<Integer, Set<GameUser>> targetToPermissionHolders = new HashMap<>();
 
-    public void setOwner(PermissionTarget target, GameUser user) {
-        setOwner(target.getId(), user.userID);
+    public void setOwner(OwnableEntity target, GameUser user) {
+        setOwner(target.getId(), user.getId());
     }
 
-    public void removeOwner(PermissionTarget target) {
-        removeOwner(target.getId(), target.getOwningUser().userID);
+    public void removeOwner(OwnableEntity target) {
+        removeOwner(target.getId(), target.getOwner().getId());
     }
 
-    public boolean check(PermissionTarget target, GameUser user, Permission p) {
-        return check(target.getId(), user.userID, p);
+    public boolean check(OwnableEntity target, GameUser user, Permission p) {
+        return check(target.getId(), user.getId(), p);
     }
 
-    public boolean grant(PermissionTarget target, GameUser user, Permission p) {
-        return grant(target.getId(), user.userID, p);
+    public boolean grant(OwnableEntity target, GameUser user, Permission p) {
+        return grant(target.getId(), user.getId(), p);
     }
 
-    public boolean revoke(PermissionTarget target, GameUser user, Permission p) {
-        return revoke(target.getId(), user.userID, p);
+    public boolean revoke(OwnableEntity target, GameUser user, Permission p) {
+        return revoke(target.getId(), user.getId(), p);
     }
 
     public Accessible getUserPermissions(GameUser user) {
-        return getUserPermissions(user.userID);
+        return getUserPermissions(user.getId());
     }
 
     public Accessible getUserPermissions(int userID) {
@@ -93,7 +93,7 @@ public class PermissionManager {
         return permissions.get(userID);
     }
 
-    public Collection<GameUser> getUsersWithPermissionsOn(PermissionTarget target) {
+    public Collection<GameUser> getUsersWithPermissionsOn(OwnableEntity target) {
         return getUsersWithPermissionsOn(target.getId());
     }
 
@@ -108,7 +108,7 @@ public class PermissionManager {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean removeOwner(int itemID, int oldUserID) {
-        PermissionTarget item = targetRepo.getTarget(itemID);
+        OwnableEntity item = targetRepo.getTarget(itemID);
         GameUser user = userRepo.getUser(oldUserID);
         if (item == null || user == null)
             return false;
@@ -116,7 +116,7 @@ public class PermissionManager {
         if (!deletePermission(itemID, oldUserID, Permission.Owner))
             return false;
 
-        item.setOwningUser(null);
+        item.setOwner(null);
         user.removePermissionTarget(item);
         return true;
     }
@@ -129,18 +129,18 @@ public class PermissionManager {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean setOwner(int itemID, int userID) {
-        PermissionTarget item = targetRepo.getTarget(itemID);
+        OwnableEntity item = targetRepo.getTarget(itemID);
         GameUser user = userRepo.getUser(userID);
         if (item == null || user == null)
             return false;
-        GameUser oldOwner = item.getOwningUser();
+        GameUser oldOwner = item.getOwner();
         if (oldOwner != null)
-            removeOwner(itemID, oldOwner.userID);
+            removeOwner(itemID, oldOwner.getId());
 
         if (!insertPermission(itemID, userID, Permission.Owner))
             return false;
 
-        item.setOwningUser(user);
+        item.setOwner(user);
         user.addPermissionTarget(item);
         return true;
     }
@@ -154,10 +154,10 @@ public class PermissionManager {
      */
     public boolean check(int itemID, int userID, Permission p){
         if (p == Permission.Owner){
-            PermissionTarget item = targetRepo.getTarget(itemID);
+            OwnableEntity item = targetRepo.getTarget(itemID);
             if (item == null)
                 return false;
-            return (item.getOwningUser().userID == userID);
+            return (item.getOwner().getId() == userID);
         }
         if (permissions.containsKey(userID)) {
             return permissions.get(userID).hasPermission(itemID, p);
@@ -248,7 +248,7 @@ public class PermissionManager {
         if (dataConnection == null)
             return false;
 
-        ItemPermissionRecord rec = new ItemPermissionRecord(itemID, userID, p);
+        OwnableEntityRecord rec = new OwnableEntityRecord(itemID, userID, p);
 
         try {
             PreparedStatement insertStatement = dataConnection.prepareStatement(rec.getInsertString());
@@ -278,9 +278,9 @@ public class PermissionManager {
 
         try {
             PreparedStatement updateStatement = dataConnection.prepareStatement(
-                    " UPDATE ItemContainer_User_Permissions SET StatusID=" + Status.Deleted.ordinal() +
+                    " UPDATE Entity_User_Permissions SET StatusID=" + Status.Deleted.ordinal() +
                             ", Deleted='" + new Timestamp(date.getTime()) +
-                            "' WHERE ItemID=" + itemID + " AND UserID=" + userID +
+                            "' WHERE EntityID=" + itemID + " AND User_EntityID=" + userID +
                             " AND PermissionID=" + p.ordinal() + "; ");
             if (updateStatement.executeUpdate() == 0) {
                 dataConnection.close();
@@ -302,7 +302,7 @@ public class PermissionManager {
      * @param permissionTargetRepo repository of items that can be owned
      * @param gameUserRepo repository of users that can own things
      */
-    void refresh(BulletZoneData bzData, PermissionTargetRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
+    void refresh(BulletZoneData bzData, OwnableEntityRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
         targetRepo = permissionTargetRepo;
         userRepo = gameUserRepo;
         data = bzData;
@@ -316,22 +316,22 @@ public class PermissionManager {
 
             // Read mapping of users to items that they own
             ResultSet mappingResult = statement.executeQuery(
-                    "SELECT * FROM ItemContainer_User_Permissions WHERE StatusID != "
+                    "SELECT * FROM Entity_User_Permissions WHERE StatusID != "
                             + Status.Deleted.ordinal());
             Permission perms[] = Permission.values();
             while (mappingResult.next()) {
-                int itemID = mappingResult.getInt("ItemID");
-                int userID = mappingResult.getInt("UserID");
+                int itemID = mappingResult.getInt("EntityID");
+                int userID = mappingResult.getInt("User_EntityID");
                 Permission permission = perms[mappingResult.getInt("PermissionID")];
 
                 if (permission == Permission.Owner) {
                     // not worrying about StartSlot, EndSlot, or Modifier right now...
-                    PermissionTarget container = targetRepo.getTarget(itemID);
+                    OwnableEntity container = targetRepo.getTarget(itemID);
                     GameUser user = userRepo.getUser(userID);
                     if (user == null || container == null) //could be null if user or container were marked as deleted
                         continue; //just skip everything if something is null
                     user.addPermissionTarget(container);
-                    container.setOwningUser(user);
+                    container.setOwner(user);
                 }
                 addPermission(itemID, userID, permission);
             }

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 
-public class GameItemRepository implements PermissionTargetRepository {
+public class GameItemRepository implements OwnableEntityRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();
     HashMap<Integer, GameItemContainer> containerMap = new HashMap<Integer, GameItemContainer>();
     ItemTypeRepository typeRepo;
@@ -35,7 +35,7 @@ public class GameItemRepository implements PermissionTargetRepository {
      * @return  GameItemContainer corresponding to the passed itemID;
      */
     public GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
-    public PermissionTarget getTarget(int id) { return getContainer(id); }
+    public OwnableEntity getTarget(int id) { return getContainer(id); }
 
     /**
      * Return the GameItem associated with teh passed internal ID (may be a container)
@@ -110,39 +110,22 @@ public class GameItemRepository implements PermissionTargetRepository {
         GameItem newItem;
         try {
             // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    rec.getInsertString(), Statement.RETURN_GENERATED_KEYS);
-            int affectedRows = insertStatement.executeUpdate();
-            if (affectedRows == 0)
-                throw new SQLException("Creating Item of type " + itemType.getName() + " failed.");
-
-            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                rec.itemID = generatedKeys.getInt(1);
-            }
-            else {
-                throw new SQLException("Created Item of type " + itemType.getName() + " but failed to obtain ID.");
-            }
+            rec.insertInto(dataConnection);
 
             // Create ItemContainer record if it's a container, then create actual GameItem/Container
             if (itemType.isContainer()) {
-                PreparedStatement containerStatement = dataConnection.prepareStatement(
-                        "INSERT INTO ItemContainer ( ItemID, Name ) VALUES ( " + rec.itemID + ", '" + name + "');");
-                affectedRows = containerStatement.executeUpdate();
-                if (affectedRows == 0)
-                    throw new SQLException("Creating ItemContainer record for type " + itemType.getName() + " failed.");
-
+                rec.insertContainerInfoInto(name, dataConnection);
                 newItem = new GameItemContainer(rec, name);
-                containerMap.put(rec.itemID, (GameItemContainer)newItem);
+                containerMap.put(rec.entityID, (GameItemContainer)newItem);
             }
             else
                 newItem = new GameItem(rec);
-            itemMap.put(rec.itemID, newItem);
+            itemMap.put(rec.entityID, newItem);
             dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating item!", e);
         }
-        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.itemID);
+        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.entityID);
         return newItem;
     }
 
@@ -163,7 +146,7 @@ public class GameItemRepository implements PermissionTargetRepository {
         try {
             PreparedStatement updateStatement = dataConnection.prepareStatement(
                     " UPDATE ItemContainer SET Name='" + name +
-                            "' WHERE ItemID=" + container.getItemID() + "; ");
+                            "' WHERE EntityID=" + container.getId() + "; ");
             if (updateStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return false; //nothing deleted
@@ -186,7 +169,7 @@ public class GameItemRepository implements PermissionTargetRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean addItemToContainer(GameItem item, GameItemContainer container) {
-        return addItemToContainer(item.itemID, container.itemID);
+        return addItemToContainer(item.getId(), container.getId());
     }
 
     /**
@@ -231,7 +214,7 @@ public class GameItemRepository implements PermissionTargetRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean removeItemFromContainer(GameItem item, GameItemContainer container) {
-        return removeItemFromContainer(item.itemID, container.itemID);
+        return removeItemFromContainer(item.getId(), container.getId());
     }
 
     /**
@@ -253,8 +236,8 @@ public class GameItemRepository implements PermissionTargetRepository {
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
                     " DELETE FROM ItemContainer_Item WHERE " +
-                            " Container_ItemID=" + containerID + " AND " +
-                            " ItemID=" + itemID + "; ");
+                            " Container_EntityID=" + containerID + " AND " +
+                            " Item_EntityID=" + itemID + "; ");
             if (deleteStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return false; //nothing deleted
@@ -275,7 +258,7 @@ public class GameItemRepository implements PermissionTargetRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean removeAllFromContainer(GameItemContainer container) {
-        return removeAllFromContainer(container.itemID);
+        return removeAllFromContainer(container.getId());
     }
 
     /**
@@ -295,7 +278,7 @@ public class GameItemRepository implements PermissionTargetRepository {
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
                     " DELETE FROM ItemContainer_Item WHERE " +
-                            " Container_ItemID=" + containerID + "; ");
+                            " Container_EntityID=" + containerID + "; ");
             if (deleteStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return false; //nothing deleted
@@ -317,7 +300,7 @@ public class GameItemRepository implements PermissionTargetRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean delete(GameItem item) {
-        return delete(item.itemID);
+        return delete(item.getId());
     }
 
     /**
@@ -340,16 +323,12 @@ public class GameItemRepository implements PermissionTargetRepository {
         try {
             PreparedStatement deleteStatement = dataConnection.prepareStatement(
                     " DELETE FROM ItemContainer_Item WHERE " +
-                            " ItemID=" + itemID + "; ");
+                            " Item_EntityID=" + itemID + "; ");
         } catch (SQLException e) {
             throw new IllegalStateException("Error while deleting item from container.", e);
         }
         try {
-            PreparedStatement updateStatement = dataConnection.prepareStatement(
-                    " UPDATE Item SET StatusID=" + Status.Deleted.ordinal() +
-                                        ", Deleted='" + new Timestamp(date.getTime()) +
-                                        "' WHERE ItemID=" + itemID + "; ");
-            if (updateStatement.executeUpdate() == 0) {
+            if (!EntityRecord.markDeleted(itemID, dataConnection)) {
                 dataConnection.close();
                 return false; //nothing deleted
             }
@@ -387,21 +366,22 @@ public class GameItemRepository implements PermissionTargetRepository {
 
             // Read collections that aren't deleted
             ResultSet itemContainerResult = statement.executeQuery(
-                    "SELECT * FROM ItemContainer c, Item i WHERE c.ItemID = i.ItemID" +
-                            " AND i.StatusID != " + Status.Deleted.ordinal());
+                    "SELECT * FROM ItemContainer c, Item i, Entity e WHERE c.entityID = i.entityID" +
+                            " AND i.entityID = e.entityID AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemContainerResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemContainerResult, itemTypeRepo);
                 GameItemContainer container = new GameItemContainer(rec, itemContainerResult.getString("Name"));
-                containerMap.put(rec.itemID, container);
-                itemMap.put(rec.itemID, container);
+                containerMap.put(rec.entityID, container);
+                itemMap.put(rec.entityID, container);
             }
 
             // Read non-collections (non-Frames)
             ResultSet itemResult = statement.executeQuery(
-                    "SELECT * FROM Item i WHERE ItemTypeID >= 20 AND StatusID != " + Status.Deleted.ordinal());
+                    "SELECT * FROM Item i, Entity e WHERE i.entityID = e.entityID" +
+                            " AND i.ItemTypeID >= 20 AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemResult, itemTypeRepo);
-                itemMap.put(rec.itemID, new GameItem(rec));
+                itemMap.put(rec.entityID, new GameItem(rec));
             }
 
             // Read mapping of collections to items that are inside them
@@ -409,8 +389,8 @@ public class GameItemRepository implements PermissionTargetRepository {
             while (mappingResult.next()) {
                 ItemContainmentRecord rec = new ItemContainmentRecord(mappingResult);
                 // not worrying about StartSlot, EndSlot, or Modifier right now...
-                GameItemContainer container = getContainer(rec.container_itemID);
-                GameItem item = getItem(rec.itemID);
+                GameItemContainer container = getContainer(rec.container_entityID);
+                GameItem item = getItem(rec.item_entityID);
                 if (container != null && item != null) //can happen if these were deleted
                     container.addItem(item);
             }

@@ -14,19 +14,38 @@
       PRIMARY KEY (StatusID)
     );
 
+    -- EntityType table -- enumeration of basic types of things in the database
+    CREATE TABLE IF NOT EXISTS EntityType
+    (
+      EntityTypeID INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
+      PRIMARY KEY (EntityTypeID)
+    );
+
+    -- Entity table -- Core information about various things in the database that
+    --                 are involved in ownership and have statuses and created/deleted dates
+    CREATE TABLE IF NOT EXISTS Entity
+    (
+      EntityID INT NOT NULL AUTO_INCREMENT,
+      EntityTypeID INT NOT NULL,
+      StatusID INT NOT NULL,
+      Created DATETIME,
+      Deleted DATETIME,
+      PRIMARY KEY (EntityID),
+      FOREIGN KEY (EntityTypeID) REFERENCES EntityType(EntityTypeID),
+      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+    );
+
     -- User table -- basic information for user accounts
     CREATE TABLE IF NOT EXISTS User
     (
-      UserID INT NOT NULL AUTO_INCREMENT,
+      EntityID INT NOT NULL,
       Name VARCHAR(40) NOT NULL,
       Username VARCHAR(40) NOT NULL,
       PasswordHash VARCHAR(32) NOT NULL,
       PasswordSalt VARCHAR(32) NOT NULL,
-      StatusID INT NOT NULL,
-      Created DATETIME,
-      Deleted DATETIME,
-      PRIMARY KEY (UserID),
-      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+      PRIMARY KEY (EntityID),
+      FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
     );
 
     -- Permission table -- enumeration of access permissions that users can have on items/accounts
@@ -53,27 +72,24 @@
     -- BankAccount table -- vital information for bank accounts in the game
     CREATE TABLE IF NOT EXISTS BankAccount
     (
-      BankAccountID INT NOT NULL AUTO_INCREMENT,
+      EntityID INT NOT NULL,
       Credits FLOAT NOT NULL,
-      StatusID INT NOT NULL,
-      Created DATETIME,
-      Deleted DATETIME,
-      PRIMARY KEY (BankAccountID),
-      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+      PRIMARY KEY (EntityID),
+      FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
     );
 
-    -- BankAccount_User_Permissions table -- correlation showing which users have which
-    --                                       permissions on a given bank account
-    CREATE TABLE IF NOT EXISTS BankAccount_User_Permissions
+    -- Entity_User_Permissions table -- correlation showing which users have which
+    --                                  permissions on a given (non-user) entity
+    CREATE TABLE IF NOT EXISTS Entity_User_Permissions
     (
-      BankAccountID INT NOT NULL,
-      UserID INT NOT NULL,
+      EntityID INT NOT NULL,
+      User_EntityID INT NOT NULL,
       PermissionID INT NOT NULL,
       StatusID INT NOT NULL,
       Created DATETIME,
       Deleted DATETIME,
-      FOREIGN KEY (BankAccountID) REFERENCES BankAccount(BankAccountID),
-      FOREIGN KEY (UserID) REFERENCES User(UserID),
+      FOREIGN KEY (EntityID) REFERENCES Entity(EntityID),
+      FOREIGN KEY (User_EntityID) REFERENCES User(EntityID),
       FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID),
       FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
     );
@@ -82,7 +98,7 @@
     --                                 bank account to another
     CREATE TABLE AccountTransferHistory
     (
-      AccountTransferHistoryID INT NOT NULL,
+      AccountTransferHistoryID INT NOT NULL AUTO_INCREMENT,
       SourceBankAccountID INT NOT NULL,
       SourceBalancePrior FLOAT NOT NULL,
       DestBankAccountID INT NOT NULL,
@@ -90,8 +106,8 @@
       TransferAmount FLOAT NOT NULL,
       Timestamp DATETIME NOT NULL,
       PRIMARY KEY (AccountTransferHistoryID),
-      FOREIGN KEY (SourceBankAccountID) REFERENCES BankAccount(BankAccountID),
-      FOREIGN KEY (DestBankAccountID) REFERENCES BankAccount(BankAccountID)
+      FOREIGN KEY (SourceBankAccountID) REFERENCES BankAccount(EntityID),
+      FOREIGN KEY (DestBankAccountID) REFERENCES BankAccount(EntityID)
     );
 
     -- ItemProperty table -- enumeration of properties that some game
@@ -138,53 +154,34 @@
     -- Item table -- vital information on individual items
     CREATE TABLE Item
     (
-      ItemID INT NOT NULL AUTO_INCREMENT,
+      EntityID INT NOT NULL,
       ItemTypeID INT NOT NULL,
       UsageMonitor FLOAT NOT NULL,
-      StatusID INT NOT NULL,
-      Created DATETIME,
-      Deleted DATETIME,
-      PRIMARY KEY (ItemID),
+      PRIMARY KEY (EntityID),
       FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID),
-      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+      FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
     );
 
     -- Item container -- additional information for containers beyond what is in the item table
     CREATE TABLE IF NOT EXISTS ItemContainer
     (
-      ItemID INT NOT NULL, -- must have matching ItemID in Item table to be valid
+      EntityID INT NOT NULL, -- must have matching ItemID in Item table to be valid
       Name VARCHAR(40) NOT NULL,
-      PRIMARY KEY (ItemID),
-      FOREIGN KEY (ItemID) REFERENCES Item(ItemID)
+      PRIMARY KEY (EntityID),
+      FOREIGN KEY (EntityID) REFERENCES Item(EntityID)
     );
 
     -- ItemContainer_Item -- correlation indicating which items are in which containers,
     --                       with an indication of how the item is situated in the container
     CREATE TABLE IF NOT EXISTS ItemContainer_Item
     (
-      ItemID INT NOT NULL,
-      Container_ItemID INT NOT NULL,
+      Container_EntityID INT NOT NULL,
+      Item_EntityID INT NOT NULL,
       StartSlot INT NOT NULL,   -- first slot in the container where the item appears
       EndSlot INT NOT NULL,     -- last slot in the container where the item appears
       Modifier INT NOT NULL,    -- such as orientation of item in the slots
-      FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
-      FOREIGN KEY (Container_ItemID) REFERENCES ItemContainer(ItemID)
-    );
-
-    -- ItemContainer_User_Permissions table -- correlation showing which users have which
-    --                                         permissions on a given container
-    CREATE TABLE IF NOT EXISTS ItemContainer_User_Permissions
-    (
-      ItemID INT NOT NULL,  -- should be an ItemContainer ItemID only, not individual items
-      UserID INT NOT NULL,
-      PermissionID INT NOT NULL,
-      StatusID INT NOT NULL,
-      Created DATETIME,
-      Deleted DATETIME,
-      FOREIGN KEY (ItemID) REFERENCES ItemContainer(ItemID),
-      FOREIGN KEY (UserID) REFERENCES User(UserID),
-      FOREIGN KEY (PermissionID) REFERENCES Permission(PermissionID),
-      FOREIGN KEY (StatusID) REFERENCES Status(StatusID)
+      FOREIGN KEY (Container_EntityID) REFERENCES ItemContainer(EntityID),
+      FOREIGN KEY (Item_EntityID) REFERENCES Item(EntityID)
     );
 
     -- TerrainType table -- vital information about terrain types
@@ -198,7 +195,8 @@
       MaxSize FLOAT,             -- NULL = no limit; forests might allow trucks/soldiers, fortifications only soldiers, walls nothing
       Strength FLOAT,            -- blocks bullets if non-null; becomes debris at/below zero
       Hardness FLOAT,            -- to drilling/bombardment. Blocks bullets if not null; divide damage by this amount
-      Damage FLOAT               -- inflicted per second on unit present; repairs if negative
+      Damage FLOAT,              -- inflicted per second on unit present; repairs if negative
+      PRIMARY KEY (TerrainTypeID)
     );
 
 -- END

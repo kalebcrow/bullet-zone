@@ -235,8 +235,8 @@ public class BulletZoneData {
         d.items.addItemToContainer(tank1, bay);
         d.items.addItemToContainer(tank2, bay);
         d.items.removeAllFromContainer(bay);
-        d.items.delete(tank1.itemID);
-        if (d.items.getItemOrContainer(tank1.itemID) == null)
+        d.items.delete(tank1.getId());
+        if (d.items.getItemOrContainer(tank1.getId()) == null)
             System.out.println("Successfully deleted tank1");
 
         // Create a user and verify their credentials, then set tank2 to be owned by them
@@ -286,8 +286,8 @@ public class BulletZoneData {
         for (GameUser u : d.users.getUsers()) {
             PermissionManager.Accessible<GameItemContainer> ip = d.permissions.getUserPermissions(u);
             for (GameItemContainer container : ip.getItems()) {
-                System.out.print(u.name + " has permissions for " + container.name + " (ID=" + container.itemID + "): ");
-                for (Permission p : ip.getPermissionsOnItem(container.itemID)) {
+                System.out.print(u.name + " has permissions for " + container.name + " (ID=" + container.getId() + "): ");
+                for (Permission p : ip.getPermissionsOnItem(container.getId())) {
                     System.out.print(p.name() + " ");
                 }
                 System.out.println();
@@ -296,7 +296,7 @@ public class BulletZoneData {
         // Check what permissions our latest user has on tank2 by looping through valid permissions
         for (Permission p : Permission.values()) {
             System.out.println(user4.name + " Permission check for " + p.name() + ": " + d.permissions.check(tank2, user4, p));
-            System.out.println(user4.name + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.itemID, user4.userID, p));
+            System.out.println(user4.name + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.getId(), user4.getId(), p));
         }
         //d.permissions.removeOwner(tank2);
 

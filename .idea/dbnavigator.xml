@@ -25,8 +25,9 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb">
-        <schema name="cs6190" object-types="view, table" />
-        <schema name="cs6191" object-types="view, table" />
+        <schema name="cs6190" object-types="table, view" />
+        <schema name="cs6190dev" object-types="table, view" />
+        <schema name="cs6191" object-types="table, view" />
       </connection>
     </loaded-nodes>
   </component>
@@ -49,8 +50,8 @@
     </filter-actions>
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6190.BankAccount" active-filter-id="" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.ItemContainer_Item" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.User" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.ItemType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6190.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.ItemContainer_User_Permissions" active-filter-id="EMPTY_FILTER" />

@@ -7,26 +7,16 @@ import edu.unh.cs.cs619.bulletzone.datalayer.itemType.Describable;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 
-public class GameItem implements Describable {
-    protected int itemID;
+public class GameItem extends OwnableEntity implements Describable {
     protected ItemType itemType;
     protected double usageMonitor;
-    protected int statusID;
-    protected GameUser owner;
     protected GameItemContainer parent;
-
-    @Override
-    public String toString() { return getTypeName() + " (ID: " + itemID + ")"; }
-
-    public int getItemID() { return itemID; }
 
     public ItemType getType() { return itemType; }
 
     public String getTypeName(){
         return itemType.getName();
     }
-
-    public GameUser getOwner() { return owner; }
 
     public GameItemContainer getParent() { return parent; }
 
@@ -43,15 +33,11 @@ public class GameItem implements Describable {
     public double getPrice() {return itemType.getPrice();}
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
-
     GameItem(GameItemRecord rec) {
-        itemID = rec.itemID;
+        super(rec);
         itemType = rec.itemType;
         usageMonitor = rec.usageMonitor;
-        statusID = rec.statusID;
     }
-
-    void setOwner(GameUser user) { owner = user; }
 
     protected void setParent(GameItemContainer container) {
         parent = container;

@@ -1,54 +1,57 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
-class GameUserRecord {
+class GameUserRecord extends EntityRecord {
     int userID;
     String name;
     String username;
     byte[] passwordHash;
     byte[] passwordSalt;
-    int statusID;
-    Timestamp created;
-    Timestamp deleted;
 
     GameUserRecord(String guName, String guUsername) {
+        super(EntityType.User);
         name = guName;
         username = guUsername;
-        statusID = Status.Active.ordinal();
-        Date date = new Date();
-        created = new Timestamp(date.getTime());
     }
 
     GameUserRecord(ResultSet userResult) {
+        super(userResult);
         try {
             //ResultSetMetaData rsmd = userResult.getMetaData();
             //String firstColumnName = rsmd.getColumnName(1);
             //System.out.println(firstColumnName);
-            userID = userResult.getInt("UserID");
             name = userResult.getString("Name");
             username = userResult.getString("Username");
             passwordHash = decocdeBytesAsHex(userResult.getString("PasswordHash"));
             passwordSalt = decocdeBytesAsHex(userResult.getString("PasswordSalt"));
-            statusID = userResult.getInt("StatusID");
-            created = userResult.getTimestamp("Created");
-            deleted = userResult.getTimestamp("Deleted");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from user result set", e);
         }
     }
 
+    @Override
+    void insertInto(Connection dataConnection) throws SQLException {
+        super.insertInto(dataConnection);
+        PreparedStatement userStatement = dataConnection.prepareStatement(getInsertString());
+
+        int affectedRows = userStatement.executeUpdate();
+        if (affectedRows == 0)
+            throw new SQLException("Creating User " + username + " failed.");
+    }
+
     String getInsertString() {
-        return " INSERT INTO User ( Name, Username, PasswordHash, PasswordSalt, StatusID, Created )\n" +
-                "    VALUES ('" + name + "', '"
+        return " INSERT INTO User ( EntityID, Name, Username, PasswordHash, PasswordSalt )\n" +
+                "    VALUES ('" + entityID + "', '"
+                + name + "', '"
                 + username + "', '"
                 + encodeBytesAsHex(passwordHash) + "', '"
-                + encodeBytesAsHex(passwordSalt) + "', "
-                + statusID + ", '"
-                + created + "'); ";
+                + encodeBytesAsHex(passwordSalt) + "'); ";
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------

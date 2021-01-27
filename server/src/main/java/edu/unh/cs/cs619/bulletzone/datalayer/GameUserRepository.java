@@ -78,20 +78,7 @@ public class GameUserRepository {
                 return null;
 
             // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(
-                    newRecord.getInsertString(), Statement.RETURN_GENERATED_KEYS);
-            int affectedRows = insertStatement.executeUpdate();
-            if (affectedRows == 0)
-                throw new SQLException("Creating User " + newRecord.username + " failed.");
-
-            ResultSet generatedKeys = insertStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                newRecord.userID = generatedKeys.getInt(1);
-            }
-            else {
-                throw new SQLException("Created user " + newRecord.username + " but failed to obtain ID.");
-            }
-
+            newRecord.insertInto(dataConnection);
             dataConnection.close();
             newUser = new GameUser(newRecord);
             userMap.put(newRecord.userID, newUser);
@@ -120,7 +107,7 @@ public class GameUserRepository {
             Statement statement = dataConnection.createStatement();
             // Read users that aren't deleted
             ResultSet userResult = statement.executeQuery(
-                    "SELECT * FROM User u WHERE StatusID != " + Status.Deleted.ordinal()
+                    "SELECT * FROM User u, Entity e WHERE u.EntityID = e.EntityID AND e.StatusID != " + Status.Deleted.ordinal()
                             + " AND u.Username = '" + username + "'");
             if (userResult.next()) //else, is empty result list
             {
@@ -170,7 +157,7 @@ public class GameUserRepository {
             Statement statement = dataConnection.createStatement();
             // Read users that aren't deleted
             ResultSet userResult = statement.executeQuery(
-                    "SELECT * FROM User u WHERE StatusID != " + Status.Deleted.ordinal());
+                    "SELECT * FROM User u, Entity e WHERE u.EntityID = e.EntityID AND e.StatusID != " + Status.Deleted.ordinal());
             while (userResult.next()) {
                 GameUserRecord rec = new GameUserRecord(userResult);
                 GameUser user = new GameUser(rec);

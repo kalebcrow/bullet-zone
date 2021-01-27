@@ -1,43 +1,39 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Date;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
-import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
-
-public class BankAccountRecord {
-    int bankAccountID;
+public class BankAccountRecord extends EntityRecord {
     double credits;
-    int statusID;
-    Timestamp created;
-    Timestamp deleted;
 
     BankAccountRecord() {
+        super(EntityType.BankAccount);
         credits = 0;
-        statusID = Status.Active.ordinal();
-        Date date = new Date();
-        created = new Timestamp(date.getTime());
     }
 
     BankAccountRecord(ResultSet itemResult){
+        super(itemResult);
         try {
-            bankAccountID = itemResult.getInt("BankAccountID");
             credits = itemResult.getDouble("Credits");
-            statusID = itemResult.getInt("StatusID");
-            created = itemResult.getTimestamp("Created");
-            deleted = itemResult.getTimestamp("Deleted");
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from item result set", e);
         }
     }
 
     String getInsertString() {
-        return " INSERT INTO BankAccount ( Credits, StatusID, Created )\n" +
-                "    VALUES (" + credits + ", "
-                + statusID + ", '"
-                + created + "'); ";
+        return " INSERT INTO BankAccount ( EntityID, Credits )\n" +
+                "    VALUES (" + entityID + ", " + credits + "); ";
+    }
+
+    @Override
+    void insertInto(Connection dataConnection) throws SQLException {
+        super.insertInto(dataConnection);
+        PreparedStatement accountStatement = dataConnection.prepareStatement(getInsertString());
+
+        int affectedRows = accountStatement.executeUpdate();
+        if (affectedRows == 0)
+            throw new SQLException("Creating BankAccount record failed.");
     }
 }

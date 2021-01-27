@@ -107,14 +107,14 @@ public class BulletZoneDataTest {
     public void items$delete_newlyCreatedItem_removesItemFromRepository() {
         GameItem item = db.items.create(db.types.TankCannon);
         db.items.delete(item);
-        assertThat(db.items.getItem(item.itemID), is(nullValue()));
+        assertThat(db.items.getItem(item.getId()), is(nullValue()));
     }
 
     @Test
     public void items$delete_newlyCreatedItemContainer_removesContainerFromRepository() {
         GameItemContainer item = db.items.createContainer(db.types.TankFrame);
         db.items.delete(item);
-        assertThat(db.items.getItemOrContainer(item.itemID), is(nullValue()));
+        assertThat(db.items.getItemOrContainer(item.getId()), is(nullValue()));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class BulletZoneDataTest {
         GameItemContainer truck = db.items.createContainer(db.types.TruckFrame);
         db.items.renameContainer(truck, name);
         db.refresh();
-        GameItemContainer check = db.items.getContainer(truck.itemID);
+        GameItemContainer check = db.items.getContainer(truck.getId());
         assertThat(check.getName(), is(name));
     }
 
@@ -144,7 +144,7 @@ public class BulletZoneDataTest {
         ArrayList<Integer> itemIDs = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             items[i] = db.items.create(types[i]);
-            itemIDs.add(items[i].getItemID());
+            itemIDs.add(items[i].getId());
             db.items.addItemToContainer(items[i], tank);
         }
         db.permissions.setOwner(tank, user1);
@@ -154,11 +154,11 @@ public class BulletZoneDataTest {
         System.out.println("Found user " + user2);
         for (GameItemContainer c : user2.getOwnedItems()) {
             System.out.println("Found container " + c);
-            assertThat(c.getItemID(), is(tank.getItemID()));
+            assertThat(c.getId(), is(tank.getId()));
             int i = 0;
             for (GameItem item : c.getItems()) {
                 System.out.println("Found item " + item);
-                assertThat(itemIDs, hasItem(item.getItemID()));
+                assertThat(itemIDs, hasItem(item.getId()));
             }
         }
     }
