@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategoryRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemPropertyRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
@@ -290,7 +292,7 @@ public class BulletZoneData {
         for (GameUser u : d.users.getUsers()) {
             PermissionManager.Accessible<GameItemContainer> ip = d.permissions.getUserPermissions(u);
             for (GameItemContainer container : ip.getItems()) {
-                System.out.print(u.name + " has permissions for " + container.name + " (ID=" + container.getId() + "): ");
+                System.out.print(u.getName() + " has permissions for " + container.getName() + " (ID=" + container.getId() + "): ");
                 for (Permission p : ip.getPermissionsOnItem(container.getId())) {
                     System.out.print(p.name() + " ");
                 }
@@ -299,8 +301,8 @@ public class BulletZoneData {
         }
         // Check what permissions our latest user has on tank2 by looping through valid permissions
         for (Permission p : Permission.values()) {
-            System.out.println(user4.name + " Permission check for " + p.name() + ": " + d.permissions.check(tank2, user4, p));
-            System.out.println(user4.name + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.getId(), user4.getId(), p));
+            System.out.println(user4.getName() + " Permission check for " + p.name() + ": " + d.permissions.check(tank2, user4, p));
+            System.out.println(user4.getName() + " Permission ID check for " + p.name() + ": " + d.permissions.check(tank2.getId(), user4.getId(), p));
         }
         //d.permissions.removeOwner(tank2);
 

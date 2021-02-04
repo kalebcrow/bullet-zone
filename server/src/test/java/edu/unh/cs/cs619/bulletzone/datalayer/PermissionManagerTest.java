@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 
 import static org.hamcrest.Matchers.hasItem;

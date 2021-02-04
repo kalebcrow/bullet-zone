@@ -1,7 +1,7 @@
 /**
  * Internal package class for creating and interpreting database data corresponding to GameItems
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.item;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +12,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
+import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
@@ -117,16 +120,16 @@ public class GameItemRepository implements OwnableEntityRepository {
             if (itemType.isContainer()) {
                 rec.insertContainerInfoInto(name, dataConnection);
                 newItem = new GameItemContainer(rec, name);
-                containerMap.put(rec.entityID, (GameItemContainer)newItem);
+                containerMap.put(rec.getID(), (GameItemContainer)newItem);
             }
             else
                 newItem = new GameItem(rec);
-            itemMap.put(rec.entityID, newItem);
+            itemMap.put(rec.getID(), newItem);
             dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating item!", e);
         }
-        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.entityID);
+        System.out.println("New " + newItem.getTypeName() + " added with ID " + rec.getID());
         return newItem;
     }
 
@@ -354,7 +357,7 @@ public class GameItemRepository implements OwnableEntityRepository {
      * @param bzData        reference to BulletZoneData class to use for SQL queries
      * @param itemTypeRepo  reference to an already-initialized ItemTypeRepository
      */
-    void refresh(BulletZoneData bzData, ItemTypeRepository itemTypeRepo) {
+    public void refresh(BulletZoneData bzData, ItemTypeRepository itemTypeRepo) {
         typeRepo = itemTypeRepo;
         data = bzData;
         containerMap.clear();
@@ -372,8 +375,8 @@ public class GameItemRepository implements OwnableEntityRepository {
             while (itemContainerResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemContainerResult, itemTypeRepo);
                 GameItemContainer container = new GameItemContainer(rec, itemContainerResult.getString("Name"));
-                containerMap.put(rec.entityID, container);
-                itemMap.put(rec.entityID, container);
+                containerMap.put(rec.getID(), container);
+                itemMap.put(rec.getID(), container);
             }
 
             // Read non-collections (non-Frames)
@@ -382,7 +385,7 @@ public class GameItemRepository implements OwnableEntityRepository {
                             " AND i.ItemTypeID >= 20 AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemResult, itemTypeRepo);
-                itemMap.put(rec.entityID, new GameItem(rec));
+                itemMap.put(rec.getID(), new GameItem(rec));
             }
 
             // Read mapping of collections to items that are inside them

@@ -1,7 +1,7 @@
 /**
  * Public class for accessing data for individual items in the Item table
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.item;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.Describable;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;

@@ -1,24 +1,21 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemRepository;
 
 public class GameUserRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
@@ -128,7 +125,7 @@ public class GameUserRepository {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = factory.generateSecret(spec).getEncoded();
             if (Arrays.equals(hash, userRecord.passwordHash))
-                return getUser(userRecord.entityID); //matches!
+                return getUser(userRecord.getID()); //matches!
             //else fall through
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new IllegalStateException("Unable to attempt password validation!", e);

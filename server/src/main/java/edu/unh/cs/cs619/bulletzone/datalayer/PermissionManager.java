@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRecord;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;

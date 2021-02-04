@@ -46,7 +46,7 @@ class GameUserRecord extends EntityRecord {
 
     String getInsertString() {
         return " INSERT INTO User ( EntityID, Name, Username, PasswordHash, PasswordSalt )\n" +
-                "    VALUES ('" + entityID + "', '"
+                "    VALUES ('" + getID() + "', '"
                 + name + "', '"
                 + username + "', '"
                 + encodeBytesAsHex(passwordHash) + "', '"

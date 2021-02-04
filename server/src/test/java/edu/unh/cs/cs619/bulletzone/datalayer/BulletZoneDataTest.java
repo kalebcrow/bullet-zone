@@ -11,6 +11,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategory;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 

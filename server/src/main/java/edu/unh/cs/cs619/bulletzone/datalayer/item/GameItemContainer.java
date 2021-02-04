@@ -2,7 +2,7 @@
  * Public class for accessing data for individual items in the ItemContainer table
  */
 
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.item;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class GameItemContainer extends GameItem {
     }
 
     @Override
-    public String toString() { return getTypeName() + " " + name + " (ID: " + entityID + ")"; }
+    public String toString() { return getTypeName() + " " + name + " (ID: " + getId() + ")"; }
 
     public String getName() { return name; }
 

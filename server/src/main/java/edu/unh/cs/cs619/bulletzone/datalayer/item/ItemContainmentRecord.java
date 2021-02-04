@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.item;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

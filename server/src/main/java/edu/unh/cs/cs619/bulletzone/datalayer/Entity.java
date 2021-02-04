@@ -9,8 +9,8 @@ public class Entity {
 
     public Entity(EntityRecord rec) {
         entityType = rec.entityType;
-        entityID = rec.entityID;
-        statusID = rec.statusID;
+        entityID = rec.getID();
+        statusID = rec.getStatusID();
     }
 
     public EntityType getEntityType() { return entityType; }
