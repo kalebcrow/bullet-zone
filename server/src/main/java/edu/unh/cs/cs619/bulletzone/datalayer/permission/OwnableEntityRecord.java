@@ -1,7 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.datalayer.permission;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityType;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 
 public class OwnableEntityRecord extends EntityRecord {
     int userID;

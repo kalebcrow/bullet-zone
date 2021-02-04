@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.Entity;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 
 public class GameUser extends Entity {

@@ -7,10 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityType;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 

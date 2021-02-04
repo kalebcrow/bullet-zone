@@ -1,13 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.datalayer.account;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.EnumeratedRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EnumeratedRecord;
 
 public class AccountTransferHistoryRecord extends EnumeratedRecord {
     int accountTransferHistoryID;

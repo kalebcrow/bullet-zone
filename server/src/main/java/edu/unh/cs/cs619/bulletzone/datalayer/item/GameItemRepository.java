@@ -13,8 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.Status;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;

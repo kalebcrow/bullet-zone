@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.EntityType;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 
 public class BankAccountRecord extends EntityRecord {
     double credits;
