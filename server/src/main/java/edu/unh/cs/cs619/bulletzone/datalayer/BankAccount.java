@@ -16,7 +16,7 @@ public class BankAccount extends OwnableEntity {
      * @param amount Positive or negative amount to add to the credit balance
      * @return true if successful (cannot be false, currently)
      */
-    boolean modifyBalance(int amount) {
+    boolean modifyBalance(double amount) {
         balance += amount;
         return true;
     }

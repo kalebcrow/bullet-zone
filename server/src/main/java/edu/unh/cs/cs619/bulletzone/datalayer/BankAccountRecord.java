@@ -36,4 +36,14 @@ public class BankAccountRecord extends EntityRecord {
         if (affectedRows == 0)
             throw new SQLException("Creating BankAccount record failed.");
     }
+
+    static boolean update(Connection dataConnection, int accountID, double amount) throws SQLException {
+        PreparedStatement updateStatement = dataConnection.prepareStatement(
+                "UPDATE BankAccount SET Credits=" + amount + " WHERE EntityID=" + accountID + "; ");
+        if (updateStatement.executeUpdate() == 0) {
+            dataConnection.close();
+            return false; //nothing deleted
+        }
+        return true;
+    }
 }

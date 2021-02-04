@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 
+import sun.java2d.loops.DrawGlyphList;
+
 public class BankAccountRepository implements OwnableEntityRepository {
     HashMap<Integer, BankAccount> accountMap = new HashMap<Integer, BankAccount>();
     BulletZoneData data;
@@ -95,7 +97,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
         return true;
     }
 
-    public boolean modifyAccountBalance(BankAccount account, int amount) {
+    public boolean modifyAccountBalance(BankAccount account, double amount) {
         return modifyAccountBalance(account.getId(), amount);
     }
 
@@ -107,11 +109,36 @@ public class BankAccountRepository implements OwnableEntityRepository {
      * @return true if successful, false otherwise (such as if the account has insufficient
      *         funds to add the (negative) amount).
      */
-    public boolean modifyAccountBalance(int accountID, int amount) {
+    public boolean modifyAccountBalance(int accountID, double amount) {
         if (!accountMap.containsKey(accountID))
             return false;
 
         return updateBalance(accountID, amount);
+    }
+
+    /**
+     * Move the indicated amount from the source account to the target account
+     * @param source account credits are moving from
+     * @param target account credits are moving to
+     * @param amount number of credits to move
+     * @return true if successful, false otherwise (such as DB error or insufficient funds)
+     */
+    public boolean transfer(BankAccount source, BankAccount target, double amount) {
+        return transfer(source.getId(), target.getId(), amount);
+    }
+
+    /**
+     * Move the indicated amount from the source account to the target account
+     * @param sourceAccountID ID of the account credits are moving from
+     * @param targetAccountID ID of the account credits are moving to
+     * @param amount number of credits to move
+     * @return true if successful, false otherwise (such as DB error or insufficient funds)
+     */
+    public boolean transfer(int sourceAccountID, int targetAccountID, double amount) {
+        if (!accountMap.containsKey(sourceAccountID) || !accountMap.containsKey(targetAccountID))
+            return false;
+
+        return updateBalances(sourceAccountID, targetAccountID, amount);
     }
 
     /**
@@ -173,7 +200,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
      * @return true if successful, false otherwise (such as if the account has insufficient
      *         funds to add the (negative) amount).
      */
-    boolean updateBalance(int accountID, int amount) {
+    boolean updateBalance(int accountID, double amount) {
         BankAccount account = accountMap.get(accountID);
         if (account.getBalance() < -amount)
             return false;
@@ -182,18 +209,56 @@ public class BankAccountRepository implements OwnableEntityRepository {
         if (dataConnection == null)
             return false;
         try {
-            PreparedStatement updateStatement = dataConnection.prepareStatement(
-                    "UPDATE BankAccount SET Credits=" + (account.getBalance() + amount) +
-                            " WHERE EntityID=" + accountID + "; ");
-            if (updateStatement.executeUpdate() == 0) {
-                dataConnection.close();
-                return false; //nothing deleted
-            }
+            if (!BankAccountRecord.update(dataConnection, accountID, account.getBalance() + amount))
+                return false; //nothing changed
 
             //since the DB update was succsessful...
             //create a transfer record using the old account balance
             AccountTransferHistoryRecord transfer = new AccountTransferHistoryRecord(accountID, account.getBalance(), amount);
             account.modifyBalance(amount); //updated internal structure
+            transfer.insertInto(dataConnection); //record the transaction
+
+            dataConnection.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot read static info!", e);
+        }
+        return true;
+    }
+
+    /**
+     * Adds the specified (possibly negative) amount to the specified account's balance and
+     * records a transaction for it
+     * @param sourceAccountID ID of the account we're moving credits from
+     * @param targetAccountID ID of the account we're moving credits to
+     * @param amount    Amount (positive or negative) to adjust the account balances by
+     * @return true if successful, false otherwise (such as if the account has insufficient
+     *         funds to add the (negative) amount).
+     */
+    boolean updateBalances(int sourceAccountID, int targetAccountID, double amount) {
+        BankAccount source = accountMap.get(sourceAccountID);
+        BankAccount dest = accountMap.get(targetAccountID);
+        if (source.getBalance() >= 0 && source.getBalance() < amount)
+            return false;
+
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
+        try {
+            dataConnection.setAutoCommit(false);
+            if (!BankAccountRecord.update(dataConnection, sourceAccountID,source.getBalance() - amount)
+               || !BankAccountRecord.update(dataConnection, targetAccountID, dest.getBalance() + amount)) {
+                dataConnection.rollback();
+                return false; //nothing changed
+            }
+            dataConnection.commit();
+            dataConnection.setAutoCommit(true);
+
+            //since the DB update was succsessful...
+            //create a transfer record using the old account balance
+            AccountTransferHistoryRecord transfer = new AccountTransferHistoryRecord(
+                    sourceAccountID, source.getBalance(), targetAccountID, dest.getBalance(), amount);
+            source.modifyBalance(-amount); //update internal structure
+            dest.modifyBalance(amount);
             transfer.insertInto(dataConnection); //record the transaction
 
             dataConnection.close();

@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collection;
 
@@ -26,13 +27,13 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
-    public void testGetAccount() {
+    public void getAccount_onExistingAccount_returnsCorrectAccount() {
         assertEquals(db.accounts.getAccount(basicAccount.getId()), basicAccount);
         assertEquals(db.accounts.getAccount(otherAccount.getId()), otherAccount);
     }
 
     @Test
-    public void testGetAccounts() {
+    public void getAccounts_withExistingAccounts_returnsWithKnownAccounts() {
         Collection<BankAccount> list = db.accounts.getAccounts();
         assertTrue(list.contains(basicAccount));
         assertTrue(list.contains(otherAccount));
@@ -40,15 +41,36 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
-    public void testModifyAccountBalance() {
+    public void modifyAccountBalance_byPositiveThenNegativeAmount_updatesBalanceAndTransferHistory() {
         int amount = 500;
         double startAmount = basicAccount.getBalance();
         Collection<AccountTransferHistoryRecord> startList = db.accounts.getTransactions(basicAccount);
+
         db.accounts.modifyAccountBalance(basicAccount, amount);
         assertThat(basicAccount.getBalance(), is(startAmount + amount));
+
         db.accounts.modifyAccountBalance(basicAccount, -amount);
         assertThat(basicAccount.getBalance(), is(startAmount));
         Collection<AccountTransferHistoryRecord> endList = db.accounts.getTransactions(basicAccount);
         assertThat(endList.size(), is(startList.size() + 2));
+    }
+
+    @Test
+    public void transfer_betweenAccountsWithEnough_isSuccessfulAndGeneratesHistoryForBothAccounts() {
+        int start = 1000, amount = 700;
+        db.accounts.modifyAccountBalance(basicAccount, start);
+        double basicAmount = basicAccount.getBalance();
+        double otherAmount = otherAccount.getBalance();
+        Collection<AccountTransferHistoryRecord> basicList = db.accounts.getTransactions(basicAccount);
+        Collection<AccountTransferHistoryRecord> otherList = db.accounts.getTransactions(otherAccount);
+
+        assertTrue(db.accounts.transfer(basicAccount, otherAccount, amount));
+
+        assertThat(basicAccount.getBalance(), is(basicAmount - amount));
+        assertThat(otherAccount.getBalance(), is(otherAmount + amount));
+        Collection<AccountTransferHistoryRecord> endList = db.accounts.getTransactions(basicAccount);
+        assertThat(endList.size(), is (basicList.size() + 1));
+        endList = db.accounts.getTransactions(otherAccount);
+        assertThat(endList.size(), is (otherList.size() + 1));
     }
 }
