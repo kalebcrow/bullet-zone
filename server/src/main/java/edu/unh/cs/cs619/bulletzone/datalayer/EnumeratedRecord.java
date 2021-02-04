@@ -8,11 +8,11 @@ import java.sql.Statement;
 
 public abstract class EnumeratedRecord {
 
-    abstract int getID();
-    abstract void setID(int id);
-    abstract String getRecordInsertString();
+    abstract public int getID();
+    abstract public void setID(int id);
+    abstract public String getRecordInsertString();
 
-    void insertInto(Connection dataConnection, String recordType) throws SQLException {
+    public void insertInto(Connection dataConnection, String recordType) throws SQLException {
         PreparedStatement insertStatement = dataConnection.prepareStatement(
                 getRecordInsertString(), Statement.RETURN_GENERATED_KEYS);
         int affectedRows = insertStatement.executeUpdate();

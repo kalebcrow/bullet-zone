@@ -3,7 +3,7 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 public class OwnableEntity extends Entity {
     protected GameUser owner;
 
-    OwnableEntity(EntityRecord rec) {
+    public OwnableEntity(EntityRecord rec) {
         super(rec);
     }
 

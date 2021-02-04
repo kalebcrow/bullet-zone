@@ -1,16 +1,18 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.account;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 
-import sun.java2d.loops.DrawGlyphList;
+import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
+import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.OwnableEntity;
+import edu.unh.cs.cs619.bulletzone.datalayer.OwnableEntityRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.Status;
 
 public class BankAccountRepository implements OwnableEntityRepository {
     HashMap<Integer, BankAccount> accountMap = new HashMap<Integer, BankAccount>();
@@ -50,12 +52,12 @@ public class BankAccountRepository implements OwnableEntityRepository {
             // Create base item
             rec.insertInto(dataConnection);
             newAccount = new BankAccount(rec);
-            accountMap.put(rec.entityID, newAccount);
+            accountMap.put(rec.getID(), newAccount);
             dataConnection.close();
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating bank account!", e);
         }
-        System.out.println("New BankAccount added with ID " + rec.entityID);
+        System.out.println("New BankAccount added with ID " + rec.getID());
         return newAccount;
     }
 
@@ -66,7 +68,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
      * @return  true if the operation was successful, and false otherwise.
      */
     public boolean delete(BankAccount account) {
-        return delete(account.entityID);
+        return delete(account.getId());
     }
 
     /**
@@ -169,7 +171,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
      *
      * @param bzData        reference to BulletZoneData class to use for SQL queries
     */
-    void refresh(BulletZoneData bzData) {
+    public void refresh(BulletZoneData bzData) {
         data = bzData;
         accountMap.clear();
         Connection dataConnection = data.getConnection();
@@ -183,7 +185,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
                     "SELECT * FROM BankAccount a, Entity e WHERE a.entityID = e.entityID AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
                 BankAccountRecord rec = new BankAccountRecord(itemResult);
-                accountMap.put(rec.entityID, new BankAccount(rec));
+                accountMap.put(rec.getID(), new BankAccount(rec));
             }
 
             dataConnection.close();

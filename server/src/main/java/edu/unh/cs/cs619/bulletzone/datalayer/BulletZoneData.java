@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.stream.Collectors;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategoryRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemPropertyRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
@@ -119,11 +121,12 @@ public class BulletZoneData {
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
-     * Package-level method for getting an appropriate database connection
+     * Method for getting an appropriate database connection. Intended to be package-level,
+     * but public to allow for related packages to access it.
      * @return Connection to SQL database that can be used for further queries. Note that
      *         the caller should close the connection when finished.
      */
-    Connection getConnection() {
+    public Connection getConnection() {
         Connection dataConnection;
         try {
             dataConnection = DriverManager.getConnection(_url, _username, _password);
@@ -252,7 +255,7 @@ public class BulletZoneData {
 
         // Create a bank account for the user
         BankAccount account = d.accounts.create();
-        account.setOwner(user2);
+        d.permissions.setOwner(account, user2);
 
         // Create another user (will fail if there already, but then the validation should work)
         // Then grant this new user several permissions on tank2 (and check them). This part only prints

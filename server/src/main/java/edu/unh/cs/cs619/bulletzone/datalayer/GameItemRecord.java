@@ -40,7 +40,7 @@ class GameItemRecord extends EntityRecord {
     }
 
     @Override
-    void insertInto(Connection dataConnection) throws SQLException {
+    public void insertInto(Connection dataConnection) throws SQLException {
         super.insertInto(dataConnection);
         PreparedStatement containerStatement = dataConnection.prepareStatement(getInsertString());
 

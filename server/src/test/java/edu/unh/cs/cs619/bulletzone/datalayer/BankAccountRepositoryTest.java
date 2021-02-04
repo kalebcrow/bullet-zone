@@ -2,9 +2,11 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collection;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.account.AccountTransferHistoryRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;

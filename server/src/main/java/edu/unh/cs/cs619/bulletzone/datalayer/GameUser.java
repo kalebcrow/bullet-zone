@@ -3,6 +3,8 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import java.util.Collection;
 import java.util.HashSet;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+
 public class GameUser extends Entity {
     protected String name;
     protected String username;

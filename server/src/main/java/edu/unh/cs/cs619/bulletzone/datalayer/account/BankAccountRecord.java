@@ -1,9 +1,12 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.EntityType;
 
 public class BankAccountRecord extends EntityRecord {
     double credits;
@@ -24,11 +27,11 @@ public class BankAccountRecord extends EntityRecord {
 
     String getInsertString() {
         return " INSERT INTO BankAccount ( EntityID, Credits )\n" +
-                "    VALUES (" + entityID + ", " + credits + "); ";
+                "    VALUES (" + getID() + ", " + credits + "); ";
     }
 
     @Override
-    void insertInto(Connection dataConnection) throws SQLException {
+    public void insertInto(Connection dataConnection) throws SQLException {
         super.insertInto(dataConnection);
         PreparedStatement accountStatement = dataConnection.prepareStatement(getInsertString());
 

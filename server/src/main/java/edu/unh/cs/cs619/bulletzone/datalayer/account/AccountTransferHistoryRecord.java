@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.EnumeratedRecord;
 
 public class AccountTransferHistoryRecord extends EnumeratedRecord {
     int accountTransferHistoryID;
@@ -64,13 +66,13 @@ public class AccountTransferHistoryRecord extends EnumeratedRecord {
     }
 
     @Override
-    int getID() { return accountTransferHistoryID; }
+    public int getID() { return accountTransferHistoryID; }
 
     @Override
-    void setID(int id) { accountTransferHistoryID = id; }
+    public void setID(int id) { accountTransferHistoryID = id; }
 
     @Override
-    String getRecordInsertString() {
+    public String getRecordInsertString() {
         return " INSERT INTO " + recordName + " ( SourceBankAccountID, SourceBalancePrior, " +
                      "DestBankAccountID, DestBalancePrior, TransferAmount, Timestamp )\n" +
                 "    VALUES (" + (sourceBankAccountID == noID? "null" : sourceBankAccountID) + ", " +

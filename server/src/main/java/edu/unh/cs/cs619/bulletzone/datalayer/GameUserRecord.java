@@ -35,7 +35,7 @@ class GameUserRecord extends EntityRecord {
     }
 
     @Override
-    void insertInto(Connection dataConnection) throws SQLException {
+    public void insertInto(Connection dataConnection) throws SQLException {
         super.insertInto(dataConnection);
         PreparedStatement userStatement = dataConnection.prepareStatement(getInsertString());
 

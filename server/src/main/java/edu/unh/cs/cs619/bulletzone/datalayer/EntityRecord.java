@@ -15,14 +15,14 @@ public class EntityRecord extends EnumeratedRecord {
     Timestamp created;
     Timestamp deleted;
 
-    EntityRecord(EntityType eType) {
+    public EntityRecord(EntityType eType) {
         entityType = eType;
         statusID = Status.Active.ordinal();
         Date date = new Date();
         created = new Timestamp(date.getTime());
     }
 
-    EntityRecord(ResultSet itemResult){
+    public EntityRecord(ResultSet itemResult){
         try {
             entityID = itemResult.getInt("EntityID");
             entityType = EntityType.values()[itemResult.getInt("EntityTypeID")];
@@ -35,24 +35,24 @@ public class EntityRecord extends EnumeratedRecord {
     }
 
     @Override
-    int getID() { return entityID; }
+    public int getID() { return entityID; }
 
     @Override
-    void setID(int id) { entityID = id; }
+    public void setID(int id) { entityID = id; }
 
     @Override
-    String getRecordInsertString() {
+    public String getRecordInsertString() {
         return " INSERT INTO Entity ( EntityTypeID, StatusID, Created )\n" +
                 "    VALUES (" + entityType.ordinal() + ", "
                 + statusID + ", '"
                 + created + "'); ";
     }
 
-    void insertInto(Connection dataConnection) throws SQLException {
+    public void insertInto(Connection dataConnection) throws SQLException {
         insertInto(dataConnection, entityType.name());
     }
 
-    static boolean markDeleted(int entityID, Connection dataConnection) throws SQLException {
+    public static boolean markDeleted(int entityID, Connection dataConnection) throws SQLException {
         Date date = new Date();
         PreparedStatement updateStatement = dataConnection.prepareStatement(
             " UPDATE Entity SET StatusID=" + Status.Deleted.ordinal() +
