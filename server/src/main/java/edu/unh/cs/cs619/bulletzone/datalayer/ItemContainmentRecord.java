@@ -17,7 +17,7 @@ class ItemContainmentRecord {
 
     ItemContainmentRecord(ResultSet mappingResult) {
         try {
-            container_entityID = mappingResult.getInt("Container_EnitytID");
+            container_entityID = mappingResult.getInt("Container_EntityID");
             item_entityID = mappingResult.getInt("Item_EntityID");
             startSlot = mappingResult.getInt("startSlot");
             endSlot = mappingResult.getInt("endSlot");

@@ -81,12 +81,12 @@ public class GameUserRepository {
             newRecord.insertInto(dataConnection);
             dataConnection.close();
             newUser = new GameUser(newRecord);
-            userMap.put(newRecord.userID, newUser);
+            userMap.put(newUser.getId(), newUser);
             usernameToUserMap.put(newRecord.username, newUser);
         } catch (SQLException e) {
             throw new IllegalStateException("Error while creating user!", e);
         }
-        System.out.println("New user " + username + " added with ID " + newRecord.userID);
+        System.out.println("New user " + username + " added with ID " + newUser.getId());
         return newUser;
     }
 
@@ -128,7 +128,7 @@ public class GameUserRepository {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = factory.generateSecret(spec).getEncoded();
             if (Arrays.equals(hash, userRecord.passwordHash))
-                return getUser(userRecord.userID); //matches!
+                return getUser(userRecord.entityID); //matches!
             //else fall through
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new IllegalStateException("Unable to attempt password validation!", e);
@@ -161,7 +161,7 @@ public class GameUserRepository {
             while (userResult.next()) {
                 GameUserRecord rec = new GameUserRecord(userResult);
                 GameUser user = new GameUser(rec);
-                userMap.put(rec.userID, user);
+                userMap.put(user.getId(), user);
                 usernameToUserMap.put(rec.username, user);
             }
             dataConnection.close();

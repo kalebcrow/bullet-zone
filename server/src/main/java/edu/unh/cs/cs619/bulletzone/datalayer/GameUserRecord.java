@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 class GameUserRecord extends EntityRecord {
-    int userID;
     String name;
     String username;
     byte[] passwordHash;
