@@ -3,6 +3,9 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import org.junit.Test;
 
 import java.util.Map;
+
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
+
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;

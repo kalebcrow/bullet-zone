@@ -29,6 +29,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategoryRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemPropertyRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainTypeRepository;
 

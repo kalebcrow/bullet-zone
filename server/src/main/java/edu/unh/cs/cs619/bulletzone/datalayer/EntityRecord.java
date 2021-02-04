@@ -48,6 +48,10 @@ public class EntityRecord extends EnumeratedRecord {
                 + created + "'); ";
     }
 
+    public int getStatusID() { return statusID; }
+
+    public Timestamp getCreated() { return created; }
+
     public void insertInto(Connection dataConnection) throws SQLException {
         insertInto(dataConnection, entityType.name());
     }

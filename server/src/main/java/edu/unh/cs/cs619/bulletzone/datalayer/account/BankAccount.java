@@ -1,6 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.datalayer.account;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.OwnableEntity;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 
 public class BankAccount extends OwnableEntity {
     protected double balance;

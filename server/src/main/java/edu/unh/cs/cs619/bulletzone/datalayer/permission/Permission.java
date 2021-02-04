@@ -2,7 +2,7 @@
  * Enumeration for the permissions users can have for of items, and bank accounts (or anything
  * else that can be accessed by a user)
  */
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.permission;
 
 import java.util.HashMap;
 import java.util.Map;

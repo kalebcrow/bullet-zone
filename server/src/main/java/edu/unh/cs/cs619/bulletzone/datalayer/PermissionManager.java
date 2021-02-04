@@ -12,6 +12,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
+
 public class PermissionManager {
     BulletZoneData data;
     OwnableEntityRepository targetRepo;
@@ -302,7 +307,7 @@ public class PermissionManager {
      * @param permissionTargetRepo repository of items that can be owned
      * @param gameUserRepo repository of users that can own things
      */
-    void refresh(BulletZoneData bzData, OwnableEntityRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
+    public void refresh(BulletZoneData bzData, OwnableEntityRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
         targetRepo = permissionTargetRepo;
         userRepo = gameUserRepo;
         data = bzData;

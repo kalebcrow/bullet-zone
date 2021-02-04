@@ -8,13 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
 
 public class GameItemRepository implements OwnableEntityRepository {
     HashMap<Integer, GameItem> itemMap = new HashMap<Integer, GameItem>();

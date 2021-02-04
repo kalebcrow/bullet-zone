@@ -6,6 +6,7 @@ package edu.unh.cs.cs619.bulletzone.datalayer;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.Describable;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemProperty;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 
 public class GameItem extends OwnableEntity implements Describable {
     protected ItemType itemType;

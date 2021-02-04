@@ -10,8 +10,8 @@ import java.util.Vector;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.OwnableEntity;
-import edu.unh.cs.cs619.bulletzone.datalayer.OwnableEntityRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.Status;
 
 public class BankAccountRepository implements OwnableEntityRepository {

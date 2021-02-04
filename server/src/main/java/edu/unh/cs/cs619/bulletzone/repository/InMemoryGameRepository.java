@@ -16,7 +16,6 @@ import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
-import sun.rmi.runtime.Log;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
