@@ -1,11 +1,14 @@
 package edu.unh.cs.cs619.bulletzone.datalayer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class BankAccountRepository implements OwnableEntityRepository {
     HashMap<Integer, BankAccount> accountMap = new HashMap<Integer, BankAccount>();
@@ -92,6 +95,45 @@ public class BankAccountRepository implements OwnableEntityRepository {
         return true;
     }
 
+    public boolean modifyAccountBalance(BankAccount account, int amount) {
+        return modifyAccountBalance(account.getId(), amount);
+    }
+
+    /**
+     * Adds the specified (possibly negative) amount to the specified account's balance and
+     * records a transaction for it
+     * @param accountID ID of the account to modify
+     * @param amount    Amount (positive or negative) to adjust the account balance by
+     * @return true if successful, false otherwise (such as if the account has insufficient
+     *         funds to add the (negative) amount).
+     */
+    public boolean modifyAccountBalance(int accountID, int amount) {
+        if (!accountMap.containsKey(accountID))
+            return false;
+
+        return updateBalance(accountID, amount);
+    }
+
+    /**
+     * Provides a history of all changes to the supplied account
+     * @param account The account to find history for
+     * @return Vector of AccountTransferHistoryRecords that indicate a modification of this account
+     */
+    public Collection<AccountTransferHistoryRecord> getTransactions(BankAccount account) {
+        return getTransactions(account.getId());
+    }
+
+    /**
+     * Provides a history of all changes to the supplied account
+     * @param accountID of the account
+     * @return Vector of AccountTransferHistoryRecords that indicate a modification of this account
+     */
+    public Collection<AccountTransferHistoryRecord> getTransactions(int accountID) {
+        if (!accountMap.containsKey(accountID))
+            return new Vector<>();
+
+        return getTransferHistory(accountID);
+    }
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
@@ -123,4 +165,70 @@ public class BankAccountRepository implements OwnableEntityRepository {
         }
     }
 
+    /**
+     * Adds the specified (possibly negative) amount to the specified account's balance and
+     * records a transaction for it
+     * @param accountID ID of the account to modify
+     * @param amount    Amount (positive or negative) to adjust the account balance by
+     * @return true if successful, false otherwise (such as if the account has insufficient
+     *         funds to add the (negative) amount).
+     */
+    boolean updateBalance(int accountID, int amount) {
+        BankAccount account = accountMap.get(accountID);
+        if (account.getBalance() < -amount)
+            return false;
+
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return false;
+        try {
+            PreparedStatement updateStatement = dataConnection.prepareStatement(
+                    "UPDATE BankAccount SET Credits=" + (account.getBalance() + amount) +
+                            " WHERE EntityID=" + accountID + "; ");
+            if (updateStatement.executeUpdate() == 0) {
+                dataConnection.close();
+                return false; //nothing deleted
+            }
+
+            //since the DB update was succsessful...
+            //create a transfer record using the old account balance
+            AccountTransferHistoryRecord transfer = new AccountTransferHistoryRecord(accountID, account.getBalance(), amount);
+            account.modifyBalance(amount); //updated internal structure
+            transfer.insertInto(dataConnection); //record the transaction
+
+            dataConnection.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot read static info!", e);
+        }
+        return true;
+    }
+
+    /**
+     * Provides a history of all changes to the supplied account
+     * @param accountID ID of the account
+     * @return Vector of AccountTransferHistoryRecords that indicate a modification of this account
+     */
+    Collection<AccountTransferHistoryRecord> getTransferHistory(int accountID) {
+        Vector<AccountTransferHistoryRecord> hist = new Vector<AccountTransferHistoryRecord>();
+        Connection dataConnection = data.getConnection();
+        if (dataConnection == null)
+            return hist;
+        try {
+            Statement statement = dataConnection.createStatement();
+
+            // Read accounts that aren't deleted
+            ResultSet itemResult = statement.executeQuery(
+                    "SELECT * FROM AccountTransferHistory a WHERE a.DestBankAccountID = " + accountID +
+                             " OR a.SourceBankAccountID = " + accountID);
+            while (itemResult.next()) {
+                AccountTransferHistoryRecord rec = new AccountTransferHistoryRecord(itemResult);
+                hist.add(rec);
+            }
+
+            dataConnection.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot read transfer history for account " + accountID, e);
+        }
+        return hist;
+    }
 }

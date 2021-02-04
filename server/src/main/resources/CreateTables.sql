@@ -99,8 +99,8 @@
     CREATE TABLE AccountTransferHistory
     (
       AccountTransferHistoryID INT NOT NULL AUTO_INCREMENT,
-      SourceBankAccountID INT NOT NULL,
-      SourceBalancePrior FLOAT NOT NULL,
+      SourceBankAccountID INT,
+      SourceBalancePrior FLOAT,
       DestBankAccountID INT NOT NULL,
       DestBalancePrior FLOAT NOT NULL,
       TransferAmount FLOAT NOT NULL,

@@ -18,7 +18,7 @@ public class BankAccountRecord extends EntityRecord {
         try {
             credits = itemResult.getDouble("Credits");
         } catch (SQLException e) {
-            throw new IllegalStateException("Unable to extract data from item result set", e);
+            throw new IllegalStateException("Unable to extract data from bank account result set", e);
         }
     }
 

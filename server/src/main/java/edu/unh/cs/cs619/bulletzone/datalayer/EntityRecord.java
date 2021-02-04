@@ -8,10 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
-import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
-
-public class EntityRecord {
+public class EntityRecord extends EnumeratedRecord {
     int entityID;
     EntityType entityType;
     int statusID;
@@ -33,11 +30,18 @@ public class EntityRecord {
             created = itemResult.getTimestamp("Created");
             deleted = itemResult.getTimestamp("Deleted");
         } catch (SQLException e) {
-            throw new IllegalStateException("Unable to extract data from item result set", e);
+            throw new IllegalStateException("Unable to extract data from entity result set", e);
         }
     }
 
-    private String getEntityInsertString() {
+    @Override
+    int getID() { return entityID; }
+
+    @Override
+    void setID(int id) { entityID = id; }
+
+    @Override
+    String getRecordInsertString() {
         return " INSERT INTO Entity ( EntityTypeID, StatusID, Created )\n" +
                 "    VALUES (" + entityType.ordinal() + ", "
                 + statusID + ", '"
@@ -45,19 +49,7 @@ public class EntityRecord {
     }
 
     void insertInto(Connection dataConnection) throws SQLException {
-        PreparedStatement insertStatement = dataConnection.prepareStatement(
-                getEntityInsertString(), Statement.RETURN_GENERATED_KEYS);
-        int affectedRows = insertStatement.executeUpdate();
-        if (affectedRows == 0)
-            throw new SQLException("Creating Entity of type " + entityType.name() + " failed.");
-
-        ResultSet generatedKeys = insertStatement.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            entityID = generatedKeys.getInt(1);
-        }
-        else {
-            throw new SQLException("Created Entity of type " + entityType.name() + " but failed to obtain ID.");
-        }
+        insertInto(dataConnection, entityType.name());
     }
 
     static boolean markDeleted(int entityID, Connection dataConnection) throws SQLException {
