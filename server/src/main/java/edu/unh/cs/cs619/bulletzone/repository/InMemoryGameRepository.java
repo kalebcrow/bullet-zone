@@ -313,7 +313,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             createFieldHolderGrid(game);
 
-            // Test // TODO XXX Remove & integrate map loader
+            // Test // TODO Move to more appropriate place (and if desired, integrate map loader)
             game.getHolderGrid().get(1).setFieldEntity(new Wall());
             game.getHolderGrid().get(2).setFieldEntity(new Wall());
             game.getHolderGrid().get(3).setFieldEntity(new Wall());
