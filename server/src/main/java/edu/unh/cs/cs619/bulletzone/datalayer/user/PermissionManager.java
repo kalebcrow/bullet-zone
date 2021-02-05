@@ -24,7 +24,7 @@ public class PermissionManager {
     BulletZoneData data;
     OwnableEntityRepository targetRepo;
     GameUserRepository userRepo;
-    public class Accessible<T> {
+    public class AccessibleTargets {
         final int maxPermissions = 4;
         public boolean hasPermission(int targetID, Permission p) {
             if (targetPermissions.containsKey(targetID))
@@ -33,12 +33,12 @@ public class PermissionManager {
                 return false;
         }
 
-        public Collection<T> getItems() {
-            HashSet<T> items = new HashSet<>();
+        public Collection<OwnableEntity> getItems() {
+            HashSet<OwnableEntity> items = new HashSet<>();
             for (int targetID: targetPermissions.keySet()) {
                 OwnableEntity c = targetRepo.getTarget(targetID);
                 if (c != null)
-                    items.add((T)c);
+                    items.add(c);
             }
             return items;
         }
@@ -68,7 +68,7 @@ public class PermissionManager {
         }
         private final HashMap<Integer, HashSet<Permission>> targetPermissions = new HashMap<>();
     }
-    HashMap<Integer, Accessible<GameItemContainer>> permissions = new HashMap<>(); //&&&
+    HashMap<Integer, AccessibleTargets> permissions = new HashMap<>(); //&&&
     private final HashMap<Integer, Set<GameUser>> targetToPermissionHolders = new HashMap<>();
 
     public void setOwner(OwnableEntity target, GameUser user) {
@@ -91,13 +91,13 @@ public class PermissionManager {
         return revoke(target.getId(), user.getId(), p);
     }
 
-    public Accessible getUserPermissions(GameUser user) {
+    public AccessibleTargets getUserPermissions(GameUser user) {
         return getUserPermissions(user.getId());
     }
 
-    public Accessible getUserPermissions(int userID) {
+    public AccessibleTargets getUserPermissions(int userID) {
         if (!permissions.containsKey(userID))
-            permissions.put(userID, new Accessible<>());
+            permissions.put(userID, new AccessibleTargets());
         return permissions.get(userID);
     }
 
@@ -225,7 +225,7 @@ public class PermissionManager {
      */
     void addPermission(int itemID, int userID, Permission p) {
         if (!permissions.containsKey(userID))
-            permissions.put(userID, new Accessible<>());
+            permissions.put(userID, new AccessibleTargets());
         permissions.get(userID).addPermission(itemID, p);
         if (!targetToPermissionHolders.containsKey(itemID))
             targetToPermissionHolders.put(itemID, new HashSet<GameUser>());

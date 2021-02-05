@@ -31,6 +31,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategoryRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemPropertyRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainTypeRepository;
@@ -293,10 +294,10 @@ public class BulletZoneData {
         GameUser user4 = d.users.createUser("UserF", "userF", "xyzzy");
         //d.permissions.setOwner(bay, user4);
         for (GameUser u : d.users.getUsers()) {
-            PermissionManager.Accessible<GameItemContainer> ip = d.permissions.getUserPermissions(u);
-            for (GameItemContainer container : ip.getItems()) {
-                System.out.print(u.getName() + " has permissions for " + container.getName() + " (ID=" + container.getId() + "): ");
-                for (Permission p : ip.getPermissionsOnItem(container.getId())) {
+            PermissionManager.AccessibleTargets ip = d.permissions.getUserPermissions(u);
+            for (OwnableEntity thing : ip.getItems()) {
+                System.out.print(u.getName() + " has permissions for " + thing + ": ");
+                for (Permission p : ip.getPermissionsOnItem(thing.getId())) {
                     System.out.print(p.name() + " ");
                 }
                 System.out.println();

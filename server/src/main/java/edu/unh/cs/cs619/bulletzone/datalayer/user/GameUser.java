@@ -7,8 +7,9 @@ import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Entity;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 
-public class GameUser extends Entity {
+public class GameUser extends OwnableEntity {
     protected String name;
     protected String username;
     //password info not stored in game
