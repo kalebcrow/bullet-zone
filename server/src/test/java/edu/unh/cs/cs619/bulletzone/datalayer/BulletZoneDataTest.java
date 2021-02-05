@@ -15,6 +15,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategory;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 
 import static org.junit.Assert.*;
 

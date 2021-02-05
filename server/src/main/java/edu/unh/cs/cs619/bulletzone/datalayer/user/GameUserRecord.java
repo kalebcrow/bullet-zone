@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.user;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

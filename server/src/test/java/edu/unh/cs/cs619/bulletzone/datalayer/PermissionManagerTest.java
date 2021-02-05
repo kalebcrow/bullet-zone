@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;

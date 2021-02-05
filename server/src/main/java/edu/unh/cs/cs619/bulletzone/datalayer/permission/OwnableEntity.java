@@ -2,7 +2,7 @@ package edu.unh.cs.cs619.bulletzone.datalayer.permission;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Entity;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
-import edu.unh.cs.cs619.bulletzone.datalayer.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 
 public class OwnableEntity extends Entity {
     protected GameUser owner;

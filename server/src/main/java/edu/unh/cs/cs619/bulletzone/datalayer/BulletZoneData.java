@@ -34,6 +34,9 @@ import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainTypeRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.PermissionManager;
 
 public class BulletZoneData {
     private String _url;

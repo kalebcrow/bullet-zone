@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.datalayer;
+package edu.unh.cs.cs619.bulletzone.datalayer.user;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -15,6 +15,7 @@ import java.util.HashMap;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemRepository;
 
@@ -143,7 +144,7 @@ public class GameUserRepository {
      * @param bzData        reference to BulletZoneData class to use for SQL queries
      * @param gameItemRepo  reference to already-initialized GameItemRepository
      */
-    void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo) {
+    public void refresh(BulletZoneData bzData, GameItemRepository gameItemRepo) {
         data = bzData;
         usernameToUserMap.clear();
         userMap.clear();
