@@ -21,6 +21,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
@@ -163,11 +166,8 @@ public class BulletZoneData {
             properties = new ItemPropertyRepository(dataConnection);
             categories = new ItemCategoryRepository(dataConnection, properties);
             types = new ItemTypeRepository(dataConnection, categories);
-            items.refresh(this, types);
             terrains = new TerrainTypeRepository(dataConnection);
-            users.refresh(this, items);
-            accounts.refresh(this);
-            permissions.refresh(this , items, users);
+            refreshData();
         } catch (IllegalStateException e) {
             System.out.println("Unable to read initial data. Exception listed below, but continuing...");
             e.printStackTrace();
@@ -190,12 +190,14 @@ public class BulletZoneData {
     public void rebuildData() {
         executeScript("/DropTables.sql", "Cannot drop all tables!");
         initializeData();
+    }
+
+    public void refreshData() {
         items.refresh(this, types);
         users.refresh(this, items);
         accounts.refresh(this);
-        permissions.refresh(this , items, users);
+        permissions.refresh(this , Arrays.asList(items, accounts), users);
     }
-
     /**
      * Executes the passed SQL script on the current database (it assumes the account given
      * at construction time has the appropriate permissions to execute whatever is in the script).

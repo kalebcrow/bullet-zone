@@ -10,11 +10,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.AggregateRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRecord;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
@@ -307,11 +309,11 @@ public class PermissionManager {
      * at time of initialization.
      *
      * @param bzData       reference to BulletZoneData for making further SQL queries
-     * @param permissionTargetRepo repository of items that can be owned
+     * @param repos     List of repositories of entities that can be owned
      * @param gameUserRepo repository of users that can own things
      */
-    public void refresh(BulletZoneData bzData, OwnableEntityRepository permissionTargetRepo, GameUserRepository gameUserRepo) {
-        targetRepo = permissionTargetRepo;
+    public void refresh(BulletZoneData bzData, List<? extends OwnableEntityRepository> repos, GameUserRepository gameUserRepo) {
+        targetRepo = new AggregateRepository(repos);
         userRepo = gameUserRepo;
         data = bzData;
         targetToPermissionHolders.clear();

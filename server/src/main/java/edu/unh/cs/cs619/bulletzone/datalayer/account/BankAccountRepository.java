@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
@@ -33,6 +35,16 @@ public class BankAccountRepository implements OwnableEntityRepository {
      */
     public Collection<BankAccount> getAccounts() {
         return accountMap.values();
+    }
+
+    @Override
+    public AbstractMap<Integer, ? extends OwnableEntity> getEntities() {
+        return accountMap;
+    }
+
+    @Override
+    public EntityType getTargetType() {
+        return EntityType.BankAccount;
     }
 
     /**

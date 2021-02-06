@@ -8,12 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRecord;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
@@ -69,6 +71,16 @@ public class GameItemRepository implements OwnableEntityRepository {
      */
     public Collection<GameItem> getGameItems() {
         return itemMap.values();
+    }
+
+    @Override
+    public AbstractMap<Integer, ? extends OwnableEntity> getEntities() {
+        return itemMap;
+    }
+
+    @Override
+    public EntityType getTargetType() {
+        return EntityType.Item;
     }
 
     /**
