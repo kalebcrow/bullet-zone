@@ -190,8 +190,12 @@ public class BulletZoneData {
     public void rebuildData() {
         executeScript("/DropTables.sql", "Cannot drop all tables!");
         initializeData();
+        refreshData();
     }
 
+    /**
+     * Refreshes all repositories after initialization.
+     */
     public void refreshData() {
         items.refresh(this, types);
         users.refresh(this, items);
