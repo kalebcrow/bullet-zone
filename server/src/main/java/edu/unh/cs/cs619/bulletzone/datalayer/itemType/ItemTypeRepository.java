@@ -20,8 +20,8 @@ public class ItemTypeRepository {
     HashMap<String, ItemType> nameToTypeMap = new HashMap<>();
     HashMap<String, HashMap<Integer, ItemType> >  categoryItems = new HashMap<String, HashMap<Integer, ItemType> >();
 
-    final public ItemType GarageBay, StorageContainer;
-    final public ItemType TankFrame, TruckFrame, BattleSuit, ShipFrame;
+    final public ItemType GarageBay, StorageContainer, Trifle, Trinket, Thingamajig;
+    final public ItemType TransportFrame, TankFrame, TruckFrame, BattleSuit, ShipFrame;
     final public ItemType VehicleExpansionFrame, BattleSuitExpansionFrame;
     final public ItemType TankCannon, PlasmaCannon, ParticleBeamGun, LargePlasmaCannon;
     final public ItemType TankGenerator, TruckGenerator, PortableGenerator, ShipGenerator;
@@ -34,6 +34,10 @@ public class ItemTypeRepository {
 
         GarageBay = nameToTypeMap.get("Garage bay");
         StorageContainer = nameToTypeMap.get("Storage container");
+        Trifle = nameToTypeMap.get("Trifle");
+        Trinket = nameToTypeMap.get("Trinket");
+        Thingamajig = nameToTypeMap.get("Thingamajig");
+        TransportFrame = nameToTypeMap.get("Transport frame");
         TankFrame = nameToTypeMap.get("Standard tank frame");
         TruckFrame = nameToTypeMap.get("Standard truck frame");
         BattleSuit = nameToTypeMap.get("Standard battle suit");
@@ -187,6 +191,7 @@ public class ItemTypeRepository {
             case "Drive":
                 driveMap.put(id, itemType);
                 break;
+            //Note: Artifacts do not show up as a category
         }
     }
 }

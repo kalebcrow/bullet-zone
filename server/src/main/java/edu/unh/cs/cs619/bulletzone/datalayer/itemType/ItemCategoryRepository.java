@@ -12,12 +12,13 @@ public class ItemCategoryRepository {
     HashMap<Integer, ItemCategory> baseCategoryMap = new HashMap<Integer, ItemCategory>();
     HashMap<String, ItemCategory> nameToCategoryMap = new HashMap<String, ItemCategory>();
 
-    final public ItemCategory Frame, Weapon, Generator, Engine, Drive;
+    final public ItemCategory Artifact, Frame, Weapon, Generator, Engine, Drive;
     final public ItemCategory AntiGravity, WeaponBoostingGenerator, ShieldRepair;
 
     public ItemCategoryRepository(Connection dataConnection, ItemPropertyRepository properties) {
         readStaticInfo(dataConnection, properties);
 
+        Artifact = nameToCategoryMap.get("Artifact");
         Frame = nameToCategoryMap.get("Frame");
         Weapon = nameToCategoryMap.get("Weapon");
         Generator = nameToCategoryMap.get("Generator");
@@ -61,7 +62,7 @@ public class ItemCategoryRepository {
                 ItemCategory ic = new ItemCategory(id, name, properties, categoryProperties);
                 categoryMap.put(id, ic);
                 nameToCategoryMap.put(name, ic);
-                if (id < 10)
+                if (id > 0 && id < 10)
                     baseCategoryMap.put(id, ic);
             }
         } catch (SQLException e) {

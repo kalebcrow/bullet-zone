@@ -157,6 +157,8 @@
       EntityID INT NOT NULL,
       ItemTypeID INT NOT NULL,
       UsageMonitor FLOAT NOT NULL,
+      Name VARCHAR(40), -- if not null, the special/original name of a given item
+      Value FLOAT, -- value in credits, superseding the generic value for its type
       PRIMARY KEY (EntityID),
       FOREIGN KEY (ItemTypeID) REFERENCES ItemType(ItemTypeID),
       FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)

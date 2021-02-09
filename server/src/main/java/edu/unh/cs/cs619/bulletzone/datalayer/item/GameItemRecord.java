@@ -16,28 +16,40 @@ import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemTypeRepository;
 class GameItemRecord extends EntityRecord {
     ItemType itemType;
     double usageMonitor;
+    String originalName;
+    double value;
 
     GameItemRecord(ItemType giItemType) {
         super(giItemType.isContainer() ? EntityType.ItemContainer : EntityType.Item);
         itemType = giItemType;
         usageMonitor = 0;
+        value = Double.NaN;
     }
 
     GameItemRecord(ResultSet itemResult, ItemTypeRepository itemTypeRepo) {
         super(itemResult);
         try {
             itemType = itemTypeRepo.getType(itemResult.getInt("ItemTypeID"));
+            originalName = itemResult.getString("Name");
+            if (itemResult.wasNull())
+                originalName = null;
             usageMonitor = itemResult.getDouble("UsageMonitor");
+            double tempVal = itemResult.getDouble("Value");
+            if (itemResult.wasNull())
+                tempVal = Double.NaN;
+            value = tempVal;
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to extract data from item result set", e);
         }
     }
 
     String getInsertString() {
-        return " INSERT INTO Item ( EntityID, ItemTypeID, UsageMonitor )\n" +
+        return " INSERT INTO Item ( EntityID, ItemTypeID, UsageMonitor, Name, Value )\n" +
                 "    VALUES (" + getID() + ","
                 + itemType.getID() + ", "
-                + usageMonitor + "); ";
+                + usageMonitor + ", "
+                + (originalName == null? "null" : "'" + originalName + "'") + ", "
+                + (Double.isNaN(value)? "null" : value) + "); ";
     }
 
     @Override

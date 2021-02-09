@@ -117,12 +117,27 @@ public class GameItemRepository implements OwnableEntityRepository {
      * @throws IllegalStateException for any database errors encountered.
      */
     public GameItem create(ItemType itemType) {
+        return create(itemType, null, Double.NaN);
+    }
+
+        /**
+         * Create a new GameItem of type itemType and insert it into the database and the appropriate
+         * hashmap. This method can create both GameItemContainers and GameItems.
+         * @param itemType  Individual type to be created
+         * @param originalName Initial name of the item (currently no way to change this)--null to keep unset
+         * @param value Special value of the item (currently no way to change this)--Double.NaN to keep unset
+         * @return  GameItem representation of the item that was inserted into the database.
+         * @throws IllegalStateException for any database errors encountered.
+         */
+    public GameItem create(ItemType itemType, String originalName, double value) {
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)
             return null;
 
         GameItemRecord rec = new GameItemRecord(itemType);
         String name = "[Unnamed " + itemType.getName() + "]";
+        rec.originalName = originalName;
+        rec.value = value;
         GameItem newItem;
         try {
             // Create base item
@@ -394,7 +409,7 @@ public class GameItemRepository implements OwnableEntityRepository {
             // Read non-collections (non-Frames)
             ResultSet itemResult = statement.executeQuery(
                     "SELECT * FROM Item i, Entity e WHERE i.entityID = e.entityID" +
-                            " AND i.ItemTypeID >= 20 AND e.StatusID != " + Status.Deleted.ordinal());
+                            " AND (i.ItemTypeID >= 20 OR (i.ItemTypeID >= 5 AND i.ItemTypeID < 10)) AND e.StatusID != " + Status.Deleted.ordinal());
             while (itemResult.next()) {
                 GameItemRecord rec = new GameItemRecord(itemResult, itemTypeRepo);
                 itemMap.put(rec.getID(), new GameItem(rec));

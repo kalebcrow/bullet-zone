@@ -60,6 +60,7 @@ public class BulletZoneDataTest {
         ArrayList<ItemType> types = new ArrayList<>();
         types.add(db.types.GarageBay);
         types.add(db.types.StorageContainer);
+        types.add(db.types.TransportFrame);
         types.add(db.types.TankFrame);
         types.add(db.types.TruckFrame);
         types.add(db.types.BattleSuit);
@@ -77,6 +78,9 @@ public class BulletZoneDataTest {
     public void items$create_hardCodedItemTypeGiven_returnsAppropriateItem()
     {
         HashMap<ItemType, ItemCategory> typeCategories = new HashMap<>();
+        typeCategories.put(db.types.Trifle, db.categories.Artifact);
+        typeCategories.put(db.types.Trinket, db.categories.Artifact);
+        typeCategories.put(db.types.Thingamajig, db.categories.Artifact);
         typeCategories.put(db.types.TankCannon, db.categories.Weapon);
         typeCategories.put(db.types.PlasmaCannon, db.categories.Weapon);
         typeCategories.put(db.types.ParticleBeamGun, db.categories.Weapon);
@@ -135,6 +139,17 @@ public class BulletZoneDataTest {
         String name = "'injection attack!";
         GameItemContainer truck = db.items.createContainer(db.types.TruckFrame);
         assertThat(db.items.renameContainer(truck, name), is(false));
+    }
+
+    @Test
+    public void items$artifactWithNameAndValue_AfterCreated_PersistsInAnotherInstance(){
+        String name = "Coupon for a tank frame";
+        double value = 350.0;
+        GameItem artifact = db.items.create(db.types.Trifle, name, value);
+        db.refresh();
+        GameItem check = db.items.getItem(artifact.getId());
+        assertThat(check.getOriginalName(), is(name));
+        assertThat(check.getPrice(), is(value));
     }
 
     @Test

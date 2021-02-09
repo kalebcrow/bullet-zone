@@ -1,7 +1,7 @@
     INSERT INTO Common
         ( Version)
     VALUES
-        ( '1.0');
+        ( '1.1');
 
     INSERT INTO Status
         ( StatusID, Name)
@@ -60,6 +60,7 @@
     INSERT INTO ItemCategory
         ( ItemCategoryID, Name, ItemPropertyID1, ItemPropertyID2, ItemPropertyID3)
     VALUES
+        (0, 'Artifact', 12, -1, -1),
         (1, 'Frame', 11, 12, -1),
         (2, 'Weapon', 13, 16, 14),
         (3, 'Generator', 15, -1, -1),
@@ -75,9 +76,14 @@
     VALUES
         -- ** In-town items **
         (1, 'Garage bay', 1, 80.0, 10.0, 500.0, 80.0, 50.0, 0.0),
-        (2, 'Storage container', 1, 5.1, 1.0, 50.0, 5.0, 5.0, 0.0),
+        (2, 'Storage container', 1, 5.1, 1.0, 10.0, 5.0, 5.0, 0.0),
+        -- Placeholders for smallish things that may have value. Note the difference in size and weight
+        (5, 'Trifle', 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+        (6, 'Trinket', 0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0),
+        (7, 'Thingamajig', 0, 0.1, 0.1, 0.0, 0.0, 0.0, 0.0),
         -- ** "Vehicle" items **
         -- Frames
+        (10, 'Transport frame', 1, 7.0, 1.5, 70.0, 20.0, 5.0, 0.0),
         (11, 'Standard tank frame', 1, 6.0, 6.0, 350.0, 16.0, 100.0, 0.0),
         (12, 'Standard truck frame', 1, 4.0, 1.0, 150.0, 6.0, 15.0, 0.0),
         (13, 'Standard battle suit', 1, 0.0, 0.1, 40.0, 0.5, 6.0, 0.0),
