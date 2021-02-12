@@ -17,5 +17,6 @@
     DROP TABLE IF EXISTS Status;
     DROP TABLE IF EXISTS TerrainType;
     DROP TABLE IF EXISTS User;
+    DROP TABLE IF EXISTS UserAssociation;
     SET FOREIGN_KEY_CHECKS = 1;
 -- END

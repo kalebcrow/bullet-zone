@@ -48,6 +48,19 @@
       FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
     );
 
+    -- UserAssociation table -- correlation between a user and another entity and/or value
+    --                          and/or string. The Tag field gives a way to assign a "type" to it
+    CREATE TABLE IF NOT EXISTS UserAssociation
+    (
+      User_EntityID INT NOT NULL,
+      Tag VARCHAR(40) NOT NULL,
+      EntityID INT,
+      Value FLOAT,
+      Info VARCHAR(80),
+      FOREIGN KEY (User_EntityID) REFERENCES User(EntityID),
+      FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
+    );
+
     -- Permission table -- enumeration of access permissions that users can have on items/accounts
     CREATE TABLE IF NOT EXISTS Permission
     (
