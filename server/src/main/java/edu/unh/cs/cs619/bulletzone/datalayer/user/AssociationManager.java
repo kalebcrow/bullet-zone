@@ -13,6 +13,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.AggregateRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Entity;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EnumeratedRecord;
 
 public class AssociationManager {
     BulletZoneData data;
@@ -20,34 +21,37 @@ public class AssociationManager {
     EntityRepository entityRepo;
     HashMap<String, HashMap<Integer, UserAssociation>> associations = new HashMap<>();
 
-    public class UserAssociation {
-        public final GameUser user;
-        public final Entity entity;
-        public final double value;
-        public final String info;
-
-        public UserAssociation(UserAssociationRecord rec) {
-            user = userRepo.getUser(rec.user_entityID);
-            entity = entityRepo.getTarget(rec.entityID);
-            value = rec.value;
-            info = rec.info;
-        }
+    public boolean add(GameUser user, String associationType, Entity e) {
+        return add(user, associationType, e, Double.NaN, null);
     }
 
-    public void add(GameUser user, String associationType, Entity e, double val, String info) {
-        UserAssociation ua = insert(new UserAssociationRecord(user.getId(), associationType, e.getId(), val, info));
+    public boolean add(GameUser user, String associationType, double val) {
+        return add(user, associationType, null, val, null);
+    }
+
+    public boolean add(GameUser user, String associationType, String info) {
+        return add(user, associationType, null, Double.NaN, info);
+    }
+
+    public boolean add(GameUser user, String associationType, Entity e, double val, String info) {
+        UserAssociation ua = insert(new UserAssociationRecord(user.getId(), associationType,
+                                    (e == null? EnumeratedRecord.noID : e.getId()), val, info));
         if (ua != null){
             add(ua, associationType);
+            return true;
         }
+        return false;
     }
 
-    public void remove(GameUser user, String associationType) {
+    public boolean remove(GameUser user, String associationType) {
         if (delete(user.getId(), associationType)) {
             associations.get(associationType).remove(user.getId());
             if (associations.get(associationType).size() <= 0) {
                 associations.remove(associationType);
             }
+            return true;
         }
+        return false;
     }
 
     public Collection<UserAssociation> get(String associationType) {
@@ -93,7 +97,7 @@ public class AssociationManager {
         } catch (SQLException e) {
             throw new IllegalStateException("Error while adding user association.", e);
         }
-        return new UserAssociation(record);
+        return new UserAssociation(userRepo, entityRepo, record);
     }
 
     boolean delete(int id, String associationType) {
@@ -142,7 +146,7 @@ public class AssociationManager {
             ResultSet mappingResult = statement.executeQuery("SELECT * FROM UserAssociation");
             while (mappingResult.next()) {
                 UserAssociationRecord record = new UserAssociationRecord(mappingResult);
-                UserAssociation ua = new UserAssociation(record);
+                UserAssociation ua = new UserAssociation(userRepo, entityRepo, record);
                 add(ua, record.tag);
             }
             dataConnection.close();

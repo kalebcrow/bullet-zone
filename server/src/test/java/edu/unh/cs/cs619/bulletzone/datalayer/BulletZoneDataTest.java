@@ -11,22 +11,31 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemCategory;
 import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.UserAssociation;
 
 import static org.junit.Assert.*;
 
 public class BulletZoneDataTest {
 
     static BulletZoneData db;
+    static int userCount = 10;
 
     @BeforeClass
     static public void setup() {
         db = new BulletZoneData();
         db.rebuildData();
+    }
+
+    GameUser createNewUser() {
+        GameUser newUser = db.users.createUser("Test User " + userCount, "testuser" + userCount, "testPass");
+        userCount++;
+        return newUser;
     }
 
     @Test
@@ -52,6 +61,76 @@ public class BulletZoneDataTest {
         assertThat(user2, is(notNullValue()));
         assertThat(user2.getName(), is(name));
         assertThat(user2.getUsername(), is (username));
+    }
+
+    @Test
+    public void associations$get_userAssociationPresent_returnsCorrectAssociation()
+    {
+        GameUser user1 = createNewUser();
+        GameUser user2 = createNewUser();
+        db.associations.add(user1, "friend", user2);
+        assertThat(db.associations.get(user1, "friend").entity, is(user2));
+    }
+
+    @Test
+    public void associations$get_userAssociationPresentThenRefresh_returnsCorrectAssociation()
+    {
+        GameUser user1 = createNewUser();
+        GameUser user2 = createNewUser();
+        db.associations.add(user1, "friend", user2);
+        db.refreshData();
+        //note, we have a new User object, so we need to compare id's instead of object
+        UserAssociation assoc = db.associations.get(user1, "friend");
+        assertThat(assoc.entity.getId(), is(user2.getId()));
+        assertThat(assoc.value, is(Double.NaN));
+        assertNull(assoc.info);
+    }
+
+    @Test
+    public void associations$get_userAssociationNotPresent_returnsNull()
+    {
+        GameUser user1 = createNewUser();
+        GameUser user2 = createNewUser();
+        db.associations.add(user1, "friend", user2);
+        assertNull(db.associations.get(user2, "friend"));
+    }
+
+    @Test
+    public void associations$get_ValueAssociationPresent_returnsCorrectAssociation()
+    {
+        GameUser user1 = createNewUser();
+        double pointValue = 316;
+        db.associations.add(user1, "Points", pointValue);
+        UserAssociation assoc = db.associations.get(user1, "Points");
+        assertNull(assoc.entity);
+        assertThat(assoc.value, is(pointValue));
+        assertNull(assoc.info);
+    }
+
+    @Test
+    public void associations$get_InfoAssociationPresent_returnsCorrectAssociation()
+    {
+        GameUser user1 = createNewUser();
+        String info = "Lieutenant";
+        db.associations.add(user1, "Rank", info);
+        UserAssociation assoc = db.associations.get(user1, "Rank");
+        assertNull(assoc.entity);
+        assertThat(assoc.value, is(Double.NaN));
+        assertThat(assoc.info, is(info));
+    }
+
+    @Test
+    public void associations$get_FullAssociationPresent_returnsCorrectAssociation()
+    {
+        GameUser user1 = createNewUser();
+        BankAccount account = db.accounts.create();
+        String info = "For: Tank frame";
+        double amount = 350.0;
+        db.associations.add(user1, "Debt", account, amount, info);
+        UserAssociation assoc = db.associations.get(user1, "Debt");
+        assertThat(assoc.entity, is(account));
+        assertThat(assoc.value, is(amount));
+        assertThat(assoc.info, is(info));
     }
 
     @Test

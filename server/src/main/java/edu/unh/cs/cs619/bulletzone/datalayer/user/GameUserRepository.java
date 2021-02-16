@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,10 +18,12 @@ import javax.crypto.spec.PBEKeySpec;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Entity;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemRepository;
 
-public class GameUserRepository {
+public class GameUserRepository implements EntityRepository {
     HashMap<Integer, GameUser> userMap = new HashMap<>();
     HashMap<String, GameUser> usernameToUserMap = new HashMap<>();
     BulletZoneData data;
@@ -136,6 +139,15 @@ public class GameUserRepository {
 
         return null;
     }
+
+    @Override
+    public GameUser getTarget(int userID) { return getUser(userID); }
+
+    @Override
+    public EntityType getTargetType() { return EntityType.User; }
+
+    @Override
+    public AbstractMap<Integer, GameUser> getEntities() { return userMap; }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 

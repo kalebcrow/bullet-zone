@@ -38,6 +38,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainTypeRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.AssociationManager;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.PermissionManager;
@@ -56,6 +57,7 @@ public class BulletZoneData {
     public GameUserRepository users = new GameUserRepository();
     public BankAccountRepository accounts = new BankAccountRepository();
     public PermissionManager permissions = new PermissionManager();
+    public AssociationManager associations = new AssociationManager();
 
     /**
      * Opens the database at the specified URL and initializes internal structures
@@ -201,6 +203,7 @@ public class BulletZoneData {
         users.refresh(this, items);
         accounts.refresh(this);
         permissions.refresh(this , Arrays.asList(items, accounts), users);
+        associations.refresh(this, Arrays.asList(items, users, accounts), users);
     }
     /**
      * Executes the passed SQL script on the current database (it assumes the account given
