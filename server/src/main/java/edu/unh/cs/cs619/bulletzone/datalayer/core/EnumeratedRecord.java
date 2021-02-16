@@ -12,6 +12,9 @@ public abstract class EnumeratedRecord {
     abstract public void setID(int id);
     abstract public String getRecordInsertString();
 
+    final public static int noID = -1;
+
+
     public void insertInto(Connection dataConnection, String recordType) throws SQLException {
         PreparedStatement insertStatement = dataConnection.prepareStatement(
                 getRecordInsertString(), Statement.RETURN_GENERATED_KEYS);

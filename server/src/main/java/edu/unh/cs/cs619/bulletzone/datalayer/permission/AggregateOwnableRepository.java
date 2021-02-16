@@ -6,11 +6,11 @@ import java.util.List;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.core.EntityType;
 
-public class AggregateRepository implements OwnableEntityRepository {
+public class AggregateOwnableRepository implements OwnableEntityRepository {
     HashMap<Integer, OwnableEntityRepository> entityMap = new HashMap<>();
     HashMap<EntityType, OwnableEntityRepository> repoMap = new HashMap<>();
 
-    public AggregateRepository(List<? extends OwnableEntityRepository> repos) {
+    public AggregateOwnableRepository(List<? extends OwnableEntityRepository> repos) {
         for (OwnableEntityRepository repo : repos) {
             repoMap.put(repo.getTargetType(), repo);
         }

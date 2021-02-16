@@ -57,6 +57,7 @@
       EntityID INT,
       Value FLOAT,
       Info VARCHAR(80),
+      PRIMARY KEY (User_EntityID, Tag),
       FOREIGN KEY (User_EntityID) REFERENCES User(EntityID),
       FOREIGN KEY (EntityID) REFERENCES Entity(EntityID)
     );
@@ -195,6 +196,7 @@
       StartSlot INT NOT NULL,   -- first slot in the container where the item appears
       EndSlot INT NOT NULL,     -- last slot in the container where the item appears
       Modifier INT NOT NULL,    -- such as orientation of item in the slots
+      PRIMARY KEY (Container_EntityID, Item_EntityID),
       FOREIGN KEY (Container_EntityID) REFERENCES ItemContainer(EntityID),
       FOREIGN KEY (Item_EntityID) REFERENCES Item(EntityID)
     );

@@ -15,8 +15,7 @@ import java.util.Set;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.Status;
-import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
-import edu.unh.cs.cs619.bulletzone.datalayer.permission.AggregateRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.permission.AggregateOwnableRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRecord;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntityRepository;
@@ -313,7 +312,7 @@ public class PermissionManager {
      * @param gameUserRepo repository of users that can own things
      */
     public void refresh(BulletZoneData bzData, List<? extends OwnableEntityRepository> repos, GameUserRepository gameUserRepo) {
-        targetRepo = new AggregateRepository(repos);
+        targetRepo = new AggregateOwnableRepository(repos);
         userRepo = gameUserRepo;
         data = bzData;
         targetToPermissionHolders.clear();

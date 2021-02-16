@@ -17,7 +17,6 @@ public class AccountTransferHistoryRecord extends EnumeratedRecord {
     public final double transferAmount;
     public final Timestamp timestamp;
 
-    final static int noID = -1;
     final static String recordName = "AccountTransferHistory";
 
     AccountTransferHistoryRecord(int accountID, double balance, double amountToAdd) {
