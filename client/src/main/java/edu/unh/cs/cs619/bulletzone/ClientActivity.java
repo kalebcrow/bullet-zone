@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -162,6 +163,12 @@ public class ClientActivity extends Activity {
         System.out.println("leaveGame() called, tank ID: "+tankId);
         BackgroundExecutor.cancelAll("grid_poller_task", true);
         restClient.leave(tankId);
+    }
+
+    @Click(R.id.buttonLogin)
+    void login() {
+        Intent intent = new Intent(this, AuthenticateActivity_.class);
+        startActivity(intent);
     }
 
     @Background
