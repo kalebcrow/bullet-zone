@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -21,18 +22,53 @@ public class AssociationManager {
     EntityRepository entityRepo;
     HashMap<String, HashMap<Integer, UserAssociation>> associations = new HashMap<>();
 
+    /** Add a named association between a user and some other entity (item, user, account)
+     * @param user              Key user with the association
+     * @param associationType   Tag for the association
+     * @param e                 Other entity being associated with
+     * @return true if successful, false if not
+     */
     public boolean add(GameUser user, String associationType, Entity e) {
         return add(user, associationType, e, Double.NaN, null);
     }
 
+    /** Add a named association between a user and a value
+     * @param user              Key user with the association
+     * @param associationType   Tag for the association
+     * @param val               Number to be associated with the user
+     * @return true if successful, false if not
+     */
     public boolean add(GameUser user, String associationType, double val) {
         return add(user, associationType, null, val, null);
     }
 
+    /** Add a named association between a user and a string (up to 80 characters)
+     * @param user              Key user with the association
+     * @param associationType   Tag for the association
+     * @param info              String to be associated with the user
+     * @return true if successful, false if not
+     */
     public boolean add(GameUser user, String associationType, String info) {
         return add(user, associationType, null, Double.NaN, info);
     }
 
+    /** Add a named association between a user and nothing
+     * @param user              Key user with the association
+     * @param associationType   Tag for the association
+     * @return true if successful, false if not
+     */
+    public boolean add(GameUser user, String associationType) {
+        return add(user, associationType, null, Double.NaN, null);
+    }
+
+    /** Add a named association between a user and some other values
+     * @param user              Key user with the association
+     * @param associationType   Tag for the association
+     * @param e                 Other entity being associated with (null if none)
+     * @param val               Number to be associated with the user (Double.Nan if none)
+     * @param info              String to be associated with the user (null if none)
+     * @return true if successful, false if not
+     */
     public boolean add(GameUser user, String associationType, Entity e, double val, String info) {
         UserAssociation ua = insert(new UserAssociationRecord(user.getId(), associationType,
                                     (e == null? EnumeratedRecord.noID : e.getId()), val, info));
@@ -43,6 +79,11 @@ public class AssociationManager {
         return false;
     }
 
+    /** Remove the association the given user has with the given tag name
+     * @param user              User with the association
+     * @param associationType   Tag for the association being removed
+     * @return true if found and successfully removed, false otherwise
+     */
     public boolean remove(GameUser user, String associationType) {
         if (delete(user.getId(), associationType)) {
             associations.get(associationType).remove(user.getId());
@@ -54,12 +95,27 @@ public class AssociationManager {
         return false;
     }
 
+    /** Returns a collection of all user associations with the given tag
+     * @param associationType   Tag for the association "type"
+     * @return  Collection of UserAssociations with that tag, or an empty collection if tag not present
+     */
     public Collection<UserAssociation> get(String associationType) {
-        return associations.get(associationType).values();
+        HashMap<Integer, UserAssociation> map = associations.get(associationType);
+        if (map == null)
+            return new ArrayList<>();
+        return map.values();
     }
 
+    /** Returns the unique association of the given user an the given tag
+     * @param user              User with the association
+     * @param associationType   Tag or "type" of the association
+     * @return full UserAssocation information for the association, or null if it doesn't exist
+     */
     public UserAssociation get(GameUser user, String associationType) {
-        return associations.get(associationType).get(user.getId());
+        HashMap<Integer, UserAssociation> map = associations.get(associationType);
+        if (map == null)
+            return null;
+        return map.get(user.getId());
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
@@ -100,6 +156,11 @@ public class AssociationManager {
         return new UserAssociation(userRepo, entityRepo, record);
     }
 
+    /** deletes the record in the database with the passed user ID and associationType/tag
+     * @param id                User ID of the association
+     * @param associationType   Tag/type of the association
+     * @return true if association was found and successfully deleted, false otherwise
+     */
     boolean delete(int id, String associationType) {
         Connection dataConnection = data.getConnection();
         if (dataConnection == null)

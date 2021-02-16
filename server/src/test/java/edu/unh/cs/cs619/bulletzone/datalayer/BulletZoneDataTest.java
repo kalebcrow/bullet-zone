@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
@@ -131,6 +132,44 @@ public class BulletZoneDataTest {
         assertThat(assoc.entity, is(account));
         assertThat(assoc.value, is(amount));
         assertThat(assoc.info, is(info));
+    }
+
+    @Test
+    public void associations$get_userAssociationsPresentThenRefresh_returnsCorrectAssociations()
+    {
+        GameUser user1 = createNewUser();
+        GameUser user2 = createNewUser();
+        db.associations.add(user1, "follow", user2);
+        db.associations.add(user2, "follow", user1);
+        db.refreshData();
+        //note, we have a new User object, so we need to compare id's instead of object
+        Collection<UserAssociation> associations = db.associations.get("follow");
+        assertThat(associations.size(), is(2));
+        assertTrue(associations.contains(db.associations.get(user1, "follow")));
+        assertTrue(associations.contains(db.associations.get(user2, "follow")));
+    }
+
+    @Test
+    public void associations$remove_associationThatsPresent_noLongerExists()
+    {
+        GameUser user1 = createNewUser();
+        db.associations.add(user1, "destroyed");
+        db.associations.remove(user1, "destroyed");
+        assertNull(db.associations.get(user1, "destroyed"));
+        db.refreshData();
+        assertNull(db.associations.get(user1, "destroyed"));
+    }
+
+    @Test
+    public void associations$remove_nonExistantAssocitaion_returnsFalse()
+    {
+        GameUser user1 = createNewUser();
+        assertFalse(db.associations.remove(user1, "destroyed"));
+        db.associations.add(user1, "destroyed");
+        db.associations.remove(user1, "destroyed");
+        assertFalse(db.associations.remove(user1, "destroyed"));
+        db.refreshData();
+        assertFalse(db.associations.remove(user1, "destroyed"));
     }
 
     @Test
