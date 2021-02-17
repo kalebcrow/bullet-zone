@@ -79,7 +79,7 @@ public class BulletZoneDataTest {
         GameUser user1 = createNewUser();
         GameUser user2 = createNewUser();
         db.associations.add(user1, "friend", user2);
-        db.refreshData();
+        db.refresh();
         //note, we have a new User object, so we need to compare id's instead of object
         UserAssociation assoc = db.associations.get(user1, "friend");
         assertThat(assoc.entity.getId(), is(user2.getId()));
@@ -141,7 +141,7 @@ public class BulletZoneDataTest {
         GameUser user2 = createNewUser();
         db.associations.add(user1, "follow", user2);
         db.associations.add(user2, "follow", user1);
-        db.refreshData();
+        db.refresh();
         //note, we have a new User object, so we need to compare id's instead of object
         Collection<UserAssociation> associations = db.associations.get("follow");
         assertThat(associations.size(), is(2));
@@ -156,7 +156,7 @@ public class BulletZoneDataTest {
         db.associations.add(user1, "destroyed");
         db.associations.remove(user1, "destroyed");
         assertNull(db.associations.get(user1, "destroyed"));
-        db.refreshData();
+        db.refresh();
         assertNull(db.associations.get(user1, "destroyed"));
     }
 
@@ -168,7 +168,7 @@ public class BulletZoneDataTest {
         db.associations.add(user1, "destroyed");
         db.associations.remove(user1, "destroyed");
         assertFalse(db.associations.remove(user1, "destroyed"));
-        db.refreshData();
+        db.refresh();
         assertFalse(db.associations.remove(user1, "destroyed"));
     }
 

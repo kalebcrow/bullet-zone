@@ -130,6 +130,16 @@ public class BulletZoneData {
         }
     }
 
+    /**
+     * Drops all tables (WHICH DESTROYS ALL EXISTING DATA!!), then rebuilds it by calling the
+     * initializeData method.
+     */
+    public void rebuildData() {
+        executeScript("/DropTables.sql", "Cannot drop all tables!");
+        initializeData();
+        refreshData();
+    }
+
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 
     /**
@@ -186,19 +196,9 @@ public class BulletZoneData {
     }
 
     /**
-     * Drops all tables (which destroys all existing data!!), then rebuilds it by calling the
-     * initializeData method.
-     */
-    public void rebuildData() {
-        executeScript("/DropTables.sql", "Cannot drop all tables!");
-        initializeData();
-        refreshData();
-    }
-
-    /**
      * Refreshes all repositories after initialization.
      */
-    public void refreshData() {
+    private void refreshData() {
         items.refresh(this, types);
         users.refresh(this, items);
         accounts.refresh(this);
