@@ -32,7 +32,6 @@ public class ItemProperty {
         /**
          * Combines the passed operand with what's already been accumulated
          * @param operand  Value to be accumulated next
-         * @return the accumulated value achieved by combining the operand with the existing acc(umulator)
          */
         public void accumulate(double operand) {
             switch(propertyType) {

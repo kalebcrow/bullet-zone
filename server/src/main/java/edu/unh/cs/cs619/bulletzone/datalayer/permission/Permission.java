@@ -33,7 +33,10 @@ public enum Permission {
         return values()[permissionID];
     }
 
-    /** @return the integer ID of the passed permission */
+    /** Static method that gets the ID of the passed permission
+     * @param p     Permission to get the ID for
+     * @return      the integer ID of the passed permission
+     */
     public static int getID(Permission p) {
         return p.ordinal();
     }

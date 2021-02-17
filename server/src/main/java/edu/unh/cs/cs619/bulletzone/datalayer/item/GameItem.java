@@ -27,7 +27,10 @@ public class GameItem extends OwnableEntity implements Describable {
 
     public boolean isContainer() { return itemType.isContainer();}
 
-    /** Returns the property of only the item, not all its contents */
+    /** Returns the property of only the item, not all its contents
+     * @param property  Which property to report
+     * @return the value for the selected property of just this item (even if it is a container)
+     */
     public double getLocalProperty(ItemProperty property) { return itemType.getProperty(property); }
 
     /** Returns the aggregate property of the item, including its contents (if any) */
