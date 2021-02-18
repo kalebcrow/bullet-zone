@@ -111,8 +111,8 @@ public class BankAccountRepository implements OwnableEntityRepository {
         return true;
     }
 
-    public boolean modifyAccountBalance(BankAccount account, double amount) {
-        return modifyAccountBalance(account.getId(), amount);
+    public boolean modifyBalance(BankAccount account, double amount) {
+        return modifyBalance(account.getId(), amount);
     }
 
     /**
@@ -123,7 +123,7 @@ public class BankAccountRepository implements OwnableEntityRepository {
      * @return true if successful, false otherwise (such as if the account has insufficient
      *         funds to add the (negative) amount).
      */
-    public boolean modifyAccountBalance(int accountID, double amount) {
+    public boolean modifyBalance(int accountID, double amount) {
         if (!accountMap.containsKey(accountID))
             return false;
 

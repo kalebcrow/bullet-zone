@@ -49,10 +49,10 @@ public class BankAccountRepositoryTest {
         double startAmount = basicAccount.getBalance();
         Collection<AccountTransferHistoryRecord> startList = db.accounts.getTransactions(basicAccount);
 
-        db.accounts.modifyAccountBalance(basicAccount, amount);
+        db.accounts.modifyBalance(basicAccount, amount);
         assertThat(basicAccount.getBalance(), is(startAmount + amount));
 
-        db.accounts.modifyAccountBalance(basicAccount, -amount);
+        db.accounts.modifyBalance(basicAccount, -amount);
         assertThat(basicAccount.getBalance(), is(startAmount));
         Collection<AccountTransferHistoryRecord> endList = db.accounts.getTransactions(basicAccount);
         assertThat(endList.size(), is(startList.size() + 2));
@@ -61,7 +61,7 @@ public class BankAccountRepositoryTest {
     @Test
     public void transfer_betweenAccountsWithEnough_isSuccessfulAndGeneratesHistoryForBothAccounts() {
         int start = 1000, amount = 700;
-        db.accounts.modifyAccountBalance(basicAccount, start);
+        db.accounts.modifyBalance(basicAccount, start);
         double basicAmount = basicAccount.getBalance();
         double otherAmount = otherAccount.getBalance();
         Collection<AccountTransferHistoryRecord> basicList = db.accounts.getTransactions(basicAccount);
