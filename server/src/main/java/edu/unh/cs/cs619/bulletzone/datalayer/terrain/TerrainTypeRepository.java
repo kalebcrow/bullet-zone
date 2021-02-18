@@ -35,7 +35,7 @@ public class TerrainTypeRepository {
     }
 
     /**
-     * @return A collection of all ItemProperties in the database
+     * @return A collection of all TerrainTypes in the database
      */
     public Collection<TerrainType> getAll() {
         return terrainMap.values();
@@ -48,10 +48,10 @@ public class TerrainTypeRepository {
      * @return ItemType object corresponding to the typeName
      */
     public TerrainType get(String terrainTypeName) {
-        TerrainType terrain = nameToTerrainMap.get(terrainTypeName);
-        if (terrain == null)
-            throw new NullPointerException("Unable to resolve " + terrainTypeName + " to a valid TerrainType.");
-        return terrain;
+        return nameToTerrainMap.get(terrainTypeName);
+        //if (terrain == null)
+        //    throw new NullPointerException("Unable to resolve " + terrainTypeName + " to a valid TerrainType.");
+        //return terrain;
     }
 
     /**
@@ -61,10 +61,10 @@ public class TerrainTypeRepository {
      * @return ItemType object corresponding to the typeName
      */
     public TerrainType get(int terrainTypeID) {
-        TerrainType terrain = terrainMap.get(terrainTypeID);
-        if (terrain == null)
-            throw new NullPointerException("Unable to resolve " + terrainTypeID + " to a valid TerrainType.");
-        return terrain;
+        return terrainMap.get(terrainTypeID);
+        //if (terrain == null)
+        //    throw new NullPointerException("Unable to resolve " + terrainTypeID + " to a valid TerrainType.");
+        //return terrain;
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
