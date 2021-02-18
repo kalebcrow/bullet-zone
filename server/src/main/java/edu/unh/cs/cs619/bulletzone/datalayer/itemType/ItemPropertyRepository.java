@@ -51,10 +51,10 @@ public class ItemPropertyRepository {
      * @return ItemType object corresponding to the typeName
      */
     public ItemProperty get(String propertyName) {
-        ItemProperty property = nameToPropertyMap.get(propertyName);
-        if (property == null)
-            throw new NullPointerException("Unable to resolve " + propertyName + " to a valid ItemProperty.");
-        return property;
+        return nameToPropertyMap.get(propertyName);
+//        if (property == null)
+//            throw new NullPointerException("Unable to resolve " + propertyName + " to a valid ItemProperty.");
+//        return property;
     }
 
     /**
@@ -64,10 +64,10 @@ public class ItemPropertyRepository {
      * @return ItemType object corresponding to the typeName
      */
     public ItemProperty get(int propertyID) {
-        ItemProperty property = propertyMap.get(propertyID);
-        if (property == null)
-            throw new NullPointerException("Unable to resolve " + propertyID + " to a valid ItemProperty.");
-        return property;
+        return propertyMap.get(propertyID);
+//        if (property == null)
+//            throw new NullPointerException("Unable to resolve " + propertyID + " to a valid ItemProperty.");
+//        return property;
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
