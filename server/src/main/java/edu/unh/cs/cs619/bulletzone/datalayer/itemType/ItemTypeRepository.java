@@ -78,16 +78,16 @@ public class ItemTypeRepository {
      * @return  ItemType object corresponding to the typeName
      */
     public ItemType get(String typeName) {
-        ItemType type = nameToTypeMap.get(typeName);
-        if (type == null)
-            throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
-        return type;
+        return nameToTypeMap.get(typeName);
+//        if (type == null)
+//            throw new NullPointerException("Unable to resolve " + typeName + " to a valid type of game item.");
+//        return type;
     }
 
     /**
      * @return A collection of all ItemTypes in the database
      */
-    public Collection<ItemType> getTypes() {
+    public Collection<ItemType> getAll() {
         return typeMap.values();
     }
 
@@ -96,48 +96,13 @@ public class ItemTypeRepository {
      * @param category  Name of the desired category
      * @return  Collection of ItemTypes in the category
      */
-    public Collection<ItemType> getCategoryItems(String category) { return categoryItems.get(category).values(); }
+    public Collection<ItemType> getInCategory(String category) { return categoryItems.get(category).values(); }
 
     /**
      * @param typeID    Type ID for the requested type (used in other objects)
      * @return  ItemType corresponding to the passed typeID
      */
-    public ItemType getType(int typeID) { return typeMap.get(typeID); }
-
-    /**
-     * @return A collection of only the FrameTypes in the database
-     */
-    public Collection<ItemType> getFrames() {
-        return frameMap.values();
-    }
-
-    /**
-     * @return A collection of only the WeaponTypes in the database
-     */
-    public Collection<ItemType> getWeapons() {
-        return weaponMap.values();
-    }
-
-    /**
-     * @return A collection of only the GeneratorTypes in the database
-     */
-    public Collection<ItemType> getGenerators() {
-        return generatorMap.values();
-    }
-
-    /**
-     * @return A collection of only the EngineTypes in the database
-     */
-    public Collection<ItemType> getEngines() {
-        return engineMap.values();
-    }
-
-    /**
-     * @return A collection of only the DriveTypes in the database
-     */
-    public Collection<ItemType> getDrives() {
-        return driveMap.values();
-    }
+    public ItemType get(int typeID) { return typeMap.get(typeID); }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 

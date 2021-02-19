@@ -29,7 +29,7 @@ class GameItemRecord extends EntityRecord {
     GameItemRecord(ResultSet itemResult, ItemTypeRepository itemTypeRepo) {
         super(itemResult);
         try {
-            itemType = itemTypeRepo.getType(itemResult.getInt("ItemTypeID"));
+            itemType = itemTypeRepo.get(itemResult.getInt("ItemTypeID"));
             originalName = itemResult.getString("Name");
             if (itemResult.wasNull())
                 originalName = null;

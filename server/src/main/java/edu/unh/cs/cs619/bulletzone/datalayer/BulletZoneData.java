@@ -22,8 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
@@ -320,7 +318,7 @@ public class BulletZoneData {
         //d.permissions.removeOwner(tank2);
 
         // List the type names and ID's for all ItemTypes
-        for (ItemType t : d.types.getTypes())
+        for (ItemType t : d.types.getAll())
         {
             System.out.println("Type " + t.getName() + " has type ID " + t.getID());
         }
