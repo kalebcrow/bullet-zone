@@ -33,12 +33,12 @@ public class ItemCategoryRepository {
      * @param categoryID    Category ID for the requested category (used in ItemTypes)
      * @return  ItemCategory corresponding to the passed categoryID
      */
-    public ItemCategory getCategory(int categoryID) { return categoryMap.get(categoryID); }
+    public ItemCategory get(int categoryID) { return categoryMap.get(categoryID); }
 
     /**
      * @return A collection of all ItemCategories in the database
      */
-    public Collection<ItemCategory> getCategories() { return baseCategoryMap.values(); }
+    public Collection<ItemCategory> getAll() { return baseCategoryMap.values(); }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
 

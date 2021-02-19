@@ -16,7 +16,7 @@ class ItemTypeRecord {
         try {
             itemTypeID = itemTypeResult.getInt("ItemTypeID");
             name = itemTypeResult.getString("Name");
-            category = categories.getCategory(itemTypeResult.getInt("ItemCategoryID"));
+            category = categories.get(itemTypeResult.getInt("ItemCategoryID"));
             val = new double[ItemProperty.ID.values().length];
             for (ItemProperty.ID id : ItemProperty.ID.values())
                 val[id.ordinal()] = itemTypeResult.getDouble(id.name());
