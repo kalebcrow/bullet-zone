@@ -200,8 +200,8 @@ public class PermissionManager {
      * @param itemID    ID of the item whose permissions are being changed
      * @param userID    ID of the user who is losing the permission
      * @param p         Permission being removed
-     * @return  true if the permission was granted, false otherwise (including if the
-     *          permission was already active)
+     * @return  true if the permission was revoked, false otherwise (including if the
+     *          permission was already not present)
      */
     public boolean revoke(int itemID, int userID, Permission p) {
         if (!check(itemID, userID, p)) //if the permission is already inactive, do nothing

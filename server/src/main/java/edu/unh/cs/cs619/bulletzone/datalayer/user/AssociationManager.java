@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.core.AggregateRepository;
@@ -116,6 +117,13 @@ public class AssociationManager {
         if (map == null)
             return null;
         return map.get(user.getId());
+    }
+
+    /** Returns all associations
+     * @return a nested map of all associations, indexed first by tag, then by User ID
+     */
+    public Map<String, ? extends Map<Integer, UserAssociation>> getAll() {
+        return associations;
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------
