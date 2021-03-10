@@ -40,6 +40,11 @@ public class BulletZoneDataTest {
     }
 
     @Test
+    public void bogus() {
+        assertThat(1, is(0));
+    }
+
+    @Test
     public void users$createUser_userNotPresent_returnsAppropriateGameUser()
     {
         String name = "Test User 1";
