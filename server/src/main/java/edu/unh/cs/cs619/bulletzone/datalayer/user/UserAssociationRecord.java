@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.datalayer.user;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -41,12 +43,19 @@ public class UserAssociationRecord {
         }
     }
 
+    PreparedStatement prepareInsertStatement(Connection dataConnection) throws SQLException {
+        PreparedStatement insertStatement = dataConnection.prepareStatement(getInsertString());
+        insertStatement.setString(1, tag);
+        if (info != null)
+            insertStatement.setString(2, info);
+        return insertStatement;
+    }
+
     String getInsertString() {
         return " INSERT INTO UserAssociation ( User_EntityID, Tag, EntityID, Value, Info )\n" +
-                "    VALUES (" + user_entityID + ", '"
-                + tag + "', "
+                "    VALUES (" + user_entityID + ", ?,"
                 + (entityID == EnumeratedRecord.noID? "null" : entityID) + ", "
                 + (Double.isNaN(value)? "null" : value) + ", "
-                + (info == null? "null" : "'" + info + "'") + "); ";
+                + (info == null? "null" : "?") + "); ";
     }
 }

@@ -38,20 +38,24 @@ class GameUserRecord extends EntityRecord {
     @Override
     public void insertInto(Connection dataConnection) throws SQLException {
         super.insertInto(dataConnection);
-        PreparedStatement userStatement = dataConnection.prepareStatement(getInsertString());
-
+        PreparedStatement userStatement = prepareInsertStatement(dataConnection);
         int affectedRows = userStatement.executeUpdate();
         if (affectedRows == 0)
             throw new SQLException("Creating User " + username + " failed.");
     }
 
+    PreparedStatement prepareInsertStatement(Connection dataConnection) throws SQLException {
+        PreparedStatement insertStatement = dataConnection.prepareStatement(getInsertString());
+        insertStatement.setString(1, name);
+        insertStatement.setString(2, username);
+        insertStatement.setString(3, encodeBytesAsHex(passwordHash));
+        insertStatement.setString(4, encodeBytesAsHex(passwordSalt));
+        return insertStatement;
+    }
+
     String getInsertString() {
         return " INSERT INTO User ( EntityID, Name, Username, PasswordHash, PasswordSalt )\n" +
-                "    VALUES ('" + getID() + "', '"
-                + name + "', '"
-                + username + "', '"
-                + encodeBytesAsHex(passwordHash) + "', '"
-                + encodeBytesAsHex(passwordSalt) + "'); ";
+                "    VALUES ('" + getID() + "', ?, ?, ?, ?); ";
     }
 
     //----------------------------------END OF PUBLIC METHODS--------------------------------------

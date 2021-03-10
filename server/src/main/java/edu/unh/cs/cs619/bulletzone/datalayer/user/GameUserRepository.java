@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -107,11 +108,14 @@ public class GameUserRepository implements EntityRepository {
 
         GameUserRecord userRecord = null;
         try {
-            Statement statement = dataConnection.createStatement();
+            //use a PreparedStatement to avoid SQL injection via the username.
+            String selectString =
+                "SELECT * FROM User u, Entity e WHERE u.EntityID = e.EntityID AND e.StatusID != "
+                    + Status.Deleted.ordinal() + " AND u.Username = ?";
+            PreparedStatement statement = dataConnection.prepareStatement(selectString);
             // Read users that aren't deleted
-            ResultSet userResult = statement.executeQuery(
-                    "SELECT * FROM User u, Entity e WHERE u.EntityID = e.EntityID AND e.StatusID != " + Status.Deleted.ordinal()
-                            + " AND u.Username = '" + username + "'");
+            statement.setString(1, username);
+            ResultSet userResult = statement.executeQuery();
             if (userResult.next()) //else, is empty result list
             {
                 userRecord = new GameUserRecord(userResult);

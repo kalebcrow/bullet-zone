@@ -43,19 +43,27 @@ class GameItemRecord extends EntityRecord {
         }
     }
 
+    PreparedStatement prepareInsertStatement(Connection dataConnection) throws SQLException {
+        PreparedStatement insertStatement = dataConnection.prepareStatement(getInsertString());
+        if (originalName != null) {
+            insertStatement.setString(1, originalName);
+        }
+        return insertStatement;
+    }
+
     String getInsertString() {
         return " INSERT INTO Item ( EntityID, ItemTypeID, UsageMonitor, Name, Value )\n" +
                 "    VALUES (" + getID() + ","
                 + itemType.getID() + ", "
                 + usageMonitor + ", "
-                + (originalName == null? "null" : "'" + originalName + "'") + ", "
+                + (originalName == null? "null" : "?") + ", "
                 + (Double.isNaN(value)? "null" : value) + "); ";
     }
 
     @Override
     public void insertInto(Connection dataConnection) throws SQLException {
         super.insertInto(dataConnection);
-        PreparedStatement containerStatement = dataConnection.prepareStatement(getInsertString());
+        PreparedStatement containerStatement = prepareInsertStatement(dataConnection);
 
         int affectedRows = containerStatement.executeUpdate();
         if (affectedRows == 0)
@@ -64,7 +72,8 @@ class GameItemRecord extends EntityRecord {
 
     void insertContainerInfoInto(String name, Connection dataConnection) throws SQLException {
         PreparedStatement containerStatement = dataConnection.prepareStatement(
-                "INSERT INTO ItemContainer ( EntityID, Name ) VALUES ( " + getID() + ", '" + name + "');");
+                "INSERT INTO ItemContainer ( EntityID, Name ) VALUES ( " + getID() + ", ?);");
+        containerStatement.setString(1, name);
         int affectedRows = containerStatement.executeUpdate();
         if (affectedRows == 0)
             throw new SQLException("Creating ItemContainer record for type " + itemType.getName() + " failed.");

@@ -152,7 +152,7 @@ public class AssociationManager {
 
         try {
             // Create base item
-            PreparedStatement insertStatement = dataConnection.prepareStatement(record.getInsertString());
+            PreparedStatement insertStatement = record.prepareInsertStatement(dataConnection);
             if (insertStatement.executeUpdate() == 0) {
                 dataConnection.close();
                 return null;
