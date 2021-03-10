@@ -1,0 +1,10 @@
+image: "androidsdk/android-23:latest"
+
+before_script:
+  - chmod u+x gradlew
+
+test:
+  script:
+    - ./gradlew test
+  tags:
+    - cs619-mdp
