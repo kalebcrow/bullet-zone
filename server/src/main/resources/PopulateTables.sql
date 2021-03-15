@@ -60,7 +60,7 @@
     INSERT INTO ItemCategory
         ( ItemCategoryID, Name, ItemPropertyID1, ItemPropertyID2, ItemPropertyID3)
     VALUES
-        (0, 'Artifact', 12, -1, -1),
+        (0, 'Artifact', 2, -1, -1),
         (1, 'Frame', 11, 12, -1),
         (2, 'Weapon', 13, 16, 14),
         (3, 'Generator', 15, -1, -1),
