@@ -37,7 +37,7 @@ public class AccountController {
      * @return a response w/ success boolean
      */
     @RequestMapping(method = RequestMethod.PUT, value = "register/{name}/{password}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseEntity<BooleanWrapper> register(@PathVariable String name, @PathVariable String password)
     {
@@ -49,7 +49,7 @@ public class AccountController {
                 TODO: something that invokes users.createUser(name, password) and does
                       other setup in the DataRepository (actually calls data.validateUser(...))
                 ),
-                HttpStatus.ACCEPTED);
+                HttpStatus.CREATED);
          */
         return null;
     }
@@ -62,7 +62,7 @@ public class AccountController {
      * @return a response w/ the user ID (or -1 if invalid)
      */
     @RequestMapping(method = RequestMethod.PUT, value = "login/{name}/{password}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<LongWrapper> login(@PathVariable String name, @PathVariable String password)
     {
@@ -74,7 +74,7 @@ public class AccountController {
                 TODO: something that invokes users.validateLogin(name, password) in
                       the DataRepository (actually calls data.validateUser(...))
                 ),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
          */
         return null;
     }
