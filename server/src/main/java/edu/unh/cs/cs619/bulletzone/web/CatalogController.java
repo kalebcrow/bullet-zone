@@ -33,7 +33,7 @@ public class CatalogController {
      * @return a response includes String array
      */
     @RequestMapping(method = RequestMethod.GET, value = "getCategories", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<StringArrayWrapper> getCategories(){
         // Log the request
@@ -43,7 +43,7 @@ public class CatalogController {
         return new ResponseEntity<StringArrayWrapper>(new StringArrayWrapper(
                 TODO: something that invokes types.getCategories() in the DataRepository
                 ),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
          */
         return null;
     }
@@ -54,7 +54,7 @@ public class CatalogController {
      * @return a response includes String array
      */
     @RequestMapping(method = RequestMethod.GET, value = "getTypes/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<StringArrayWrapper> getTypes(@PathVariable String category){
         // Log the request
@@ -64,7 +64,7 @@ public class CatalogController {
         return new ResponseEntity<StringArrayWrapper>(new StringArrayWrapper(
                 TODO: something that invokes types.get*() in the DataRepository
                 ),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
          */
         return null;
     }

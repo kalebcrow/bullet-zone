@@ -65,56 +65,56 @@ class GamesController {
     public
     @ResponseBody
     ResponseEntity<GridWrapper> grid() {
-        return new ResponseEntity<GridWrapper>(new GridWrapper(gameRepository.getGrid()), HttpStatus.ACCEPTED);
+        return new ResponseEntity<GridWrapper>(new GridWrapper(gameRepository.getGrid()), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/turn/{direction}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> turn(@PathVariable long tankId, @PathVariable byte direction)
             throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.turn(tankId, Direction.fromByte(direction))),
-                HttpStatus.ACCEPTED
+                HttpStatus.OK
         );
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/move/{direction}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> move(@PathVariable long tankId, @PathVariable byte direction)
             throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.move(tankId, Direction.fromByte(direction))),
-                HttpStatus.ACCEPTED
+                HttpStatus.OK
         );
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/fire", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> fire(@PathVariable long tankId)
             throws TankDoesNotExistException, LimitExceededException {
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.fire(tankId, 1)),
-                HttpStatus.ACCEPTED
+                HttpStatus.OK
         );
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/fire/{bulletType}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> fire(@PathVariable long tankId, @PathVariable int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.fire(tankId, bulletType)),
-                HttpStatus.ACCEPTED
+                HttpStatus.OK
         );
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{tankId}/leave", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     HttpStatus leave(@PathVariable long tankId)
             throws TankDoesNotExistException {
         //System.out.println("Games Controller leave() called, tank ID: "+tankId);
         gameRepository.leave(tankId);
-        return HttpStatus.ACCEPTED;
+        return HttpStatus.OK;
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
