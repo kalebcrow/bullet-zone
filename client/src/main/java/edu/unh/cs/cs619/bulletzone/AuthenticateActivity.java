@@ -1,11 +1,14 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -32,7 +35,19 @@ public class AuthenticateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authenticate);
+        //Since we are using the @EActivity annotation, anything done past this point will
+        //be overridden by the work AndroidAnnotations does. If you need to do more setup,
+        //add to the methods under @AfterViews (for view items) or @AfterInject (for Bean items) below
+    }
+
+    @AfterViews
+    protected void afterViewInjection() {
+        //Put any view-setup code here (that you might normally put in onCreate)
+    }
+
+    @AfterInject
+    void afterInject() {
+        //Put any Bean-related setup code here (the you might normally put in onCreate)
     }
 
     /**
