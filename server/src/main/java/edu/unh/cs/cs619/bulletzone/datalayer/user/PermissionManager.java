@@ -335,12 +335,12 @@ public class PermissionManager {
 
                 if (permission == Permission.Owner) {
                     // not worrying about StartSlot, EndSlot, or Modifier right now...
-                    OwnableEntity container = targetRepo.getTarget(itemID);
+                    OwnableEntity entity = targetRepo.getTarget(itemID);
                     GameUser user = userRepo.getUser(userID);
-                    if (user == null || container == null) //could be null if user or container were marked as deleted
+                    if (user == null || entity == null) //could be null if user or entity were marked as deleted
                         continue; //just skip everything if something is null
-                    user.addPermissionTarget(container);
-                    container.setOwner(user);
+                    user.addPermissionTarget(entity);
+                    entity.setOwner(user);
                 }
                 addPermission(itemID, userID, permission);
             }

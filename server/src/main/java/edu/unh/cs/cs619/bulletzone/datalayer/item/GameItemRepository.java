@@ -41,7 +41,7 @@ public class GameItemRepository implements OwnableEntityRepository {
      * @return  GameItemContainer corresponding to the passed itemID;
      */
     public GameItemContainer getContainer(int itemID) { return containerMap.get(itemID); }
-    public OwnableEntity getTarget(int id) { return getContainer(id); }
+    public OwnableEntity getTarget(int id) { return getItemOrContainer(id); }
 
     /**
      * Return the GameItem associated with teh passed internal ID (may be a container)

@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.Collection;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
@@ -29,19 +31,36 @@ public class PermissionManagerTest {
     @Test
     public void setOwner_onValidItem_updatesInternalStructures() {
         GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        GameItem cannon = db.items.create(db.types.TankCannon);
+        BankAccount account = db.accounts.create();
         db.permissions.setOwner(tank, basicUser);
-        assertThat(basicUser.getOwnedItems().contains(tank), is(true));
+        db.permissions.setOwner(cannon, basicUser);
+        db.permissions.setOwner(account, basicUser);
+        assertThat(basicUser.getOwnedEntities().contains(tank), is(true));
+        assertThat(basicUser.getOwnedEntities().contains(cannon), is(true));
+        assertThat(basicUser.getOwnedEntities().contains(account), is(true));
+        assertThat(db.permissions.getUserPermissions(basicUser).getItems().size(), is(3));
 
         db.permissions.removeOwner(tank);
+        db.permissions.removeOwner(cannon);
+        db.permissions.removeOwner(account);
     }
 
     @Test
     public void removeOwner_onValidItem_updatesInternalStructures() {
         GameItemContainer tank = db.items.createContainer(db.types.TankFrame);
+        GameItem cannon = db.items.create(db.types.TankCannon);
+        BankAccount account = db.accounts.create();
         db.permissions.setOwner(tank, basicUser);
+        db.permissions.setOwner(cannon, basicUser);
+        db.permissions.setOwner(account, basicUser);
 
         db.permissions.removeOwner(tank);
+        db.permissions.removeOwner(cannon);
+        db.permissions.removeOwner(account);
         assertThat(basicUser.getOwnedItems().contains(tank), is(false));
+        assertThat(basicUser.getOwnedEntities().contains(cannon), is(false));
+        assertThat(basicUser.getOwnedEntities().contains(account), is(false));
         assertThat(db.permissions.getUserPermissions(basicUser).getItems().size(), is(0));
     }
 

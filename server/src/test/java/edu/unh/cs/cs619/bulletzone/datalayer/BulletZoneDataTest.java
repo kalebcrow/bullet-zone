@@ -288,7 +288,7 @@ public class BulletZoneDataTest {
         db.refresh();
         GameUser user2 = db.users.getUser("PersistTest");
         System.out.println("Found user " + user2);
-        for (GameItemContainer c : user2.getOwnedItems()) {
+        for (GameItemContainer c : user2.getOwnedContainerItems()) {
             System.out.println("Found container " + c);
             assertThat(c.getId(), is(tank.getId()));
             int i = 0;
