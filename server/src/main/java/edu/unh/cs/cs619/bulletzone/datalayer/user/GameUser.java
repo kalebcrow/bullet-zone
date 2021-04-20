@@ -35,7 +35,7 @@ public class GameUser extends Entity {
         HashSet<GameItem> ownedItems = new HashSet<GameItem>();
         for (OwnableEntity e : ownedEntities) {
             EntityType t = e.getEntityType();
-            if (t == EntityType.ItemContainer || t == EntityType.ItemContainer) {
+            if (t == EntityType.Item || t == EntityType.ItemContainer) {
                 ownedItems.add((GameItem) e);
             }
         }

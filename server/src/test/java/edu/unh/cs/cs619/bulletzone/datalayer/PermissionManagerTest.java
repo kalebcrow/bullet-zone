@@ -8,6 +8,7 @@ import java.util.Collection;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
+import edu.unh.cs.cs619.bulletzone.datalayer.itemType.ItemType;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.Permission;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 
@@ -17,12 +18,12 @@ import static org.junit.Assert.*;
 
 public class PermissionManagerTest {
 
-    static BulletZoneData db;
+    static BulletZoneData db, bzdata;
     static GameUser basicUser, otherUser;
 
     @BeforeClass
     static public void setup() {
-        db = new BulletZoneData();
+        bzdata = db = new BulletZoneData();
         db.rebuildData();
         basicUser = db.users.createUser("BasicUser", "BasicUser", "password");
         otherUser = db.users.createUser("OtherUser", "OtherUser", "password");
@@ -36,10 +37,14 @@ public class PermissionManagerTest {
         db.permissions.setOwner(tank, basicUser);
         db.permissions.setOwner(cannon, basicUser);
         db.permissions.setOwner(account, basicUser);
+
         assertThat(basicUser.getOwnedEntities().contains(tank), is(true));
         assertThat(basicUser.getOwnedEntities().contains(cannon), is(true));
         assertThat(basicUser.getOwnedEntities().contains(account), is(true));
         assertThat(db.permissions.getUserPermissions(basicUser).getItems().size(), is(3));
+
+        assertThat(basicUser.getOwnedAccounts().contains(account), is(true));
+        assertThat(basicUser.getOwnedEntities().size(), is(3));
 
         db.permissions.removeOwner(tank);
         db.permissions.removeOwner(cannon);
