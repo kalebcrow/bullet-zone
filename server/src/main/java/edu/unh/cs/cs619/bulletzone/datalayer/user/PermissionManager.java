@@ -72,12 +72,12 @@ public class PermissionManager {
     HashMap<Integer, AccessibleTargets> permissions = new HashMap<>(); //&&&
     private final HashMap<Integer, Set<GameUser>> targetToPermissionHolders = new HashMap<>();
 
-    public void setOwner(OwnableEntity target, GameUser user) {
-        setOwner(target.getId(), user.getId());
+    public boolean setOwner(OwnableEntity target, GameUser user) {
+        return setOwner(target.getId(), user.getId());
     }
 
-    public void removeOwner(OwnableEntity target) {
-        removeOwner(target.getId(), target.getOwner().getId());
+    public boolean removeOwner(OwnableEntity target) {
+        return removeOwner(target.getId(), target.getOwner().getId());
     }
 
     public boolean check(OwnableEntity target, GameUser user, Permission p) {
