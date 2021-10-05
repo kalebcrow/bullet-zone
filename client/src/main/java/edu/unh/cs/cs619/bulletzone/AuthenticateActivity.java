@@ -2,7 +2,7 @@ package edu.unh.cs.cs619.bulletzone;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
