@@ -1,4 +1,4 @@
-image: "androidsdk/android-23:latest"
+image: "androidsdk/android-31:latest"
 
 before_script:
   - chmod u+x gradlew
