@@ -6,6 +6,7 @@
     DROP TABLE IF EXISTS Entity;
     DROP TABLE IF EXISTS EntityType;
     DROP TABLE IF EXISTS Entity_User_Permissions;
+    DROP TABLE IF EXISTS ImprovementType;
     DROP TABLE IF EXISTS Item;
     DROP TABLE IF EXISTS ItemCategory;
     DROP TABLE IF EXISTS ItemContainer;
@@ -14,6 +15,7 @@
     DROP TABLE IF EXISTS ItemPropertyType;
     DROP TABLE IF EXISTS ItemType;
     DROP TABLE IF EXISTS Permission;
+    DROP TABLE IF EXISTS ResourceType;
     DROP TABLE IF EXISTS Status;
     DROP TABLE IF EXISTS TerrainType;
     DROP TABLE IF EXISTS User;
