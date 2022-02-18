@@ -123,7 +123,14 @@
         (111, 'Grav-assist', 11, 1.0, 0.0, 300.0, -0.4, 0.5, 0.0),
         (121, 'Fusion generator', 12, 1.0, 2.0, 400.0, 2.0, 10.0, 0.0),
         (131, 'Deflector shield', 13, 1.0, 2.0, 300.0, -1.0, 100.0, 0.5),
-        (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, -0.5, 0.0, 1.0);
+        (132, 'Automated repair kit', 13, 1.0, 1.0, 200.0, -0.5, 0.0, 1.0),
+        -- ** Resources **
+        (501, 'Clay Bundle', 0, 1, 1.6, 1.0, 0.0, 0.0, 0.0),
+        (502, 'Rock Bundle', 0, 1, 2.5, 5.0, 0.0, 0.0, 0.0),
+        (503, 'Iron Bundle', 0, 1, 7.8, 100.0, 0.0, 0.0, 0.0),
+        (504, 'Wood Bundle', 0, 1, 0.7, 3.0, 0.0, 0.0, 0.0),
+        (505, 'Water Bundle', 0, 1, 1.0, 2.0, 0.0, 0.0, 0.0);
+
 
     INSERT INTO ResourceType
         ( ResourceTypeID, Name, Density)
