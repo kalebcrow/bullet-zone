@@ -8,6 +8,7 @@
   <component name="DBNavigator.Project.DataExportManager">
     <export-instructions>
       <create-header value="true" />
+      <friendly-headers value="false" />
       <quote-values-containing-separator value="true" />
       <quote-all-values value="false" />
       <value-separator value="" />
@@ -23,11 +24,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb">
-        <schema name="cs6192" object-types="view, index, column, constraint, table, dataset trigger" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3bd6a51e-496f-4aa2-a522-efe4ced148bb">
@@ -52,8 +49,8 @@
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.TerrainType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.ItemType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6190.TerrainType" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6192.ItemType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6193.ItemContainer_User_Permissions" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6192.ItemType" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" dataset="cs6191.User" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
@@ -77,12 +74,15 @@
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
     <recently-used-interfaces />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" active="true">
+      <connection id="3bd6a51e-496f-4aa2-a522-efe4ced148bb" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="Dev database" />
@@ -228,8 +228,6 @@
           <object-type name="TABLE" enabled="true" />
           <object-type name="VIEW" enabled="true" />
           <object-type name="MATERIALIZED VIEW" enabled="true" />
-          <object-type name="NESTED TABLE" enabled="false" />
-          <object-type name="COLUMN" enabled="false" />
           <object-type name="INDEX" enabled="true" />
           <object-type name="CONSTRAINT" enabled="true" />
           <object-type name="DATASET TRIGGER" enabled="true" />
@@ -240,8 +238,6 @@
           <object-type name="FUNCTION" enabled="true" />
           <object-type name="PACKAGE" enabled="true" />
           <object-type name="TYPE" enabled="true" />
-          <object-type name="TYPE ATTRIBUTE" enabled="false" />
-          <object-type name="ARGUMENT" enabled="false" />
           <object-type name="DIMENSION" enabled="false" />
           <object-type name="CLUSTER" enabled="false" />
           <object-type name="DBLINK" enabled="true" />

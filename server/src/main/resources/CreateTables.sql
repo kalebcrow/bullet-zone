@@ -201,10 +201,42 @@
       FOREIGN KEY (Item_EntityID) REFERENCES Item(EntityID)
     );
 
+    -- ResourceType table -- vital information about resource types
+    CREATE TABLE IF NOT EXISTS ResourceType
+    (
+      ResourceTypeID INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
+      Density FLOAT,             -- Weight per unit size
+      PRIMARY KEY (ResourceTypeID)
+    );
+
+    -- ImprovementType table -- vital information about types of terrain improvements
+    CREATE TABLE IF NOT EXISTS ImprovementType
+    (
+      ImprovementTypeID INT NOT NULL,
+      ResourceTypeID1 INT NOT NULL,
+      ResourceTypeID2 INT NOT NULL,
+      ResourceTypeID3 INT NOT NULL,
+      Name VARCHAR(40) NOT NULL,
+      Resource1Amount FLOAT,     -- How much of Resource 1 is needed to build?
+      Resource2Amount FLOAT,     -- How much of Resource 2 is needed to build?
+      Resource3Amount FLOAT,     -- How much of Resource 3 is needed to build?
+      Difficulty FLOAT,          -- roughness; NULL = units cannot enter
+      MaxSize FLOAT,             -- NULL = no limit; forests might allow trucks/soldiers, fortifications only soldiers, walls nothing
+      Strength FLOAT,            -- blocks bullets if non-null; becomes debris at/below zero
+      Hardness FLOAT,            -- to drilling/bombardment. Blocks bullets if not null; divide damage by this amount
+      Damage FLOAT,              -- inflicted per second on unit present; repairs if negative
+      PRIMARY KEY (ImprovementTypeID),
+      FOREIGN KEY (ResourceTypeID1) REFERENCES ResourceType(ResourceTypeID),
+      FOREIGN KEY (ResourceTypeID2) REFERENCES ResourceType(ResourceTypeID),
+      FOREIGN KEY (ResourceTypeID3) REFERENCES ResourceType(ResourceTypeID)
+    );
+
     -- TerrainType table -- vital information about terrain types
     CREATE TABLE IF NOT EXISTS TerrainType
     (
       TerrainTypeID INT NOT NULL,
+      ResourceTypeID INT NOT NULL,
       Name VARCHAR(40) NOT NULL,
       Solid BOOLEAN NOT NULL,    -- Land, basically
       Liquid BOOLEAN NOT NULL,   -- Water/magma/etc... coast is both water & land
@@ -213,7 +245,8 @@
       Strength FLOAT,            -- blocks bullets if non-null; becomes debris at/below zero
       Hardness FLOAT,            -- to drilling/bombardment. Blocks bullets if not null; divide damage by this amount
       Damage FLOAT,              -- inflicted per second on unit present; repairs if negative
-      PRIMARY KEY (TerrainTypeID)
+      PRIMARY KEY (TerrainTypeID),
+      FOREIGN KEY (ResourceTypeID) REFERENCES ResourceType(ResourceTypeID)
     );
 
 -- END

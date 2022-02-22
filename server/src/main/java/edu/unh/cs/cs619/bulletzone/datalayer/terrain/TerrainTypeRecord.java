@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 class TerrainTypeRecord {
     int terrainTypeID;
+    int resourceTypeID;
     String name;
     boolean solid, liquid;
     double difficulty;
@@ -16,6 +17,7 @@ class TerrainTypeRecord {
     TerrainTypeRecord(ResultSet terrainTypeResult) {
         try {
             terrainTypeID = terrainTypeResult.getInt("TerrainTypeID");
+            resourceTypeID = terrainTypeResult.getInt("ResourceTypeID");
             name = terrainTypeResult.getString("Name");
             solid = terrainTypeResult.getBoolean("Solid");
             liquid = terrainTypeResult.getBoolean("Liquid");
