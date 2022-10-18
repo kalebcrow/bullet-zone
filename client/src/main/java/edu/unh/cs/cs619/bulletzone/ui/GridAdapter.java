@@ -1,9 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.ui;
 
+import android.content.res.Resources;
+import android.graphics.drawable.TransitionDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.EBean;
@@ -53,21 +56,16 @@ public class GridAdapter extends BaseAdapter {
 
         int val = mEntities[row][col];
 
-        if (convertView instanceof TextView) {
+        if (convertView instanceof ImageView) {
             synchronized (monitor) {
-                if (val > 0) {
-                    if (val == 1000 || (val>1000&&val<=2000)) {
-                        ((TextView) convertView).setText("W");
-                    } else if (val >= 2000000 && val <= 3000000) {
-                        ((TextView) convertView).setText("B");
-                    } else if (val >= 10000000 && val <= 20000000) {
-                        ((TextView) convertView).setText("T");
-                    }
-                } else {
-                    ((TextView) convertView).setText("");
-                }
+
+                ImageView imageView = (ImageView) convertView;
+                imageView.setImageResource(R.drawable.tank);
+                imageView.setAdjustViewBounds(true);
+
             }
         }
+
 
         return convertView;
     }
