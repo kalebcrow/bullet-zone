@@ -60,7 +60,17 @@ public class GridAdapter extends BaseAdapter {
             synchronized (monitor) {
 
                 ImageView imageView = (ImageView) convertView;
-                imageView.setImageResource(R.drawable.tank);
+                if (position % 5 == 0) {
+                    imageView.setImageResource(R.drawable.tank);
+                } else if (position % 5 == 1) {
+                    imageView.setImageResource(R.drawable.stonewall);
+                } else if (position % 5 == 2) {
+                    imageView.setImageResource(R.drawable.ironwall);
+                } else if (position % 5 == 3) {
+                    imageView.setImageResource(R.drawable.bullet);
+                } else if (position % 5 == 4) {
+                    imageView.setImageResource(R.drawable.road);
+                }
                 imageView.setAdjustViewBounds(true);
 
             }
