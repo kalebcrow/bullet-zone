@@ -22,7 +22,9 @@ import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
+import edu.unh.cs.cs619.bulletzone.model.TankController;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.repository.GameDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
@@ -35,10 +37,12 @@ class GamesController {
     private static final Logger log = LoggerFactory.getLogger(GamesController.class);
 
     private final GameRepository gameRepository;
+    private final TankController tankController;
 
     @Autowired
     public GamesController(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
+        this.tankController = new TankController(gameRepository);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,9 +85,9 @@ class GamesController {
     @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/move/{direction}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> move(@PathVariable long tankId, @PathVariable byte direction)
-            throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+            throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException, GameDoesNotExistException {
         return new ResponseEntity<BooleanWrapper>(
-                new BooleanWrapper(gameRepository.move(tankId, Direction.fromByte(direction))),
+                new BooleanWrapper(tankController.move(gameRepository.getGame().getTanks().get(tankId), Direction.fromByte(direction))),
                 HttpStatus.OK
         );
     }
