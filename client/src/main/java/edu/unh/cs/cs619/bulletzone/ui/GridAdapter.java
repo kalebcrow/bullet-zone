@@ -60,9 +60,11 @@ public class GridAdapter extends BaseAdapter {
             synchronized (monitor) {
 
                 ImageView imageView = (ImageView) convertView;
-                if (position == 1) {
+                if (position == 0) {
                     imageView.setImageResource(R.drawable.tank);
                     imageView.setAdjustViewBounds(true);
+                } else {
+                    imageView.setImageResource(R.drawable.blank);
                 }
             }
         }
