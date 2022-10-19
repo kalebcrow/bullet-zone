@@ -13,6 +13,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
 import edu.unh.cs.cs619.bulletzone.R;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 
 @EBean
 public class GridAdapter extends BaseAdapter {
@@ -22,9 +23,15 @@ public class GridAdapter extends BaseAdapter {
     protected LayoutInflater inflater;
     private int[][] mEntities = new int[16][16];
 
-    public void updateList(int[][] entities) {
+    public void updateList(BlankTile[] tiles) {
         synchronized (monitor) {
-            this.mEntities = entities;
+            int value = 0;
+            for (int i = 0; i < 16; i++) {
+                for (int ii = 0; ii < 16; ii++) {
+                    this.mEntities[i][ii] = tiles[value].getResourceID();
+                    value++;
+                }
+            }
             this.notifyDataSetChanged();
         }
     }

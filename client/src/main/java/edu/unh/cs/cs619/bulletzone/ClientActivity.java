@@ -24,10 +24,12 @@ import org.androidannotations.rest.spring.api.RestClientHeaders;
 import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
@@ -54,6 +56,9 @@ public class ClientActivity extends Activity {
 
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
+
+    @Bean
+    BoardView boardView;
 
     /**
      * Remote tank identifier
@@ -89,7 +94,6 @@ public class ClientActivity extends Activity {
         }
     };
 
-
     @AfterViews
     protected void afterViewInjection() {
         joinAsync();
@@ -113,7 +117,8 @@ public class ClientActivity extends Activity {
     }
 
     public void updateGrid(GridWrapper gw) {
-        mGridAdapter.updateList(gw.getGrid());
+        boardView.setGridAdapter(mGridAdapter);
+        boardView.setUsingJSON(gw.getGrid());
     }
 
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})

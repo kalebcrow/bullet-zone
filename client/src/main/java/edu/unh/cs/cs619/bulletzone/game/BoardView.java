@@ -1,13 +1,28 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
-import org.json.JSONArray;
+import com.squareup.otto.Subscribe;
+
+import org.androidannotations.annotations.EBean;
 
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
+@EBean
 public class BoardView {
     public BlankTile[] tiles;
     public int[][] tileInput;
     public TileFactory tileFactory;
+
+    public GridAdapter getGridAdapter() {
+        return gridAdapter;
+    }
+
+    public void setGridAdapter(GridAdapter gridAdapter) {
+        this.gridAdapter = gridAdapter;
+    }
+
+    public GridAdapter gridAdapter;
     
 
     public BoardView() {
@@ -51,4 +66,21 @@ public class BoardView {
             }
         }
     }
+
+    private Object tileEventHandler = new Object()
+    {
+        @Subscribe
+        public void onTileUpdate(TileUpdateEvent event) {
+            updateTile(event);
+        }
+    };
+
+    private void updateTile(TileUpdateEvent event) {
+        tiles[event.location] = event.movedTile;
+        tiles[event.prevLocation] = tileFactory.makeTile(0, event.prevLocation);
+        gridAdapter.updateList(tiles);
+
+    }
+
+
 }
