@@ -16,7 +16,7 @@ public class BoardView {
 
     }
 
-    public BoardView(int input[][]) {
+    public BoardView(int[][] input) {
         this();
         this.setUsingJSON(input);
     }
@@ -41,7 +41,7 @@ public class BoardView {
         return 256;
     }
 
-    public void setUsingJSON(int arr[][]) {
+    public void setUsingJSON(int[][] arr) {
         this.tileInput = arr;
         int value = 0;
         for (int i = 0; i < 16; i++) {
