@@ -29,10 +29,6 @@ public class TankTile extends BlankTile {
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
-        int row = location / 16 + 1;
-        int column = location % 16 + 1;
-        String r = String.valueOf(row);
-        String c = String.valueOf(column);
 
         //This is what was the default in the grid adapter view (By plumdog)
          if (JsonValue >= 2000000 && JsonValue <= 3000000) {
@@ -43,6 +39,40 @@ public class TankTile extends BlankTile {
 
          ID = findID(JsonValue);
          orientation = findOrientation(JsonValue);
+    }
+
+    public void moveTo(boolean forward) {
+        switch(orientation) {
+            case 0:
+                if (forward) {
+                    location = location - 16;
+                } else {
+                    location = location + 16;
+                }
+                break;
+            case 1:
+                if (forward) {
+                    location = location + 1;
+                } else {
+                    location = location - 1;
+                }
+
+                break;
+            case 2:
+                if (forward) {
+                    location = location + 16;
+                } else {
+                    location = location - 16;
+                }
+                break;
+            default:
+                if (forward) {
+                    location = location - 1;
+                } else {
+                    location = location + 1;
+                }
+        }
+
     }
 
     //These two functions rip the value of digits from their respective spots
