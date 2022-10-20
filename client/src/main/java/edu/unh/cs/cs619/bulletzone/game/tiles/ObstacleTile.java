@@ -11,6 +11,7 @@ public class ObstacleTile extends BlankTile {
         int column = location % 16 + 1;
         String r = String.valueOf(row);
         String c = String.valueOf(column);
+        orientation = 0;
 
         //This is what was the default in the grid adapter view (By plumdog)
         if (JsonValue == 1000 || ( JsonValue > 1000 && JsonValue <= 2000)) {

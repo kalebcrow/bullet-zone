@@ -58,8 +58,9 @@ public class GridAdapter extends BaseAdapter {
             synchronized (monitor) {
                 ImageView imageView = (ImageView) convertView;
                 if (mEntities[position] != null) {
-                    Log.d("yeah", "we out here");
                     imageView.setImageResource(mEntities[position].getResourceID());
+                    imageView.setRotation(mEntities[position].getOrientation() * 90);
+
                 } else {
                     imageView.setImageResource(R.drawable.blank);
                 }

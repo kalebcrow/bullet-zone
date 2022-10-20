@@ -85,7 +85,7 @@ public class TankTile extends BlankTile {
     private Integer findOrientation(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
-        return Integer.parseInt(String.copyValueOf(digits1, 4, 1));
+        return Integer.parseInt(String.copyValueOf(digits1, 6, 1));
     }
 
 }
