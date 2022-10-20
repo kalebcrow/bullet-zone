@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.ui;
 
 import android.content.res.Resources;
 import android.graphics.drawable.TransitionDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +22,12 @@ public class GridAdapter extends BaseAdapter {
     private final Object monitor = new Object();
     @SystemService
     protected LayoutInflater inflater;
-    private int[][] mEntities = new int[16][16];
+    private BlankTile[] mEntities = new BlankTile[256];
 
     public void updateList(BlankTile[] tiles) {
         synchronized (monitor) {
-            int value = 0;
-            for (int i = 0; i < 16; i++) {
-                for (int ii = 0; ii < 16; ii++) {
-                    this.mEntities[i][ii] = tiles[value].getResourceID();
-                    value++;
-                }
-            }
+
+            mEntities = tiles;
             this.notifyDataSetChanged();
         }
     }
@@ -43,7 +39,7 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mEntities[(int) position / 16][position % 16];
+        return mEntities[position];
     }
 
     @Override
@@ -58,18 +54,12 @@ public class GridAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.field_item, null);
         }
 
-        int row = position / 16;
-        int col = position % 16;
-
-        int val = mEntities[row][col];
-
         if (convertView instanceof ImageView) {
             synchronized (monitor) {
-
                 ImageView imageView = (ImageView) convertView;
-                if (position == 0) {
-                    imageView.setImageResource(R.drawable.tank);
-                    imageView.setAdjustViewBounds(true);
+                if (mEntities[position] != null) {
+                    Log.d("yeah", "we out here");
+                    imageView.setImageResource(mEntities[position].getResourceID());
                 } else {
                     imageView.setImageResource(R.drawable.blank);
                 }

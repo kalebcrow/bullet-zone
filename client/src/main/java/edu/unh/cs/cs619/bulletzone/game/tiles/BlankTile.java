@@ -12,6 +12,7 @@ public class BlankTile {
 
     public Integer resourceID;
     public Integer location;
+    public Integer orientation;
 
     public BlankTile() {
         this.resourceID = R.drawable.blank;

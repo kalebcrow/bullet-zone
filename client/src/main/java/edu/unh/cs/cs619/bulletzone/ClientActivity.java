@@ -117,8 +117,9 @@ public class ClientActivity extends Activity {
     }
 
     public void updateGrid(GridWrapper gw) {
-        boardView.setGridAdapter(mGridAdapter);
         boardView.setUsingJSON(gw.getGrid());
+        mGridAdapter.updateList(boardView.getTiles());
+        boardView.setGridAdapter(mGridAdapter);
     }
 
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
