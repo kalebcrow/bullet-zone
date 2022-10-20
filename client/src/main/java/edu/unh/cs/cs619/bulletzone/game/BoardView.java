@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
+import android.util.Log;
+
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.EBean;
@@ -10,6 +12,14 @@ import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
 @EBean
 public class BoardView {
+    public BlankTile[] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(BlankTile[] tiles) {
+        this.tiles = tiles;
+    }
+
     public BlankTile[] tiles;
     public int[][] tileInput;
     public TileFactory tileFactory;
@@ -29,11 +39,6 @@ public class BoardView {
         tileFactory = TileFactory.getFactory();
         tiles = new BlankTile[256];
 
-    }
-
-    public BoardView(int[][] input) {
-        this();
-        this.setUsingJSON(input);
     }
 
     public BlankTile getTile(int index) {

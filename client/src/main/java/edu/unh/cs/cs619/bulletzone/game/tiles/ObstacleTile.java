@@ -11,16 +11,21 @@ public class ObstacleTile extends BlankTile {
         int column = location % 16 + 1;
         String r = String.valueOf(row);
         String c = String.valueOf(column);
+        orientation = 0;
 
         //This is what was the default in the grid adapter view (By plumdog)
         if (JsonValue == 1000 || ( JsonValue > 1000 && JsonValue <= 2000)) {
             this.resourceID = R.drawable.ironwall;
         }
 
+
+
     }
 
-
-
-
+    private Integer findOrientation(Integer JSONValue) {
+        String number = String.valueOf(JSONValue);
+        char[] digits1 = number.toCharArray();
+        return Integer.parseInt(String.copyValueOf(digits1, 4, 1));
+    }
 
 }

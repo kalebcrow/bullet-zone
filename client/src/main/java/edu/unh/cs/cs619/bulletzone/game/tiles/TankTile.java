@@ -23,8 +23,6 @@ public class TankTile extends BlankTile {
 
     public Integer ID;
 
-    //Clockwise (0 up, 1 right, 2 down, 3 is left)
-    public Integer orientation;
 
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
@@ -83,11 +81,11 @@ public class TankTile extends BlankTile {
         return Integer.parseInt(String.copyValueOf(digits1, 1, 3));
 
     }
-
+    //Clockwise (0 up, 1 right, 2 down, 3 is left)
     private Integer findOrientation(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
-        return Integer.parseInt(String.copyValueOf(digits1, 4, 1));
+        return Integer.parseInt(String.copyValueOf(digits1, 6, 1));
     }
 
 }

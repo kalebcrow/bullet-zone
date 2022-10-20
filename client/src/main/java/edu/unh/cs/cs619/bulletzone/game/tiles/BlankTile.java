@@ -13,6 +13,16 @@ public class BlankTile {
     public Integer resourceID;
     public Integer location;
 
+    public Integer getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Integer orientation) {
+        this.orientation = orientation;
+    }
+
+    public Integer orientation;
+
     public BlankTile() {
         this.resourceID = R.drawable.blank;
         this.location = 0;
@@ -21,6 +31,7 @@ public class BlankTile {
     public BlankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
+        orientation = 0;
         int row = location / 16 + 1;
         int column = location % 16 + 1;
         String r = String.valueOf(row);
