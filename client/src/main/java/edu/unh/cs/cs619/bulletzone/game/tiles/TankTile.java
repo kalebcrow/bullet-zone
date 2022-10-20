@@ -24,7 +24,6 @@ public class TankTile extends BlankTile {
     public Integer ID;
 
     //Clockwise (0 up, 1 right, 2 down, 3 is left)
-    public Integer orientation;
 
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;

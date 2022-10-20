@@ -17,10 +17,14 @@ public class ObstacleTile extends BlankTile {
             this.resourceID = R.drawable.ironwall;
         }
 
+
+
     }
 
-
-
-
+    private Integer findOrientation(Integer JSONValue) {
+        String number = String.valueOf(JSONValue);
+        char[] digits1 = number.toCharArray();
+        return Integer.parseInt(String.copyValueOf(digits1, 4, 1));
+    }
 
 }
