@@ -59,23 +59,23 @@ public class GridAdapter extends BaseAdapter {
         if (convertView instanceof ImageView) {
             synchronized (monitor) {
 
-                ImageView imageView = (ImageView) convertView;
-                if (position % 5 == 0) {
-                    imageView.setImageResource(R.drawable.tank);
-                } else if (position % 5 == 1) {
-                    imageView.setImageResource(R.drawable.stonewall);
-                } else if (position % 5 == 2) {
-                    imageView.setImageResource(R.drawable.ironwall);
-                } else if (position % 5 == 3) {
-                    imageView.setImageResource(R.drawable.bullet);
-                } else if (position % 5 == 4) {
-                    imageView.setImageResource(R.drawable.road);
-                }
-                imageView.setAdjustViewBounds(true);
 
+                ImageView imageView = (ImageView) convertView;
+                if (val > 0) {
+                    if (val == 1000 || (val>1000&&val<=2000)) {
+                        imageView.setImageResource(R.drawable.stonewall);
+                    } else if (val >= 2000000 && val <= 3000000) {
+                        imageView.setImageResource(R.drawable.bullet);
+                    } else if (val >= 10000000 && val <= 20000000) {
+                        imageView.setImageResource(R.drawable.tank);
+                    }
+                } else {
+                    imageView.setImageResource(R.drawable.blank);
+                }
+
+                imageView.setAdjustViewBounds(true);
             }
         }
-
 
         return convertView;
     }
