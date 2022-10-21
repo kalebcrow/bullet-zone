@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
+import android.util.Log;
+
 import edu.unh.cs.cs619.bulletzone.R;
 
 public class TankTile extends BlankTile {
@@ -85,7 +87,15 @@ public class TankTile extends BlankTile {
     private Integer findOrientation(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
-        return Integer.parseInt(String.copyValueOf(digits1, 6, 1));
+        int offset = 6;
+        if (resourceID == R.drawable.tank) {
+            offset = 7;
+        }
+        Integer value = Integer.parseInt(String.copyValueOf(digits1, offset, 1));
+        Log.d("BulletO", "JSONValue" + JSONValue);
+        Log.d("Bullet0", "Orientation" + value);
+
+        return value;
     }
 
 }

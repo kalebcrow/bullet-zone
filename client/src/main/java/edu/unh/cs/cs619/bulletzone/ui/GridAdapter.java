@@ -59,7 +59,7 @@ public class GridAdapter extends BaseAdapter {
                 ImageView imageView = (ImageView) convertView;
                 if (mEntities[position] != null) {
                     imageView.setImageResource(mEntities[position].getResourceID());
-                    imageView.setRotation(mEntities[position].getOrientation() * 90);
+                    imageView.setRotation(mEntities[position].getOrientation()/2 * 90);
 
                 } else {
                     imageView.setImageResource(R.drawable.blank);
