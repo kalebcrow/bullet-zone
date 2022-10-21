@@ -37,12 +37,10 @@ class GamesController {
     private static final Logger log = LoggerFactory.getLogger(GamesController.class);
 
     private final GameRepository gameRepository;
-    private final TankController tankController;
 
     @Autowired
     public GamesController(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.tankController = new TankController(gameRepository);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +85,7 @@ class GamesController {
     ResponseEntity<BooleanWrapper> move(@PathVariable long tankId, @PathVariable byte direction)
             throws TankDoesNotExistException, LimitExceededException, IllegalTransitionException, GameDoesNotExistException {
         return new ResponseEntity<BooleanWrapper>(
-                new BooleanWrapper(tankController.move(gameRepository.getGame().getTanks().get(tankId), Direction.fromByte(direction))),
+                new BooleanWrapper(gameRepository.move(tankId, Direction.fromByte(direction))),
                 HttpStatus.OK
         );
     }

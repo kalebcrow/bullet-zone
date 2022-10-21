@@ -14,6 +14,7 @@ import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
+import edu.unh.cs.cs619.bulletzone.model.TankController;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 
@@ -111,11 +112,10 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            long millis = System.currentTimeMillis();
-            if(millis < tank.getLastMoveTime())
+            TankController tc = new TankController();
+            if (!tc.turn(tank, direction)) {
                 return false;
-
-            tank.setLastMoveTime(millis+tank.getAllowedMoveInterval());
+            }
 
             /*try {
                 Thread.sleep(500);
@@ -142,11 +142,10 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            long millis = System.currentTimeMillis();
-            if(millis < tank.getLastMoveTime())
+            TankController tc = new TankController();
+            if (!tc.move(tank, direction)) {
                 return false;
-
-            tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
+            }
 
             FieldHolder parent = tank.getParent();
 

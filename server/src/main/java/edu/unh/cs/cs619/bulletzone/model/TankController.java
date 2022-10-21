@@ -8,25 +8,22 @@ import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class TankController {
-    private final Object monitor = new Object();
-    GameRepository mGameRepository;
     Game game;
-    public TankController(GameRepository gameRepository) {
-        mGameRepository = gameRepository;
-    }
 
-    public boolean turn(Tank tank, Direction direction) {
-        synchronized (this.monitor) {
+    public boolean turn(Tank tank, Direction direction)
+            throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
             checkNotNull(direction);
             checkNotNull(tank);
 
+            //Check for bad getLastMoveTime
             long millis = System.currentTimeMillis();
             if (millis < tank.getLastMoveTime())
                 return false;
 
+            //Causes tank to wait to move
+            tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
 
             return true; // TODO check
-        }
     }
 
     /**
@@ -40,25 +37,19 @@ public class TankController {
      */
     public boolean move(Tank tank, Direction direction)
             throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        synchronized (this.monitor) {
             checkNotNull(direction);
             checkNotNull(tank);
 
-            //out of sync??? Someone explain this to me
+            //Check for bad getLastMoveTime
             long millis = System.currentTimeMillis();
             if (millis < tank.getLastMoveTime())
                 return false;
 
-            //What does this do and is this the thing that causes it to wait.
+            //Causes tank to wait to move
             tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
 
             //Check for tank moving forwards or backwards
-            if (isSameRelativeDirection(tank.getDirection(), direction)) {
-                return mGameRepository.move(tank.getId(), direction);
-            } else {
-                return false;
-            }
-        }
+        return isSameRelativeDirection(tank.getDirection(), direction);
     }
 
     /**
@@ -84,9 +75,7 @@ public class TankController {
 
     public boolean fire(Tank tank, Direction direction)
             throws TankDoesNotExistException, LimitExceededException {
-        synchronized (this.monitor) {
             return true;
-        }
     }
 
 
