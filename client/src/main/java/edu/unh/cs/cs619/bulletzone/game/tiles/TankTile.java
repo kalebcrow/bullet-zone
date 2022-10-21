@@ -91,11 +91,7 @@ public class TankTile extends BlankTile {
         if (resourceID == R.drawable.tank) {
             offset = 7;
         }
-        Integer value = Integer.parseInt(String.copyValueOf(digits1, offset, 1));
-        Log.d("BulletO", "JSONValue" + JSONValue);
-        Log.d("Bullet0", "Orientation" + value);
-
-        return value;
+        return Integer.parseInt(String.copyValueOf(digits1, offset, 1));
     }
 
 }
