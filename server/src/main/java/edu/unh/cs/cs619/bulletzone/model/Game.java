@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+
 public final class Game {
     /**
      * Field dimensions
@@ -15,6 +17,12 @@ public final class Game {
     private static final int FIELD_DIM = 16;
     private final long id;
     private final ArrayList<FieldHolder> holderGrid = new ArrayList<>();
+
+    // Event History for the clients
+    private final int MAX_EVENTS = 1000;
+    private GridEvent[] eventHistory = new GridEvent[MAX_EVENTS];
+    private int currentEventIndex = 0;
+
 
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Long> playersIP = new ConcurrentHashMap<>();
@@ -103,5 +111,17 @@ public final class Game {
         }
 
         return grid;
+    }
+
+    // Adds to the event history
+    public void addEvent(GridEvent gridEvent){
+        eventHistory[currentEventIndex%MAX_EVENTS] = gridEvent;
+        currentEventIndex++;
+    }
+
+
+    public List<GridEvent> getEvents(Long time){
+        List<GridEvent> list = new List<GridEvent>() {
+        }
     }
 }
