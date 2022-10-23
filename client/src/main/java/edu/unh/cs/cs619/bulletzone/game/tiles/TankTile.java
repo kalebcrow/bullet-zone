@@ -3,6 +3,7 @@ package edu.unh.cs.cs619.bulletzone.game.tiles;
 import android.util.Log;
 
 import edu.unh.cs.cs619.bulletzone.R;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 
 public class TankTile extends BlankTile {
 
@@ -29,15 +30,20 @@ public class TankTile extends BlankTile {
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
+        ID = findID(JsonValue);
+
 
         //This is what was the default in the grid adapter view (By plumdog)
          if (JsonValue >= 2000000 && JsonValue <= 3000000) {
-            this.resourceID = R.drawable.bullet;
-        } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
-            this.resourceID = R.drawable.tank;
+            resourceID = R.drawable.bullet;
+         } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
+             if (ID == Math.toIntExact(TankController.getTankController().getTankID())) {
+                 this.resourceID = R.drawable.tank;
+             } else {
+                 this.resourceID = R.drawable.redtank;
+             }
         }
 
-         ID = findID(JsonValue);
          orientation = findOrientation(JsonValue);
     }
 
@@ -88,7 +94,7 @@ public class TankTile extends BlankTile {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
         int offset = 6;
-        if (resourceID == R.drawable.tank) {
+        if (resourceID != R.drawable.bullet) {
             offset = 7;
         }
         return Integer.parseInt(String.copyValueOf(digits1, offset, 1));

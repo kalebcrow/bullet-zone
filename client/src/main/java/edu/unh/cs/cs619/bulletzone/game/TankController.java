@@ -12,10 +12,23 @@ public class TankController {
     BulletZoneRestClient restClient;
     private Long tankID;
     private int tankOrientation;
+    private static volatile TankController INSTANCE = null;
+
 
     public TankController() {
         tankID = 0L;
         tankOrientation = 0;
+    }
+
+    public static TankController getTankController() {
+        if(INSTANCE == null) {
+            synchronized (TankController.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new TankController();
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     public BulletZoneRestClient getRestClient() {
