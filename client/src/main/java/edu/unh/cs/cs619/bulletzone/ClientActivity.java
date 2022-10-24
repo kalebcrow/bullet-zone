@@ -3,10 +3,12 @@ package edu.unh.cs.cs619.bulletzone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -22,6 +24,8 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.RestClientHeaders;
 import org.androidannotations.api.BackgroundExecutor;
+
+import java.io.Serializable;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
@@ -41,6 +45,9 @@ public class ClientActivity extends Activity {
 
     @ViewById
     protected GridView gridView;
+
+    @ViewById
+    protected TextView textViewGarage;
 
     @Bean
     BusProvider busProvider;
@@ -168,7 +175,23 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonLogin)
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // https://stackoverflow.com/questions/14292398/how-to-pass-data-from-2nd-activity-to-1st-activity-when-pressed-back-android
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                long bankAccountBalance = bundle.getLong("bankAccountBalance");
+                String tank = bundle.getString("items");
+                String message = "Balance: " + bankAccountBalance + "\n" +
+                                 "Garage: " + tank;
+                textViewGarage.setText(message);
+                Log.d("MESSAGE", message);
+            }
+        }
     }
 
     @Background
