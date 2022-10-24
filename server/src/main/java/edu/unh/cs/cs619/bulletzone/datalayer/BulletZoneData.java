@@ -234,9 +234,9 @@ public class BulletZoneData {
     }
 
     public static void main(String[] args) {
-        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6190";
-        String username = "mdp";
-        String password = "Drag56kes";
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs61902dev";
+        String username = "baryte";
+        String password = "kle#tOwy5p";
 
         BulletZoneData d = new BulletZoneData(url, username, password);
         //d.listTables();
@@ -330,6 +330,5 @@ public class BulletZoneData {
             System.out.println("Terrain " + t.getName() + " has type ID " + t.getID());
         }
         System.out.println("Open Water Type is " + d.terrains.OpenWater);
-
     }
 }
