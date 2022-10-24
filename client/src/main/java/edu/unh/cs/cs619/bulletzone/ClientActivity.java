@@ -24,10 +24,13 @@ import org.androidannotations.rest.spring.api.RestClientHeaders;
 import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
@@ -43,6 +46,9 @@ public class ClientActivity extends Activity {
     protected GridView gridView;
 
     @Bean
+    TankController tankController;
+
+    @Bean
     BusProvider busProvider;
 
     @NonConfigurationInstance
@@ -54,6 +60,9 @@ public class ClientActivity extends Activity {
 
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
+
+    @Bean
+    BoardView boardView;
 
     /**
      * Remote tank identifier
@@ -89,12 +98,12 @@ public class ClientActivity extends Activity {
         }
     };
 
-
     @AfterViews
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
+        tankController.setRestClient(restClient);
     }
 
     @AfterInject
@@ -107,13 +116,16 @@ public class ClientActivity extends Activity {
     void joinAsync() {
         try {
             tankId = restClient.join().getResult();
+            tankController.setTankID(tankId);
             gridPollTask.doPoll();
         } catch (Exception e) {
         }
     }
 
     public void updateGrid(GridWrapper gw) {
-        mGridAdapter.updateList(gw.getGrid());
+        boardView.setUsingJSON(gw.getGrid());
+        mGridAdapter.updateList(boardView.getTiles());
+        boardView.setGridAdapter(mGridAdapter);
     }
 
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
@@ -138,7 +150,7 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        this.moveAsync(tankId, direction);
+        tankController.move(direction);
     }
 
     @Background
