@@ -18,6 +18,7 @@ public class TankController {
     public TankController() {
         tankID = 0L;
         tankOrientation = 0;
+        INSTANCE = this;
     }
 
     public static TankController getTankController() {

@@ -31,20 +31,25 @@ public class TankTile extends BlankTile {
         this.resourceID = R.drawable.blank;
         this.location = location;
         ID = findID(JsonValue);
+        Long controller = TankController.getTankController().getTankID();
 
 
         //This is what was the default in the grid adapter view (By plumdog)
          if (JsonValue >= 2000000 && JsonValue <= 3000000) {
             resourceID = R.drawable.bullet;
          } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
-             if (ID == Math.toIntExact(TankController.getTankController().getTankID())) {
+             if (ID == Math.toIntExact(controller)) {
                  this.resourceID = R.drawable.tank;
+
              } else {
                  this.resourceID = R.drawable.redtank;
              }
         }
 
-         orientation = findOrientation(JsonValue);
+        orientation = findOrientation(JsonValue);
+        if (ID == Math.toIntExact(controller)) {
+            TankController.getTankController().setTankOrientation(orientation);
+        }
     }
 
     public void moveTo(boolean forward) {
