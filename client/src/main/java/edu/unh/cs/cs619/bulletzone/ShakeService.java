@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+//implementation from: https://demonuts.com/android-shake-detection/
 public class ShakeService extends Service implements SensorEventListener {
 
     private SensorManager mSensorManager;
@@ -44,7 +45,8 @@ public class ShakeService extends Service implements SensorEventListener {
 
         if (mAccel > 11) {
 
-            Log.d("ShakeService", "SHAKE DETECTED!");
+            //Log.d("ShakeService", "SHAKE DETECTED!");
+
 
         }
     }
