@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
@@ -43,15 +44,33 @@ public class AccountController {
     {
         // Log the request
         log.debug("Register '" + name + "' with password '" + password + "'");
-        // Return the response (true if account created)
-        /*
-        return new ResponseEntity<BooleanWrapper>(new BooleanWrapper(
-                TODO: something that invokes users.createUser(name, password) and does
-                      other setup in the DataRepository (actually calls data.validateUser(...))
-                ),
-                HttpStatus.CREATED);
-         */
-        return null;
+
+        // Log the request
+        log.debug("THIS IS BEFORE GAME USER IS MADE");
+
+        // create the account
+        GameUser gu = data.validateUser(log, name, password, true);
+
+        // Log the request
+        log.debug("THIS IS AFTER GAME USER IS MADE");
+
+        if (gu != null) {
+            // Log the request
+            log.debug("game user was NOT null");
+
+            // Return the response (true if account created)
+            return new ResponseEntity<BooleanWrapper>(new BooleanWrapper(
+                    true
+                    //TODO: something that invokes users.createUser(name, password) and does
+                    //      other setup in the DataRepository (actually calls data.validateUser(...))
+            ),
+                    HttpStatus.CREATED);
+        } else {
+            // Log the request
+            log.debug("game user was null");
+            return null;
+        }
+        //sara
     }
 
     /**
@@ -67,16 +86,56 @@ public class AccountController {
     public ResponseEntity<LongWrapper> login(@PathVariable String name, @PathVariable String password)
     {
         // Log the request
-        log.debug("Login '" + name + "' with password '" + password + "'");
-        // Return the response (return user ID if valid login)
-        /*
-        return new ResponseEntity<LongWrapper>(new LongWrapper(
-                TODO: something that invokes users.validateLogin(name, password) in
-                      the DataRepository (actually calls data.validateUser(...))
-                ),
-                HttpStatus.OK);
-         */
-        return null;
+        //log.debug("Login '" + name + "' with password '" + password + "'");
+
+        // create the account
+        GameUser gu = data.validateUser(log, name, password, false);
+
+        if (gu != null) {
+            // Return the response (return user ID if valid login)
+            return new ResponseEntity<LongWrapper>(new LongWrapper(
+                    gu.getId()
+                    //TODO: something that invokes users.validateLogin(name, password) in
+                    //      the DataRepository (actually calls data.validateUser(...))
+            ),
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{username}/balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<LongWrapper> balance(@PathVariable String username) {
+        Long b = (long) data.getUserAccountBalance(username);
+        if (b != null) {
+            return new ResponseEntity<LongWrapper>(new LongWrapper(
+                    b
+                    //TODO: something that invokes users.validateLogin(name, password) in
+                    //      the DataRepository (actually calls data.validateUser(...))
+            ),
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{username}/items", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseEntity<String> items(@PathVariable String username) {
+        String tank = data.getUserItem(username);
+        if (tank != null) {
+            return new ResponseEntity<String>(new String(
+                    tank
+                    //TODO: something that invokes users.validateLogin(name, password) in
+                    //      the DataRepository (actually calls data.validateUser(...))
+            ),
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
     }
 
 }
