@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -66,11 +67,13 @@ public class AuthenticateActivity extends AppCompatActivity {
         } else { //register successful
             setStatus("Registration successful.");
             //Do you want to log in automatically, or force them to do it?
+            // player should log in automatically
             userID = controller.login(username, password);
             if (userID < 0) {
                 setStatus("Registration unsuccessful--inconsistency with server.");
             }
             //do other login things?
+            showGarage(username);
         }
     }
 
@@ -89,7 +92,25 @@ public class AuthenticateActivity extends AppCompatActivity {
         } else { //register successful
             setStatus("Login successful.");
             //do other login things?
+            showGarage(username);
         }
+    }
+
+    protected void showGarage(String username) {
+        // if logged in get bank account and tank
+        long bankAccountBalance = controller.balance(username);
+        String tank = controller.items(username);
+
+        // send user info back to client activity using bundle
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putLong("bankAccountBalance", bankAccountBalance);
+        bundle.putString("items", tank);
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+
+        // return to client
+        finish();
     }
 
     @UiThread
