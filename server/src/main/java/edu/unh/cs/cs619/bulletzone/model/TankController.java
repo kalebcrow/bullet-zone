@@ -33,7 +33,7 @@ public class TankController {
             //Causes tank to wait to move
             tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
 
-            return true; // TODO check
+            return !isSameRelativeDirection(tank.getDirection(), direction); // TODO check
     }
 
     /**
