@@ -45,19 +45,10 @@ public class AccountController {
         // Log the request
         log.debug("Register '" + name + "' with password '" + password + "'");
 
-        // Log the request
-        log.debug("THIS IS BEFORE GAME USER IS MADE");
-
         // create the account
-        GameUser gu = data.validateUser(log, name, password, true);
-
-        // Log the request
-        log.debug("THIS IS AFTER GAME USER IS MADE");
+        GameUser gu = data.validateUser(name, password, true);
 
         if (gu != null) {
-            // Log the request
-            log.debug("game user was NOT null");
-
             // Return the response (true if account created)
             return new ResponseEntity<BooleanWrapper>(new BooleanWrapper(
                     true
@@ -66,11 +57,8 @@ public class AccountController {
             ),
                     HttpStatus.CREATED);
         } else {
-            // Log the request
-            log.debug("game user was null");
             return null;
         }
-        //sara
     }
 
     /**
@@ -86,10 +74,10 @@ public class AccountController {
     public ResponseEntity<LongWrapper> login(@PathVariable String name, @PathVariable String password)
     {
         // Log the request
-        //log.debug("Login '" + name + "' with password '" + password + "'");
+        log.debug("Login '" + name + "' with password '" + password + "'");
 
         // create the account
-        GameUser gu = data.validateUser(log, name, password, false);
+        GameUser gu = data.validateUser(name, password, false);
 
         if (gu != null) {
             // Return the response (return user ID if valid login)
@@ -112,8 +100,6 @@ public class AccountController {
         if (b != null) {
             return new ResponseEntity<LongWrapper>(new LongWrapper(
                     b
-                    //TODO: something that invokes users.validateLogin(name, password) in
-                    //      the DataRepository (actually calls data.validateUser(...))
             ),
                     HttpStatus.OK);
         } else {
@@ -129,8 +115,6 @@ public class AccountController {
         if (tank != null) {
             return new ResponseEntity<String>(new String(
                     tank
-                    //TODO: something that invokes users.validateLogin(name, password) in
-                    //      the DataRepository (actually calls data.validateUser(...))
             ),
                     HttpStatus.OK);
         } else {

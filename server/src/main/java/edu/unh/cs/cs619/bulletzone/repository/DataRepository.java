@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
@@ -61,19 +62,17 @@ public class DataRepository {
      * @param create true if the user should be created, or false otherwise
      * @return GameUser corresponding to the username/password if successful, null otherwise
      */
-    public GameUser validateUser(Logger log, String username, String password, boolean create) {
-        log.debug("VALIDATING USER");
+    public GameUser validateUser(String username, String password, boolean create) {
         GameUser user;
         if (create) {
-            log.debug("CREATING USER");
             // create/verify user credentials
-            user = bzdata.users.createUser(log, "test", username, password);
+            user = bzdata.users.createUser("test", username, password);
             GameUser validateUser = bzdata.users.validateLogin(username, password);
             if (user == validateUser && validateUser != null) {
-                log.debug("SUCCESSFULLY VALIDATED USER");
                 // once the user is legit give them a garage with a tank and a bank account
                 GameItemContainer garage = bzdata.items.createContainer(bzdata.types.GarageBay);
                 GameItemContainer tank = bzdata.items.createContainer(bzdata.types.TankFrame);
+                GameItem tank1 = bzdata.items.create("tank");
                 bzdata.items.addItemToContainer(tank, garage);
                 bzdata.permissions.setOwner(tank, user);
 
@@ -81,18 +80,13 @@ public class DataRepository {
                 BankAccount account = bzdata.accounts.create();
                 bzdata.accounts.modifyBalance(account, 1000);
                 bzdata.permissions.setOwner(account, user);
-                log.debug("DONE CREATING USER ITEMS");
             }
         } else {
-            log.debug("DID NOT CREATE A NEW USER");
             user = bzdata.users.getUser(username);
         }
-        log.debug("RETURNING USER");
         return user;
         //TODO: something that invokes users.createUser(name, password) or
         //      users.validateLogin(name, password) as appropriate, maybe does other bookkeeping
-        // sara
-        //return null;
     }
 
     /**
@@ -106,7 +100,7 @@ public class DataRepository {
             BankAccount bankAccount = user.getOwnedAccounts().iterator().next();
             return bankAccount.getBalance();
         } else {
-            return -1000;
+            return 0;
         }
     }
 
@@ -124,6 +118,6 @@ public class DataRepository {
             }
             return itemList.toString();
         }
-        return "not a tank";
+        return "empty";
     }
 }

@@ -13,6 +13,8 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -57,7 +59,6 @@ public class GameUserRepository implements EntityRepository {
     public GameUser createUser(String name, String username, String password) {
         if (getUser(username) != null)
             return null;
-
         GameUserRecord newRecord = new GameUserRecord(name, username);
         GameUser newUser = null;
 
@@ -65,7 +66,6 @@ public class GameUserRepository implements EntityRepository {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[saltSize];
         random.nextBytes(salt);
-
         try {
             KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keySize);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -80,7 +80,6 @@ public class GameUserRepository implements EntityRepository {
             Connection dataConnection = data.getConnection();
             if (dataConnection == null)
                 return null;
-
             // Create base item
             newRecord.insertInto(dataConnection);
             dataConnection.close();
