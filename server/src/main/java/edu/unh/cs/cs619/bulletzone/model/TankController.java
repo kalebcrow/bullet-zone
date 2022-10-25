@@ -9,7 +9,17 @@ import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class TankController {
     Game game;
+    private int bulletDelay[]={500,1000,1500};
 
+    /**
+     *
+     * @param tank current tank
+     * @param direction direction of tank
+     * @return If the turn is legal or not
+     * @throws IllegalTransitionException not used
+     * @throws LimitExceededException not used
+     * @throws TankDoesNotExistException not used
+     */
     public boolean turn(Tank tank, Direction direction)
             throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
             checkNotNull(direction);
@@ -73,9 +83,27 @@ public class TankController {
         }
     }
 
-    public boolean fire(Tank tank, Direction direction)
+    public int fire(Tank tank, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
-            return true;
+
+        //Check for tank firing too many bullets
+        if (tank.getNumberOfBullets() >= tank.getAllowedNumberOfBullets())
+            return -1;
+
+        //Check for bad last fire time
+        long millis = System.currentTimeMillis();
+        if (millis < tank.getLastFireTime()/*>tank.getAllowedFireInterval()*/){
+            return -1;
+        }
+
+        if(!(bulletType>=1 && bulletType<=3)) {
+            System.out.println("Bullet type must be 1, 2 or 3, set to 1 by default.");
+            bulletType = 1;
+        }
+
+        tank.setLastFireTime(millis + bulletDelay[bulletType - 1]);
+
+        return bulletType;
     }
 
 

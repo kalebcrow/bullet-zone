@@ -47,7 +47,7 @@ public class InMemoryGameRepository implements GameRepository {
     private final Object monitor = new Object();
     private Game game = null;
     private int bulletDamage[]={10,30,50};
-    private int bulletDelay[]={500,1000,1500};
+    //private int bulletDelay[]={500,1000,1500};
     private int trackActiveBullets[]={0,0};
 
     @Override
@@ -188,25 +188,18 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            if(tank.getNumberOfBullets() >= tank.getAllowedNumberOfBullets())
-                return false;
-
-            long millis = System.currentTimeMillis();
-            if(millis < tank.getLastFireTime()/*>tank.getAllowedFireInterval()*/){
+            TankController tc = new TankController();
+            int temp = tc.fire(tank, bulletType);
+            if (temp == -1) {
                 return false;
             }
+
+            bulletType = temp;
 
             //Log.i(TAG, "Cannot find user with id: " + tankId);
             Direction direction = tank.getDirection();
             FieldHolder parent = tank.getParent();
             tank.setNumberOfBullets(tank.getNumberOfBullets() + 1);
-
-            if(!(bulletType>=1 && bulletType<=3)) {
-                System.out.println("Bullet type must be 1, 2 or 3, set to 1 by default.");
-                bulletType = 1;
-            }
-
-            tank.setLastFireTime(millis + bulletDelay[bulletType - 1]);
 
             int bulletId=0;
             if(trackActiveBullets[0]==0){
