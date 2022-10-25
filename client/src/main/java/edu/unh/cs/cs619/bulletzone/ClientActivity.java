@@ -199,9 +199,11 @@ public class ClientActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
+                long userID = bundle.getLong("userID");
                 long bankAccountBalance = bundle.getLong("bankAccountBalance");
                 String tank = bundle.getString("items");
-                String message = "Balance: " + bankAccountBalance + "\n" +
+                String message = "User ID: " + userID + "\n" +
+                                 "Balance: " + bankAccountBalance + "\n" +
                                  "Garage: " + tank;
                 textViewGarage.setText(message);
                 Log.d("MESSAGE", message);

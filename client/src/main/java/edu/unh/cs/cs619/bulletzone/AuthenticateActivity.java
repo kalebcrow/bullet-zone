@@ -104,6 +104,7 @@ public class AuthenticateActivity extends AppCompatActivity {
         // send user info back to client activity using bundle
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
+        bundle.putLong("userID", userID);
         bundle.putLong("bankAccountBalance", bankAccountBalance);
         bundle.putString("items", tank);
         intent.putExtras(bundle);
