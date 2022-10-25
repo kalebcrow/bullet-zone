@@ -91,7 +91,7 @@ public class AccountControllerTest {
                 .andExpect(status().is2xxSuccessful());
 
         // check the new user is not null to check it was actually created / logged in
-        GameUser gu = data.validateUser(null, "newuser", "newpass", false);
+        GameUser gu = data.validateUser("newuser", "newpass", false);
         assertNotNull(gu);
     }
 }

@@ -46,7 +46,6 @@ public class DataRepository {
     private BulletZoneData bzdata;
 
     DataRepository() {
-        //TODO: Replace database name, username, and password with what's appropriate for your group
         String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs61902dev";
         String username = "baryte";
         String password = "kle#tOwy5p";
@@ -71,7 +70,7 @@ public class DataRepository {
             if (user == validateUser && validateUser != null) {
                 // once the user is legit give them a garage with a tank and a bank account
                 GameItemContainer garage = bzdata.items.createContainer(bzdata.types.GarageBay);
-                GameItemContainer tank = bzdata.items.createContainer(bzdata.types.TankFrame);
+                GameItem tank = bzdata.items.create(bzdata.types.TankFrame);
                 bzdata.items.addItemToContainer(tank, garage);
                 bzdata.permissions.setOwner(tank, user);
 
@@ -84,8 +83,6 @@ public class DataRepository {
             user = bzdata.users.getUser(username);
         }
         return user;
-        //TODO: something that invokes users.createUser(name, password) or
-        //      users.validateLogin(name, password) as appropriate, maybe does other bookkeeping
     }
 
     /**

@@ -24,9 +24,9 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  * http://10.0.2.2:8080/
  * Created by simon on 10/1/14.
  */
-
+@Rest(rootUrl = "http://10.21.113.147:8080/games",
 //@Rest(rootUrl = "http://10.21.159.62:8080/games",
-@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
+//@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
 //@Rest(rootUrl = "localhost:8080",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
