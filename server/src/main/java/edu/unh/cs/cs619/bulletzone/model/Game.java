@@ -1,6 +1,9 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -19,9 +22,7 @@ public final class Game {
     private final ArrayList<FieldHolder> holderGrid = new ArrayList<>();
 
     // Event History for the clients
-    private final int MAX_EVENTS = 1000;
-    private GridEvent[] eventHistory = new GridEvent[MAX_EVENTS];
-    private int currentEventIndex = 0;
+    private LinkedList<GridEvent> eventHistory = new LinkedList<>();
 
 
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
@@ -115,13 +116,28 @@ public final class Game {
 
     // Adds to the event history
     public void addEvent(GridEvent gridEvent){
-        eventHistory[currentEventIndex%MAX_EVENTS] = gridEvent;
-        currentEventIndex++;
+        eventHistory.addFirst(gridEvent);
     }
 
 
-    public List<GridEvent> getEvents(Long time){
-        List<GridEvent> list = new List<GridEvent>() {
+    public LinkedList<GridEvent> getEvents(Long time){
+
+        LinkedList<GridEvent> update = new LinkedList<>();
+        int index = 0;
+        int size = eventHistory.size();
+
+        while(index < size && eventHistory.get(index).getTime() >= time){
+            update.addFirst(eventHistory.get(index));
+            index++;
         }
+
+        index = size;
+        long cutOff = System.currentTimeMillis() - 120000;
+        while(index >= 0 && eventHistory.get(index).getTime() < cutOff){
+            eventHistory.remove(index);
+            index--;
+        }
+
+        return update;
     }
 }
