@@ -80,6 +80,8 @@ public class TankControllerTest {
         IMGR.join("ip");
         IMGR.fire(tank.getId(), 1);
         IMGR.fire(tank.getId(), 1);
+        Game game = IMGR.getGame();
+        tank = game.getTank("ip");
         assertEquals(1, tank.getNumberOfBullets());
     }
 }
