@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.ui;
 
 import android.content.res.Resources;
 import android.graphics.drawable.TransitionDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
 import edu.unh.cs.cs619.bulletzone.R;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 
 @EBean
 public class GridAdapter extends BaseAdapter {
@@ -20,11 +22,12 @@ public class GridAdapter extends BaseAdapter {
     private final Object monitor = new Object();
     @SystemService
     protected LayoutInflater inflater;
-    private int[][] mEntities = new int[16][16];
+    private BlankTile[] mEntities = new BlankTile[256];
 
-    public void updateList(int[][] entities) {
+    public void updateList(BlankTile[] tiles) {
         synchronized (monitor) {
-            this.mEntities = entities;
+
+            mEntities = tiles;
             this.notifyDataSetChanged();
         }
     }
@@ -36,7 +39,7 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mEntities[(int) position / 16][position % 16];
+        return mEntities[position];
     }
 
     @Override
@@ -51,29 +54,16 @@ public class GridAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.field_item, null);
         }
 
-        int row = position / 16;
-        int col = position % 16;
-
-        int val = mEntities[row][col];
-
         if (convertView instanceof ImageView) {
             synchronized (monitor) {
-
-
                 ImageView imageView = (ImageView) convertView;
-                if (val > 0) {
-                    if (val == 1000 || (val>1000&&val<=2000)) {
-                        imageView.setImageResource(R.drawable.stonewall);
-                    } else if (val >= 2000000 && val <= 3000000) {
-                        imageView.setImageResource(R.drawable.bullet);
-                    } else if (val >= 10000000 && val <= 20000000) {
-                        imageView.setImageResource(R.drawable.tank);
-                    }
+                if (mEntities[position] != null) {
+                    imageView.setImageResource(mEntities[position].getResourceID());
+                    imageView.setRotation(mEntities[position].getOrientation()/2 * 90);
+
                 } else {
                     imageView.setImageResource(R.drawable.blank);
                 }
-
-                imageView.setAdjustViewBounds(true);
             }
         }
 
