@@ -4,6 +4,8 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,12 +35,15 @@ import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BulletZoneServer.class})
 public class AccountControllerTest {
-
+    // for api calls
     MockMvc mockMvc;
-    @Mock
-    private DataRepository data;
     @InjectMocks
     private AccountController accountController;
+
+    // for mock account controller
+    @Mock
+    private DataRepository data;
+
 
     @Before
     public void setUp() throws Exception {
@@ -53,45 +58,52 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void Register_NewUserAndPassword_RegisterNewUser() throws Exception {
+    public void Register_NewUserAndPasswordPutRequest_ReturnsSuccessful() throws Exception {
         // perform put register request and check status 201
         mockMvc.perform(put("/games/account/register/newuser/newpass"))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void Register_CheckUserNotNull_GameUserNotNull() throws Exception {
-        // perform put register request and check status 201
-        //MvcResult result = mockMvc.perform(put("/games/account/register/newuser/newpass"))
-        //        .andExpect(status().isCreated())
-        //        .andReturn();
-
-        //String resultStr = result.getResponse().getContentAsString();
-        //assertNull(resultStr);
-        ResponseEntity<BooleanWrapper> registered = accountController.register("newuser", "newpass");
-        assertNotNull(registered);
-        //assertEquals(registered.getStatusCode(), 201);
-
-        // check the new user is not null to check it was actually registered
-        //GameUser gu = data.validateUser(null, "newuser", "newpass", false);
-        //assertNull(gu);
-    }
-
-    @Test
-    public void Login_NewUserAndPassword_RegisterNewUser() throws Exception {
+    public void Login_NewUserAndPasswordPutRequest_ReturnsSuccessful() throws Exception {
         // perform put login request and check status 201
         mockMvc.perform(put("/games/account/login/newuser/newpass"))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    public void Login_CheckUserNotNull_GameUserNotNull() throws Exception {
-        // perform put request and check status 201
-        mockMvc.perform(put("/games/account/login/newuser/newpass"))
+    public void Balance_BalancePutRequest_ReturnsSuccessful() throws Exception {
+        // perform put login request and check status 201
+        mockMvc.perform(put("/games/account/newuser/balance"))
                 .andExpect(status().is2xxSuccessful());
+    }
 
-        // check the new user is not null to check it was actually created / logged in
-        GameUser gu = data.validateUser(null, "newuser", "newpass", false);
-        assertNotNull(gu);
+    @Test
+    public void Items_ItemsPutRequest_ReturnsSuccessful() throws Exception {
+        // perform put login request and check status 201
+        mockMvc.perform(put("/games/account/newuser/items"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void Register_CheckUserCreation_GameUserValidated() throws Exception {
+        String username = "newuser";
+        String password = "newpass";
+        data = mock(DataRepository.class);
+        AccountController ac = new AccountController(data);
+        ac.register(username, password);
+
+        verify(data).validateUser(username,password, true);
+    }
+
+    @Test
+    public void Login_CheckUserCreation_GameUserValidated() throws Exception {
+        String username = "newuser";
+        String password = "newpass";
+        data = mock(DataRepository.class);
+        AccountController ac = new AccountController(data);
+        ac.login(username, password);
+
+        verify(data).validateUser(username,password, false);
     }
 }
