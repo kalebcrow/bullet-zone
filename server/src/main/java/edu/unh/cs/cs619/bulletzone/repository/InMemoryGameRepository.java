@@ -311,4 +311,9 @@ public class InMemoryGameRepository implements GameRepository {
         return game;
     }
 
+    @Override
+    public Game getGame() {
+        return game;
+    }
+
 }
