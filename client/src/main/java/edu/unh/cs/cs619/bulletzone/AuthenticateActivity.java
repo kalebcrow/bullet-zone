@@ -71,7 +71,8 @@ public class AuthenticateActivity extends AppCompatActivity {
             if (userID < 0) {
                 setStatus("Registration unsuccessful--inconsistency with server.");
             }
-            //do other login things?
+
+            // close auth activity
             showGarage(username);
         }
     }
