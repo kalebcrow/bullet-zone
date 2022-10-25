@@ -306,10 +306,6 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
-    @Override
-    public Game getGame() {
-        return game;
-    }
 
     @Override
     public Game getGame() {
