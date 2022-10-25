@@ -72,7 +72,6 @@ public class DataRepository {
                 // once the user is legit give them a garage with a tank and a bank account
                 GameItemContainer garage = bzdata.items.createContainer(bzdata.types.GarageBay);
                 GameItemContainer tank = bzdata.items.createContainer(bzdata.types.TankFrame);
-                GameItem tank1 = bzdata.items.create("tank");
                 bzdata.items.addItemToContainer(tank, garage);
                 bzdata.permissions.setOwner(tank, user);
 
