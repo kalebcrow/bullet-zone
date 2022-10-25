@@ -14,16 +14,17 @@ public class GameBoardBuilder {
     private static final int FIELD_DIM = 16;
     private Game game = null;
 
+    GameBoardBuilder(Game game)
+    {
+        this.game = game;
+    }
+
 
     //From InGameRepository Used to create a game is one isn't already created
     public void create() {
-        if (game != null) {
-            return;
-        }
-        synchronized (this.monitor) {
-
-            this.game = new Game();
-
+            if(game == null) {
+                return;
+            }
             createFieldHolderGrid(game);
 
             // Test // TODO Move to more appropriate place (and if desired, integrate map loader)
@@ -63,7 +64,6 @@ public class GameBoardBuilder {
             game.getHolderGrid().get(41).setFieldEntity(new Wall());
             game.getHolderGrid().get(57).setFieldEntity(new Wall());
             game.getHolderGrid().get(73).setFieldEntity(new Wall());
-        }
     }
 
     //Creates the gameboard either called within the create() function in this class or can be called on an existing game.
