@@ -15,6 +15,7 @@ import org.springframework.web.client.RestClientException;
 
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
+import edu.unh.cs.cs619.bulletzone.util.HistoryWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 /** "http://stman1.cs.unh.edu:6191/games"
@@ -38,6 +39,9 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
 
     @Get("")
     GridWrapper grid();
+
+    @Get("/timestamp/{timestamp}")
+    HistoryWrapper getHistory(@Path long timestamp);
 
     @Put("/account/register/{username}/{password}")
     BooleanWrapper register(@Path String username, @Path String password);

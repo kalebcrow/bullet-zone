@@ -14,6 +14,7 @@ import org.androidannotations.rest.spring.api.RestClientHeaders;
 import edu.unh.cs.cs619.bulletzone.ClientActivity;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
+import edu.unh.cs.cs619.bulletzone.util.HistoryWrapper;
 
 /**
  * Created by simon on 10/3/14.
@@ -33,10 +34,15 @@ public class GridPollerTask {
     // TODO: disable trace
     // @Trace(tag="CustomTag", level=Log.WARN)
     public void doPoll() {
+        long timestamp;
+        GridWrapper gw = restClient.grid();
+        onGridUpdate(restClient.grid());
+        timestamp = gw.getTimeStamp();
         while (true) {
 
-            onGridUpdate(restClient.grid());
-
+            HistoryWrapper hw = restClient.getHistory(timestamp);
+            timestamp = hw.getTimeStamp();
+            onCommandHistoryUpdate(hw);
             // poll server every 100ms
             SystemClock.sleep(100);
         }
@@ -45,5 +51,10 @@ public class GridPollerTask {
     @UiThread
     public void onGridUpdate(GridWrapper gw) {
         busProvider.getEventBus().post(new GridUpdateEvent(gw));
+    }
+
+    @UiThread
+    public void onCommandHistoryUpdate(HistoryWrapper hw) {
+        busProvider.getEventBus().post(new HistoryUpdateEvent(hw));
     }
 }
