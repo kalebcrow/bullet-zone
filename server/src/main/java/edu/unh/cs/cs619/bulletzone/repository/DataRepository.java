@@ -40,9 +40,9 @@ public class DataRepository {
 
     DataRepository() {
         //TODO: Replace database name, username, and password with what's appropriate for your group
-        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs6190";
-        String username = "mdp";
-        String password = "Drag56kes";
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs61902dev";
+        String username = "baryte";
+        String password = "kle#tOwy5p";
 
         bzdata = new BulletZoneData(url, username, password);
     }

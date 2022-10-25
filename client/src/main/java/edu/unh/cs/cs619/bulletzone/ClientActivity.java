@@ -72,6 +72,9 @@ public class ClientActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Shake implementation from: https://demonuts.com/android-shake-detection/
+        Intent intent = new Intent(this, ShakeService.class);
+        startService(intent);
     }
 
     @Override
