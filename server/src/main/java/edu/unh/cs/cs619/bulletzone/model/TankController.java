@@ -83,6 +83,14 @@ public class TankController {
         }
     }
 
+    /**
+     *
+     * @param tank the tank
+     * @param bulletType The bullet type
+     * @return The bullet type if true and -1 if false
+     * @throws TankDoesNotExistException not used
+     * @throws LimitExceededException not used
+     */
     public int fire(Tank tank, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
 
