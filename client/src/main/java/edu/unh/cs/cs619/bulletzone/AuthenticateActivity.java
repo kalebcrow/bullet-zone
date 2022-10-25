@@ -66,8 +66,7 @@ public class AuthenticateActivity extends AppCompatActivity {
             setStatus("User " + username + " already exists or server error.\nPlease login or try with a different username.");
         } else { //register successful
             setStatus("Registration successful.");
-            //Do you want to log in automatically, or force them to do it?
-            // player should log in automatically
+            // player should log in automatically after registering
             userID = controller.login(username, password);
             if (userID < 0) {
                 setStatus("Registration unsuccessful--inconsistency with server.");
@@ -91,11 +90,17 @@ public class AuthenticateActivity extends AppCompatActivity {
             setStatus("Invalid username and/or password.\nPlease try again.");
         } else { //register successful
             setStatus("Login successful.");
-            //do other login things?
+
+            // close auth activity
             showGarage(username);
         }
     }
 
+    /**
+     * Save information from account controller and close the authenticate activity.
+     *
+     * @param username the username
+     */
     protected void showGarage(String username) {
         // if logged in get bank account and tank
         long bankAccountBalance = controller.balance(username);

@@ -52,8 +52,6 @@ public class AccountController {
             // Return the response (true if account created)
             return new ResponseEntity<BooleanWrapper>(new BooleanWrapper(
                     true
-                    //TODO: something that invokes users.createUser(name, password) and does
-                    //      other setup in the DataRepository (actually calls data.validateUser(...))
             ),
                     HttpStatus.CREATED);
         } else {
@@ -83,8 +81,6 @@ public class AccountController {
             // Return the response (return user ID if valid login)
             return new ResponseEntity<LongWrapper>(new LongWrapper(
                     gu.getId()
-                    //TODO: something that invokes users.validateLogin(name, password) in
-                    //      the DataRepository (actually calls data.validateUser(...))
             ),
                     HttpStatus.OK);
         } else {
