@@ -60,6 +60,32 @@ public class AuthenticationController {
     }
 
     /**
+     * Uses restClient to get user balance
+     *
+     * @param username New username provided by user.
+     */
+    public long balance(String username) {
+        LongWrapper result = restClient.balance(username);
+        if (result == null) {
+            return -1;
+        }
+        return result.getResult();
+    }
+
+    /**
+     * Uses restClient to get user tank.
+     *
+     * @param username New username provided by user.
+     */
+    public String items(String username) {
+        String result = restClient.items(username);
+        if (result == null) {
+            return "";
+        }
+        return result;
+    }
+
+    /**
      * Helper for testing
      *
      * @param restClientPassed tested restClient
