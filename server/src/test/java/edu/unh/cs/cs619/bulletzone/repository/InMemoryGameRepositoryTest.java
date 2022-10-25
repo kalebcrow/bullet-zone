@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
@@ -28,6 +30,9 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testJoin() throws Exception {
         Tank tank = repo.join("");
+        Tank tank2 = repo.join("10");
+        Assert.assertEquals(tank.getId(),0);
+        Assert.assertEquals(tank2.getId(),1);
         Assert.assertNotNull(tank);
         Assert.assertTrue(tank.getId() >= 0);
         Assert.assertNotNull(tank.getDirection());
@@ -64,6 +69,17 @@ public class InMemoryGameRepositoryTest {
 
     @Test
     public void testLeave() throws Exception {
+        //tank joins and is first player
+        Tank tank = repo.join("10");
+        Assert.assertNotNull(tank);
+        Assert.assertEquals(tank.getId(),0);
 
+        //tank leaves and is no longer present in the FieldHolder
+        Assert.assertEquals(true, tank.getParent().isPresent());
+        repo.leave(tank.getId());
+        Assert.assertEquals(false, tank.getParent().isPresent());
+
+        thrown.expect(TankDoesNotExistException.class);
+        repo.turn(tank.getId(), Direction.Right);
     }
 }

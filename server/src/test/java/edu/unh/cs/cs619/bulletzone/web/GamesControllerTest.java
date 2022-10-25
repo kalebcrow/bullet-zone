@@ -30,13 +30,22 @@ public class GamesControllerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        //gamesController = new GamesController(repo);
         mockMvc = MockMvcBuilders.standaloneSetup(gamesController).build();
     }
 
 
     @Test
     public void testCreateGame() throws Exception {
-        //mockMvc.perform(post("/games"))
-        //        .andExpect(status().isCreated());
+        //mockMvc.perform(post("/games")).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testJoinGame() throws Exception {
+        //mockMvc.perform(post("/games")).andExpect(status().isCreated());
+    }
+
+    public void testGetGrid() throws Exception {
+        //mockMvc.perform(get("/games")).andExpect(status().isOk());
     }
 }
