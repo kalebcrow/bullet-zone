@@ -24,6 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
@@ -107,7 +109,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void Items_CheckItemList_ItemListContainsTank() throws Exception {
+    public void Items_CheckItemList_ItemListIsCreated() throws Exception {
         String username = "newuser";
         String password = "newpass";
         data = mock(DataRepository.class);
@@ -119,7 +121,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void Balance_CheckBalance_BalanceIs1000() throws Exception {
+    public void Balance_CheckBalance_BalanceIsCalled() throws Exception {
         String username = "newuser";
         String password = "newpass";
         data = mock(DataRepository.class);
