@@ -120,22 +120,28 @@ public final class Game {
     }
 
 
+    // gets events more recent than the time given and cleans up history that is too old
     public LinkedList<GridEvent> getEvents(Long time){
 
+        // initiate the update list, iterator, GridEvent placeholder
         LinkedList<GridEvent> update = new LinkedList<>();
-        int index = 0;
-        int size = eventHistory.size();
+        ListIterator<GridEvent> current = update.listIterator(0);
+        GridEvent gridEvent;
 
-        while(index < size && eventHistory.get(index).getTime() >= time){
-            update.addFirst(eventHistory.get(index));
-            index++;
+        // check that the list has the next node
+        while(current.hasNext()){
+            gridEvent = current.next();
+            if(gridEvent.getTime() <= time) break; // break if event's time is less recent than time given
+            update.addFirst(gridEvent); // otherwise put it at the front of the list
         }
 
-        index = size;
-        long cutOff = System.currentTimeMillis() - 120000;
-        while(index >= 0 && eventHistory.get(index).getTime() < cutOff){
-            eventHistory.remove(index);
-            index--;
+        //go to the back of the list (oldest events)
+        current = update.listIterator(eventHistory.size());
+        long cutOff = System.currentTimeMillis() - 120000; // set a cutoff of 2 min behind current time
+        while(current.hasPrevious()){
+            gridEvent = current.previous();
+            if(gridEvent.getTime() > cutOff) break; // break if event's time is more recent than cutoff
+            eventHistory.removeLast(); // otherwise remove it
         }
 
         return update;

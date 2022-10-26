@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +17,7 @@ import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
+import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -383,4 +385,7 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    public LinkedList<GridEvent> getEvents(Long time) {
+        return game.getEvents(time);
+    }
 }
