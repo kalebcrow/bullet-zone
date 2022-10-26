@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/bullet-zone-group-baryte.iml" filepath="$PROJECT_DIR$/.idea/bullet-zone-group-baryte.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server.iml" />
     </modules>
   </component>
 </project>

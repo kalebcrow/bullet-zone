@@ -3,10 +3,12 @@ package edu.unh.cs.cs619.bulletzone;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -23,11 +25,16 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.RestClientHeaders;
 import org.androidannotations.api.BackgroundExecutor;
 
+import java.io.Serializable;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
@@ -42,6 +49,12 @@ public class ClientActivity extends Activity {
     @ViewById
     protected GridView gridView;
 
+    @ViewById
+    protected TextView textViewGarage;
+
+    @Bean
+    TankController tankController;
+
     @Bean
     BusProvider busProvider;
 
@@ -55,6 +68,9 @@ public class ClientActivity extends Activity {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
+    @Bean
+    BoardView boardView;
+
     /**
      * Remote tank identifier
      */
@@ -63,6 +79,9 @@ public class ClientActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Shake implementation from: https://demonuts.com/android-shake-detection/
+        Intent intent = new Intent(this, ShakeService.class);
+        startService(intent);
     }
 
     @Override
@@ -89,12 +108,12 @@ public class ClientActivity extends Activity {
         }
     };
 
-
     @AfterViews
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
+        tankController.setRestClient(restClient);
     }
 
     @AfterInject
@@ -107,13 +126,16 @@ public class ClientActivity extends Activity {
     void joinAsync() {
         try {
             tankId = restClient.join().getResult();
+            tankController.setTankID(tankId);
             gridPollTask.doPoll();
         } catch (Exception e) {
         }
     }
 
     public void updateGrid(GridWrapper gw) {
-        mGridAdapter.updateList(gw.getGrid());
+        boardView.setUsingJSON(gw.getGrid());
+        mGridAdapter.updateList(boardView.getTiles());
+        boardView.setGridAdapter(mGridAdapter);
     }
 
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
@@ -138,7 +160,7 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        this.moveAsync(tankId, direction);
+        tankController.move(direction);
     }
 
     @Background
@@ -168,7 +190,41 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonLogin)
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    /**
+     * Get output from closing authenticate activity and logging in
+     *
+     * @param requestCode The request code
+     * @param resultCode The result code
+     * @param data The intent data
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // https://stackoverflow.com/questions/14292398/how-to-pass-data-from-2nd-activity-to-1st-activity-when-pressed-back-android
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                setGarageTextView(data);
+            }
+        }
+    }
+
+    /**
+     * Set the garage text view with the user balance and garage.
+     *
+     * @param data The intent data
+     */
+    private void setGarageTextView(Intent data) {
+        Bundle bundle = data.getExtras();
+        long userID = bundle.getLong("userID");
+        long bankAccountBalance = bundle.getLong("bankAccountBalance");
+        String tank = bundle.getString("items");
+        String message = "User ID: " + userID + "\n" +
+                "Balance: " + bankAccountBalance + "\n" +
+                "Garage: " + tank;
+        textViewGarage.setText(message);
+        Log.d("MESSAGE", message);
     }
 
     @Background
