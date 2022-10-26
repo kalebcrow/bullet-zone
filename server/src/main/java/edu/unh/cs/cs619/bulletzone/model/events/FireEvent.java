@@ -8,17 +8,12 @@ import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 public class FireEvent extends GridEvent {
 
     private Long tankID;
+    private Long bulletID;
 
-    @Override
-    public JSONObject getJSON() {
-
-        JSONObject json = new JSONObject();
-        try {
-            json.put("event", ""); // needs a format
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return json;
+    public FireEvent(Long tankID, Long bulletID) {
+        this.tankID = tankID;
+        this.bulletID = bulletID;
+        this.type = "fire";
+        this.time = System.currentTimeMillis();
     }
 }

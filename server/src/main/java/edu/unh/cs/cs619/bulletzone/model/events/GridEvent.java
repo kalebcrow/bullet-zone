@@ -7,13 +7,11 @@ import org.json.JSONObject;
 public abstract class GridEvent {
 
     //Time of event which is needed for getting the right events for the client
-    private Long Time;
+    protected Long time;
+    //type of event
+    protected String type;
 
 
-    public Long getTime(){return this.Time;}
-
-
-    //gets JSON for client to interpret
-    public abstract JSONObject getJSON();
+    public Long getTime(){return this.time;}
 
 }

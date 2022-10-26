@@ -5,15 +5,16 @@ import org.json.JSONObject;
 
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 
-public class TurnEvent extends GridEvent {
+public class MoveTankEvent extends GridEvent {
 
     private Long tankID;
-    private int direction;
+    private int forward;
 
-    public TurnEvent(Long tankID, int direction) {
+
+    public MoveTankEvent(Long tankID, int forward) {
         this.tankID = tankID;
-        this.direction = direction;
-        this.type = "turn";
+        this.forward = forward;
+        this.type = "moveTank";
         this.time = System.currentTimeMillis();
     }
 }
