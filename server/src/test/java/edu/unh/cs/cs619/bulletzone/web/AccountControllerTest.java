@@ -44,7 +44,6 @@ public class AccountControllerTest {
     @Mock
     private DataRepository data;
 
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -105,5 +104,29 @@ public class AccountControllerTest {
         ac.login(username, password);
 
         verify(data).validateUser(username,password, false);
+    }
+
+    @Test
+    public void Items_CheckItemList_ItemListContainsTank() throws Exception {
+        String username = "newuser";
+        String password = "newpass";
+        data = mock(DataRepository.class);
+        AccountController ac = new AccountController(data);
+        ac.register(username, password);
+        ac.items("newuser");
+
+        verify(data).getUserItem("newuser");
+    }
+
+    @Test
+    public void Balance_CheckBalance_BalanceIs1000() throws Exception {
+        String username = "newuser";
+        String password = "newpass";
+        data = mock(DataRepository.class);
+        AccountController ac = new AccountController(data);
+        ac.register(username, password);
+        ac.balance("newuser");
+
+        verify(data).getUserAccountBalance("newuser");
     }
 }
