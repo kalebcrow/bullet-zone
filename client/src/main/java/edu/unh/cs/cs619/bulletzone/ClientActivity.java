@@ -76,12 +76,20 @@ public class ClientActivity extends Activity {
      */
     private long tankId = -1;
 
+    /**
+     * User logged in status
+     */
+    private boolean loggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Shake implementation from: https://demonuts.com/android-shake-detection/
         Intent intent = new Intent(this, ShakeService.class);
         startService(intent);
+
+        // user can log in first (this is not forced)
+        login();
     }
 
     @Override
@@ -206,6 +214,7 @@ public class ClientActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 setGarageTextView(data);
+                loggedIn = true;
             }
         }
     }
