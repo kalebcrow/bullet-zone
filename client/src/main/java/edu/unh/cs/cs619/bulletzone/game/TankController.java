@@ -1,15 +1,27 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.rest.spring.annotations.RestService;
 
+import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
 @EBean
 public class TankController {
+
+    @RestService
     BulletZoneRestClient restClient;
+
+    @Bean
+    BZRestErrorhandler bzRestErrorhandler;
+
     private Long tankID;
     private int tankOrientation;
     private static volatile TankController INSTANCE = null;
@@ -32,11 +44,7 @@ public class TankController {
         return INSTANCE;
     }
 
-    public BulletZoneRestClient getRestClient() {
-        return restClient;
-    }
-
-    public void setRestClient(BulletZoneRestClient restClient) {
+    public void setRestClient(BulletZoneRestClient restClient){
         this.restClient = restClient;
     }
 
@@ -56,6 +64,16 @@ public class TankController {
         this.tankOrientation = tankOrientation;
     }
 
+    public void passContext(Context context){
+        ShakeService.setTankController(this);
+        Intent intent = new Intent(context, ShakeService.class);
+        context.startService(intent);
+    }
+
+    public void afterInject(){
+        restClient.setRestErrorHandler(bzRestErrorhandler);
+    }
+
     @Background
     public void move(byte direction) {
         int value = direction - tankOrientation;
@@ -69,4 +87,28 @@ public class TankController {
             restClient.move(tankID, direction);
         }
     }
+
+    @Background
+    public void joinGame(){
+        try {
+            tankID = restClient.join().getResult();
+            Log.d("Tank Controller", "Game Joined, tankID acquired. Tank ID: " + tankID);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Background
+    public void fire(){
+        Log.d("TankController", "Fire!");
+        restClient.fire(tankID);
+    }
+
+    @Background
+    public void leaveGame(){
+        System.out.println("leaveGame() called, tank ID: " + tankID);
+        restClient.leave(tankID);
+    }
+
 }

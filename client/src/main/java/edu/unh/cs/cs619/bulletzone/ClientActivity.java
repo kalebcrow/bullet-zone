@@ -55,11 +55,6 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
-    @RestService
-    BulletZoneRestClient restClient;
-
-    @Bean
-    BZRestErrorhandler bzRestErrorhandler;
 
     @Bean
     BoardView boardView;
@@ -67,14 +62,12 @@ public class ClientActivity extends Activity {
     /**
      * Remote tank identifier
      */
-    private long tankId = -1;
+    //private long tankId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Shake implementation from: https://demonuts.com/android-shake-detection/
-        Intent intent = new Intent(this, ShakeService.class);
-        startService(intent);
+        tankController.passContext(this);
     }
 
     @Override
@@ -106,23 +99,19 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        tankController.setRestClient(restClient);
+        //tankController.setRestClient(restClient);
     }
 
     @AfterInject
     void afterInject() {
-        restClient.setRestErrorHandler(bzRestErrorhandler);
+        tankController.afterInject();
         busProvider.getEventBus().register(gridEventHandler);
     }
 
     @Background
     void joinAsync() {
-        try {
-            tankId = restClient.join().getResult();
-            tankController.setTankID(tankId);
-            gridPollTask.doPoll();
-        } catch (Exception e) {
-        }
+        tankController.joinGame();
+        gridPollTask.doPoll();
     }
 
     public void updateGrid(GridWrapper gw) {
@@ -157,27 +146,28 @@ public class ClientActivity extends Activity {
     }
 
     @Background
-    void moveAsync(long tankId, byte direction) {
-        restClient.move(tankId, direction);
+    void moveAsync(byte direction) {
+        tankController.move(direction);
     }
 
     @Background
-    void turnAsync(long tankId, byte direction) {
-        restClient.turn(tankId, direction);
+    void turnAsync(byte direction) {
+        tankController.move(direction);
     }
 
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
-        restClient.fire(tankId);
+        //restClient.fire(tankId);
+        tankController.fire();
     }
 
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
-        System.out.println("leaveGame() called, tank ID: "+tankId);
         BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        //restClient.leave(tankId);
+        tankController.leaveGame();
     }
 
     @Click(R.id.buttonLogin)
@@ -187,9 +177,9 @@ public class ClientActivity extends Activity {
     }
 
     @Background
-    void leaveAsync(long tankId) {
-        System.out.println("Leave called, tank ID: " + tankId);
+    void leaveAsync() {
         BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        //restClient.leave(tankId);
+        tankController.leaveGame();
     }
 }

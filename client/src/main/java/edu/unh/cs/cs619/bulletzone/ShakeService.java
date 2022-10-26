@@ -11,6 +11,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.androidannotations.rest.spring.annotations.RestService;
+
+import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
+
 //implementation from: https://demonuts.com/android-shake-detection/
 public class ShakeService extends Service implements SensorEventListener {
 
@@ -19,6 +24,8 @@ public class ShakeService extends Service implements SensorEventListener {
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
+
+    static TankController tankController;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,8 +52,8 @@ public class ShakeService extends Service implements SensorEventListener {
 
         if (mAccel > 11) {
 
-            //Log.d("ShakeService", "SHAKE DETECTED!");
-
+            Log.d("ShakeService", "SHAKE DETECTED!");
+            tankController.fire();
 
         }
     }
@@ -56,7 +63,8 @@ public class ShakeService extends Service implements SensorEventListener {
         //no need to implement for sensor like this
     }
 
-
-
+    public static void setTankController(TankController newTankController){
+        tankController = newTankController;
+    }
 
 }
