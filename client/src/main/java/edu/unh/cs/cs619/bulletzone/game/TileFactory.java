@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.game;
 
 
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 
@@ -29,7 +30,9 @@ public class TileFactory {
             return new BlankTile(JsonValue, location);
         } else if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);
-        } else if (JsonValue >= 1000000) {
+        } else if (JsonValue >= 2000000 && JsonValue < 3000000) {
+            return new BulletTile(JsonValue, location);
+        } else if (JsonValue >= 10000000) {
             return new TankTile(JsonValue, location);
         } else {
             return new BlankTile(JsonValue, location);

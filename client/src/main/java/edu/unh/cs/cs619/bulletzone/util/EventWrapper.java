@@ -1,10 +1,11 @@
 package edu.unh.cs.cs619.bulletzone.util;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 
-public class EventWrapper {
+public class EventWrapper implements Serializable {
     private LinkedList<GridEvent> update;
     private Long timeStamp;
 

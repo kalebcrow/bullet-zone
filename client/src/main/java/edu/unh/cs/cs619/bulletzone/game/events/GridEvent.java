@@ -11,7 +11,6 @@ public abstract class GridEvent {
     protected Long time;
     //type of event
     protected String type;
-    @Bean
     BusProvider busProvider;
 
 

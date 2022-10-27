@@ -16,7 +16,6 @@ public class DestroyEvent extends  GridEvent {
         this.time = System.currentTimeMillis();
     }
 
-    @UiThread
     @Override
     public void execute() {
         Integer location = row * 16 + col;

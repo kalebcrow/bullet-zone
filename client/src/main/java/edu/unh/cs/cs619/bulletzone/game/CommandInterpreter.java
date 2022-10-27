@@ -18,7 +18,6 @@ public class CommandInterpreter {
     private static volatile CommandInterpreter INSTANCE = null;
 
     // Injected object
-    @Bean
     BusProvider busProvider;
 
     public EventWrapper ew;

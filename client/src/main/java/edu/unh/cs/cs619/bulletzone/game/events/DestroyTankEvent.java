@@ -22,7 +22,6 @@ public class DestroyTankEvent extends GridEvent{
     }
 
     @Override
-    @UiThread
     public void execute() {
         TankTile tile =TankList.getTankList().getLocation(Math.toIntExact(destroyedTankID));
         busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation() )));

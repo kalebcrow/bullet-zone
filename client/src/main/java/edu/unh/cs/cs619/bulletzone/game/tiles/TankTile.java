@@ -34,9 +34,7 @@ public class TankTile extends BlankTile {
 
 
         //This is what was the default in the grid adapter view (By plumdog)
-         if (JsonValue >= 2000000 && JsonValue <= 3000000) {
-            resourceID = R.drawable.bullet;
-         } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
+        if (JsonValue >= 10000000 && JsonValue <= 20000000) {
              if (ID == Math.toIntExact(controller)) {
                  this.resourceID = R.drawable.tank;
 

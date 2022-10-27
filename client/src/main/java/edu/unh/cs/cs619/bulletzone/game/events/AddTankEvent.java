@@ -20,7 +20,6 @@ public class AddTankEvent extends GridEvent {
     }
 
     @Override
-    @UiThread
     public void execute() {
         Integer location = col * 16 + row;
         Integer orientation = 0;
