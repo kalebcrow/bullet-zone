@@ -4,9 +4,9 @@ public class MoveBulletEvent extends GridEvent {
 
     private Long tankID;
     private int bulletID;
-    private int direction;
+    private byte direction;
 
-    public MoveBulletEvent(Long tankID, int bulletID, int direction) {
+    public MoveBulletEvent(Long tankID, int bulletID, byte direction) {
         this.tankID = tankID;
         this.bulletID = bulletID;
         this.direction = direction;
@@ -34,7 +34,7 @@ public class MoveBulletEvent extends GridEvent {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(byte direction) {
         this.direction = direction;
     }
 }

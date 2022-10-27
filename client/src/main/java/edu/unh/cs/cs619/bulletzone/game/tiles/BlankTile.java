@@ -11,6 +11,15 @@ public class BlankTile {
     }
 
     public Integer resourceID;
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    public void setLocation(Integer location) {
+        this.location = location;
+    }
+
     public Integer location;
 
     public Integer getOrientation() {

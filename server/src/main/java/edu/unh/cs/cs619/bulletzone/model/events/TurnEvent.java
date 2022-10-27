@@ -6,9 +6,9 @@ import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 public class TurnEvent extends GridEvent {
 
     private Long tankID;
-    private int direction;
+    private byte direction;
 
-    public TurnEvent(Long tankID, int direction) {
+    public TurnEvent(Long tankID, byte direction) {
         this.tankID = tankID;
         this.direction = direction;
         this.type = "turn";
@@ -27,7 +27,7 @@ public class TurnEvent extends GridEvent {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(byte direction) {
         this.direction = direction;
     }
 }

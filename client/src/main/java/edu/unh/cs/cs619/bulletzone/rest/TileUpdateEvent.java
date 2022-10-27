@@ -9,11 +9,9 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 public class TileUpdateEvent {
     public Integer location;
     public BlankTile movedTile;
-    public Integer prevLocation;
 
-    public TileUpdateEvent(Integer prevLocation, Integer location, BlankTile movedTile) {
+    public TileUpdateEvent(Integer location, BlankTile movedTile) {
         this.location = location;
-        this.prevLocation = prevLocation;
         this.movedTile = movedTile;
     }
 }

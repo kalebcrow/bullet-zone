@@ -1,12 +1,19 @@
 package edu.unh.cs.cs619.bulletzone.rest;
 
-import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
-import edu.unh.cs.cs619.bulletzone.util.HistoryWrapper;
+import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
 public class HistoryUpdateEvent {
-    HistoryWrapper hw;
+    public EventWrapper getHw() {
+        return hw;
+    }
 
-    public HistoryUpdateEvent(HistoryWrapper gw) {
+    public void setHw(EventWrapper hw) {
+        this.hw = hw;
+    }
+
+    EventWrapper hw;
+
+    public HistoryUpdateEvent(EventWrapper gw) {
         this.hw = gw;
     }
 

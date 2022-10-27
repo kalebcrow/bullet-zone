@@ -82,7 +82,6 @@ public class BoardView {
 
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location] = event.movedTile;
-        tiles[event.prevLocation] = tileFactory.makeTile(0, event.prevLocation);
         gridAdapter.updateList(tiles);
 
     }
