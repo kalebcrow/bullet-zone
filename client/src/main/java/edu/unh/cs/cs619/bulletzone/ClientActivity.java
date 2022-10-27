@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -71,6 +72,7 @@ public class ClientActivity extends Activity {
     @Bean
     BoardView boardView;
 
+
     /**
      * Remote tank identifier
      */
@@ -108,7 +110,7 @@ public class ClientActivity extends Activity {
         }
     };
 
-    @AfterViews
+
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
@@ -127,6 +129,7 @@ public class ClientActivity extends Activity {
         try {
             tankId = restClient.join().getResult();
             tankController.setTankID(tankId);
+
             gridPollTask.doPoll();
         } catch (Exception e) {
         }
@@ -171,6 +174,35 @@ public class ClientActivity extends Activity {
     @Background
     void turnAsync(long tankId, byte direction) {
         restClient.turn(tankId, direction);
+    }
+
+    @Click(R.id.buttonJoin)
+    void startGame() {
+        afterViewInjection();
+        Button buttonFire = findViewById(R.id.buttonFire);
+        Button buttonLeft = findViewById(R.id.buttonLeft);
+        Button buttonUp = findViewById(R.id.buttonUp);
+        Button buttonDown = findViewById(R.id.buttonDown);
+        Button buttonRight = findViewById(R.id.buttonRight);
+        Button buttonJoin = findViewById(R.id.buttonJoin);
+        Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        buttonRespawn.setVisibility(View.VISIBLE);
+        buttonLeft.setVisibility(View.VISIBLE);
+        buttonFire.setVisibility(View.VISIBLE);
+        buttonUp.setVisibility(View.VISIBLE);
+        buttonDown.setVisibility(View.VISIBLE);
+        buttonRight.setVisibility(View.VISIBLE);
+        buttonJoin.setVisibility(View.INVISIBLE);
+
+        //R.id.buttonLeft
+        //tankId = restClient.join().getResult();
+        //tankController.setTankID(tankId);
+        //gridPollTask.doPoll();
+    }
+
+    @Click(R.id.buttonRespawn)
+    protected void onButtonRespawn(){
+        afterViewInjection();
     }
 
     @Click(R.id.buttonFire)
