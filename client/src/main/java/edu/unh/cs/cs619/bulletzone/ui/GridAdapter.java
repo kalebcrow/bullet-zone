@@ -24,6 +24,11 @@ public class GridAdapter extends BaseAdapter {
     protected LayoutInflater inflater;
     private BlankTile[] mEntities = new BlankTile[256];
 
+    /**
+     * updateList: updates the stored list of tiles via the new
+     * array of BlankTiles
+     * @param tiles
+     */
     public void updateList(BlankTile[] tiles) {
         synchronized (monitor) {
 
@@ -32,21 +37,44 @@ public class GridAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * getCount: returns the number of tiles on the board
+     * (always 256, the nuble of tiles in the grid)
+     * @return
+     */
     @Override
     public int getCount() {
         return 16 * 16;
     }
 
+    /**
+     * getItem: returns the tile at the requested location
+     * @param position
+     * @return
+     */
     @Override
     public Object getItem(int position) {
         return mEntities[position];
     }
 
+    /**
+     * returns the
+     * @param position
+     * @return
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * getView: Sets the image and orientation of said image of the tile at the
+     * location specified by index.
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
