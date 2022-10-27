@@ -32,6 +32,13 @@ public class ShakeService extends Service implements SensorEventListener {
         return null;
     }
 
+    /**
+     * omStartCommand: Sets up accelerometer sensor and sensor manager
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -40,6 +47,11 @@ public class ShakeService extends Service implements SensorEventListener {
         return START_STICKY;
     }
 
+    /**
+     * onSensorEventChanged: Calculates the magnitude of any sensorEvent and determines
+     * if it is enough to cause a fire event to be sent via the rest client
+     * @param sensorEvent
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         float x = sensorEvent.values[0];
@@ -58,11 +70,21 @@ public class ShakeService extends Service implements SensorEventListener {
         }
     }
 
+    /**
+     * onAccuracyChanged: Not required for this implementation
+     * @param sensor
+     * @param accuracy
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //no need to implement for sensor like this
     }
 
+    /**
+     * setTankContronller: Gives ShakeService access to the client TankController to enable
+     * the REST fire message to be triggered by the shake of the device.
+     * @param newTankController
+     */
     public static void setTankController(TankController newTankController){
         tankController = newTankController;
     }
