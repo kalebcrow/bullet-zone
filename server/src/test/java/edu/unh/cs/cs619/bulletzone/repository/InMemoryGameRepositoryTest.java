@@ -90,7 +90,6 @@ public class InMemoryGameRepositoryTest {
         Tank tank = repo.join("");
         Long tankID = tank.getId();
         for(int i=0;i<499;i++){
-            repo.move
         }
     }
 }
