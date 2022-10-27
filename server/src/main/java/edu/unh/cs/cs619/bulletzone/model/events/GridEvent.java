@@ -1,8 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.model.events;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public abstract class GridEvent {
 
@@ -12,6 +10,19 @@ public abstract class GridEvent {
     protected String type;
 
 
-    public Long getTime(){return this.time;}
+    public Long getTime(){
+        return this.time;
+    }
 
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

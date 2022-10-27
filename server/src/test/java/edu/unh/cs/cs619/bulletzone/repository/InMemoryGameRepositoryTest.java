@@ -9,9 +9,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.LinkedList;
+
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 public class InMemoryGameRepositoryTest {
@@ -65,5 +68,29 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
 
+    }
+    @Test
+    public void testGetEvents_noEvents_ReturnsEmptyList(){
+        repo.create();
+        assert(repo.getEvents(System.currentTimeMillis()).size() == 0);
+    }
+
+    @Test
+    public void testGetEvents_tankJoined_ReturnsAddTankEvent(){
+        repo.create();
+        Tank tank = repo.join("");
+        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis()-500);
+        assert(update.size() == 1);
+        assert(update.getFirst().getType() == "addTank");
+    }
+
+    @Test
+    public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSize(){
+        repo.create();
+        Tank tank = repo.join("");
+        Long tankID = tank.getId();
+        for(int i=0;i<499;i++){
+            repo.move
+        }
     }
 }

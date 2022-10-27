@@ -13,4 +13,28 @@ public class AddTankEvent extends GridEvent {
         this.type = "addTank";
         this.time = System.currentTimeMillis();
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public Long getTankID() {
+        return tankID;
+    }
+
+    public void setTankID(Long tankID) {
+        this.tankID = tankID;
+    }
 }

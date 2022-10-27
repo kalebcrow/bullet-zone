@@ -125,7 +125,7 @@ public final class Game {
 
         // initiate the update list, iterator, GridEvent placeholder
         LinkedList<GridEvent> update = new LinkedList<>();
-        ListIterator<GridEvent> current = update.listIterator(0);
+        ListIterator<GridEvent> current = eventHistory.listIterator(0);
         GridEvent gridEvent;
 
         // check that the list has the next node
