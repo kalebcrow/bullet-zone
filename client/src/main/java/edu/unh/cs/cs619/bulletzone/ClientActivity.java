@@ -25,6 +25,7 @@ import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
@@ -63,6 +64,9 @@ public class ClientActivity extends Activity {
 
     @Bean
     BoardView boardView;
+
+    @Bean
+    CommandInterpreter commandInterpreter;
 
     /**
      * Remote tank identifier

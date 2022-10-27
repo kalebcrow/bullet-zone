@@ -4,6 +4,7 @@ package edu.unh.cs.cs619.bulletzone.game;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
+@EBean
 public class CommandInterpreter {
 
     private static volatile CommandInterpreter INSTANCE = null;
