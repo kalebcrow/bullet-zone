@@ -51,19 +51,12 @@ public class GamesControllerTest {
         gamesController = mock(GamesController.class);
         mockMvc = MockMvcBuilders.standaloneSetup(gamesController).build();
     }
-
+    
 
     @Test
     public void testJoinGame() throws Exception {
         //joins game and returns tank id
         mockMvc.perform(post("/games").with(remoteAddr("100.20.10.0"))).andExpect(status().isCreated());
-    }
-
-    @Test
-    public void testGetGrid() throws Exception {
-        //performs get request on server gets ok response back
-       //MvcResult result = mockMvc.perform(get("/games").accept(MediaType.APPLICATION_JSON_VALUE).with(remoteAddr("100.20.10.0"))).andExpect(status().isOk());
-       //String tank = result.getResponse().toString();
     }
 
     @Test
