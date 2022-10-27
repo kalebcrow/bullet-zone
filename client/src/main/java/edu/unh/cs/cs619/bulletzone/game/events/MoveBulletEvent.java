@@ -28,16 +28,17 @@ public class MoveBulletEvent extends GridEvent {
 
 
         if (tile.getOrientation() == 0) {
-
-        }
+            location = goingUp(location);
         } else if (tile.getOrientation() == 2) {
+            location = goingRight(location);
         } else if (tile.getOrientation() == 4) {
+            location = goingDown(location);
         } else if (tile.getOrientation() == 6) {
+            location = goingLeft(location);
         }
-        tile.setLocation(location);
 
-        busProvider.getEventBus().post(new TileUpdateEvent(location, tile));
         busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
+        busProvider.getEventBus().post(new TileUpdateEvent(location, new TankTile()));
     }
 
     private Integer goingUp(Integer location) {
@@ -75,3 +76,4 @@ public class MoveBulletEvent extends GridEvent {
         }
         return location;
     }
+}
