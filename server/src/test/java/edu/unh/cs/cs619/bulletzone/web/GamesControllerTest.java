@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
@@ -21,16 +23,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {BulletZoneServer.class})
 public class GamesControllerTest {
 
+    MockHttpServletRequest request;
     MockMvc mockMvc;
+
     @Mock
     private InMemoryGameRepository repo;
+
     @InjectMocks
     private GamesController gamesController;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        MockitoAnnotations.openMocks(this);
+        //MockitoAnnotations.openMocks(this);
         //gamesController = new GamesController(repo);
         mockMvc = MockMvcBuilders.standaloneSetup(gamesController).build();
     }
@@ -39,7 +45,9 @@ public class GamesControllerTest {
     @Test
     public void testCreateGame() throws Exception {
         //String s = mockMvc.getDispatcherServlet().toString();
-        mockMvc.perform(post("/games")).andExpect(status().isCreated());
+        //request = new MockHttpServletRequest();
+        //request.setRemoteAddr("100.20.10.0");
+       // mockMvc.perform(post("/games")).andExpect(status().isCreated());
 
     }
 
@@ -57,4 +65,8 @@ public class GamesControllerTest {
     public void testLeaveGame() throws Exception {
 
     }
+    /*
+    @Test
+    public void test
+    */
 }
