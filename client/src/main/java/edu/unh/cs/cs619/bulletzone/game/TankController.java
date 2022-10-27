@@ -15,12 +15,19 @@ public class TankController {
     private static volatile TankController INSTANCE = null;
 
 
+    /**
+     * TankController
+     */
     public TankController() {
         tankID = 0L;
         tankOrientation = 0;
         INSTANCE = this;
     }
 
+    /**
+     * Create Tank controller
+     * @return tankController
+     */
     public static TankController getTankController() {
         if(INSTANCE == null) {
             synchronized (TankController.class) {
@@ -32,18 +39,34 @@ public class TankController {
         return INSTANCE;
     }
 
+    /**
+     *
+     * @return returnClient
+     */
     public BulletZoneRestClient getRestClient() {
         return restClient;
     }
 
+    /**
+     * set rest client
+     * @param restClient restClient
+     */
     public void setRestClient(BulletZoneRestClient restClient) {
         this.restClient = restClient;
     }
 
+    /**
+     *
+     * @return tankID
+     */
     public Long getTankID() {
         return tankID;
     }
 
+    /**
+     *
+     * @param tankID set tankID
+     */
     public void setTankID(Long tankID) {
         this.tankID = tankID;
     }
@@ -52,10 +75,18 @@ public class TankController {
         return tankOrientation;
     }
 
+    /**
+     *
+     * @param tankOrientation tankOriention
+     */
     public void setTankOrientation(int tankOrientation) {
         this.tankOrientation = tankOrientation;
     }
 
+    /**
+     * moves the tank
+     * @param direction direction
+     */
     @Background
     public void move(byte direction) {
         int value = direction - tankOrientation;

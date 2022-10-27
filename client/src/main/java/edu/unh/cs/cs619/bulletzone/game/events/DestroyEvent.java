@@ -9,6 +9,11 @@ public class DestroyEvent extends  GridEvent {
     private int row;
     private int col;
 
+    /**
+     *
+     * @param row the row
+     * @param col the colomn
+     */
     public DestroyEvent(int row, int col) {
         this.row = row;
         this.col = col;
@@ -16,6 +21,9 @@ public class DestroyEvent extends  GridEvent {
         this.time = System.currentTimeMillis();
     }
 
+    /**
+     * runs the command updating the board
+     */
     @Override
     public void execute() {
         Integer location = row * 16 + col;

@@ -14,9 +14,15 @@ public abstract class GridEvent {
     BusProvider busProvider;
 
 
-
+    /**
+     *
+     * @return time
+     */
     public Long getTime(){return this.time;}
 
+    /**
+     * runs the command updating the board
+     */
     public void execute() {
     }
 

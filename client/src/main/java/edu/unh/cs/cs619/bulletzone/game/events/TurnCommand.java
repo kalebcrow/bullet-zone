@@ -13,12 +13,20 @@ public class TurnCommand extends GridEvent {
     public Integer tankID;
     public Integer direction;
 
+    /**
+     *
+     * @param tankID tank turning
+     * @param direction direction it turns to
+     */
     TurnCommand(Integer tankID, Integer direction) {
         this.tankID = tankID;
         this.direction = direction;
     }
 
 
+    /**
+     * Do the command
+     */
     @Override
     public void execute() {
         TankTile tile = TankList.getTankList().getLocation(tankID);

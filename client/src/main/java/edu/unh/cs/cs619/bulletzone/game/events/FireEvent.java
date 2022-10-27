@@ -10,6 +10,11 @@ public class FireEvent extends GridEvent {
     private Long tankID;
     private Long bulletID;
 
+    /**
+     *
+     * @param tankID Tank doing the shooting
+     * @param bulletID Bullet being shot
+     */
     public FireEvent(Long tankID, Long bulletID) {
         this.tankID = tankID;
         this.bulletID = bulletID;
@@ -17,6 +22,9 @@ public class FireEvent extends GridEvent {
         this.time = System.currentTimeMillis();
     }
 
+    /**
+     * runs the command updating the board
+     */
     @Override
     public void execute() {
         TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID));
@@ -37,6 +45,11 @@ public class FireEvent extends GridEvent {
         busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(bulletID, Math.toIntExact(tankID), location)));
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return
+     */
     private Integer goingUp(Integer location) {
         if (location <= 15) {
             location = 240 + location;
@@ -46,6 +59,11 @@ public class FireEvent extends GridEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return
+     */
     private Integer goingDown(Integer location) {
         if (location >= 240) {
             location = location - 240;
@@ -55,6 +73,11 @@ public class FireEvent extends GridEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return
+     */
     private Integer goingRight(Integer location) {
         if (location % 15 == 0 && location != 0) {
             location = location - 15;
@@ -64,6 +87,11 @@ public class FireEvent extends GridEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return
+     */
     private Integer goingLeft(Integer location) {
         if (location % 16 == 0) {
             location = location + 15;

@@ -22,10 +22,17 @@ public class CommandInterpreter {
 
     public EventWrapper ew;
 
+    /**
+     * Command interpreter
+     */
     private CommandInterpreter() {
 
     }
 
+    /**
+     *
+     * @return Gets command interpreter
+     */
     public static CommandInterpreter getCommandInterpreter() {
         if(INSTANCE == null) {
             synchronized (CommandInterpreter.class) {
@@ -45,6 +52,10 @@ public class CommandInterpreter {
         }
     };
 
+    /**
+     *
+     * @param event event
+     */
     private void updateBoard(HistoryUpdateEvent event) {
         this.ew = event.getHw();
         LinkedList<GridEvent> history = ew.getUpdate();
