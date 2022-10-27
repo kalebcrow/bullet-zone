@@ -57,10 +57,10 @@ public class BulletTile extends BlankTile {
      * @param tankID tankID
      * @param location location
      */
-    public BulletTile(Long bulletid, Integer tankID, Integer location) {
+    public BulletTile(int bulletid, Integer tankID, Integer location) {
         this.resourceID = R.drawable.bullet;
         this.location = location;
-        this.bulletid = tankID * 10 + Math.toIntExact(bulletid);
+        this.bulletid = tankID * 10 + bulletid;
 
         BulletList.getBulletList().addBullet(this.bulletid, this);
     }

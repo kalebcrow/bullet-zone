@@ -8,16 +8,43 @@ import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class FireEvent extends GridEvent {
     private Long tankID;
-    private Long bulletID;
+
+    public Long getTankID() {
+        return tankID;
+    }
+
+    public void setTankID(Long tankID) {
+        this.tankID = tankID;
+    }
+
+    public int getBulletID() {
+        return bulletID;
+    }
+
+    public void setBulletID(int bulletID) {
+        this.bulletID = bulletID;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    private int bulletID;
+    private int direction;
 
     /**
      *
      * @param tankID Tank doing the shooting
      * @param bulletID Bullet being shot
      */
-    public FireEvent(Long tankID, Long bulletID) {
+    public FireEvent(Long tankID, int bulletID, int direction) {
         this.tankID = tankID;
         this.bulletID = bulletID;
+        this.direction = direction;
         this.type = "fire";
         this.time = System.currentTimeMillis();
     }

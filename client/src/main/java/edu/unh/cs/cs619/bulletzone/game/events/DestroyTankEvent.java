@@ -10,6 +10,31 @@ import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 public class DestroyTankEvent extends GridEvent{
 
     private Long destroyedTankID;
+
+    public Long getDestroyedTankID() {
+        return destroyedTankID;
+    }
+
+    public void setDestroyedTankID(Long destroyedTankID) {
+        this.destroyedTankID = destroyedTankID;
+    }
+
+    public Long getDestroyerTankID() {
+        return destroyerTankID;
+    }
+
+    public void setDestroyerTankID(Long destroyerTankID) {
+        this.destroyerTankID = destroyerTankID;
+    }
+
+    public int getBulletID() {
+        return bulletID;
+    }
+
+    public void setBulletID(int bulletID) {
+        this.bulletID = bulletID;
+    }
+
     private Long destroyerTankID;
     private int bulletID;
 
