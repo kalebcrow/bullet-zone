@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +28,7 @@ public class GamesControllerTest {
     MockHttpServletRequest request;
     MockMvc mockMvc;
 
+
     @Mock
     private InMemoryGameRepository repo;
 
@@ -33,21 +36,29 @@ public class GamesControllerTest {
     private GamesController gamesController;
 
 
+
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         //MockitoAnnotations.openMocks(this);
-        //gamesController = new GamesController(repo);
+        repo = mock(InMemoryGameRepository.class);
+        gamesController = mock(GamesController.class);
         mockMvc = MockMvcBuilders.standaloneSetup(gamesController).build();
     }
 
 
     @Test
     public void testCreateGame() throws Exception {
+        /*
+        repo = new InMemoryGameRepository();
+        gamesController = new GamesController(repo);
         //String s = mockMvc.getDispatcherServlet().toString();
-        //request = new MockHttpServletRequest();
-        //request.setRemoteAddr("100.20.10.0");
-       // mockMvc.perform(post("/games")).andExpect(status().isCreated());
+        //gamesController = new GamesController(repo);
+        request = new MockHttpServletRequest();
+        request.setRemoteAddr("100.20.10.0");
+        //gamesController.join(request);
+         */
+        mockMvc.perform(post("/games").with(remoteAddr("100.20.10.0"))).andExpect(status().isCreated());
+
 
     }
 
@@ -69,4 +80,13 @@ public class GamesControllerTest {
     @Test
     public void test
     */
+    private static RequestPostProcessor remoteAddr(final String remoteAddr) { // it's nice to extract into a helper
+        return new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setRemoteAddr(remoteAddr);
+                return request;
+            }
+        };
+    }
 }
