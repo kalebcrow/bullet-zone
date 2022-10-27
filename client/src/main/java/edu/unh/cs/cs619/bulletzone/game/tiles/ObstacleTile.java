@@ -4,6 +4,11 @@ import edu.unh.cs.cs619.bulletzone.R;
 
 public class ObstacleTile extends BlankTile {
 
+    /**
+     *
+     * @param JsonValue value from server
+     * @param location location
+     */
     public ObstacleTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
@@ -24,6 +29,11 @@ public class ObstacleTile extends BlankTile {
 
     }
 
+    /**
+     *
+     * @param JSONValue value from server
+     * @return orientation
+     */
     private Integer findOrientation(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();

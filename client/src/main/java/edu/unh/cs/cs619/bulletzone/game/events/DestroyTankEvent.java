@@ -13,6 +13,12 @@ public class DestroyTankEvent extends GridEvent{
     private Long destroyerTankID;
     private int bulletID;
 
+    /**
+     *
+     * @param destroyedTankID the tank being destroyed
+     * @param destroyerTankID the tank doing the destroying
+     * @param bulletID the bullet that is doing the destroying
+     */
     public DestroyTankEvent(Long destroyedTankID, Long destroyerTankID, int bulletID) {
         this.destroyedTankID = destroyedTankID;
         this.destroyerTankID = destroyerTankID;
@@ -21,6 +27,9 @@ public class DestroyTankEvent extends GridEvent{
         this.time = System.currentTimeMillis();
     }
 
+    /**
+     * runs the command updating the board
+     */
     @Override
     public void execute() {
         TankTile tile =TankList.getTankList().getLocation(Math.toIntExact(destroyedTankID));

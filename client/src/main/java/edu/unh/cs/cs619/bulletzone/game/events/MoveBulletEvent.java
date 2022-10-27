@@ -11,6 +11,12 @@ public class MoveBulletEvent extends GridEvent {
     private int bulletID;
     private int direction;
 
+    /**
+     * Constructor
+     * @param tankID tankID
+     * @param bulletID bulletID
+     * @param direction where it's going lmao
+     */
     public MoveBulletEvent(Long tankID, int bulletID, int direction) {
         this.tankID = tankID;
         this.bulletID = bulletID;
@@ -19,6 +25,9 @@ public class MoveBulletEvent extends GridEvent {
         this.time = System.currentTimeMillis();
     }
 
+    /**
+     * updates the board
+     */
     @Override
     public void execute() {
 

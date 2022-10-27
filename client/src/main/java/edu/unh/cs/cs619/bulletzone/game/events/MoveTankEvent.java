@@ -10,11 +10,19 @@ public class MoveTankEvent extends GridEvent {
     public Integer tankID;
     public Boolean forward;
 
+    /**
+     *
+     * @param tankID Tank being moved
+     * @param forward Forward or back
+     */
     MoveTankEvent(Integer tankID, Boolean forward) {
         this.tankID = tankID;
         this.forward = forward;
     }
 
+    /**
+     * Execution of event
+     */
     @Override
     public void execute() {
 

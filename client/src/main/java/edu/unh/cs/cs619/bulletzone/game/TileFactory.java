@@ -10,10 +10,17 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 public class TileFactory {
     private static volatile TileFactory INSTANCE = null;
 
+    /**
+     * Static class
+     */
     private TileFactory() {
 
     }
 
+    /**
+     * get factory
+     * @return list
+     */
     public static TileFactory getFactory() {
         if(INSTANCE == null) {
             synchronized (TileFactory.class) {
@@ -25,6 +32,12 @@ public class TileFactory {
         return INSTANCE;
     }
 
+    /**
+     *
+     * @param JsonValue value to generate tile
+     * @param location location of tile
+     * @return tile
+     */
     public BlankTile makeTile(Integer JsonValue, Integer location) {
         if (JsonValue == 0 || JsonValue >= 4000 && JsonValue <  1000000) {
             return new BlankTile(JsonValue, location);

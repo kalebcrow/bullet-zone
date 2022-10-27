@@ -4,6 +4,7 @@ package edu.unh.cs.cs619.bulletzone.game;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
+@EBean
 public class CommandInterpreter {
 
     private static volatile CommandInterpreter INSTANCE = null;
@@ -22,10 +24,17 @@ public class CommandInterpreter {
 
     public EventWrapper ew;
 
+    /**
+     * Command interpreter
+     */
     private CommandInterpreter() {
 
     }
 
+    /**
+     *
+     * @return Gets command interpreter
+     */
     public static CommandInterpreter getCommandInterpreter() {
         if(INSTANCE == null) {
             synchronized (CommandInterpreter.class) {
@@ -45,6 +54,10 @@ public class CommandInterpreter {
         }
     };
 
+    /**
+     *
+     * @param event event
+     */
     private void updateBoard(HistoryUpdateEvent event) {
         this.ew = event.getHw();
         LinkedList<GridEvent> history = ew.getUpdate();

@@ -11,6 +11,12 @@ public class AddTankEvent extends GridEvent {
     private int col;
     private Long tankID;
 
+    /**
+     *
+     * @param row the row
+     * @param col coloumn
+     * @param tankID ID of tank being added
+     */
     public AddTankEvent(int row, int col, Long tankID) {
         this.row = row;
         this.col = col;
@@ -19,6 +25,9 @@ public class AddTankEvent extends GridEvent {
         this.time = System.currentTimeMillis();
     }
 
+    /**
+     * runs the command updating the board
+     */
     @Override
     public void execute() {
         Integer location = col * 16 + row;

@@ -9,12 +9,18 @@ public class BulletList {
     private static volatile BulletList INSTANCE = null;
     public HashMap<Integer, BulletTile> bullets;
 
-
+    /**
+     * List of all bullets on screen
+     */
     private BulletList() {
         bullets = new HashMap<Integer, BulletTile>();
 
     }
 
+    /**
+     *
+     * @return returns BulletList
+     */
     public static BulletList getBulletList() {
         if (INSTANCE == null) {
             synchronized (TileFactory.class) {
@@ -26,14 +32,28 @@ public class BulletList {
         return INSTANCE;
     }
 
+    /**
+     *
+     * @param bulletID bulletID
+     * @param tile bulletile to add
+     */
     public void addBullet(Integer bulletID, BulletTile tile) {
         bullets.put(bulletID, tile);
     }
 
+    /**
+     *
+     * @param tankID tankID
+     * @return BulletTile
+     */
     public BulletTile getBulletTile(Integer tankID) {
         return bullets.get(tankID);
     }
 
+    /**
+     *
+     * @param bulletID bulletID
+     */
     public void removeBullet(Integer bulletID) {
         bullets.remove(bulletID);
     }
