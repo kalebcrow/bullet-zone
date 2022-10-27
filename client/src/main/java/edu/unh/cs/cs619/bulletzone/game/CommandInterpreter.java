@@ -27,7 +27,7 @@ public class CommandInterpreter {
     /**
      * Command interpreter
      */
-    private CommandInterpreter() {
+    public CommandInterpreter() {
 
     }
 

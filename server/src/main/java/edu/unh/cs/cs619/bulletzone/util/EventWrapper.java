@@ -12,8 +12,12 @@ public class EventWrapper implements Serializable {
 
     public EventWrapper(LinkedList<GridEvent> update) {
         this.update = update;
-        this.timeStamp = update.getFirst().getTime();
+        this.timeStamp = System.currentTimeMillis();
+        if (update.size() != 0) {
+            this.timeStamp = update.getFirst().getTime();
+        }
     }
+
 
     public LinkedList<GridEvent> getUpdate() {
         return update;
