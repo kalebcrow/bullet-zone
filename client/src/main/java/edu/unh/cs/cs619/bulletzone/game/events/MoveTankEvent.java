@@ -5,12 +5,12 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class MoveCommand extends GridEvent {
+public class MoveTankEvent extends GridEvent {
 
     public Integer tankID;
     public Boolean forward;
 
-    MoveCommand(Integer tankID, Boolean forward) {
+    MoveTankEvent(Integer tankID, Boolean forward) {
         this.tankID = tankID;
         this.forward = forward;
     }

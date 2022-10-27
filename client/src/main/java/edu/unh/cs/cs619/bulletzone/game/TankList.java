@@ -33,4 +33,8 @@ public class TankList {
         return tanks.get(tankID);
     }
 
+    public void remove(Integer tankID) {
+        tanks.remove(tankID);
+    }
+
 }

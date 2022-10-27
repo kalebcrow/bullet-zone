@@ -1,18 +1,17 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
 import edu.unh.cs.cs619.bulletzone.R;
-import edu.unh.cs.cs619.bulletzone.game.TankController;
-import edu.unh.cs.cs619.bulletzone.game.TankList;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 
 public class BulletTile extends BlankTile {
 
 
     public Integer getTankID() {
-        return TankID;
+        return bulletid;
     }
 
-    public void setTankID(Integer tankID) {
-        this.TankID = tankID;
+    public void setTankID(Integer BulletID) {
+        this.bulletid = BulletID;
     }
 
     public Integer getOrientation() {
@@ -23,56 +22,22 @@ public class BulletTile extends BlankTile {
         this.orientation = orientation;
     }
 
-    public Integer TankID;
+    public Integer bulletid;
 
 
     public BulletTile(Integer JsonValue, Integer location) {
-        this.resourceID = R.drawable.blank;
+        this.resourceID = R.drawable.bullet;
         this.location = location;
-        TankID = findID(JsonValue);
-        Long controller = TankController.getTankController().getTankID();
-
-
-        //This is what was the default in the grid adapter view (By plumdog)
-        if (JsonValue >= 2000000 && JsonValue <= 3000000) {
-            resourceID = R.drawable.bullet;
-        } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
-            if (TankID == Math.toIntExact(controller)) {
-                this.resourceID = R.drawable.tank;
-
-            } else {
-                this.resourceID = R.drawable.redtank;
-            }
-        }
-
-        orientation = findOrientation(JsonValue);
-        if (TankID == Math.toIntExact(controller)) {
-            TankController.getTankController().setTankOrientation(orientation);
-        }
-
-        TankList.getTankList().addTank(TankID, this);
+        bulletid = findID(JsonValue);
+        BulletList.getBulletList().addBullet(this.bulletid, this);
     }
 
-    public TankTile(Integer TankID, Integer location, Integer orientation) {
-        this.resourceID = R.drawable.blank;
+    public BulletTile(Long bulletid, Integer JsonValue, Integer location) {
+        this.resourceID = R.drawable.bullet;
         this.location = location;
-        this.TankID = TankID;
-        Long controller = TankController.getTankController().getTankID();
+        this.bulletid = JsonValue * 10 + Math.toIntExact(bulletid);
 
-        //This is what was the default in the grid adapter view (By plumdog)
-        if (this.TankID == Math.toIntExact(controller)) {
-            this.resourceID = R.drawable.tank;
-
-        } else {
-            this.resourceID = R.drawable.redtank;
-        }
-
-        this.orientation = orientation;
-        if (this.TankID == Math.toIntExact(controller)) {
-            TankController.getTankController().setTankOrientation(orientation);
-        }
-
-        TankList.getTankList().addTank(this.TankID, this);
+        BulletList.getBulletList().addBullet(this.bulletid, this);
     }
 
     //These two functions rip the value of digits from their respective spots
@@ -80,7 +45,9 @@ public class BulletTile extends BlankTile {
     private Integer findID(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
-        return Integer.parseInt(String.copyValueOf(digits1, 1, 3));
+        String id = String.copyValueOf(digits1, 1, 3);
+        id += String.copyValueOf(digits1, 6, 6);
+        return Integer.valueOf(id);
 
     }
 

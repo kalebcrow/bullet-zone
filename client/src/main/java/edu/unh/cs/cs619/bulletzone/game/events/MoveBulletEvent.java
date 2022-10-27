@@ -1,8 +1,8 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import edu.unh.cs.cs619.bulletzone.game.TankList;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
-import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class MoveBulletEvent extends GridEvent {
@@ -22,7 +22,7 @@ public class MoveBulletEvent extends GridEvent {
     @Override
     public void execute() {
 
-        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID));
+        BulletTile tile = BulletList.getBulletList().getBulletTile(Math.toIntExact(tankID));
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 
@@ -37,8 +37,10 @@ public class MoveBulletEvent extends GridEvent {
             location = goingLeft(location);
         }
 
+        tile.setLocation(location);
+
         busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new TankTile()));
+        busProvider.getEventBus().post(new TileUpdateEvent(location, tile));
     }
 
     private Integer goingUp(Integer location) {
