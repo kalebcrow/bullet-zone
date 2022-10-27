@@ -126,9 +126,11 @@ class GamesController {
         return e.getMessage();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "event/{timeStamp}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "/event/{timeStamp}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<EventWrapper> event (@PathVariable long timeStamp) {
+    public
+    @ResponseBody
+    ResponseEntity<EventWrapper> event(@PathVariable long timeStamp) {
         return new ResponseEntity<EventWrapper>(
                 new EventWrapper(gameRepository.getEvents(timeStamp)),
                 HttpStatus.OK
