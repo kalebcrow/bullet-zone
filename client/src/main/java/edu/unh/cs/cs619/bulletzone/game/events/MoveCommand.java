@@ -1,6 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.game.commands;
+package edu.unh.cs.cs619.bulletzone.game.events;
 
-public class MoveCommand implements Commands {
+public class MoveCommand extends GridEvent {
 
     public Integer tankID;
     public Boolean forward;
@@ -14,4 +14,5 @@ public class MoveCommand implements Commands {
     public void execute() {
 
     }
+
 }

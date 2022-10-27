@@ -1,24 +1,30 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
 
-import org.json.JSONObject;
+import com.squareup.otto.Subscribe;
+
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.UiThread;
 
 import java.util.LinkedList;
 
-import edu.unh.cs.cs619.bulletzone.game.commands.Commands;
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
 public class CommandInterpreter {
 
     private static volatile CommandInterpreter INSTANCE = null;
 
-    public LinkedList<Commands> getHistory() {
-        return history;
-    }
+    // Injected object
+    @Bean
+    BusProvider busProvider;
 
-    private LinkedList<Commands> history;
+    public EventWrapper ew;
 
     private CommandInterpreter() {
-        history = new LinkedList<>();
+
     }
 
     public static CommandInterpreter getCommandInterpreter() {
@@ -32,9 +38,22 @@ public class CommandInterpreter {
         return INSTANCE;
     }
 
+    private Object tileEventHandler = new Object()
+    {
+        @Subscribe
+        public void onHistoryUpdateEvent(HistoryUpdateEvent event) {
+            updateBoard(event);
+        }
+    };
 
-    public void interpret(JSONObject jsonObject) {
+    @UiThread
+    private void updateBoard(HistoryUpdateEvent event) {
+        this.ew = event.getHw();
+        LinkedList<GridEvent> history = ew.getUpdate();
 
+        for (int i = 0; i < history.size(); i++) {
+            GridEvent currEvent = history.get(i);
+            busProvider.getEventBus().post(currEvent.execute());
+        }
     }
-
 }

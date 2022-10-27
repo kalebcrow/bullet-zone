@@ -1,9 +1,8 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
-import android.util.Log;
-
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 
 public class TankTile extends BlankTile {
 
@@ -50,40 +49,8 @@ public class TankTile extends BlankTile {
         if (ID == Math.toIntExact(controller)) {
             TankController.getTankController().setTankOrientation(orientation);
         }
-    }
 
-    public void moveTo(boolean forward) {
-        switch(orientation) {
-            case 0:
-                if (forward) {
-                    location = location - 16;
-                } else {
-                    location = location + 16;
-                }
-                break;
-            case 1:
-                if (forward) {
-                    location = location + 1;
-                } else {
-                    location = location - 1;
-                }
-
-                break;
-            case 2:
-                if (forward) {
-                    location = location + 16;
-                } else {
-                    location = location - 16;
-                }
-                break;
-            default:
-                if (forward) {
-                    location = location - 1;
-                } else {
-                    location = location + 1;
-                }
-        }
-
+        TankList.getTankList().addTank(ID, this);
     }
 
     //These two functions rip the value of digits from their respective spots

@@ -35,5 +35,4 @@ public class TileFactory {
             return new BlankTile(JsonValue, location);
         }
     }
-
 }

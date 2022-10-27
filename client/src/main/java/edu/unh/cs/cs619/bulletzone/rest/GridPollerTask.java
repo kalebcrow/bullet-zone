@@ -1,20 +1,16 @@
 package edu.unh.cs.cs619.bulletzone.rest;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
-import org.androidannotations.rest.spring.api.RestClientHeaders;
 
-import edu.unh.cs.cs619.bulletzone.ClientActivity;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
-import edu.unh.cs.cs619.bulletzone.util.HistoryWrapper;
+import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
 /**
  * Created by simon on 10/3/14.
@@ -40,7 +36,7 @@ public class GridPollerTask {
         timestamp = gw.getTimeStamp();
         while (true) {
 
-            HistoryWrapper hw = restClient.getHistory(timestamp);
+            EventWrapper hw = restClient.getHistory(timestamp);
             timestamp = hw.getTimeStamp();
             onCommandHistoryUpdate(hw);
             // poll server every 100ms
@@ -54,7 +50,7 @@ public class GridPollerTask {
     }
 
     @UiThread
-    public void onCommandHistoryUpdate(HistoryWrapper hw) {
+    public void onCommandHistoryUpdate(EventWrapper hw) {
         busProvider.getEventBus().post(new HistoryUpdateEvent(hw));
     }
 }

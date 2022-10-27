@@ -14,8 +14,10 @@ public class ObstacleTile extends BlankTile {
         orientation = 0;
 
         //This is what was the default in the grid adapter view (By plumdog)
-        if (JsonValue == 1000 || ( JsonValue > 1000 && JsonValue <= 2000)) {
+        if (JsonValue == 1000) {
             this.resourceID = R.drawable.ironwall;
+        } else if (JsonValue < 2000 && JsonValue > 1000) {
+            this.resourceID = R.drawable.stonewall;
         }
 
 
