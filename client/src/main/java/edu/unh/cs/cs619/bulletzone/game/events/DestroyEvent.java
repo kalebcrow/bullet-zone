@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import org.androidannotations.annotations.UiThread;
+
 import edu.unh.cs.cs619.bulletzone.game.TileFactory;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
@@ -14,10 +16,11 @@ public class DestroyEvent extends  GridEvent {
         this.time = System.currentTimeMillis();
     }
 
+    @UiThread
     @Override
-    public TileUpdateEvent execute() {
-        Integer location = (row - 1) * 16 + col - 1;
+    public void execute() {
+        Integer location = row * 16 + col;
 
-        return new TileUpdateEvent(location, TileFactory.getFactory().makeTile(0, 0));
+         busProvider.getEventBus().post(new TileUpdateEvent(location, TileFactory.getFactory().makeTile(0, 0)));
     }
 }

@@ -46,14 +46,12 @@ public class CommandInterpreter {
         }
     };
 
-    @UiThread
     private void updateBoard(HistoryUpdateEvent event) {
         this.ew = event.getHw();
         LinkedList<GridEvent> history = ew.getUpdate();
 
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
-            busProvider.getEventBus().post(currEvent.execute());
         }
     }
 }

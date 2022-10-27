@@ -17,7 +17,7 @@ public class FireEvent extends GridEvent {
     }
 
     @Override
-    public TileUpdateEvent execute() {
+    public void execute() {
         TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID));
         Integer orientation = tile.getOrientation();
 
@@ -26,9 +26,6 @@ public class FireEvent extends GridEvent {
         if (orientation == 0) {
 
         }
-
-        return null;
-
     }
 
 }

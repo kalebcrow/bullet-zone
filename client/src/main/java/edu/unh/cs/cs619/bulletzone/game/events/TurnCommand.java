@@ -20,11 +20,11 @@ public class TurnCommand extends GridEvent {
 
 
     @Override
-    public TileUpdateEvent execute() {
+    public void execute() {
         TankTile tile = TankList.getTankList().getLocation(tankID);
         tile.setOrientation(direction);
 
-        return new TileUpdateEvent(tile.location, tile);
+        busProvider.getEventBus().post(new TileUpdateEvent(tile.location, tile));
     }
 
 }

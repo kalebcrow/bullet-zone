@@ -53,6 +53,28 @@ public class TankTile extends BlankTile {
         TankList.getTankList().addTank(ID, this);
     }
 
+    public TankTile(Integer TankID, Integer location, Integer orientation) {
+        this.resourceID = R.drawable.blank;
+        this.location = location;
+        ID = TankID;
+        Long controller = TankController.getTankController().getTankID();
+
+        //This is what was the default in the grid adapter view (By plumdog)
+        if (ID == Math.toIntExact(controller)) {
+            this.resourceID = R.drawable.tank;
+
+        } else {
+            this.resourceID = R.drawable.redtank;
+        }
+
+        this.orientation = orientation;
+        if (ID == Math.toIntExact(controller)) {
+            TankController.getTankController().setTankOrientation(orientation);
+        }
+
+        TankList.getTankList().addTank(ID, this);
+    }
+
     //These two functions rip the value of digits from their respective spots
     //Not sure where in the Integer where we'll store the ID and orientation but we'll need these anyway
     private Integer findID(Integer JSONValue) {
