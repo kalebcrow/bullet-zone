@@ -17,9 +17,17 @@ import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
+import edu.unh.cs.cs619.bulletzone.model.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.DestroyTankEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.DestroyWallEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.MoveBulletEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.TurnEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 @Component
 public class InMemoryGameRepository implements GameRepository {
@@ -85,6 +93,7 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
             game.addTank(ip, tank);
+            game.addEvent(new AddTankEvent(x, y , tankId));
 
             return tank;
         }
@@ -126,6 +135,7 @@ public class InMemoryGameRepository implements GameRepository {
             }*/
 
             tank.setDirection(direction);
+            game.addEvent(new TurnEvent(tankId, toByte(direction)));
 
             return true; // TODO check
         }
@@ -174,6 +184,7 @@ public class InMemoryGameRepository implements GameRepository {
                 isCompleted = false;
             }
 
+            game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
             return isCompleted;
         }
     }
@@ -226,10 +237,11 @@ public class InMemoryGameRepository implements GameRepository {
             // This should be only a one way reference.
             bullet.setParent(parent);
             bullet.setBulletId(bulletId);
-
+            game.addEvent(new FireEvent(tankId, bulletId, toByte(direction)));
             // TODO make it nicer
+            int finalBulletId = bulletId;
+            final Long finalTankID = tank.getId();
             timer.schedule(new TimerTask() {
-
                 @Override
                 public void run() {
                     synchronized (monitor) {
@@ -252,14 +264,15 @@ public class InMemoryGameRepository implements GameRepository {
                                     Tank t = (Tank) nextField.getEntity();
                                     System.out.println("tank is hit, tank life: " + t.getLife());
                                     if (t.getLife() <= 0 ){
+                                        game.addEvent(new DestroyTankEvent(t.getId(),finalTankID, finalBulletId));
                                         t.getParent().clearField();
                                         t.setParent(null);
-                                        game.removeTank(t.getId());
                                     }
                                 }
                                 else if ( nextField.getEntity() instanceof  Wall){
                                     Wall w = (Wall) nextField.getEntity();
                                     if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
+                                        game.addEvent(new DestroyWallEvent(w.getPos()/FIELD_DIM, w.getPos()%FIELD_DIM, finalTankID, finalBulletId));
                                         game.getHolderGrid().get(w.getPos()).clearField();
                                     }
                                 }
@@ -276,7 +289,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 // Remove bullet from field
                                 currentField.clearField();
                             }
-
+                            game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
                             nextField.setFieldEntity(bullet);
                             bullet.setParent(nextField);
                         }
@@ -302,6 +315,7 @@ public class InMemoryGameRepository implements GameRepository {
             FieldHolder parent = tank.getParent();
             parent.clearField();
             game.removeTank(tankId);
+            game.addEvent(new DestroyTankEvent(tank.getId(), (long) -1, -1));
         }
     }
 
