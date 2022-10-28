@@ -1,13 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.model.events;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+public class MoveBulletEvent extends GridEvent {
 
-public class FireEvent extends GridEvent {
-
-    public FireEvent(Long tankID, int bulletID, byte direction) {
+    public MoveBulletEvent(Long tankID, int bulletID, byte direction) {
         this.ID = (Math.toIntExact(tankID) * 10) + bulletID;
         this.direction = direction;
-        this.type = "fire";
+        this.type = "moveBullet";
         this.time = System.currentTimeMillis();
     }
+
 }

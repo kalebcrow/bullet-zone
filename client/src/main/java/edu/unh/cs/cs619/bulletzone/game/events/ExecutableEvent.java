@@ -1,12 +1,19 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
+package edu.unh.cs.cs619.bulletzone.game.events;
 
+import org.androidannotations.annotations.Bean;
 
-import java.io.Serializable;
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 
+public class ExecutableEvent {
 
-public class GridEvent implements Serializable {
+    public ExecutableEvent(GridEvent gridEvent) {
+        time = gridEvent.getTime();
+        type = gridEvent.getType();
+        ID = gridEvent.getID();
+        direction = gridEvent.getDirection();
+        pos = gridEvent.getPos() - 1;
+    }
 
-    //Big dumbsky
     protected Long time;
     protected String type;
     protected Integer ID = -1;
@@ -53,5 +60,9 @@ public class GridEvent implements Serializable {
         return this.time;
     }
 
+
+    public void execute(BusProvider busProvider) {
+
+    }
 
 }

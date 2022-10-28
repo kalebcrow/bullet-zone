@@ -3,12 +3,13 @@ package edu.unh.cs.cs619.bulletzone.model.events;
 
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 
-public class TurnEvent extends GridEvent {
+public class MoveTankEvent extends GridEvent {
 
-    public TurnEvent(Long tankID, byte direction) {
+    public MoveTankEvent(Long tankID, byte direction) {
         this.ID = Math.toIntExact(tankID);
         this.direction = direction;
-        this.type = "turn";
+        this.type = "moveTank";
         this.time = System.currentTimeMillis();
     }
+
 }

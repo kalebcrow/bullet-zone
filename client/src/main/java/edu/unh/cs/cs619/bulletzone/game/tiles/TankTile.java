@@ -1,25 +1,40 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
-import android.util.Log;
-
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 
 public class TankTile extends BlankTile {
 
 
+    /**
+     *
+     * @return ID
+     */
     public Integer getID() {
         return ID;
     }
 
+    /**
+     *
+     * @param ID ID to be set to
+     */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
+    /**
+     *
+     * @return orientation
+     */
     public Integer getOrientation() {
         return orientation;
     }
 
+    /**
+     *
+     * @param orientation orientation of the tile
+     */
     public void setOrientation(Integer orientation) {
         this.orientation = orientation;
     }
@@ -27,6 +42,11 @@ public class TankTile extends BlankTile {
     public Integer ID;
 
 
+    /**
+     *
+     * @param JsonValue jsonValue
+     * @param location location
+     */
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
@@ -35,9 +55,7 @@ public class TankTile extends BlankTile {
 
 
         //This is what was the default in the grid adapter view (By plumdog)
-         if (JsonValue >= 2000000 && JsonValue <= 3000000) {
-            resourceID = R.drawable.bullet;
-         } else if (JsonValue >= 10000000 && JsonValue <= 20000000) {
+        if (JsonValue >= 10000000 && JsonValue <= 20000000) {
              if (ID == Math.toIntExact(controller)) {
                  this.resourceID = R.drawable.tank;
 
@@ -50,42 +68,43 @@ public class TankTile extends BlankTile {
         if (ID == Math.toIntExact(controller)) {
             TankController.getTankController().setTankOrientation(orientation);
         }
+
+        TankList.getTankList().addTank(ID, this);
     }
 
-    public void moveTo(boolean forward) {
-        switch(orientation) {
-            case 0:
-                if (forward) {
-                    location = location - 16;
-                } else {
-                    location = location + 16;
-                }
-                break;
-            case 1:
-                if (forward) {
-                    location = location + 1;
-                } else {
-                    location = location - 1;
-                }
+    /**
+     *
+     * @param TankID tankID
+     * @param location location
+     * @param orientation orientation
+     */
+    public TankTile(Integer TankID, Integer location, Integer orientation) {
+        this.resourceID = R.drawable.blank;
+        this.location = location;
+        ID = TankID;
+        Long controller = TankController.getTankController().getTankID();
 
-                break;
-            case 2:
-                if (forward) {
-                    location = location + 16;
-                } else {
-                    location = location - 16;
-                }
-                break;
-            default:
-                if (forward) {
-                    location = location - 1;
-                } else {
-                    location = location + 1;
-                }
+        //This is what was the default in the grid adapter view (By plumdog)
+        if (ID == Math.toIntExact(controller)) {
+            this.resourceID = R.drawable.tank;
+
+        } else {
+            this.resourceID = R.drawable.redtank;
         }
 
+        this.orientation = orientation;
+        if (ID == Math.toIntExact(controller)) {
+            TankController.getTankController().setTankOrientation(orientation);
+        }
+
+        TankList.getTankList().addTank(ID, this);
     }
 
+    /**
+     *
+     * @param JSONValue value
+     * @return ID
+     */
     //These two functions rip the value of digits from their respective spots
     //Not sure where in the Integer where we'll store the ID and orientation but we'll need these anyway
     private Integer findID(Integer JSONValue) {
@@ -94,6 +113,12 @@ public class TankTile extends BlankTile {
         return Integer.parseInt(String.copyValueOf(digits1, 1, 3));
 
     }
+
+    /**
+     *
+     * @param JSONValue value
+     * @return orientation
+     */
     //Clockwise (0 up, 1 right, 2 down, 3 is left)
     private Integer findOrientation(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
