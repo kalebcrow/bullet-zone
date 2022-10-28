@@ -136,7 +136,8 @@ public final class Game {
         }
 
         //go to the back of the list (oldest events)
-        current = update.listIterator(eventHistory.size());
+        current = update.listIterator(eventHistory.size()-1);
+        current.next();
         long cutOff = System.currentTimeMillis() - 120000; // set a cutoff of 2 min behind current time
         while(current.hasPrevious()){
             gridEvent = current.previous();

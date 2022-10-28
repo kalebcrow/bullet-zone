@@ -8,17 +8,33 @@ import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
-public class TurnCommand extends GridEvent {
+public class TurnEvent extends GridEvent {
 
     public Integer tankID;
-    public Integer direction;
+    public byte direction;
+
+    public Integer getTankID() {
+        return tankID;
+    }
+
+    public void setTankID(Integer tankID) {
+        this.tankID = tankID;
+    }
+
+    public byte getDirection() {
+        return direction;
+    }
+
+    public void setDirection(byte direction) {
+        this.direction = direction;
+    }
 
     /**
      *
      * @param tankID tank turning
      * @param direction direction it turns to
      */
-    TurnCommand(Integer tankID, Integer direction) {
+    TurnEvent(Integer tankID, byte direction) {
         this.tankID = tankID;
         this.direction = direction;
     }
@@ -30,7 +46,7 @@ public class TurnCommand extends GridEvent {
     @Override
     public void execute() {
         TankTile tile = TankList.getTankList().getLocation(tankID);
-        tile.setOrientation(direction);
+        tile.setOrientation((int) direction);
 
         busProvider.getEventBus().post(new TileUpdateEvent(tile.location, tile));
     }
