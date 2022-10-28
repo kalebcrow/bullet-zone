@@ -85,6 +85,11 @@ public class ClientActivity extends Activity {
      */
     private boolean loggedIn = false;
 
+    /**
+     * Creates the instance, and starts the shake service.
+     *
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,7 +224,9 @@ public class ClientActivity extends Activity {
     }
 
 
-
+    /**
+     * On leave button click will ask user if they want to leave the game.
+     */
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
@@ -261,6 +268,9 @@ public class ClientActivity extends Activity {
         });
     }
 
+    /**
+     * On login button click, prompts user to login with new auth activity.
+     */
     @Click(R.id.buttonLogin)
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
@@ -302,6 +312,11 @@ public class ClientActivity extends Activity {
         Log.d("MESSAGE", message);
     }
 
+    /**
+     * Allows user to leave async and will confirm leave before allowing it.
+     *
+     * @param tankId
+     */
     @Background
     void leaveAsync(long tankId) {
         String message = "leaveAsync() called, tank ID: "+tankId;
