@@ -20,6 +20,9 @@ public class MoveBulletEvent extends ExecutableEvent {
     public void execute(BusProvider busProvider) {
 
         BulletTile tile = BulletList.getBulletList().getBulletTile(ID);
+        if (tile == null) {
+            return;
+        }
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 

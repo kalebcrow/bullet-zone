@@ -22,6 +22,10 @@ public class TurnEvent extends ExecutableEvent {
      */
     public void execute(BusProvider busProvider) {
         TankTile tile = TankList.getTankList().getLocation(ID);
+        if (tile == null) {
+            return;
+        }
+
         tile.setOrientation((int) direction);
 
         busProvider.getEventBus().post(new TileUpdateEvent(tile.location, tile));
