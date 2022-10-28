@@ -8,17 +8,22 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
+import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
+import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
+import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,22 +61,24 @@ public class GamesControllerTest {
     @Test
     public void testJoinGame() throws Exception {
         //joins game and returns tank id
-        mockMvc.perform(post("/games").with(remoteAddr("100.20.10.0"))).andExpect(status().isCreated());
+        mockMvc.perform(post("/games").with(remoteAddr("100.0.0.0"))).andExpect(status().isCreated());
     }
 
-    @Test
+    @Test(expected = TankDoesNotExistException.class)
     public void testLeaveGame() throws Exception {
         //tests leave when tank is not present
         mockMvc.perform(delete("/0/leave")).andExpect(status().isNotFound());
-        //adds tank
-        mockMvc.perform(post("/games").with(remoteAddr("100.20.10.0")));
-        //checks tank was deleted
-        mockMvc.perform(delete("/{id}/leave",0)).andExpect(status().isOk());
+        request = new MockHttpServletRequest();
+        request.setRemoteAddr("100.0.0.0");
+        repo = new InMemoryGameRepository();
+        gamesController = new GamesController(repo);
+        ResponseEntity<LongWrapper> l = gamesController.join(request);
+        //Leave game
+        gamesController.leave(0);
+        //test that tank does not exist
+        gamesController.leave(0);
+        //mockMvc.perform(delete("/{id}/leave",)).andExpect(status().isOk());
     }
-    /*
-    @Test
-    public void test
-    */
 
     private static RequestPostProcessor remoteAddr(final String remoteAddr) { // it's nice to extract into a helper
         return new RequestPostProcessor() {
