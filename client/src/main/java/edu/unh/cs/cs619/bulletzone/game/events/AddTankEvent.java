@@ -8,35 +8,6 @@ import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class AddTankEvent extends ExecutableEvent {
 
-    private int row;
-    private int col;
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    public Long getTankID() {
-        return tankID;
-    }
-
-    public void setTankID(Long tankID) {
-        this.tankID = tankID;
-    }
-
-    private Long tankID;
-
     public AddTankEvent(GridEvent event) {
         super(event);
     }
@@ -47,8 +18,8 @@ public class AddTankEvent extends ExecutableEvent {
      */
     @Override
     public void execute(BusProvider busProvider) {
-        Integer location = col * 16 + row;
+        Integer location = pos - 1;
         Integer orientation = 0;
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new TankTile(Math.toIntExact(tankID), location, orientation)));
+        busProvider.getEventBus().post(new TileUpdateEvent(location, new TankTile(ID, location, orientation)));
     }
 }

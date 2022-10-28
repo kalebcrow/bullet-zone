@@ -20,6 +20,9 @@ public class MoveTankEvent extends ExecutableEvent {
     public void execute(BusProvider busProvider) {
 
         TankTile tile = TankList.getTankList().getLocation(ID);
+        if (tile == null) {
+            return;
+        }
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 

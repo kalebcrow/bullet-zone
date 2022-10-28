@@ -14,7 +14,7 @@ public class EventWrapper implements Serializable {
         this.update = update;
         this.timeStamp = System.currentTimeMillis();
         if (update.size() != 0) {
-            this.timeStamp = update.getFirst().getTime();
+            this.timeStamp = update.getLast().getTime();
         }
     }
 

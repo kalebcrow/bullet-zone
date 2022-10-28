@@ -20,13 +20,14 @@ public class FireEvent extends ExecutableEvent {
      */
     public void execute(BusProvider busProvider) {
         TankTile tile = TankList.getTankList().getLocation(ID/10);
+
+        if (tile == null) {
+            return;
+        }
+
         Integer orientation = tile.getOrientation();
 
         Integer location = tile.getLocation();
-
-        Log.d("hmm", location.toString());
-        Log.d("hmm", "direction " + direction);
-
 
         if (orientation == 0) {
             location = goingUp(location);

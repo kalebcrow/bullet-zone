@@ -19,6 +19,11 @@ public class DestroyTankEvent extends ExecutableEvent{
      */
     public void execute(BusProvider busProvider) {
         TankTile tile =TankList.getTankList().getLocation(ID);
+
+        if (tile == null) {
+            return;
+        }
+
         busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
         TankList.getTankList().remove(ID);
     }

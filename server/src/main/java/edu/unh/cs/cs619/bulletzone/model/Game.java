@@ -125,16 +125,36 @@ public final class Game {
 
         // initiate the update list, iterator, GridEvent placeholder
         LinkedList<GridEvent> update = new LinkedList<>();
-        ListIterator<GridEvent> current = eventHistory.listIterator(0);
         GridEvent gridEvent;
 
         // check that the list has the next node
-        while(current.hasNext()){
-            gridEvent = current.next();
+        for (int i = 0; i < eventHistory.size(); i++) {
+            gridEvent = eventHistory.get(i);
             if(gridEvent.getTime() <= time) break; // break if event's time is less recent than time given
             update.addFirst(gridEvent); // otherwise put it at the front of the list
         }
 
+<<<<<<< HEAD
+=======
+        //go to the back of the list (oldest events)
+
+        long cutOff = System.currentTimeMillis() - 120000;
+        // set a cutoff of 2 min behind current time
+        for (int index = eventHistory.size() - 1; index > 0; index--) {
+            if (eventHistory.get(index).getTime() <= cutOff) {
+                eventHistory.remove(index);
+            }
+        }
+        /*
+        current = eventHistory.listIterator(eventHistory.size());
+        long cutOff = System.currentTimeMillis() - 120000; // set a cutoff of 2 min behind current time
+        while(current.hasPrevious()){
+            gridEvent = current.previous();
+            if(gridEvent.getTime() > cutOff) break; // break if event's time is more recent than cutoff
+            eventHistory.removeLast(); // otherwise remove it
+        }
+        */
+>>>>>>> f4ebc198253fcf94c5e7e697c97c2956b86b132b
 
         return update;
     }
