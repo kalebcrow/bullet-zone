@@ -1,17 +1,39 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
+package edu.unh.cs.cs619.bulletzone.game.events;
 
 
+import java.io.Serializable;
 
-public abstract class GridEvent {
 
-    //Time of event which is needed for getting the right events for the client
+public class GridEvent implements Serializable {
+
     protected Long time;
-    //type of event
     protected String type;
+    protected Integer ID;
+    protected byte direction;
+    protected int pos;
 
+    public Integer getID() {
+        return ID;
+    }
 
-    public Long getTime(){
-        return this.time;
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    public byte getDirection() {
+        return direction;
+    }
+
+    public void setDirection(byte direction) {
+        this.direction = direction;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 
     public void setTime(Long time) {
@@ -25,4 +47,10 @@ public abstract class GridEvent {
     public void setType(String type) {
         this.type = type;
     }
+
+    public Long getTime(){
+        return this.time;
+    }
+
+
 }

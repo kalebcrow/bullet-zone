@@ -3,22 +3,21 @@ package edu.unh.cs.cs619.bulletzone.util;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 
-public class EventWrapper implements Serializable {
-    private LinkedList<GridEvent> update;
+public class EventWrapper<T> implements Serializable {
+
+    private LinkedList<T> update;
     private Long timeStamp;
 
-    public EventWrapper(LinkedList<GridEvent> update) {
+    public EventWrapper(LinkedList<T> update) {
         this.update = update;
-        this.timeStamp = update.getFirst().getTime();
+        this.timeStamp = System.currentTimeMillis();
     }
 
-    public EventWrapper(){
+    public EventWrapper(){}
 
-    }
 
-    public LinkedList<GridEvent> getUpdate() {
+    public LinkedList<T> getUpdate() {
         return update;
     }
 
@@ -26,7 +25,7 @@ public class EventWrapper implements Serializable {
         return timeStamp;
     }
 
-    public void setUpdate(LinkedList<GridEvent> update) {
+    public void setUpdate(LinkedList<T> update) {
         this.update = update;
     }
 
