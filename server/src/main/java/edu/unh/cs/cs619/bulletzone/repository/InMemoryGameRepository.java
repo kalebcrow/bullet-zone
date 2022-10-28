@@ -302,7 +302,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 else if ( nextField.getEntity() instanceof  Wall){
                                     Wall w = (Wall) nextField.getEntity();
                                     if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
-                                        game.addEvent(new DestroyWallEvent(w.getPos()/FIELD_DIM, w.getPos()%FIELD_DIM));
+                                        game.addEvent(new DestroyWallEvent(w.getPos()+1));
                                         game.getHolderGrid().get(w.getPos()).clearField();
                                     }
                                 }
