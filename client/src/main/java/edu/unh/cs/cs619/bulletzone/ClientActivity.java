@@ -76,11 +76,6 @@ public class ClientActivity extends Activity {
     //private long tankId = -1;
 
     /**
-     * User logged in status
-     */
-    private boolean loggedIn = false;
-
-    /**
      * Creates the instance, and starts the shake service.
      *
      * @param savedInstanceState the saved instance state
@@ -316,7 +311,6 @@ public class ClientActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 setGarageTextView(data);
-                loggedIn = true;
             }
         }
     }
