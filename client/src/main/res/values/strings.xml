@@ -12,5 +12,7 @@
     <string name="leave">LEAVE</string>
     <string name="title_activity_my">MyActivity</string>
     <string name="griditem">GridItem</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
 
 </resources>

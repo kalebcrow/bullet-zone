@@ -11,6 +11,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.androidannotations.rest.spring.annotations.RestService;
+
+import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
+
 //implementation from: https://demonuts.com/android-shake-detection/
 public class ShakeService extends Service implements SensorEventListener {
 
@@ -20,11 +25,20 @@ public class ShakeService extends Service implements SensorEventListener {
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
 
+    static TankController tankController;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    /**
+     * omStartCommand: Sets up accelerometer sensor and sensor manager
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -33,6 +47,11 @@ public class ShakeService extends Service implements SensorEventListener {
         return START_STICKY;
     }
 
+    /**
+     * onSensorEventChanged: Calculates the magnitude of any sensorEvent and determines
+     * if it is enough to cause a fire event to be sent via the rest client
+     * @param sensorEvent
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         float x = sensorEvent.values[0];
@@ -45,18 +64,29 @@ public class ShakeService extends Service implements SensorEventListener {
 
         if (mAccel > 11) {
 
-            //Log.d("ShakeService", "SHAKE DETECTED!");
-
+            Log.d("ShakeService", "SHAKE DETECTED!");
+            tankController.fire();
 
         }
     }
 
+    /**
+     * onAccuracyChanged: Not required for this implementation
+     * @param sensor
+     * @param accuracy
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //no need to implement for sensor like this
     }
 
-
-
+    /**
+     * setTankContronller: Gives ShakeService access to the client TankController to enable
+     * the REST fire message to be triggered by the shake of the device.
+     * @param newTankController
+     */
+    public static void setTankController(TankController newTankController){
+        tankController = newTankController;
+    }
 
 }
