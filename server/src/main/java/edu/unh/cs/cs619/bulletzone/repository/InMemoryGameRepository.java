@@ -155,6 +155,10 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
+            if (tank.getLife() == 0) {
+                return false;
+            }
+
             long millis = System.currentTimeMillis();
             if(millis < tank.getLastMoveTime())
                 return false;
