@@ -50,6 +50,11 @@ public class InMemoryGameRepository implements GameRepository {
     //private int bulletDelay[]={500,1000,1500};
     private int trackActiveBullets[]={0,0};
 
+    /**
+     * Allows a new tank to join the game
+     * @param ip holds players ip string from join request
+     * @return A new player tank
+     */
     @Override
     public Tank join(String ip) {
         synchronized (this.monitor) {
@@ -89,6 +94,10 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Returns games current board
+     * @return returns the current games grid in a 2d array
+     */
     @Override
     public int[][] getGrid() {
         synchronized (this.monitor) {
@@ -99,6 +108,15 @@ public class InMemoryGameRepository implements GameRepository {
         return game.getGrid2D();
     }
 
+    /**
+     * Allows turning of the tank
+     * @param tankId id number of tank for turn
+     * @param direction direction in which the tank will turn
+     * @return a boolean describing if the tank moves or not
+     * @throws TankDoesNotExistException if turning tank does not exist
+     * @throws IllegalTransitionException if turning tank tries to move more than 90 degrees
+     * @throws LimitExceededException if tank tries to turn faster than allowed
+     */
     @Override
     public boolean turn(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
@@ -129,6 +147,15 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Allows movement of a tank
+     * @param tankId moving tank's id
+     * @param direction direction in which the tank will move
+     * @return a boolean for whether or not tank moves
+     * @throws TankDoesNotExistException throws if moving tank does not exist
+     * @throws IllegalTransitionException throws if moving faster than allowed
+     * @throws LimitExceededException throws if moving faster than allowed
+     */
     @Override
     public boolean move(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
@@ -175,6 +202,14 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Allows for firing of a bullet from the tank.
+     * @param tankId tank's id for firing
+     * @param bulletType bullet type that is fired
+     * @return boolean for if the bullet is fired or not
+     * @throws TankDoesNotExistException throws if tank does not exist
+     * @throws LimitExceededException throws if trying to fire more than allowed
+     */
     @Override
     public boolean fire(long tankId, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
@@ -278,6 +313,11 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Allows removal of the tank from the game
+     * @param tankId id of the tank that is being removed
+     * @throws TankDoesNotExistException throws if the specified tank does not exist
+     */
     @Override
     public void leave(long tankId)
             throws TankDoesNotExistException {
@@ -295,6 +335,9 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Creates a new game and generates a new board.
+     */
     public void create() {
         if (game != null) {
             return;
@@ -306,7 +349,10 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
-
+    /**
+     * Returns the current game
+     * @return current active game
+     */
     @Override
     public Game getGame() {
         return game;

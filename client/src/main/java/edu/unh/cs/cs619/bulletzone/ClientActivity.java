@@ -110,7 +110,9 @@ public class ClientActivity extends Activity {
         }
     };
 
-
+    /**
+     * afterViewInjection: Sets up REST client and links gridview to gridAdapter
+     */
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
@@ -118,12 +120,19 @@ public class ClientActivity extends Activity {
         tankController.setRestClient(restClient);
     }
 
+    /**
+     * afterInject: Registers gridEventHandler to evenBus and
+     * sets an errorHandler for REST client
+     */
     @AfterInject
     void afterInject() {
         restClient.setRestErrorHandler(bzRestErrorhandler);
         busProvider.getEventBus().register(gridEventHandler);
     }
 
+    /**
+     * joinAysnc: Sends the join request to server and saves returning tankID
+     */
     @Background
     void joinAsync() {
         try {
@@ -135,12 +144,21 @@ public class ClientActivity extends Activity {
         }
     }
 
+    /**
+     * updateGrid: Updates the local grid using grid from
+     * argument gridWrapper
+     * @param gw
+     */
     public void updateGrid(GridWrapper gw) {
         boardView.setUsingJSON(gw.getGrid());
         mGridAdapter.updateList(boardView.getTiles());
         boardView.setGridAdapter(mGridAdapter);
     }
 
+    /**
+     * onButtonMove: Processes User movement requests
+     * @param view
+     */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
         final int viewId = view.getId();
@@ -166,16 +184,29 @@ public class ClientActivity extends Activity {
         tankController.move(direction);
     }
 
+    /**
+     * moveAsync: Background movement request
+     * @param tankId
+     * @param direction
+     */
     @Background
     void moveAsync(long tankId, byte direction) {
         restClient.move(tankId, direction);
     }
 
+    /**
+     * turnAsync: Background turn request
+     * @param tankId
+     * @param direction
+     */
     @Background
     void turnAsync(long tankId, byte direction) {
         restClient.turn(tankId, direction);
     }
 
+    /**
+     * startGame: Initializes view when join game is selected
+     */
     @Click(R.id.buttonJoin)
     void startGame() {
         afterViewInjection();
@@ -200,17 +231,28 @@ public class ClientActivity extends Activity {
         //gridPollTask.doPoll();
     }
 
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
         afterViewInjection();
     }
 
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
         restClient.fire(tankId);
     }
 
+    /**
+     * leaveGame: User-triggered leaveGame request via buttion that sends
+     * via REST
+     */
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
@@ -219,6 +261,9 @@ public class ClientActivity extends Activity {
         restClient.leave(tankId);
     }
 
+    /**
+     * login: Opens login activity via "login" button press
+     */
     @Click(R.id.buttonLogin)
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
@@ -259,6 +304,11 @@ public class ClientActivity extends Activity {
         Log.d("MESSAGE", message);
     }
 
+    /**
+     * leaveAsync: Sends background leave game request for client, to
+     * server.
+     * @param tankId
+     */
     @Background
     void leaveAsync(long tankId) {
         System.out.println("Leave called, tank ID: " + tankId);
