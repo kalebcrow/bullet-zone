@@ -10,7 +10,14 @@ import org.androidannotations.annotations.UiThread;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.ExecutableEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.MoveBulletEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
@@ -64,6 +71,36 @@ public class CommandInterpreter {
 
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
+            interpret(currEvent).execute();
+
         }
     }
+
+     private ExecutableEvent interpret(GridEvent currEvent) {
+         ExecutableEvent event;
+        switch (currEvent.getType()) {
+             case "moveTank":
+                 event = new MoveTankEvent(currEvent);
+                 break;
+             case "moveBullet":
+                 event = new MoveBulletEvent(currEvent);
+                 break;
+             case "destroyTank":
+                 event = new DestroyTankEvent(currEvent);
+                 break;
+             case "destroyWall":
+                 event = new DestroyWallEvent(currEvent);
+                 break;
+             case "fire":
+                 event = new FireEvent(currEvent);
+                 break;
+             case "turnEvent":
+                 event = new TurnEvent(currEvent);
+                 break;
+            default:
+                event = new ExecutableEvent(currEvent);
+         }
+
+        return event;
+     }
 }

@@ -5,56 +5,30 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class MoveTankEvent extends GridEvent {
+public class MoveTankEvent extends ExecutableEvent {
 
-    public Integer tankID;
-    public Boolean forward;
-
-    /**
-     *
-     * @param tankID Tank being moved
-     * @param forward Forward or back
-     */
-    MoveTankEvent(Integer tankID, Boolean forward) {
-        this.tankID = tankID;
-        this.forward = forward;
+    public MoveTankEvent(GridEvent event) {
+        super(event);
     }
 
     /**
      * Execution of event
      */
-    @Override
     public void execute() {
 
-        TankTile tile = TankList.getTankList().getLocation(tankID);
+        TankTile tile = TankList.getTankList().getLocation(ID);
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 
 
         if (tile.getOrientation() == 0) {
-            if (forward) {
-                location = goingUp(location);
-            } else {
-                location = goingDown(location);
-            }
+            location = goingUp(location);
         } else if (tile.getOrientation() == 2) {
-            if (forward) {
-                location = goingRight(location);
-            } else {
-                location = goingLeft(location);
-            }
+            location = goingLeft(location);
         } else if (tile.getOrientation() == 4) {
-            if (forward) {
-                location = goingDown(location);
-            } else {
-                location = goingUp(location);
-            }
+            location = goingDown(location);
         } else if (tile.getOrientation() == 6) {
-            if (forward) {
-                location = goingLeft(location);
-            } else {
-                location = goingRight(location);
-            }
+            location = goingLeft(location);
         }
         tile.setLocation(location);
 

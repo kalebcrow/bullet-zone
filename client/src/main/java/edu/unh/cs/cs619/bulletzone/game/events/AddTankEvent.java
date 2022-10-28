@@ -5,7 +5,7 @@ import org.androidannotations.annotations.UiThread;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class AddTankEvent extends GridEvent {
+public class AddTankEvent extends ExecutableEvent {
 
     private int row;
     private int col;
@@ -36,19 +36,10 @@ public class AddTankEvent extends GridEvent {
 
     private Long tankID;
 
-    /**
-     *
-     * @param row the row
-     * @param col coloumn
-     * @param tankID ID of tank being added
-     */
-    public AddTankEvent(int row, int col, Long tankID) {
-        this.row = row;
-        this.col = col;
-        this.tankID = tankID;
-        this.type = "addTank";
-        this.time = System.currentTimeMillis();
+    public AddTankEvent(GridEvent event) {
+        super(event);
     }
+
 
     /**
      * runs the command updating the board
