@@ -65,11 +65,6 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
-    @RestService
-    BulletZoneRestClient restClient;
-
-    @Bean
-    BZRestErrorhandler bzRestErrorhandler;
 
     @Bean
     BoardView boardView;
@@ -78,7 +73,7 @@ public class ClientActivity extends Activity {
     /**
      * Remote tank identifier
      */
-    private long tankId = -1;
+    //private long tankId = -1;
 
     /**
      * User logged in status
@@ -93,9 +88,7 @@ public class ClientActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Shake implementation from: https://demonuts.com/android-shake-detection/
-        Intent intent = new Intent(this, ShakeService.class);
-        startService(intent);
+        tankController.passContext(this);
     }
 
     @Override
@@ -129,7 +122,7 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        tankController.setRestClient(restClient);
+        //tankController.setRestClient(restClient);
     }
 
     /**
@@ -138,22 +131,17 @@ public class ClientActivity extends Activity {
      */
     @AfterInject
     void afterInject() {
-        restClient.setRestErrorHandler(bzRestErrorhandler);
+        tankController.afterInject();
         busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
-     * joinAysnc: Sends the join request to server and saves returning tankID
+     * joinAsync: Sends the join request to server and saves returning tankID
      */
     @Background
     void joinAsync() {
-        try {
-            tankId = restClient.join().getResult();
-            tankController.setTankID(tankId);
-
-            gridPollTask.doPoll();
-        } catch (Exception e) {
-        }
+        tankController.joinGame();
+        gridPollTask.doPoll();
     }
 
     /**
@@ -198,22 +186,20 @@ public class ClientActivity extends Activity {
 
     /**
      * moveAsync: Background movement request
-     * @param tankId
      * @param direction
      */
     @Background
-    void moveAsync(long tankId, byte direction) {
-        restClient.move(tankId, direction);
+    void moveAsync(byte direction) {
+        tankController.move(direction);
     }
 
     /**
      * turnAsync: Background turn request
-     * @param tankId
      * @param direction
      */
     @Background
-    void turnAsync(long tankId, byte direction) {
-        restClient.turn(tankId, direction);
+    void turnAsync(byte direction) {
+        tankController.move(direction);
     }
 
     /**
@@ -258,17 +244,18 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
-        restClient.fire(tankId);
+        //restClient.fire(tankId);
+        tankController.fire();
     }
 
     /**
-     * leaveGame: User-triggered leaveGame request via buttion that sends
+     * leaveGame: User-triggered leaveGame request via button that sends
      * via REST
      */
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
-        String message = "leaveGame() called, tank ID: "+tankId;
+        String message = "leaveGame() called";
 
         // ensures user wants to leave the game before leaving the game
         leaveDialog(message);
@@ -284,9 +271,10 @@ public class ClientActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                System.out.println("leaveGame() called, tank ID: "+tankId);
+                //System.out.println("leaveGame() called, tank ID: "+tankId);
                 BackgroundExecutor.cancelAll("grid_poller_task", true);
-                restClient.leave(tankId);
+                //restClient.leave(tankId);
+                tankController.leaveGame();
             }
         });
         builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
