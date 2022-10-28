@@ -123,6 +123,10 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
+            if (tank.getLife() == 0) {
+                return false;
+            }
+
             long millis = System.currentTimeMillis();
             if(millis < tank.getLastMoveTime())
                 return false;
@@ -206,6 +210,10 @@ public class InMemoryGameRepository implements GameRepository {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
                 //return false;
                 throw new TankDoesNotExistException(tankId);
+            }
+
+            if (tank.getLife() == 0) {
+                return false;
             }
 
             if(tank.getNumberOfBullets() >= tank.getAllowedNumberOfBullets())

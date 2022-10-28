@@ -39,8 +39,8 @@ public class GridPollerTask {
             EventWrapper hw = restClient.event(timestamp);
             timestamp = hw.getTimeStamp();
             onCommandHistoryUpdate(hw);
-            // poll server every 100ms
-            SystemClock.sleep(100);
+            // poll server every 500ms
+            SystemClock.sleep(500);
         }
     }
 
