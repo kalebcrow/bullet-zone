@@ -92,7 +92,6 @@ public class TankController {
     public void joinGame(){
         try {
             tankID = restClient.join().getResult();
-            Log.d("Tank Controller", "Game Joined, tankID acquired. Tank ID: " + tankID);
         } catch (Exception e) {
 
         }
@@ -101,7 +100,6 @@ public class TankController {
 
     @Background
     public void fire(){
-        Log.d("TankController", "Fire!");
         restClient.fire(tankID);
     }
 
