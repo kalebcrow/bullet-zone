@@ -120,7 +120,7 @@ public final class Game {
     }
 
 
-    // gets events more recent than the time given and cleans up history that is too old
+    // gets events more recent than the time given
     public LinkedList<GridEvent> getEvents(Long time){
 
         // initiate the update list, iterator, GridEvent placeholder
@@ -134,6 +134,8 @@ public final class Game {
             update.addFirst(gridEvent); // otherwise put it at the front of the list
         }
 
+<<<<<<< HEAD
+=======
         //go to the back of the list (oldest events)
 
         long cutOff = System.currentTimeMillis() - 120000;
@@ -152,6 +154,7 @@ public final class Game {
             eventHistory.removeLast(); // otherwise remove it
         }
         */
+>>>>>>> f4ebc198253fcf94c5e7e697c97c2956b86b132b
 
         return update;
     }
