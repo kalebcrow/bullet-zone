@@ -77,7 +77,7 @@ public class BulletTile extends BlankTile {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
         String id = String.copyValueOf(digits1, 1, 3);
-        id += String.copyValueOf(digits1, 6, 6);
+        id += String.copyValueOf(digits1, 6, 1);
         return Integer.valueOf(id);
 
     }

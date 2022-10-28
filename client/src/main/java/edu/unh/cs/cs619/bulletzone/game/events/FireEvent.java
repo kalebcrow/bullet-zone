@@ -24,10 +24,6 @@ public class FireEvent extends ExecutableEvent {
 
         Integer location = tile.getLocation();
 
-        Log.d("hmm", location.toString());
-        Log.d("hmm", "direction " + direction);
-
-
         if (orientation == 0) {
             location = goingUp(location);
         } else if (orientation == 2) {
