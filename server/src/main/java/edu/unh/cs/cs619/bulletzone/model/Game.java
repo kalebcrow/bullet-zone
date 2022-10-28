@@ -136,14 +136,22 @@ public final class Game {
         }
 
         //go to the back of the list (oldest events)
-        current = update.listIterator(eventHistory.size()-1);
-        current.next();
+
+        long cutOff = System.currentTimeMillis() - 120000;
+        int index = eventHistory.size()-1;// set a cutoff of 2 min behind current time
+        while(eventHistory.get(index).getTime() <= cutOff){
+            eventHistory.remove(index);
+            index--;
+        }
+        /*
+        current = eventHistory.listIterator(eventHistory.size());
         long cutOff = System.currentTimeMillis() - 120000; // set a cutoff of 2 min behind current time
         while(current.hasPrevious()){
             gridEvent = current.previous();
             if(gridEvent.getTime() > cutOff) break; // break if event's time is more recent than cutoff
             eventHistory.removeLast(); // otherwise remove it
         }
+        */
 
         return update;
     }
