@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.model.events;
 
+import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+
 public class AddTankEvent extends GridEvent {
 
     private int row;

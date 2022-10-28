@@ -8,9 +8,9 @@ public class GridEvent implements Serializable {
 
     protected Long time;
     protected String type;
-    protected Integer ID;
-    protected byte direction;
-    protected int pos;
+    protected Integer ID = -1;
+    protected byte direction = -1;
+    protected int pos = -1;
 
     public Integer getID() {
         return ID;
