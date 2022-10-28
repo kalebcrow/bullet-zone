@@ -239,10 +239,10 @@ public class InMemoryGameRepository implements GameRepository {
             // This should be only a one way reference.
             bullet.setParent(parent);
             bullet.setBulletId(bulletId);
-            game.addEvent(new FireEvent(tankId, bulletId, toByte(direction)));
             // TODO make it nicer
             int finalBulletId = bulletId;
             final Long finalTankID = tank.getId();
+            boolean fireIndicator = true;
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -289,7 +289,8 @@ public class InMemoryGameRepository implements GameRepository {
 
                         } else {
                             if (isVisible) {
-                                game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
+                                if(fireIndicator) game.addEvent(new FireEvent(finalTankID, finalBulletId, toByte(direction)));
+                                else game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
                                 // Remove bullet from field
                                 currentField.clearField();
                             }
@@ -318,8 +319,8 @@ public class InMemoryGameRepository implements GameRepository {
             Tank tank = game.getTanks().get(tankId);
             FieldHolder parent = tank.getParent();
             parent.clearField();
-            game.removeTank(tankId);
             game.addEvent(new DestroyTankEvent(tank.getId()));
+            game.removeTank(tankId);
         }
     }
 
