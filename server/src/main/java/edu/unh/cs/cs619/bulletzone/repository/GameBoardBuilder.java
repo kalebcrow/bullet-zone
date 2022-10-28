@@ -20,7 +20,9 @@ public class GameBoardBuilder {
     }
 
 
-    //From InGameRepository Used to create a game is one isn't already created
+    /**
+     * Creates a new board from specified game returns if no current game
+     */
     public void create() {
             if(game == null) {
                 return;
@@ -66,8 +68,10 @@ public class GameBoardBuilder {
             game.getHolderGrid().get(73).setFieldEntity(new Wall());
     }
 
-    //Creates the gameboard either called within the create() function in this class or can be called on an existing game.
-    //Not sure whether or not to make this the only function in the Builder because milestone one only claims to make the gameboard
+    /**
+     * Creates a 16*16 grid.
+     * @param game specified game to create board for
+     */
     private void createFieldHolderGrid(Game game) {
         synchronized (this.monitor) {
             game.getHolderGrid().clear();
