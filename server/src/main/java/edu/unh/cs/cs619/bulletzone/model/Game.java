@@ -135,7 +135,7 @@ public final class Game {
         }
         //go to the back of the list (oldest events)
 
-        long cutOff = System.currentTimeMillis() - 120000;
+        long cutOff = System.currentTimeMillis()-120000;
         // set a cutoff of 2 min behind current time
         for (int index = eventHistory.size() - 1; index > 0; index--) {
             if (eventHistory.get(index).getTime() <= cutOff) {
