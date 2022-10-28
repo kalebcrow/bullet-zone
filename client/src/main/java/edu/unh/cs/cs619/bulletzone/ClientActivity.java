@@ -1,6 +1,8 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -78,6 +80,16 @@ public class ClientActivity extends Activity {
      */
     private long tankId = -1;
 
+    /**
+     * User logged in status
+     */
+    private boolean loggedIn = false;
+
+    /**
+     * Creates the instance, and starts the shake service.
+     *
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,9 +268,42 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
-        System.out.println("leaveGame() called, tank ID: "+tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveGame() called, tank ID: "+tankId;
+
+        // ensures user wants to leave the game before leaving the game
+        leaveDialog(message);
+    }
+
+    /**
+     * Check user wants to leave the game
+     *
+     * @param message
+     */
+    private void leaveDialog(String message) {
+        // build the alertdialog with yes and no buttons
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                System.out.println("leaveGame() called, tank ID: "+tankId);
+                BackgroundExecutor.cancelAll("grid_poller_task", true);
+                restClient.leave(tankId);
+            }
+        });
+        builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                System.out.println("leaveGame() cancelled");
+            }
+        });
+
+        // Create the alertdialog
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog dialog = builder.create();
+                dialog.setMessage("Are you sure you want to leave the game?");
+                dialog.show();
+            }
+        });
     }
 
     /**
@@ -283,6 +328,7 @@ public class ClientActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 setGarageTextView(data);
+                loggedIn = true;
             }
         }
     }
@@ -311,8 +357,9 @@ public class ClientActivity extends Activity {
      */
     @Background
     void leaveAsync(long tankId) {
-        System.out.println("Leave called, tank ID: " + tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveAsync() called, tank ID: "+tankId;
+
+        // ensures user wants to leave before leaving
+        leaveDialog(message);
     }
 }
