@@ -41,6 +41,11 @@ public class MoveTankEvent extends ExecutableEvent {
         busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return ending location
+     */
     private Integer goingUp(Integer location) {
         if (location <= 15) {
             location = 240 + location;
@@ -50,6 +55,11 @@ public class MoveTankEvent extends ExecutableEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return ending location
+     */
     private Integer goingDown(Integer location) {
         if (location >= 240) {
             location = location - 240;
@@ -59,6 +69,11 @@ public class MoveTankEvent extends ExecutableEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return ending location
+     */
     private Integer goingRight(Integer location) {
         if ((location + 1) % 16 == 0) {
             location = location - 15;
@@ -68,6 +83,11 @@ public class MoveTankEvent extends ExecutableEvent {
         return location;
     }
 
+    /**
+     *
+     * @param location starting location
+     * @return ending location
+     */
     private Integer goingLeft(Integer location) {
         if (location % 16 == 0) {
             location = location + 15;

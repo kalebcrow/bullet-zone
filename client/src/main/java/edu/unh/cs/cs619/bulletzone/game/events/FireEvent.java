@@ -45,7 +45,7 @@ public class FireEvent extends ExecutableEvent {
     /**
      *
      * @param location starting location
-     * @return
+     * @return ending location
      */
     private Integer goingUp(Integer location) {
         if (location <= 15) {
@@ -59,7 +59,7 @@ public class FireEvent extends ExecutableEvent {
     /**
      *
      * @param location starting location
-     * @return
+     * @return ending location
      */
     private Integer goingDown(Integer location) {
         if (location >= 240) {
@@ -73,7 +73,7 @@ public class FireEvent extends ExecutableEvent {
     /**
      *
      * @param location starting location
-     * @return
+     * @return ending location
      */
     private Integer goingRight(Integer location) {
         if (location % 15 == 0 && location != 0) {
@@ -87,7 +87,7 @@ public class FireEvent extends ExecutableEvent {
     /**
      *
      * @param location starting location
-     * @return
+     * @return ending location
      */
     private Integer goingLeft(Integer location) {
         if (location % 16 == 0) {
