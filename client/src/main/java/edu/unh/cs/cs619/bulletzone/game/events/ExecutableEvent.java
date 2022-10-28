@@ -1,9 +1,17 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import java.io.Serializable;
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 
+public class ExecutableEvent {
+    BusProvider busProvider;
 
-public class GridEvent implements Serializable {
+    public ExecutableEvent(GridEvent gridEvent) {
+        time = gridEvent.getTime();
+        type = gridEvent.getType();
+        ID = gridEvent.getID();
+        direction = gridEvent.getDirection();
+        pos = gridEvent.getPos();
+    }
 
     protected Long time;
     protected String type;
@@ -51,5 +59,9 @@ public class GridEvent implements Serializable {
         return this.time;
     }
 
+
+    public void execute() {
+
+    }
 
 }

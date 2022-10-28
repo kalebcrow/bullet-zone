@@ -7,7 +7,7 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class DestroyTankEvent extends GridEvent{
+public class DestroyTankEvent extends ExecutableEvent{
 
     private Long destroyedTankID;
 
@@ -38,24 +38,13 @@ public class DestroyTankEvent extends GridEvent{
     private Long destroyerTankID;
     private int bulletID;
 
-    /**
-     *
-     * @param destroyedTankID the tank being destroyed
-     * @param destroyerTankID the tank doing the destroying
-     * @param bulletID the bullet that is doing the destroying
-     */
-    public DestroyTankEvent(Long destroyedTankID, Long destroyerTankID, int bulletID) {
-        this.destroyedTankID = destroyedTankID;
-        this.destroyerTankID = destroyerTankID;
-        this.bulletID = bulletID;
-        this.type = "destroyTank";
-        this.time = System.currentTimeMillis();
+    public DestroyTankEvent(GridEvent event) {
+        super(event);
     }
 
     /**
      * runs the command updating the board
      */
-    @Override
     public void execute() {
         TankTile tile =TankList.getTankList().getLocation(Math.toIntExact(destroyedTankID));
         busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation() )));

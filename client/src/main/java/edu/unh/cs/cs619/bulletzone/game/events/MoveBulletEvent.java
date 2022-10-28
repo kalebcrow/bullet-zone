@@ -5,33 +5,18 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class MoveBulletEvent extends GridEvent {
+public class MoveBulletEvent extends ExecutableEvent {
 
-    private Long tankID;
-    private int bulletID;
-    private int direction;
-
-    /**
-     * Constructor
-     * @param tankID tankID
-     * @param bulletID bulletID
-     * @param direction where it's going lmao
-     */
-    public MoveBulletEvent(Long tankID, int bulletID, int direction) {
-        this.tankID = tankID;
-        this.bulletID = bulletID;
-        this.direction = direction;
-        this.type = "moveBullet";
-        this.time = System.currentTimeMillis();
+    public MoveBulletEvent(GridEvent event) {
+        super(event);
     }
 
     /**
      * updates the board
      */
-    @Override
     public void execute() {
 
-        BulletTile tile = BulletList.getBulletList().getBulletTile(Math.toIntExact(tankID));
+        BulletTile tile = BulletList.getBulletList().getBulletTile(Math.toIntExact(ID));
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 

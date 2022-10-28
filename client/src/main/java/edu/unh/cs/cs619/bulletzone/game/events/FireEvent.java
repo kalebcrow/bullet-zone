@@ -6,55 +6,17 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class FireEvent extends GridEvent {
-    private Long tankID;
+public class FireEvent extends ExecutableEvent {
 
-    public Long getTankID() {
-        return tankID;
-    }
-
-    public void setTankID(Long tankID) {
-        this.tankID = tankID;
-    }
-
-    public int getBulletID() {
-        return bulletID;
-    }
-
-    public void setBulletID(int bulletID) {
-        this.bulletID = bulletID;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    private int bulletID;
-    private int direction;
-
-    /**
-     *
-     * @param tankID Tank doing the shooting
-     * @param bulletID Bullet being shot
-     */
-    public FireEvent(Long tankID, int bulletID, int direction) {
-        this.tankID = tankID;
-        this.bulletID = bulletID;
-        this.direction = direction;
-        this.type = "fire";
-        this.time = System.currentTimeMillis();
+    public FireEvent(GridEvent event) {
+        super(event);
     }
 
     /**
      * runs the command updating the board
      */
-    @Override
     public void execute() {
-        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID));
+        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(ID));
         Integer orientation = tile.getOrientation();
 
         Integer location = tile.getLocation();
@@ -69,7 +31,7 @@ public class FireEvent extends GridEvent {
             location = goingLeft(location);
         }
 
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(bulletID, Math.toIntExact(tankID), location)));
+        busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(ID, Math.toIntExact(ID), location)));
     }
 
     /**
