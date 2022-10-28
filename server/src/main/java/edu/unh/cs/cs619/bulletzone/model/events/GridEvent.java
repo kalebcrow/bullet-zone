@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.game.events;
+package edu.unh.cs.cs619.bulletzone.model.events;
 
 
 import java.io.Serializable;
