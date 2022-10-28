@@ -179,13 +179,14 @@ public class InMemoryGameRepository implements GameRepository {
                 parent.clearField();
                 nextField.setFieldEntity(tank);
                 tank.setParent(nextField);
+                game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
+
 
                 isCompleted = true;
             } else {
                 isCompleted = false;
             }
 
-            game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
             return isCompleted;
         }
     }
@@ -260,13 +261,13 @@ public class InMemoryGameRepository implements GameRepository {
                             if (nextField.isPresent()) {
                                 // Something is there, hit it
                                 nextField.getEntity().hit(bullet.getDamage());
+                                game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId));
 
                                 if ( nextField.getEntity() instanceof  Tank){
                                     Tank t = (Tank) nextField.getEntity();
                                     System.out.println("tank is hit, tank life: " + t.getLife());
                                     if (t.getLife() <= 0 ){
                                         game.addEvent(new DestroyTankEvent(t.getId()));
-                                        game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId));
                                         t.getParent().clearField();
                                         t.setParent(null);
                                     }
@@ -275,7 +276,6 @@ public class InMemoryGameRepository implements GameRepository {
                                     Wall w = (Wall) nextField.getEntity();
                                     if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
                                         game.addEvent(new DestroyWallEvent(w.getPos()/FIELD_DIM, w.getPos()%FIELD_DIM));
-                                        game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId));
                                         game.getHolderGrid().get(w.getPos()).clearField();
                                     }
                                 }
@@ -289,13 +289,14 @@ public class InMemoryGameRepository implements GameRepository {
 
                         } else {
                             if (isVisible) {
+                                game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
                                 // Remove bullet from field
                                 currentField.clearField();
                             }
-                            game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
+
                             nextField.setFieldEntity(bullet);
                             bullet.setParent(nextField);
-                        }
+                            }
                     }
                 }
             }, 0, BULLET_PERIOD);

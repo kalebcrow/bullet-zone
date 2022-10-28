@@ -48,19 +48,20 @@ public class BulletTile extends BlankTile {
         this.resourceID = R.drawable.bullet;
         this.location = location;
         bulletid = findID(JsonValue);
+        orientation = 0;
         BulletList.getBulletList().addBullet(this.bulletid, this);
     }
 
     /**
      *
-     * @param bulletid bullet id
      * @param tankID tankID
      * @param location location
      */
-    public BulletTile(int bulletid, Integer tankID, Integer location) {
+    public BulletTile(Integer tankID, Integer location, boolean value) {
         this.resourceID = R.drawable.bullet;
         this.location = location;
-        this.bulletid = tankID * 10 + bulletid;
+        this.bulletid = tankID;
+        orientation = 0;
 
         BulletList.getBulletList().addBullet(this.bulletid, this);
     }

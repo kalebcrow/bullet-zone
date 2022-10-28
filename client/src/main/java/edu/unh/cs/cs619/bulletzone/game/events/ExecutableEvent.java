@@ -1,16 +1,17 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import org.androidannotations.annotations.Bean;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 
 public class ExecutableEvent {
-    BusProvider busProvider;
 
     public ExecutableEvent(GridEvent gridEvent) {
         time = gridEvent.getTime();
         type = gridEvent.getType();
         ID = gridEvent.getID();
         direction = gridEvent.getDirection();
-        pos = gridEvent.getPos();
+        pos = gridEvent.getPos() - 1;
     }
 
     protected Long time;
@@ -60,7 +61,7 @@ public class ExecutableEvent {
     }
 
 
-    public void execute() {
+    public void execute(BusProvider busProvider) {
 
     }
 

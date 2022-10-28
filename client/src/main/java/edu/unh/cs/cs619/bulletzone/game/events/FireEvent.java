@@ -1,5 +1,8 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
@@ -15,11 +18,15 @@ public class FireEvent extends ExecutableEvent {
     /**
      * runs the command updating the board
      */
-    public void execute() {
-        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(ID));
+    public void execute(BusProvider busProvider) {
+        TankTile tile = TankList.getTankList().getLocation(ID/10);
         Integer orientation = tile.getOrientation();
 
         Integer location = tile.getLocation();
+
+        Log.d("hmm", location.toString());
+        Log.d("hmm", "direction " + direction);
+
 
         if (orientation == 0) {
             location = goingUp(location);
@@ -31,7 +38,7 @@ public class FireEvent extends ExecutableEvent {
             location = goingLeft(location);
         }
 
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(ID, Math.toIntExact(ID), location)));
+        busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(ID, location, true)));
     }
 
     /**
@@ -43,7 +50,7 @@ public class FireEvent extends ExecutableEvent {
         if (location <= 15) {
             location = 240 + location;
         } else {
-            location = location + 16;
+            location = location - 16;
         }
         return location;
     }

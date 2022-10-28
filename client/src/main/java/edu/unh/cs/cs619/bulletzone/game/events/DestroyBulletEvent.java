@@ -1,16 +1,14 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import org.androidannotations.annotations.UiThread;
-
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
-import edu.unh.cs.cs619.bulletzone.game.TankList;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
-import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
-public class DestroyTankEvent extends ExecutableEvent{
+public class DestroyBulletEvent extends ExecutableEvent {
 
-    public DestroyTankEvent(GridEvent event) {
+    public DestroyBulletEvent(GridEvent event) {
         super(event);
     }
 
@@ -18,8 +16,8 @@ public class DestroyTankEvent extends ExecutableEvent{
      * runs the command updating the board
      */
     public void execute(BusProvider busProvider) {
-        TankTile tile =TankList.getTankList().getLocation(ID);
+        BulletTile tile = BulletList.getBulletList().getBulletTile(ID);
         busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
-        TankList.getTankList().remove(ID);
+        BulletList.getBulletList().removeBullet(ID);
     }
 }

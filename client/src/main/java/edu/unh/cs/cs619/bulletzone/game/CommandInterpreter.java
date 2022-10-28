@@ -1,8 +1,11 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
 
+import android.util.Log;
+
 import com.squareup.otto.Subscribe;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
@@ -10,6 +13,8 @@ import org.androidannotations.annotations.UiThread;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.ExecutableEvent;
@@ -27,6 +32,7 @@ public class CommandInterpreter {
     private static volatile CommandInterpreter INSTANCE = null;
 
     // Injected object
+    @Bean
     BusProvider busProvider;
 
     public EventWrapper ew;
@@ -36,6 +42,11 @@ public class CommandInterpreter {
      */
     public CommandInterpreter() {
 
+    }
+
+    @AfterInject
+    public void setBusProvider(){
+        busProvider.getEventBus().register(CommandHistoryUpdateHandler);
     }
 
     /**
@@ -53,10 +64,10 @@ public class CommandInterpreter {
         return INSTANCE;
     }
 
-    private Object tileEventHandler = new Object()
+    private Object CommandHistoryUpdateHandler = new Object()
     {
         @Subscribe
-        public void onHistoryUpdateEvent(HistoryUpdateEvent event) {
+        public void onCommandHistoryUpdateEvent(HistoryUpdateEvent event) {
             updateBoard(event);
         }
     };
@@ -71,7 +82,7 @@ public class CommandInterpreter {
 
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
-            interpret(currEvent).execute();
+            interpret(currEvent).execute(busProvider);
 
         }
     }
@@ -92,11 +103,18 @@ public class CommandInterpreter {
                  event = new DestroyWallEvent(currEvent);
                  break;
              case "fire":
+                 Log.d("Yeah", "we cool");
                  event = new FireEvent(currEvent);
                  break;
-             case "turnEvent":
+             case "turn":
                  event = new TurnEvent(currEvent);
                  break;
+            case "addTank":
+                event = new AddTankEvent(currEvent);
+                break;
+            case "destroyBullet":
+                event = new DestroyBulletEvent(currEvent);
+                break;
             default:
                 event = new ExecutableEvent(currEvent);
          }

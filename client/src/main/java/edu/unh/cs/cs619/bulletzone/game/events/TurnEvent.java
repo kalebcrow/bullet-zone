@@ -1,7 +1,10 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
 import org.androidannotations.annotations.UiThread;
 
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
@@ -17,7 +20,7 @@ public class TurnEvent extends ExecutableEvent {
     /**
      * Do the command
      */
-    public void execute() {
+    public void execute(BusProvider busProvider) {
         TankTile tile = TankList.getTankList().getLocation(ID);
         tile.setOrientation((int) direction);
 

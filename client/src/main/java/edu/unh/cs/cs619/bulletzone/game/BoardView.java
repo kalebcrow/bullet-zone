@@ -4,14 +4,20 @@ import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
 @EBean
 public class BoardView {
+
+    @Bean
+    BusProvider busProvider;
 
     /**
      *
@@ -58,6 +64,11 @@ public class BoardView {
         tileFactory = TileFactory.getFactory();
         tiles = new BlankTile[256];
 
+    }
+
+    @AfterInject
+    public void setBusProvider(){
+        busProvider.getEventBus().register(tileEventHandler);
     }
 
     /**

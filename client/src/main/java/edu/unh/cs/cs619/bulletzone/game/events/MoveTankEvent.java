@@ -1,5 +1,8 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
@@ -14,20 +17,19 @@ public class MoveTankEvent extends ExecutableEvent {
     /**
      * Execution of event
      */
-    public void execute() {
+    public void execute(BusProvider busProvider) {
 
         TankTile tile = TankList.getTankList().getLocation(ID);
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 
-
-        if (tile.getOrientation() == 0) {
+        if (direction == 0) {
             location = goingUp(location);
-        } else if (tile.getOrientation() == 2) {
-            location = goingLeft(location);
-        } else if (tile.getOrientation() == 4) {
+        } else if (direction == 2) {
+            location = goingRight(location);
+        } else if (direction == 4) {
             location = goingDown(location);
-        } else if (tile.getOrientation() == 6) {
+        } else if (direction == 6) {
             location = goingLeft(location);
         }
         tile.setLocation(location);
@@ -40,7 +42,7 @@ public class MoveTankEvent extends ExecutableEvent {
         if (location <= 15) {
             location = 240 + location;
         } else {
-            location = location + 16;
+            location = location - 16;
         }
         return location;
     }
@@ -55,7 +57,7 @@ public class MoveTankEvent extends ExecutableEvent {
     }
 
     private Integer goingRight(Integer location) {
-        if (location % 15 == 0 && location != 0) {
+        if ((location + 1) % 16 == 0) {
             location = location - 15;
         } else {
             location = location + 1;
