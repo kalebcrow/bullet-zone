@@ -2,6 +2,8 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
@@ -17,7 +19,7 @@ public class MoveTankEvent extends ExecutableEvent {
     /**
      * Execution of event
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
 
         TankTile tile = TankList.getTankList().getLocation(ID);
         if (tile == null) {
@@ -37,8 +39,9 @@ public class MoveTankEvent extends ExecutableEvent {
         }
         tile.setLocation(location);
 
-        busProvider.getEventBus().post(new TileUpdateEvent(location, tile));
-        busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
+        tileUpdateEvent = new TileUpdateEvent(location, tile);
+        bus.post(tileUpdateEvent);
+        bus.post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
     }
 
     /**

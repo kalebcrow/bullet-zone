@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import com.squareup.otto.Bus;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
@@ -15,14 +17,14 @@ public class DestroyBulletEvent extends ExecutableEvent {
     /**
      * runs the command updating the board
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
         BulletTile tile = BulletList.getBulletList().getBulletTile(ID);
 
         if (tile == null) {
             return;
         }
 
-        busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
+        bus.post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
         BulletList.getBulletList().removeBullet(ID);
     }
 }

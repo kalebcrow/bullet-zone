@@ -2,6 +2,8 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
@@ -17,7 +19,7 @@ public class MoveBulletEvent extends ExecutableEvent {
     /**
      * updates the board
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus){
 
         BulletTile tile = BulletList.getBulletList().getBulletTile(ID);
         if (tile == null) {
@@ -39,8 +41,8 @@ public class MoveBulletEvent extends ExecutableEvent {
 
         tile.setLocation(location);
 
-        busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
-        busProvider.getEventBus().post(new TileUpdateEvent(location, tile));
+        bus.post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
+        bus.post(new TileUpdateEvent(location, tile));
     }
 
     private Integer goingUp(Integer location) {

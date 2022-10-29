@@ -82,7 +82,7 @@ public class CommandInterpreter {
 
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
-            interpret(currEvent).execute(busProvider);
+            interpret(currEvent).execute(busProvider.getEventBus());
 
         }
     }

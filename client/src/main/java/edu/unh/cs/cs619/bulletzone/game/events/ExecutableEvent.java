@@ -1,8 +1,11 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import com.squareup.otto.Bus;
+
 import org.androidannotations.annotations.Bean;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class ExecutableEvent {
 
@@ -23,6 +26,7 @@ public class ExecutableEvent {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    public TileUpdateEvent tileUpdateEvent;
 
     /**
      *
@@ -106,9 +110,9 @@ public class ExecutableEvent {
 
     /**
      *
-     * @param busProvider bus to send events on
+     * @param bus Bus to send events on
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
 
     }
 

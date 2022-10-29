@@ -2,6 +2,8 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+
 import org.androidannotations.annotations.UiThread;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -20,7 +22,7 @@ public class TurnEvent extends ExecutableEvent {
     /**
      * Do the command
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
         TankTile tile = TankList.getTankList().getLocation(ID);
         if (tile == null) {
             return;
@@ -28,7 +30,8 @@ public class TurnEvent extends ExecutableEvent {
 
         tile.setOrientation((int) direction);
 
-        busProvider.getEventBus().post(new TileUpdateEvent(tile.location, tile));
+        tileUpdateEvent = new TileUpdateEvent(tile.location, tile);
+        bus.post(tileUpdateEvent);
     }
 
 }

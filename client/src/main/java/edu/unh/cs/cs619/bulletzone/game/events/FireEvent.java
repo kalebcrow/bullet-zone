@@ -2,6 +2,8 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
@@ -18,7 +20,7 @@ public class FireEvent extends ExecutableEvent {
     /**
      * runs the command updating the board
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
         TankTile tile = TankList.getTankList().getLocation(ID/10);
 
         if (tile == null) {
@@ -39,7 +41,8 @@ public class FireEvent extends ExecutableEvent {
             location = goingLeft(location);
         }
 
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new BulletTile(ID, location, true)));
+        tileUpdateEvent = new TileUpdateEvent(location, new BulletTile(ID, location, true));
+        bus.post(tileUpdateEvent);
     }
 
     /**
