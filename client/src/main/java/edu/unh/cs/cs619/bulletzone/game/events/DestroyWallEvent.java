@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import com.squareup.otto.Bus;
+
 import org.androidannotations.annotations.UiThread;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -15,8 +17,8 @@ public class DestroyWallEvent extends  ExecutableEvent {
     /**
      * runs the command updating the board
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
 
-         busProvider.getEventBus().post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(0, pos)));
+         bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(0, pos)));
     }
 }

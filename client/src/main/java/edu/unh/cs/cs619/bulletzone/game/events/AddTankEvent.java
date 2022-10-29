@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import com.squareup.otto.Bus;
+
 import org.androidannotations.annotations.UiThread;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -18,9 +20,9 @@ public class AddTankEvent extends ExecutableEvent {
      * @param busProvider the bus sending the event
      */
     @Override
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
         Integer location = pos - 1;
         Integer orientation = 0;
-        busProvider.getEventBus().post(new TileUpdateEvent(location, new TankTile(ID, location, orientation)));
+        bus.post(new TileUpdateEvent(location, new TankTile(ID, location, orientation)));
     }
 }

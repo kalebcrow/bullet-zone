@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import com.squareup.otto.Bus;
+
 import org.androidannotations.annotations.UiThread;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -17,14 +19,14 @@ public class DestroyTankEvent extends ExecutableEvent{
     /**
      * runs the command updating the board
      */
-    public void execute(BusProvider busProvider) {
+    public void execute(Bus bus) {
         TankTile tile =TankList.getTankList().getLocation(ID);
 
         if (tile == null) {
             return;
         }
 
-        busProvider.getEventBus().post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
+        bus.post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
         TankList.getTankList().remove(ID);
     }
 }
