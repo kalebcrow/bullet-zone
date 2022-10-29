@@ -1,12 +1,17 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -22,6 +27,8 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.RestClientHeaders;
 import org.androidannotations.api.BackgroundExecutor;
+
+import java.io.Serializable;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
@@ -46,6 +53,9 @@ public class ClientActivity extends Activity {
     @ViewById
     protected GridView gridView;
 
+    @ViewById
+    protected TextView textViewGarage;
+
     @Bean
     TankController tankController;
 
@@ -56,11 +66,6 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
-    @RestService
-    BulletZoneRestClient restClient;
-
-    @Bean
-    BZRestErrorhandler bzRestErrorhandler;
 
     @Bean
     BoardView boardView;
@@ -71,14 +76,17 @@ public class ClientActivity extends Activity {
     /**
      * Remote tank identifier
      */
-    private long tankId = -1;
+    //private long tankId = -1;
 
+    /**
+     * Creates the instance, and starts the shake service.
+     *
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Shake implementation from: https://demonuts.com/android-shake-detection/
-        Intent intent = new Intent(this, ShakeService.class);
-        startService(intent);
+        tankController.passContext(this);
     }
 
     @Override
@@ -105,36 +113,50 @@ public class ClientActivity extends Activity {
         }
     };
 
-    @AfterViews
+    /**
+     * afterViewInjection: Sets up REST client and links gridview to gridAdapter
+     */
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        tankController.setRestClient(restClient);
+        //tankController.setRestClient(restClient);
     }
 
+    /**
+     * afterInject: Registers gridEventHandler to evenBus and
+     * sets an errorHandler for REST client
+     */
     @AfterInject
     void afterInject() {
-        restClient.setRestErrorHandler(bzRestErrorhandler);
+        tankController.afterInject();
         busProvider.getEventBus().register(gridEventHandler);
     }
 
+    /**
+     * joinAsync: Sends the join request to server and saves returning tankID
+     */
     @Background
     void joinAsync() {
-        try {
-            tankId = restClient.join().getResult();
-            tankController.setTankID(tankId);
-            gridPollTask.doPoll();
-        } catch (Exception e) {
-        }
+        tankController.joinGame();
+        gridPollTask.doPoll();
     }
 
+    /**
+     * updateGrid: Updates the local grid using grid from
+     * argument gridWrapper
+     * @param gw
+     */
     public void updateGrid(GridWrapper gw) {
         boardView.setUsingJSON(gw.getGrid());
         mGridAdapter.updateList(boardView.getTiles());
         boardView.setGridAdapter(mGridAdapter);
     }
 
+    /**
+     * onButtonMove: Processes User movement requests
+     * @param view
+     */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
         final int viewId = view.getId();
@@ -160,40 +182,169 @@ public class ClientActivity extends Activity {
         tankController.move(direction);
     }
 
+    /**
+     * moveAsync: Background movement request
+     * @param direction
+     */
     @Background
-    void moveAsync(long tankId, byte direction) {
-        restClient.move(tankId, direction);
+    void moveAsync(byte direction) {
+        tankController.move(direction);
     }
 
+    /**
+     * turnAsync: Background turn request
+     * @param direction
+     */
     @Background
-    void turnAsync(long tankId, byte direction) {
-        restClient.turn(tankId, direction);
+    void turnAsync(byte direction) {
+        tankController.move(direction);
     }
 
+    /**
+     * startGame: Initializes view when join game is selected
+     */
+    @Click(R.id.buttonJoin)
+    void startGame() {
+        afterViewInjection();
+        Button buttonFire = findViewById(R.id.buttonFire);
+        Button buttonLeft = findViewById(R.id.buttonLeft);
+        Button buttonUp = findViewById(R.id.buttonUp);
+        Button buttonDown = findViewById(R.id.buttonDown);
+        Button buttonRight = findViewById(R.id.buttonRight);
+        Button buttonJoin = findViewById(R.id.buttonJoin);
+        Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        buttonRespawn.setVisibility(View.VISIBLE);
+        buttonLeft.setVisibility(View.VISIBLE);
+        buttonFire.setVisibility(View.VISIBLE);
+        buttonUp.setVisibility(View.VISIBLE);
+        buttonDown.setVisibility(View.VISIBLE);
+        buttonRight.setVisibility(View.VISIBLE);
+        buttonJoin.setVisibility(View.INVISIBLE);
+
+        //R.id.buttonLeft
+        //tankId = restClient.join().getResult();
+        //tankController.setTankID(tankId);
+        //gridPollTask.doPoll();
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
+    @Click(R.id.buttonRespawn)
+    protected void onButtonRespawn(){
+        afterViewInjection();
+    }
+
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
-        restClient.fire(tankId);
+        //restClient.fire(tankId);
+        tankController.fire();
     }
 
+    /**
+     * leaveGame: User-triggered leaveGame request via button that sends
+     * via REST
+     */
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
-        System.out.println("leaveGame() called, tank ID: "+tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveGame() called";
+
+        // ensures user wants to leave the game before leaving the game
+        leaveDialog(message);
     }
 
+    /**
+     * Check user wants to leave the game
+     *
+     * @param message
+     */
+    private void leaveDialog(String message) {
+        // build the alertdialog with yes and no buttons
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //System.out.println("leaveGame() called, tank ID: "+tankId);
+                BackgroundExecutor.cancelAll("grid_poller_task", true);
+                //restClient.leave(tankId);
+                tankController.leaveGame();
+            }
+        });
+        builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                System.out.println("leaveGame() cancelled");
+            }
+        });
+
+        // Create the alertdialog
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog dialog = builder.create();
+                dialog.setMessage("Are you sure you want to leave the game?");
+                dialog.show();
+            }
+        });
+    }
+
+    /**
+     * login: Opens login activity via "login" button press
+     */
     @Click(R.id.buttonLogin)
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
+    /**
+     * Get output from closing authenticate activity and logging in
+     *
+     * @param requestCode The request code
+     * @param resultCode The result code
+     * @param data The intent data
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // https://stackoverflow.com/questions/14292398/how-to-pass-data-from-2nd-activity-to-1st-activity-when-pressed-back-android
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                setGarageTextView(data);
+            }
+        }
+    }
+
+    /**
+     * Set the garage text view with the user balance and garage.
+     *
+     * @param data The intent data
+     */
+    private void setGarageTextView(Intent data) {
+        Bundle bundle = data.getExtras();
+        long userID = bundle.getLong("userID");
+        long bankAccountBalance = bundle.getLong("bankAccountBalance");
+        String tank = bundle.getString("items");
+        String message = "User ID: " + userID + "\n" +
+                "Balance: " + bankAccountBalance + "\n" +
+                "Garage: " + tank;
+        textViewGarage.setText(message);
+        Log.d("MESSAGE", message);
+    }
+
+    /**
+     * leaveAsync: Sends background leave game request for client, to
+     * server.
+     * @param tankId
+     */
     @Background
     void leaveAsync(long tankId) {
-        System.out.println("Leave called, tank ID: " + tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveAsync() called, tank ID: "+tankId;
+
+        // ensures user wants to leave before leaving
+        leaveDialog(message);
     }
 }

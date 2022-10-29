@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/down" />
+            android:text="@string/down"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonUp"
@@ -40,7 +41,8 @@
             android:layout_above="@+id/buttonDown"
             android:layout_alignLeft="@+id/buttonDown"
             android:layout_alignRight="@+id/buttonDown"
-            android:text="@string/up" />
+            android:text="@string/up"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonLeft"
@@ -48,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/buttonDown"
-            android:text="@string/left" />
+            android:text="@string/left"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonRight"
@@ -56,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/buttonDown"
-            android:text="@string/right" />
+            android:text="@string/right"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonFire"
@@ -65,7 +69,8 @@
             android:layout_alignLeft="@+id/buttonUp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/buttonRight"
-            android:text="@string/fire" />
+            android:text="@string/fire"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonLeave"
@@ -82,6 +87,40 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="Login" />
+
+        <TextView
+            android:id="@+id/textViewGarage"
+            android:layout_width="138dp"
+            android:layout_height="290dp"
+            android:layout_alignLeft="@+id/buttonUp"
+            android:layout_alignBottom="@id/buttonLogin"
+            android:layout_marginLeft="-24dp"
+            android:layout_marginRight="-25dp"
+            android:layout_marginBottom="-290dp"
+            android:layout_toLeftOf="@+id/buttonRight"
+            android:inputType="textMultiLine"
+            android:text="Balance: 0                   Garage Items: None" />
+
+        <Button
+            android:id="@+id/buttonJoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonFire"
+            android:layout_alignEnd="@+id/textViewGarage"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="109dp"
+            android:text="Join Game" />
+
+        <Button
+            android:id="@+id/buttonRespawn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonFire"
+            android:layout_alignEnd="@+id/buttonFire"
+            android:layout_marginTop="65dp"
+            android:layout_marginEnd="0dp"
+            android:text="Respawn"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

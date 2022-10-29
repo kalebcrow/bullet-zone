@@ -17,6 +17,6 @@ public class DestroyWallEvent extends  ExecutableEvent {
      */
     public void execute(BusProvider busProvider) {
 
-         busProvider.getEventBus().post(new TileUpdateEvent(pos - 1, TileFactory.getFactory().makeTile(0, pos)));
+         busProvider.getEventBus().post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(0, pos)));
     }
 }

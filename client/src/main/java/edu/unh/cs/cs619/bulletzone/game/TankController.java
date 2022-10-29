@@ -1,15 +1,27 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.rest.spring.annotations.RestService;
 
+import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
 @EBean
 public class TankController {
+
+    @RestService
     BulletZoneRestClient restClient;
+
+    @Bean
+    BZRestErrorhandler bzRestErrorhandler;
+
     private Long tankID;
     private int tankOrientation;
     private static volatile TankController INSTANCE = null;
@@ -83,6 +95,16 @@ public class TankController {
         this.tankOrientation = tankOrientation;
     }
 
+    public void passContext(Context context){
+        ShakeService.setTankController(this);
+        Intent intent = new Intent(context, ShakeService.class);
+        context.startService(intent);
+    }
+
+    public void afterInject(){
+        restClient.setRestErrorHandler(bzRestErrorhandler);
+    }
+
     /**
      * moves the tank
      * @param direction direction
@@ -100,4 +122,26 @@ public class TankController {
             restClient.move(tankID, direction);
         }
     }
+
+    @Background
+    public void joinGame(){
+        try {
+            tankID = restClient.join().getResult();
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Background
+    public void fire(){
+        restClient.fire(tankID);
+    }
+
+    @Background
+    public void leaveGame(){
+        System.out.println("leaveGame() called, tank ID: " + tankID);
+        restClient.leave(tankID);
+    }
+
 }

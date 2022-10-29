@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.rest;
 
+import android.widget.WrapperListAdapter;
+
 import org.androidannotations.rest.spring.annotations.Delete;
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Path;
@@ -49,6 +51,12 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
 
     @Put("/account/login/{username}/{password}")
     LongWrapper login(@Path String username, @Path String password);
+
+    @Put("/account/{username}/balance")
+    LongWrapper balance(@Path String username);
+
+    @Put("/account/{username}/items")
+    String items(@Path String username);
 
     @Put("/{tankId}/move/{direction}")
     BooleanWrapper move(@Path long tankId, @Path byte direction);
