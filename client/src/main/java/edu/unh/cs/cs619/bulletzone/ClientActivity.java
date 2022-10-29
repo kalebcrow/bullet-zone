@@ -1,6 +1,8 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -30,6 +32,7 @@ import java.io.Serializable;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
@@ -63,27 +66,27 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
-    @RestService
-    BulletZoneRestClient restClient;
-
-    @Bean
-    BZRestErrorhandler bzRestErrorhandler;
 
     @Bean
     BoardView boardView;
 
+    @Bean
+    CommandInterpreter commandInterpreter;
 
     /**
      * Remote tank identifier
      */
-    private long tankId = -1;
+    //private long tankId = -1;
 
+    /**
+     * Creates the instance, and starts the shake service.
+     *
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Shake implementation from: https://demonuts.com/android-shake-detection/
-        Intent intent = new Intent(this, ShakeService.class);
-        startService(intent);
+        tankController.passContext(this);
     }
 
     @Override
@@ -117,7 +120,7 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        tankController.setRestClient(restClient);
+        //tankController.setRestClient(restClient);
     }
 
     /**
@@ -126,22 +129,17 @@ public class ClientActivity extends Activity {
      */
     @AfterInject
     void afterInject() {
-        restClient.setRestErrorHandler(bzRestErrorhandler);
+        tankController.afterInject();
         busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
-     * joinAysnc: Sends the join request to server and saves returning tankID
+     * joinAsync: Sends the join request to server and saves returning tankID
      */
     @Background
     void joinAsync() {
-        try {
-            tankId = restClient.join().getResult();
-            tankController.setTankID(tankId);
-
-            gridPollTask.doPoll();
-        } catch (Exception e) {
-        }
+        tankController.joinGame();
+        gridPollTask.doPoll();
     }
 
     /**
@@ -186,22 +184,20 @@ public class ClientActivity extends Activity {
 
     /**
      * moveAsync: Background movement request
-     * @param tankId
      * @param direction
      */
     @Background
-    void moveAsync(long tankId, byte direction) {
-        restClient.move(tankId, direction);
+    void moveAsync(byte direction) {
+        tankController.move(direction);
     }
 
     /**
      * turnAsync: Background turn request
-     * @param tankId
      * @param direction
      */
     @Background
-    void turnAsync(long tankId, byte direction) {
-        restClient.turn(tankId, direction);
+    void turnAsync(byte direction) {
+        tankController.move(direction);
     }
 
     /**
@@ -246,19 +242,54 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonFire)
     @Background
     protected void onButtonFire() {
-        restClient.fire(tankId);
+        //restClient.fire(tankId);
+        tankController.fire();
     }
 
     /**
-     * leaveGame: User-triggered leaveGame request via buttion that sends
+     * leaveGame: User-triggered leaveGame request via button that sends
      * via REST
      */
     @Click(R.id.buttonLeave)
     @Background
     void leaveGame() {
-        System.out.println("leaveGame() called, tank ID: "+tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveGame() called";
+
+        // ensures user wants to leave the game before leaving the game
+        leaveDialog(message);
+    }
+
+    /**
+     * Check user wants to leave the game
+     *
+     * @param message
+     */
+    private void leaveDialog(String message) {
+        // build the alertdialog with yes and no buttons
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //System.out.println("leaveGame() called, tank ID: "+tankId);
+                BackgroundExecutor.cancelAll("grid_poller_task", true);
+                //restClient.leave(tankId);
+                tankController.leaveGame();
+            }
+        });
+        builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                System.out.println("leaveGame() cancelled");
+            }
+        });
+
+        // Create the alertdialog
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog dialog = builder.create();
+                dialog.setMessage("Are you sure you want to leave the game?");
+                dialog.show();
+            }
+        });
     }
 
     /**
@@ -311,8 +342,9 @@ public class ClientActivity extends Activity {
      */
     @Background
     void leaveAsync(long tankId) {
-        System.out.println("Leave called, tank ID: " + tankId);
-        BackgroundExecutor.cancelAll("grid_poller_task", true);
-        restClient.leave(tankId);
+        String message = "leaveAsync() called, tank ID: "+tankId;
+
+        // ensures user wants to leave before leaving
+        leaveDialog(message);
     }
 }

@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
 import javax.servlet.http.HttpServletRequest;
-import com.google.common.base.Preconditions;
+
+import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
@@ -27,6 +28,7 @@ import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.GameDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
+import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
@@ -123,5 +125,16 @@ class GamesController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     String handleBadRequests(Exception e) {
         return e.getMessage();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/event/{timeStamp}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public
+    @ResponseBody
+    ResponseEntity<EventWrapper> event(@PathVariable long timeStamp) {
+        return new ResponseEntity<EventWrapper>(
+                new EventWrapper(gameRepository.getEvents(timeStamp)),
+                HttpStatus.OK
+        );
     }
 }

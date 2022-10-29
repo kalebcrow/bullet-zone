@@ -25,6 +25,10 @@ public class TankController {
             checkNotNull(direction);
             checkNotNull(tank);
 
+            if (tank.getLife() == 0) {
+                return false;
+            }
+
             //Check for bad getLastMoveTime
             long millis = System.currentTimeMillis();
             if (millis < tank.getLastMoveTime())
@@ -49,6 +53,10 @@ public class TankController {
             throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
             checkNotNull(direction);
             checkNotNull(tank);
+
+            if (tank.getLife() == 0) {
+                return false;
+            }
 
             //Check for bad getLastMoveTime
             long millis = System.currentTimeMillis();
@@ -93,6 +101,10 @@ public class TankController {
      */
     public int fire(Tank tank, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
+
+        if (tank.getLife() == 0) {
+            return -1;
+        }
 
         //Check for tank firing too many bullets
         if (tank.getNumberOfBullets() >= tank.getAllowedNumberOfBullets())
