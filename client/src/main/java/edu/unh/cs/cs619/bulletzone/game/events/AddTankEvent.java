@@ -14,7 +14,8 @@ public class AddTankEvent extends ExecutableEvent {
 
 
     /**
-     * runs the command updating the board
+     *
+     * @param busProvider the bus sending the event
      */
     @Override
     public void execute(BusProvider busProvider) {

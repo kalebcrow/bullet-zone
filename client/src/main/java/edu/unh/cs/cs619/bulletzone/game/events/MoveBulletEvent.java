@@ -37,8 +37,6 @@ public class MoveBulletEvent extends ExecutableEvent {
             location = goingLeft(location);
         }
 
-        Log.d("Yeah", "Bullet " + ID);
-        Log.d("Location: ", location.toString());
         tile.setLocation(location);
 
         busProvider.getEventBus().post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));

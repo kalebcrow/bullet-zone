@@ -87,6 +87,11 @@ public class CommandInterpreter {
         }
     }
 
+    /**
+     *
+     * @param currEvent restEvent
+     * @return executable event
+     */
      private ExecutableEvent interpret(GridEvent currEvent) {
          ExecutableEvent event;
         switch (currEvent.getType()) {
