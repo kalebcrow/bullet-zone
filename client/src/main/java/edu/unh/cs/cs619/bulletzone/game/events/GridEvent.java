@@ -11,6 +11,17 @@ public class GridEvent implements Serializable {
     protected byte direction = -1;
     protected int pos = -1;
 
+    public int getTankType() {
+        return tankType;
+    }
+
+    public void setTankType(int tankType) {
+        this.tankType = tankType;
+    }
+
+    //1 is regular 2 is builder 3 is steve
+    protected int tankType = -1;
+
     /**
      *
      * @return ID of tank or bullet
