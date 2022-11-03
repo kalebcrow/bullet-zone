@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.model.Builder;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
@@ -53,6 +54,7 @@ public class InMemoryGameRepository implements GameRepository {
      * Tank's default life [life]
      */
     private static final int TANK_LIFE = 100;
+    private static final int BUILDER_LIFE = 80;
     private final Timer timer = new Timer();
     private final AtomicLong idGenerator = new AtomicLong();
     private final Object monitor = new Object();
@@ -70,6 +72,7 @@ public class InMemoryGameRepository implements GameRepository {
     public Tank join(String ip) {
         synchronized (this.monitor) {
             Tank tank;
+            Builder builder;
             if (game == null) {
                 this.create();
             }
@@ -82,6 +85,10 @@ public class InMemoryGameRepository implements GameRepository {
 
             tank = new Tank(tankId, Direction.Up, ip);
             tank.setLife(TANK_LIFE);
+
+            Long builderId = this.idGenerator.getAndIncrement();
+
+            builder = new Builder(builderId, Direction.Up, ip);
 
             Random random = new Random();
             int x;
@@ -100,7 +107,9 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
             game.addTank(ip, tank);
+            game.addTank(ip, builder);
             game.addEvent(new AddTankEvent(x, y , tankId));
+            game.addEvent(new AddTankEvent(x+1,y, builderId));
 
             return tank;
         }

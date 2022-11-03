@@ -35,6 +35,11 @@ public class Tank extends FieldEntity {
         allowedMoveInterval = 500;
     }
 
+    public Tank(){
+        ip = null;
+        id = 0;
+    }
+
     @Override
     public FieldEntity copy() {
         return new Tank(id, direction, ip);
