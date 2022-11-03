@@ -11,10 +11,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AuthenticateActivity_" android:exported="false"></activity>
         <activity
-            android:name=".ClientActivity_"
-            android:label="@string/app_name"
+            android:name=".ReplayActivity_"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +20,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ShakeService"></service>
+        <activity
+            android:name=".AuthenticateActivity_"
+            android:exported="false" />
+        <activity
+            android:name=".ClientActivity_"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".ShakeService" />
     </application>
 
 </manifest>

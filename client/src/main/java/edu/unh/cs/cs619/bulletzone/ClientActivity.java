@@ -213,6 +213,7 @@ public class ClientActivity extends Activity {
         Button buttonRight = findViewById(R.id.buttonRight);
         Button buttonJoin = findViewById(R.id.buttonJoin);
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        Button buttonReplay = findViewById(R.id.buttonReplay);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
         buttonFire.setVisibility(View.VISIBLE);
@@ -220,6 +221,7 @@ public class ClientActivity extends Activity {
         buttonDown.setVisibility(View.VISIBLE);
         buttonRight.setVisibility(View.VISIBLE);
         buttonJoin.setVisibility(View.INVISIBLE);
+        buttonReplay.setVisibility(View.INVISIBLE);
 
         //R.id.buttonLeft
         //tankId = restClient.join().getResult();
@@ -233,6 +235,15 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
         afterViewInjection();
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
+    @Click(R.id.buttonReplay)
+    protected void onButtonReplay(){
+        Intent intent = new Intent(this, AuthenticateActivity_.class);
+        startActivityForResult(intent, 1);
     }
 
     /**

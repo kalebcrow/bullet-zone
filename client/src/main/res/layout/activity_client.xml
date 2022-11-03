@@ -122,6 +122,17 @@
             android:text="Respawn"
             android:visibility="invisible" />
 
+        <Button
+            android:id="@+id/buttonReplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonFire"
+            android:layout_alignEnd="@+id/buttonFire"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="0dp"
+            android:text="Replay"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
 </LinearLayout>
