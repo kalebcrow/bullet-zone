@@ -66,7 +66,6 @@ public class ReplayActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
-
     @Bean
     BoardView boardView;
 

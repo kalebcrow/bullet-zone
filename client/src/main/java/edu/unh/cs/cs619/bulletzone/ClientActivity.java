@@ -120,7 +120,7 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        //tankController.setRestClient(restClient);
+        commandInterpreter.setPaused(false);
     }
 
     /**
@@ -139,7 +139,9 @@ public class ClientActivity extends Activity {
     @Background
     void joinAsync() {
         tankController.joinGame();
+        gridPollTask.setPaused(false);
         gridPollTask.doPoll();
+        commandInterpreter.setPaused(false);
     }
 
     /**
@@ -151,6 +153,15 @@ public class ClientActivity extends Activity {
         boardView.setUsingJSON(gw.getGrid());
         mGridAdapter.updateList(boardView.getTiles());
         boardView.setGridAdapter(mGridAdapter);
+    }
+
+    @Override
+    protected void onRestart() {
+        busProvider.getEventBus().register(gridEventHandler);
+        gridPollTask.setPaused(false);
+        gridPollTask.doPoll();
+        commandInterpreter.setPaused(false);
+        super.onRestart();
     }
 
     /**
@@ -221,7 +232,7 @@ public class ClientActivity extends Activity {
         buttonDown.setVisibility(View.VISIBLE);
         buttonRight.setVisibility(View.VISIBLE);
         buttonJoin.setVisibility(View.INVISIBLE);
-        buttonReplay.setVisibility(View.INVISIBLE);
+        buttonReplay.setVisibility(View.VISIBLE);
 
         //R.id.buttonLeft
         //tankId = restClient.join().getResult();
@@ -242,7 +253,9 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonReplay)
     protected void onButtonReplay(){
-        Intent intent = new Intent(this, AuthenticateActivity_.class);
+        commandInterpreter.pause();
+        gridPollTask.setPaused(true);
+        Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }
 

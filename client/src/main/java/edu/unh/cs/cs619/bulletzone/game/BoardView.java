@@ -38,6 +38,7 @@ public class BoardView {
     public BlankTile[] tiles;
     public int[][] tileInput;
     public TileFactory tileFactory;
+    public boolean paused;
 
     /**
      *

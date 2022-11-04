@@ -12,8 +12,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ReplayActivity_"
-            android:exported="true">
+            android:name=".AuthenticateActivity_"
+            android:exported="false" />
+        <activity
+            android:name=".ClientActivity_"
+            android:exported="true"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,12 +25,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthenticateActivity_"
-            android:exported="false" />
-        <activity
-            android:name=".ClientActivity_"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".ReplayActivity_"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

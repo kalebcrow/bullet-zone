@@ -26,7 +26,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class CommandInterpreter {
 
     private static volatile CommandInterpreter INSTANCE = null;
@@ -35,12 +35,26 @@ public class CommandInterpreter {
     @Bean
     BusProvider busProvider;
 
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    boolean paused = false;
+
+    LinkedList<GridEvent> eventHistory;
+
     public EventWrapper ew;
 
     /**
      * Command interpreter
+     *
      */
     public CommandInterpreter() {
+        eventHistory = new LinkedList<>();
 
     }
 
@@ -79,10 +93,12 @@ public class CommandInterpreter {
     private void updateBoard(HistoryUpdateEvent event) {
         this.ew = event.getHw();
         LinkedList<GridEvent> history = ew.getUpdate();
-
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
-            interpret(currEvent).execute(busProvider.getEventBus());
+            if (!paused) {
+                interpret(currEvent).execute(busProvider.getEventBus());
+            }
+            eventHistory.add(history.get(i));
 
         }
     }
@@ -126,4 +142,9 @@ public class CommandInterpreter {
 
         return event;
      }
+
+     public void pause() {
+         paused = true;
+     }
+
 }
