@@ -9,14 +9,15 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
+import edu.unh.cs.cs619.bulletzone.model.Controller.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
-import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
-import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankController;
-import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Vehicles.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Controller.VehicleController;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.model.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.DestroyBulletEvent;
@@ -142,7 +143,7 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             if (!tc.turn(tank, direction)) {
                 return false;
             }
@@ -181,7 +182,7 @@ public class InMemoryGameRepository implements GameRepository {
                 //return false;
                 throw new TankDoesNotExistException(tankId);
             }
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             if (!tc.move(tank, direction)) {
                 return false;
             }
@@ -238,7 +239,7 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
 
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             int temp = tc.fire(tank, bulletType);
             if (temp == -1) {
                 return false;
