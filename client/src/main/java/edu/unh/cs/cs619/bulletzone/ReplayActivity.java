@@ -213,4 +213,5 @@ public class ReplayActivity extends Activity {
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
+
 }

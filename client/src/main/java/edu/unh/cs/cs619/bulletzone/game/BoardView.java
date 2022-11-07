@@ -45,6 +45,8 @@ public class BoardView {
      * @return return gridAdapter
      */
     public GridAdapter getGridAdapter() {
+        TankList.getTankList().clear();
+        BulletList.getBulletList().clear();
         return gridAdapter;
     }
 
