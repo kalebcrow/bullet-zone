@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -21,6 +26,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.Rest;
@@ -73,6 +80,8 @@ public class ClientActivity extends Activity {
     @Bean
     CommandInterpreter commandInterpreter;
 
+    Button buttonAction;
+
     /**
      * Remote tank identifier
      */
@@ -87,6 +96,7 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
+
     }
 
     @Override
@@ -213,18 +223,23 @@ public class ClientActivity extends Activity {
         Button buttonRight = findViewById(R.id.buttonRight);
         Button buttonJoin = findViewById(R.id.buttonJoin);
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        buttonAction = findViewById(R.id.buttonAction);
+        Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
         buttonFire.setVisibility(View.VISIBLE);
         buttonUp.setVisibility(View.VISIBLE);
         buttonDown.setVisibility(View.VISIBLE);
         buttonRight.setVisibility(View.VISIBLE);
+        buttonAction.setVisibility(View.VISIBLE);
         buttonJoin.setVisibility(View.INVISIBLE);
 
-        //R.id.buttonLeft
-        //tankId = restClient.join().getResult();
-        //tankController.setTankID(tankId);
-        //gridPollTask.doPoll();
+        vehicleSpinner.setVisibility(View.VISIBLE);
+        String[] vehicles = {"Tank", "Miner", "Builder"};
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vehicleSpinner.setAdapter(aa);
+
     }
 
     /**
@@ -346,5 +361,46 @@ public class ClientActivity extends Activity {
 
         // ensures user wants to leave before leaving
         leaveDialog(message);
+    }
+
+    @Click(R.id.buttonAction)
+    void vehicleAction(){
+
+        if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
+            //stub
+        }
+        else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
+
+            //another stub
+
+        }
+
+    }
+
+    @ItemSelect(R.id.vehicle_spinner)
+    void changeTank(boolean selected, int position){
+
+        switch (position) {
+            case 0:
+                tankController.setCurrentVehicle(TankController.Vehicle.TANK);
+                buttonAction.setText("ACTION");
+                buttonAction.setClickable(false);
+                buttonAction.setAlpha(.5f);
+                break;
+            case 1:
+                tankController.setCurrentVehicle(TankController.Vehicle.MINER);
+                buttonAction.setText("MINE");
+                buttonAction.setClickable(true);
+                buttonAction.setAlpha(1);
+                break;
+            case 2:
+                tankController.setCurrentVehicle(TankController.Vehicle.BUILDER);
+                buttonAction.setText("BUILDER MENU");
+                buttonAction.setClickable(true);
+                buttonAction.setAlpha(1);
+                break;
+        }
+
+
     }
 }

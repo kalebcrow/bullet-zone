@@ -63,16 +63,6 @@
             android:visibility="invisible" />
 
         <Button
-            android:id="@+id/buttonFire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/buttonUp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/buttonRight"
-            android:text="@string/fire"
-            android:visibility="invisible" />
-
-        <Button
             android:id="@+id/buttonLeave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +95,7 @@
             android:id="@+id/buttonJoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonFire"
+            android:layout_above="@+id/layoutActionFire"
             android:layout_alignEnd="@+id/textViewGarage"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="109dp"
@@ -115,12 +105,47 @@
             android:id="@+id/buttonRespawn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonFire"
-            android:layout_alignEnd="@+id/buttonFire"
+            android:layout_below="@id/layoutActionFire"
+            android:layout_alignEnd="@+id/buttonUp"
             android:layout_marginTop="65dp"
             android:layout_marginEnd="0dp"
             android:text="Respawn"
             android:visibility="invisible" />
+
+        <Spinner
+            android:id="@+id/vehicle_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/layoutActionFire"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:visibility="invisible">
+        </Spinner>
+
+        <LinearLayout
+            android:id="@+id/layoutActionFire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true">
+
+            <Button
+                android:id="@+id/buttonAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action"
+                android:layout_marginRight="10dp"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/buttonFire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fire"
+                android:layout_marginLeft="10dp"
+                android:visibility="invisible" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
