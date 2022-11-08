@@ -11,15 +11,16 @@ public class Tank extends FieldEntity {
     private final String ip;
 
     private long lastMoveTime;
-    private final int[] allowedMoveInterval = {500};
+    private final int[] allowedMoveIntervals = {500,800,1000};
+    private final int[] allowedTurnIntervals = {500,800,300};
 
     private long lastFireTime;
-    private final int[] allowedFireInterval = {1500};
+    private final int[] allowedFireIntervals = {1500,200,1000};
 
     private int numberOfBullets;
-    private final int[] allowedNumberOfBullets = {2};
+    private final int[] allowedNumbersOfBullets = {2,4,6};
 
-    private final int[] healths = {100};
+    private final int[] healths = {100,300,80};
     private int life;
 
     private Direction direction;
@@ -36,7 +37,7 @@ public class Tank extends FieldEntity {
 
     @Override
     public FieldEntity copy() {
-        return new Tank(id, direction, ip);
+        return new Tank(id, direction, ip, typeIndex);
     }
 
     @Override
@@ -58,16 +59,15 @@ public class Tank extends FieldEntity {
     public void setLastMoveTime(long lastMoveTime) {
         this.lastMoveTime = lastMoveTime;
     }
-    public long getAllowedMoveInterval() { return allowedMoveInterval[typeIndex]; }
+    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
+    public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
 
 
     public long getLastFireTime() {
         return lastFireTime;
     }
-    public void setLastFireTime(long lastFireTime) {
-        this.lastFireTime = lastFireTime;
-    }
-    public long getAllowedFireInterval() { return allowedFireInterval[typeIndex]; }
+    public void setLastFireTime(long lastFireTime) { this.lastFireTime = lastFireTime; }
+    public long getAllowedFireInterval() { return allowedFireIntervals[typeIndex]; }
 
     public int getNumberOfBullets() {
         return numberOfBullets;
@@ -75,7 +75,7 @@ public class Tank extends FieldEntity {
     public void setNumberOfBullets(int numberOfBullets) {
         this.numberOfBullets = numberOfBullets;
     }
-    public int getAllowedNumberOfBullets() { return allowedNumberOfBullets[typeIndex]; }
+    public int getAllowedNumberOfBullets() { return allowedNumbersOfBullets[typeIndex]; }
 
     public Direction getDirection() {
         return direction;

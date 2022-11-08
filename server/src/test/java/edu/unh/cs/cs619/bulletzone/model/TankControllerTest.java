@@ -17,7 +17,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsSideways_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertTrue(tc.turn(tank, Direction.Left));
@@ -25,7 +25,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsForwardsOrBackwards_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertFalse(tc.turn(tank, Direction.Up));
@@ -34,10 +34,9 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsOnlyOncePerAllowedMoveTime() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        tank.setAllowedMoveInterval(10000);
         IMGR.join("ip");
         IMGR.turn(tank.getId(), Direction.Left);
         IMGR.turn(tank.getId(), Direction.Down);
@@ -49,7 +48,7 @@ public class TankControllerTest {
 
     @Test
     public void move_DoesNotMoveSideways_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertFalse(tc.move(tank, Direction.Left));
@@ -57,7 +56,7 @@ public class TankControllerTest {
 
     @Test
     public void move_MovesForwards_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertTrue(tc.move(tank, Direction.Up));
@@ -65,7 +64,7 @@ public class TankControllerTest {
 
     @Test
     public void move_MovesBackwards_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertTrue(tc.move(tank, Direction.Down));
@@ -73,10 +72,9 @@ public class TankControllerTest {
 
     @Test
     public void move_MovesOnlyOncePerAllowedMoveTime() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        tank.setAllowedMoveInterval(10000);
         IMGR.join("ip");
         IMGR.move(tank.getId(), Direction.Up);
         long millis = System.currentTimeMillis() + 10000;
@@ -89,7 +87,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_SuccessfullyFires_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(0);
@@ -98,7 +96,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_DoesNotFireMoreThanTwoBulletsAtATime_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(2);
@@ -107,10 +105,9 @@ public class TankControllerTest {
 
     @Test
     public void fire_DoesNotFireWithin500MillisecondsAfterPreviousFire_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip");
+        tank = new Tank(0, Direction.Up, "ip", 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        tank.setAllowedFireInterval(10000);
         tank.setNumberOfBullets(0);
         IMGR.join("ip");
         IMGR.fire(tank.getId(), 1);

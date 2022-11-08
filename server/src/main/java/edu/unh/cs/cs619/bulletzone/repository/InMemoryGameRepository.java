@@ -70,7 +70,7 @@ public class InMemoryGameRepository implements GameRepository {
     @Override
     public Tank join(String ip) {
         synchronized (this.monitor) {
-            Tank tank;
+            Tank tank, miner, builder;
             if (game == null) {
                 this.create();
             }
@@ -80,8 +80,12 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
             Long tankId = this.idGenerator.getAndIncrement();
+            Long minerID = this.idGenerator.getAndIncrement();
+            Long builderID = this.idGenerator.getAndIncrement();
 
-            tank = new Tank(tankId, Direction.Up, ip);
+            tank = new Tank(tankId, Direction.Up, ip, 0);
+            miner = new Tank(minerID, Direction.Up, ip, 1);
+            //builder = new Tank(builderID, Direction.Up, ip, 2);
 
             Random random = new Random();
             int x;
