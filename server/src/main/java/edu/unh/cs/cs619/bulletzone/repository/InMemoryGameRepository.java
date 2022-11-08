@@ -15,7 +15,7 @@ import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.Vehicles.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Controller.VehicleController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
@@ -82,7 +82,6 @@ public class InMemoryGameRepository implements GameRepository {
             Long tankId = this.idGenerator.getAndIncrement();
 
             tank = new Tank(tankId, Direction.Up, ip);
-            tank.setLife(TANK_LIFE);
 
             Random random = new Random();
             int x;
