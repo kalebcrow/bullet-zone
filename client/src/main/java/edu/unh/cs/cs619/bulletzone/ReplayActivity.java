@@ -215,4 +215,23 @@ public class ReplayActivity extends Activity {
         }
     }
 
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
+    @Click(R.id.buttonSpeedUp)
+    protected void onButtonSpeedUp() {
+        historyInterpreter.speedUp();
+    }
+
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
+    @Click(R.id.buttonSlowDown)
+    protected void onButtonSlowDown() {
+        historyInterpreter.speedDown();
+    }
+
+
 }
