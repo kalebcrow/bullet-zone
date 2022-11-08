@@ -2,42 +2,29 @@ package edu.unh.cs.cs619.bulletzone.game.tiles;
 
 import edu.unh.cs.cs619.bulletzone.R;
 
-public class TerrainTile extends BlankTile {
+public class GroundTile extends BlankTile {
 
     /**
+     * Initializes the ground tile.
      *
      * @param JsonValue value from server
      * @param location location
      */
-    public TerrainTile(Integer JsonValue, Integer location) {
+    public GroundTile(Integer JsonValue, Integer location) {
+        // same as blank tile initialization
         this.resourceID = R.drawable.blank;
         this.location = location;
+        orientation = 0;
         int row = location / 16 + 1;
         int column = location % 16 + 1;
         String r = String.valueOf(row);
         String c = String.valueOf(column);
-        orientation = 0;
 
-        //This is what was the default in the grid adapter view (By plumdog)
-        if (JsonValue == 1000) {
-            this.resourceID = R.drawable.ironwall;
-        } else if (JsonValue < 2000 && JsonValue > 1000) {
-            this.resourceID = R.drawable.stonewall;
+        // making up json values temp until confirmed there are not existing ones
+        if (JsonValue == 10) {
+            this.resourceID = R.drawable.hilly;
+        } else if (JsonValue == 20) {
+            this.resourceID = R.drawable.rocky;
         }
-
-
-
     }
-
-    /**
-     *
-     * @param JSONValue value from server
-     * @return orientation
-     */
-    private Integer findOrientation(Integer JSONValue) {
-        String number = String.valueOf(JSONValue);
-        char[] digits1 = number.toCharArray();
-        return Integer.parseInt(String.copyValueOf(digits1, 4, 1));
-    }
-
 }
