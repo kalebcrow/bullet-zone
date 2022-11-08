@@ -34,6 +34,7 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
@@ -93,6 +94,8 @@ public class ClientActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         busProvider.getEventBus().unregister(gridEventHandler);
+        HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
+        commandInterpreter.clear();
     }
 
     /**
@@ -256,6 +259,8 @@ public class ClientActivity extends Activity {
         commandInterpreter.pause();
         gridPollTask.setPaused(true);
         Intent intent = new Intent(this, ReplayActivity_.class);
+        HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
+        commandInterpreter.clear();
         startActivityForResult(intent, 1);
     }
 

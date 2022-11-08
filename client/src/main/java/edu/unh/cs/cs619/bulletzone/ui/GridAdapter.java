@@ -77,7 +77,6 @@ public class GridAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.field_item, null);
         }

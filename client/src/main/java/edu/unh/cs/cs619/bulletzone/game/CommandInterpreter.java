@@ -45,6 +45,14 @@ public class CommandInterpreter {
 
     boolean paused = false;
 
+    public LinkedList<GridEvent> getEventHistory() {
+        return eventHistory;
+    }
+
+    public void setEventHistory(LinkedList<GridEvent> eventHistory) {
+        this.eventHistory = eventHistory;
+    }
+
     LinkedList<GridEvent> eventHistory;
 
     public EventWrapper ew;
@@ -76,6 +84,10 @@ public class CommandInterpreter {
             }
         }
         return INSTANCE;
+    }
+
+    public void clear() {
+        eventHistory.clear();
     }
 
     private Object CommandHistoryUpdateHandler = new Object()

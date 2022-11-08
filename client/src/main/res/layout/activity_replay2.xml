@@ -61,7 +61,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="30dp"
-            android:text="resume"
+            android:text="Start"
             android:visibility="visible" />
 
 

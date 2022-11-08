@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
@@ -34,6 +35,8 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.replay.HistoryInterpreter;
+import edu.unh.cs.cs619.bulletzone.replay.HistoryReader;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
@@ -72,6 +75,11 @@ public class ReplayActivity extends Activity {
     @Bean
     CommandInterpreter commandInterpreter;
 
+    @Bean
+    HistoryInterpreter historyInterpreter;
+
+    int running;
+
     /**
      * Remote tank identifier
      */
@@ -86,40 +94,28 @@ public class ReplayActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        busProvider.getEventBus().unregister(gridEventHandler);
     }
-
-    /**
-     * Otto has a limitation (as per design) that it will only find
-     * methods on the immediate class type. As a result, if at runtime this instance
-     * actually points to a subclass implementation, the methods registered in this class will
-     * not be found. This immediately becomes a problem when using the AndroidAnnotations
-     * framework as it always produces a subclass of annotated classes.
-     *
-     * To get around the class hierarchy limitation, one can use a separate anonymous class to
-     * handle the events.
-     */
-    private Object gridEventHandler = new Object()
-    {
-        @Subscribe
-        public void onUpdateGrid(GridUpdateEvent event) {
-            updateGrid(event.gw);
-        }
-    };
 
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
-    protected void afterViewInjection() {
-        joinAsync();
+    @AfterViews
+    void afterViews() {
         SystemClock.sleep(500);
+        HistoryReader historyReader = new HistoryReader(this);
         gridView.setAdapter(mGridAdapter);
-        //tankController.setRestClient(restClient);
+        boardView.setUsingJSON(historyReader.array);
+        mGridAdapter.updateList(boardView.getTiles());
+        boardView.setGridAdapter(mGridAdapter);
+        historyInterpreter.setEventHistory(historyReader.history);
+        running = 0;
+
     }
 
     /**
@@ -129,27 +125,6 @@ public class ReplayActivity extends Activity {
     @AfterInject
     void afterInject() {
         tankController.afterInject();
-        busProvider.getEventBus().register(gridEventHandler);
-    }
-
-    /**
-     * joinAsync: Sends the join request to server and saves returning tankID
-     */
-    @Background
-    void joinAsync() {
-        tankController.joinGame();
-        gridPollTask.doPoll();
-    }
-
-    /**
-     * updateGrid: Updates the local grid using grid from
-     * argument gridWrapper
-     * @param gw
-     */
-    public void updateGrid(GridWrapper gw) {
-        boardView.setUsingJSON(gw.getGrid());
-        mGridAdapter.updateList(boardView.getTiles());
-        boardView.setGridAdapter(mGridAdapter);
     }
 
     /**
@@ -212,6 +187,32 @@ public class ReplayActivity extends Activity {
                 "Garage: " + tank;
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
+    }
+
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
+    @Click(R.id.buttonPause)
+    protected void onButtonPause() {
+        historyInterpreter.pause();
+    }
+
+    /**
+     * onButtonFire: Sends REST request to server upon the user
+     * pressing the fire button
+     */
+    @Click(R.id.buttonResume)
+    protected void onButtonResume() {
+        Button button = (Button)findViewById(R.id.buttonResume);
+        button.setText("resume");
+        if (running == 1) {
+            historyInterpreter.Resume();
+        } else {
+            historyInterpreter.setPaused(false);
+            historyInterpreter.start(); //<-- put your code in here.
+            running =1;
+        }
     }
 
 }
