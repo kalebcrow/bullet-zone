@@ -27,6 +27,7 @@ import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.TurnEvent;
+import jdk.internal.org.jline.utils.Log;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
@@ -181,18 +182,41 @@ public class InMemoryGameRepository implements GameRepository {
                 //return false;
                 throw new TankDoesNotExistException(tankId);
             }
-            TankController tc = new TankController();
-            if (!tc.move(tank, direction)) {
-                return false;
-            }
 
             FieldHolder parent = tank.getParent();
 
             FieldHolder nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neightbor is not available");
 
+            double speed = 0;
+            if (nextField.isPresent()) {
+                // adding a check for field type (blank, hilly, or rocky) for speed purposes
+                if (nextField.getEntity().toString() == "R") {
+                    // rocky
+                    speed = 1;
+                } else if (nextField.getEntity().toString() == "H") {
+                    // hilly
+                    speed = 0.5;
+                } else {
+                    // blank
+                    speed = 0;
+                }
+            }
+
+            TankController tc = new TankController();
+            if (!tc.move(tank, direction, speed)) {
+                return false;
+            }
+
+            parent = tank.getParent();
+
+            nextField = parent.getNeighbor(direction);
+            checkNotNull(parent.getNeighbor(direction), "Neightbor is not available");
+
+
             boolean isCompleted;
-            if (!nextField.isPresent()) {
+            if (!nextField.isPresent() || nextField.getEntity().toString() == "H"
+                    || nextField.getEntity().toString() == "R") {
                 // If the next field is empty move the user
 
                 /*try {
