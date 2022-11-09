@@ -153,5 +153,17 @@ public class BoardView {
 
     }
 
+    /**
+     *
+     */
+    public void deRegister() {
+        busProvider.getEventBus().unregister(tileEventHandler);
+    }
 
+    /**
+     *
+     */
+    public void reRegister() {
+        busProvider.getEventBus().register(tileEventHandler);
+    }
 }

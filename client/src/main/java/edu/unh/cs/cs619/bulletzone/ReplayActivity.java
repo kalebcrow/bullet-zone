@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -51,16 +52,13 @@ public class ReplayActivity extends Activity {
     private static final String TAG = "ClientActivity";
 
     @Bean
-    protected GridAdapter mGridAdapter;
+    GridAdapter mGridAdapter;
 
     @ViewById
     protected GridView gridView;
 
     @ViewById
     protected TextView textViewGarage;
-
-    @Bean
-    TankController tankController;
 
     @Bean
     BusProvider busProvider;
@@ -71,9 +69,6 @@ public class ReplayActivity extends Activity {
 
     @Bean
     BoardView boardView;
-
-    @Bean
-    CommandInterpreter commandInterpreter;
 
     @Bean
     HistoryInterpreter historyInterpreter;
@@ -93,12 +88,11 @@ public class ReplayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tankController.passContext(this);
-
     }
 
     @Override
     protected void onDestroy() {
+        boardView.deRegister();
         super.onDestroy();
     }
 
@@ -110,39 +104,19 @@ public class ReplayActivity extends Activity {
         SystemClock.sleep(500);
         HistoryReader historyReader = new HistoryReader(this);
         gridView.setAdapter(mGridAdapter);
-        boardView.setUsingJSON(historyReader.array);
-        mGridAdapter.updateList(boardView.getTiles());
-        boardView.setGridAdapter(mGridAdapter);
-        historyInterpreter.setEventHistory(historyReader.history);
-        running = 0;
+        if (historyReader.array == null) {
+            CharSequence text = "No Replay";
+            int duration = Toast.LENGTH_SHORT;
 
-    }
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        } else {
+            boardView.setUsingJSON(historyReader.array);
+            mGridAdapter.updateList(boardView.getTiles());
+            historyInterpreter.setEventHistory(historyReader.history);
+            running = 0;
+        }
 
-    /**
-     * afterInject: Registers gridEventHandler to evenBus and
-     * sets an errorHandler for REST client
-     */
-    @AfterInject
-    void afterInject() {
-        tankController.afterInject();
-    }
-
-    /**
-     * moveAsync: Background movement request
-     * @param direction
-     */
-    @Background
-    void moveAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
-     * turnAsync: Background turn request
-     * @param direction
-     */
-    @Background
-    void turnAsync(byte direction) {
-        tankController.move(direction);
     }
 
 
@@ -206,6 +180,7 @@ public class ReplayActivity extends Activity {
     protected void onButtonResume() {
         Button button = (Button)findViewById(R.id.buttonResume);
         button.setText("resume");
+        boardView.setGridAdapter(mGridAdapter);
         if (running == 1) {
             historyInterpreter.Resume();
         } else {

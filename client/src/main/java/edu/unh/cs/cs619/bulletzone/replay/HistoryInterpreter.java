@@ -71,10 +71,10 @@ public class HistoryInterpreter extends Thread {
 
     @Background
     public void run() {
-        GridEvent prevEvent = eventHistory.get(0);
-        interpret(prevEvent);
         if (eventHistory.size() != 0) {
-            for (int i = 1; i < eventHistory.size() - 1; i++) {
+            GridEvent prevEvent = eventHistory.get(0);
+            interpret(prevEvent);
+            for (int i = 1; i < eventHistory.size(); i++) {
                 synchronized(lock) {
                     try {
                         if (paused) {

@@ -71,21 +71,6 @@ public class CommandInterpreter {
         busProvider.getEventBus().register(CommandHistoryUpdateHandler);
     }
 
-    /**
-     *
-     * @return Gets command interpreter
-     */
-    public static CommandInterpreter getCommandInterpreter() {
-        if(INSTANCE == null) {
-            synchronized (CommandInterpreter.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new CommandInterpreter();
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
     public void clear() {
         eventHistory.clear();
     }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 
 public class HistoryWriter {
@@ -37,6 +38,14 @@ public class HistoryWriter {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("tiles.json", Context.MODE_PRIVATE));
             outputStreamWriter.write(gson.toJson(array));
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("tanks.json", Context.MODE_PRIVATE));
+            outputStreamWriter.write(TankController.getTankController().getTankID().toString());
             outputStreamWriter.close();
         }
         catch (IOException e) {
