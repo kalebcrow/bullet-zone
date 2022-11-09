@@ -368,10 +368,15 @@ public class ClientActivity extends Activity {
 
         if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
             //stub
+            //presumably some call to TankController requesting mine action
         }
         else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
 
             //another stub
+            //open builder popup
+            BuilderFragment myBuilderFragment = new BuilderFragment();
+            myBuilderFragment.setContext(this);
+            myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
 
         }
 
