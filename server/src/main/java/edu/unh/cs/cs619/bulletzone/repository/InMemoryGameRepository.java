@@ -380,16 +380,18 @@ public class InMemoryGameRepository implements GameRepository {
         final Road road = new Road();
         final Wall indestructiblewall = new Wall(1000);
 
+
+
         if (tank == null) {
             throw new TankDoesNotExistException(tankId);
         }
-
+        //if(tank.)
 
         Direction direction = tank.getDirection();
         FieldHolder parent = tank.getParent();
         Byte d = Direction.toByte(direction);
-        Direction behindt = Direction.fromByte((byte) ((d+4)%8));
-        FieldHolder behind = parent.getNeighbor(behindt);
+        Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
+        FieldHolder behind = parent.getNeighbor(behindtank);
 
         switch(type)
         {
@@ -407,6 +409,20 @@ public class InMemoryGameRepository implements GameRepository {
         }
 
         //game.addEvent(new BuildwallEvent);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean dismantle(long tankId) throws TankDoesNotExistException
+    {
+        Tank tank = game.getTanks().get(tankId);
+
+        if (tank == null)
+        {
+            throw new TankDoesNotExistException(tankId);
+        }
 
 
         return true;
