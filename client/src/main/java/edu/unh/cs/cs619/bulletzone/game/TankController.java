@@ -13,7 +13,7 @@ import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class TankController {
 
     @RestService

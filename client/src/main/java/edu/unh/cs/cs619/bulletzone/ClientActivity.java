@@ -34,6 +34,7 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
@@ -52,6 +53,8 @@ public class ClientActivity extends Activity {
 
     @ViewById
     protected GridView gridView;
+
+    public int started = 0;
 
     @ViewById
     protected TextView textViewGarage;
@@ -92,6 +95,19 @@ public class ClientActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        commandInterpreter.pause();
+        if (commandInterpreter.getEventHistory().size() != 0) {
+            HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
+        }
+
+        gridPollTask.setPaused(true);
+        commandInterpreter.clear();
     }
 
     /**
@@ -101,7 +117,8 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        //tankController.setRestClient(restClient);
+        boardView.setGridAdapter(mGridAdapter);
+        commandInterpreter.setPaused(false);
     }
 
     /**
@@ -119,8 +136,20 @@ public class ClientActivity extends Activity {
     @Background
     void joinAsync() {
         tankController.joinGame();
-        boardView.setGridAdapter(mGridAdapter);
+        gridPollTask.setPaused(false);
         gridPollTask.doPoll();
+        commandInterpreter.setPaused(false);
+    }
+
+    @Override
+    protected void onRestart() {
+        gridPollTask.setPaused(false);
+        boardView.reRegister();
+        if (started == 1) {
+            gridPollTask.doPoll();
+        }
+        commandInterpreter.setPaused(false);
+        super.onRestart();
     }
 
     /**
@@ -153,24 +182,6 @@ public class ClientActivity extends Activity {
     }
 
     /**
-     * moveAsync: Background movement request
-     * @param direction
-     */
-    @Background
-    void moveAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
-     * turnAsync: Background turn request
-     * @param direction
-     */
-    @Background
-    void turnAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
      * startGame: Initializes view when join game is selected
      */
     @Click(R.id.buttonJoin)
@@ -183,6 +194,8 @@ public class ClientActivity extends Activity {
         Button buttonRight = findViewById(R.id.buttonRight);
         Button buttonJoin = findViewById(R.id.buttonJoin);
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        Button buttonReplay = findViewById(R.id.buttonReplay);
+        Button buttonReplay1 = findViewById(R.id.buttonReplay1);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
         buttonFire.setVisibility(View.VISIBLE);
@@ -190,7 +203,9 @@ public class ClientActivity extends Activity {
         buttonDown.setVisibility(View.VISIBLE);
         buttonRight.setVisibility(View.VISIBLE);
         buttonJoin.setVisibility(View.INVISIBLE);
-
+        buttonReplay.setVisibility(View.VISIBLE);
+        buttonReplay1.setVisibility(View.INVISIBLE);
+        started = 1;
         //R.id.buttonLeft
         //tankId = restClient.join().getResult();
         //tankController.setTankID(tankId);
@@ -200,9 +215,32 @@ public class ClientActivity extends Activity {
     /**
      * onButtonRespawn: Resets client on the death of user
      */
+    @Click(R.id.buttonReplay1)
+    protected void onButtonReplay1(){
+        boardView.deRegister();
+        Intent intent = new Intent(this, ReplayActivity_.class);
+        startActivityForResult(intent, 1);
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
         afterViewInjection();
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
+    @Click(R.id.buttonReplay)
+    protected void onButtonReplay(){
+        commandInterpreter.pause();
+        gridPollTask.setPaused(true);
+        HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
+        commandInterpreter.clear();
+        Intent intent = new Intent(this, ReplayActivity_.class);
+        startActivityForResult(intent, 1);
     }
 
     /**
@@ -240,9 +278,9 @@ public class ClientActivity extends Activity {
         builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //System.out.println("leaveGame() called, tank ID: "+tankId);
-                BackgroundExecutor.cancelAll("grid_poller_task", true);
-                //restClient.leave(tankId);
                 tankController.leaveGame();
+                finish();
+                //restClient.leave(tankId);
             }
         });
         builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
