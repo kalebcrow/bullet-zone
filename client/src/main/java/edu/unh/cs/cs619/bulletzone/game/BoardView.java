@@ -38,12 +38,15 @@ public class BoardView {
     public BlankTile[] tiles;
     public int[][] tileInput;
     public TileFactory tileFactory;
+    public boolean paused;
 
     /**
      *
      * @return return gridAdapter
      */
     public GridAdapter getGridAdapter() {
+        TankList.getTankList().clear();
+        BulletList.getBulletList().clear();
         return gridAdapter;
     }
 
@@ -144,10 +147,23 @@ public class BoardView {
      * @param event update specific tile
      */
     private void updateTile(TileUpdateEvent event) {
+        Log.d("TimeDiff", "recieved event: " + System.currentTimeMillis());
         tiles[event.location] = event.movedTile;
         gridAdapter.updateList(tiles);
 
     }
 
+    /**
+     *
+     */
+    public void deRegister() {
+        busProvider.getEventBus().unregister(tileEventHandler);
+    }
 
+    /**
+     *
+     */
+    public void reRegister() {
+        busProvider.getEventBus().register(tileEventHandler);
+    }
 }
