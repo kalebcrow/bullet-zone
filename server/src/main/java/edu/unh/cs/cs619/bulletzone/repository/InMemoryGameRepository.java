@@ -8,16 +8,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import edu.unh.cs.cs619.bulletzone.model.Builder;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
+import edu.unh.cs.cs619.bulletzone.model.Controller.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
-import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
-import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankController;
-import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Controller.VehicleController;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.model.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.DestroyBulletEvent;
@@ -54,7 +54,6 @@ public class InMemoryGameRepository implements GameRepository {
      * Tank's default life [life]
      */
     private static final int TANK_LIFE = 100;
-    private static final int BUILDER_LIFE = 80;
     private final Timer timer = new Timer();
     private final AtomicLong idGenerator = new AtomicLong();
     private final Object monitor = new Object();
@@ -71,8 +70,7 @@ public class InMemoryGameRepository implements GameRepository {
     @Override
     public Tank join(String ip) {
         synchronized (this.monitor) {
-            Tank tank;
-            Builder builder;
+            Tank tank, miner, builder;
             if (game == null) {
                 this.create();
             }
@@ -82,13 +80,12 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
             Long tankId = this.idGenerator.getAndIncrement();
+            Long minerID = this.idGenerator.getAndIncrement();
+            Long builderID = this.idGenerator.getAndIncrement();
 
-            tank = new Tank(tankId, Direction.Up, ip);
-            tank.setLife(TANK_LIFE);
-
-            Long builderId = this.idGenerator.getAndIncrement();
-
-            builder = new Builder(builderId, Direction.Up, ip);
+            tank = new Tank(tankId, Direction.Up, ip, 0);
+            miner = new Tank(minerID, Direction.Up, ip, 1);
+            //builder = new Tank(builderID, Direction.Up, ip, 2);
 
             Random random = new Random();
             int x;
@@ -107,9 +104,7 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
             game.addTank(ip, tank);
-            game.addTank(ip, builder);
             game.addEvent(new AddTankEvent(x, y , tankId));
-            game.addEvent(new AddTankEvent(x+1,y, builderId));
 
             return tank;
         }
@@ -151,7 +146,7 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             if (!tc.turn(tank, direction)) {
                 return false;
             }
@@ -190,7 +185,7 @@ public class InMemoryGameRepository implements GameRepository {
                 //return false;
                 throw new TankDoesNotExistException(tankId);
             }
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             if (!tc.move(tank, direction)) {
                 return false;
             }
@@ -247,7 +242,7 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
 
-            TankController tc = new TankController();
+            VehicleController tc = new TankController();
             int temp = tc.fire(tank, bulletType);
             if (temp == -1) {
                 return false;

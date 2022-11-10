@@ -11,28 +11,28 @@ public class Tank extends FieldEntity {
     private final String ip;
 
     private long lastMoveTime;
-    private int allowedMoveInterval;
+    private final int[] allowedMoveIntervals = {500,800,1000};
+    private final int[] allowedTurnIntervals = {500,800,300};
 
     private long lastFireTime;
-    private int allowedFireInterval;
+    private final int[] allowedFireIntervals = {1500,200,1000};
 
     private int numberOfBullets;
-    private int allowedNumberOfBullets;
+    private final int[] allowedNumbersOfBullets = {2,4,6};
 
+    private final int[] healths = {100,300,80};
     private int life;
 
     private Direction direction;
 
-    public Tank(long id, Direction direction, String ip) {
+    private int typeIndex;
+
+    public Tank(long id, Direction direction, String ip, int typeIndex) {
         this.id = id;
         this.direction = direction;
         this.ip = ip;
-        numberOfBullets = 0;
-        allowedNumberOfBullets = 2;
-        lastFireTime = 0;
-        allowedFireInterval = 1500;
-        lastMoveTime = 0;
-        allowedMoveInterval = 500;
+        this.typeIndex = typeIndex;
+        this.life = healths[typeIndex];
     }
 
     public Tank(){
@@ -42,7 +42,7 @@ public class Tank extends FieldEntity {
 
     @Override
     public FieldEntity copy() {
-        return new Tank(id, direction, ip);
+        return new Tank(id, direction, ip, typeIndex);
     }
 
     @Override
@@ -61,55 +61,30 @@ public class Tank extends FieldEntity {
     public long getLastMoveTime() {
         return lastMoveTime;
     }
-
     public void setLastMoveTime(long lastMoveTime) {
         this.lastMoveTime = lastMoveTime;
     }
+    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
+    public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
 
-    public long getAllowedMoveInterval() {
-        return allowedMoveInterval;
-    }
-
-    public void setAllowedMoveInterval(int allowedMoveInterval) {
-        this.allowedMoveInterval = allowedMoveInterval;
-    }
 
     public long getLastFireTime() {
         return lastFireTime;
     }
-
-    public void setLastFireTime(long lastFireTime) {
-        this.lastFireTime = lastFireTime;
-    }
-
-    public long getAllowedFireInterval() {
-        return allowedFireInterval;
-    }
-
-    public void setAllowedFireInterval(int allowedFireInterval) {
-        this.allowedFireInterval = allowedFireInterval;
-    }
+    public void setLastFireTime(long lastFireTime) { this.lastFireTime = lastFireTime; }
+    public long getAllowedFireInterval() { return allowedFireIntervals[typeIndex]; }
 
     public int getNumberOfBullets() {
         return numberOfBullets;
     }
-
     public void setNumberOfBullets(int numberOfBullets) {
         this.numberOfBullets = numberOfBullets;
     }
-
-    public int getAllowedNumberOfBullets() {
-        return allowedNumberOfBullets;
-    }
-
-    public void setAllowedNumberOfBullets(int allowedNumberOfBullets) {
-        this.allowedNumberOfBullets = allowedNumberOfBullets;
-    }
+    public int getAllowedNumberOfBullets() { return allowedNumbersOfBullets[typeIndex]; }
 
     public Direction getDirection() {
         return direction;
     }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
@@ -132,10 +107,6 @@ public class Tank extends FieldEntity {
 
     public int getLife() {
         return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
     }
 
     public String getIp(){
