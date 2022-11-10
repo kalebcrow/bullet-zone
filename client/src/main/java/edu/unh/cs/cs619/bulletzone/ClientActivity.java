@@ -326,9 +326,9 @@ public class ClientActivity extends Activity {
         builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //System.out.println("leaveGame() called, tank ID: "+tankId);
+                tankController.leaveGame();
                 finish();
                 //restClient.leave(tankId);
-                tankController.leaveGame();
             }
         });
         builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
