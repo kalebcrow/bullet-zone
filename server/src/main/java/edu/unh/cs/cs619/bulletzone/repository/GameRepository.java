@@ -30,6 +30,9 @@ public interface GameRepository {
     public void leave(long tankId)
             throws TankDoesNotExistException;
 
+    boolean build(long tankId, int type)
+            throws TankDoesNotExistException;
+
     Game getGame()
             throws GameDoesNotExistException;
 }

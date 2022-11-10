@@ -368,6 +368,21 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    @Override
+    public boolean build(long tankId, int type) throws TankDoesNotExistException
+    {
+        Builder b = (Builder)game.getTanks().get(tankId);
+        if (b == null) {
+            throw new TankDoesNotExistException(tankId);
+        }
+
+
+        //game.addEvent(new BuildwallEvent);
+
+
+        return true;
+    }
+
     /**
      * Creates a new game and generates a new board.
      */
