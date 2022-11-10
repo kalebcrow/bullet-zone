@@ -11,10 +11,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Controller.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Road;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Controller.VehicleController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
@@ -85,7 +87,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             tank = new Tank(tankId, Direction.Up, ip, 0);
             miner = new Tank(minerID, Direction.Up, ip, 1);
-            //builder = new Tank(builderID, Direction.Up, ip, 2);
+            builder = new Tank(builderID, Direction.Up, ip, 2);
 
             Random random = new Random();
             int x;
@@ -364,13 +366,45 @@ public class InMemoryGameRepository implements GameRepository {
     }
 
     @Override
-    public boolean build(long tankId, int type) throws TankDoesNotExistException
+    public boolean build(long tankId, int type) throws TankDoesNotExistException, BuildingDoesNotExistException
     {
-        Builder b = (Builder)game.getTanks().get(tankId);
-        if (b == null) {
+        /*
+        types:
+        1 - Road
+        2 - Wall
+        3 - Indestructible Wall
+         */
+        Tank tank = game.getTanks().get(tankId);
+
+        final Wall wall = new Wall();
+        final Road road = new Road();
+        final Wall indestructiblewall = new Wall(1000);
+
+        if (tank == null) {
             throw new TankDoesNotExistException(tankId);
         }
 
+
+        Direction direction = tank.getDirection();
+        FieldHolder parent = tank.getParent();
+        Byte d = Direction.toByte(direction);
+        Direction behindt = Direction.fromByte((byte) ((d+4)%8));
+        FieldHolder behind = parent.getNeighbor(behindt);
+
+        switch(type)
+        {
+            case 1:
+                behind.setFieldEntity(road);
+                break;
+            case 2:
+                behind.setFieldEntity(wall);
+                break;
+            case 3:
+                behind.setFieldEntity(indestructiblewall);
+                break;
+            default:
+                throw new BuildingDoesNotExistException();
+        }
 
         //game.addEvent(new BuildwallEvent);
 

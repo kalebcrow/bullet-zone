@@ -3,6 +3,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -31,7 +32,7 @@ public interface GameRepository {
             throws TankDoesNotExistException;
 
     boolean build(long tankId, int type)
-            throws TankDoesNotExistException;
+            throws TankDoesNotExistException, BuildingDoesNotExistException;
 
     Game getGame()
             throws GameDoesNotExistException;

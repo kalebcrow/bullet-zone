@@ -127,5 +127,13 @@ public abstract class VehicleController {
         return bulletType;
     }
 
+    public int build(Tank tank, int building)
+    {
+        if(tank.getLife() == 0){
+            return -1;
+        }
+
+        return 1;
+    }
 
 }

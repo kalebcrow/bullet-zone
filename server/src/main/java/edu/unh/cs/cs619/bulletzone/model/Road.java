@@ -1,20 +1,22 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-public class Wall extends FieldEntity {
+public class Road extends FieldEntity {
     int destructValue, pos;
 
-    public Wall(){
+    public Road(){
         this.destructValue = 1000;
     }
 
-    public Wall(int destructValue, int pos){
+    public Road(int destructValue, int pos){
         this.destructValue = destructValue;
         this.pos = pos;
     }
-    public Wall(int destructValue)
+
+    public Road(int destructValue)
     {
         this.destructValue = destructValue;
     }
+
     @Override
     public FieldEntity copy() {
         return new Wall();
@@ -27,7 +29,7 @@ public class Wall extends FieldEntity {
 
     @Override
     public String toString() {
-        return "W";
+        return "R";
     }
 
     public int getPos(){
