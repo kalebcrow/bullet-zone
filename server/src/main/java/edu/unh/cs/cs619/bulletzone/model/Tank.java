@@ -2,6 +2,8 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.HashMap;
+
 public class Tank extends FieldEntity {
 
     private static final String TAG = "Tank";
@@ -23,6 +25,8 @@ public class Tank extends FieldEntity {
     private final int[] healths = {100,300,80};
     private int life;
 
+    private HashMap<String, Integer> resources = new HashMap<>();
+
     private Direction direction;
 
     private int typeIndex;
@@ -33,6 +37,11 @@ public class Tank extends FieldEntity {
         this.ip = ip;
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
+        if (typeIndex == 2) {
+            resources.put("rock", 0);
+            resources.put("iron", 0);
+            resources.put("clay", 0);
+        }
     }
 
     @Override
@@ -106,6 +115,28 @@ public class Tank extends FieldEntity {
 
     public String getIp(){
         return ip;
+    }
+
+    public boolean addBundleOfResources(String resourceType) {
+        Integer temp = resources.get(resourceType);
+        if (temp == null) {
+            return false;
+        }
+        resources.replace(resourceType, temp + 1);
+        return true;
+    }
+
+    public boolean subtractBundleOfResources(String resourceType) {
+        Integer temp = resources.get(resourceType);
+        if (temp == null || temp == 0) {
+            return false;
+        }
+        resources.replace(resourceType, temp - 1);
+        return true;
+    }
+
+    public Integer getResourcesByResource(String resourceType) {
+        return resources.get(resourceType);
     }
 
 }
