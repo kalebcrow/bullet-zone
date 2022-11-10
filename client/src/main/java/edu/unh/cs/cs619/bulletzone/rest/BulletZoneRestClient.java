@@ -16,6 +16,7 @@ import org.springframework.web.client.RestClientException;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
+import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 /** "http://stman1.cs.unh.edu:6191/games"
@@ -38,7 +39,7 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     void setRootUrl(String rootUrl);
 
     @Post("")
-    LongWrapper join() throws RestClientException;
+    LongArrayWrapper join() throws RestClientException;
 
     @Get("")
     GridWrapper grid();
