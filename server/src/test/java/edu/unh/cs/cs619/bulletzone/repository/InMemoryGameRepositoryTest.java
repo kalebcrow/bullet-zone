@@ -32,15 +32,15 @@ public class InMemoryGameRepositoryTest {
 
     @Test
     public void testJoin() throws Exception {
-        Tank tank = repo.join("");
-        Tank tank2 = repo.join("10");
-        Assert.assertEquals(tank.getId(), 0);
-        Assert.assertEquals(tank2.getId(), 1);
+        Tank[] tank = repo.join("");
+        Tank[] tank2 = repo.join("10");
+        Assert.assertEquals(tank[0].getId(), 0);
+        Assert.assertEquals(tank2[0].getId(), 1);
         Assert.assertNotNull(tank);
-        Assert.assertTrue(tank.getId() >= 0);
-        Assert.assertNotNull(tank.getDirection());
-        Assert.assertTrue(tank.getDirection() == Direction.Up);
-        Assert.assertNotNull(tank.getParent());
+        Assert.assertTrue(tank[0].getId() >= 0);
+        Assert.assertNotNull(tank[0].getDirection());
+        Assert.assertTrue(tank[0].getDirection() == Direction.Up);
+        Assert.assertNotNull(tank[0].getParent());
     }
     /*
     @Test
@@ -73,17 +73,17 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
         //tank joins and is first player
-        Tank tank = repo.join("10");
+        Tank[] tank = repo.join("10");
         Assert.assertNotNull(tank);
-        Assert.assertEquals(tank.getId(), 0);
+        Assert.assertEquals(tank[0].getId(), 0);
 
         //tank leaves and is no longer present in the FieldHolder
-        Assert.assertEquals(true, tank.getParent().isPresent());
-        repo.leave(tank.getId());
-        Assert.assertEquals(false, tank.getParent().isPresent());
+        Assert.assertEquals(true, tank[0].getParent().isPresent());
+        repo.leave(tank[0].getId());
+        Assert.assertEquals(false, tank[0].getParent().isPresent());
 
         thrown.expect(TankDoesNotExistException.class);
-        repo.turn(tank.getId(), Direction.Right);
+        repo.turn(tank[0].getId(), Direction.Right);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoined_ReturnsAddTankEvent() {
         repo.create();
-        Tank tank = repo.join("");
+        Tank[] tank = repo.join("");
         LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 500);
         assert (update.size() == 1);
         assert (update.getFirst().getType() == "addTank");
@@ -104,8 +104,8 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSizeAndContents() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
-        Long tankID = tank.getId();
+        Tank[] tank = repo.join("");
+        Long tankID = tank[0].getId();
         for (int i = 0; i < 10; i++) {
             repo.move(tankID, Direction.Up);
             Thread.sleep(550);
@@ -121,8 +121,8 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverMinute_ReturnsAtLeastEventsFromLastMinute() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
-        Long tankID = tank.getId();
+        Tank[] tank = repo.join("");
+        Long tankID = tank[0].getId();
         for (int i = 0; i < 60; i++) {
             repo.move(tankID, Direction.Up);
             Thread.sleep(500);
@@ -137,8 +137,8 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverThreeMinutes_ReturnsEventsFromNoMoreThanThreeMinutesAgo() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
-        Long tankID = tank.getId();
+        Tank[] tank = repo.join("");
+        Long tankID = tank[0].getId();
 
         for (int i = 0; i < 180; i++) {
             repo.move(tankID, Direction.Up);

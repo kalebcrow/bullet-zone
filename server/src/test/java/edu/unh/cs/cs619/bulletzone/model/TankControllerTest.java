@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.unh.cs.cs619.bulletzone.model.Controller.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
@@ -42,7 +41,7 @@ public class TankControllerTest {
         IMGR.turn(tank.getId(), Direction.Down);
         IMGR.turn(tank.getId(), Direction.Right);
         Game game = IMGR.getGame();
-        tank = game.getTank("ip");
+        tank = game.getTanks("ip");
         assertEquals(Direction.Left, tank.getDirection());
     }
 
@@ -115,5 +114,17 @@ public class TankControllerTest {
         Game game = IMGR.getGame();
         tank = game.getTank("ip");
         assertEquals(1, tank.getNumberOfBullets());
+    }
+
+    // testing basic moving, turning, and firing constraints for miner and builder
+
+    @Test
+    public void move_MinerMovingAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        tank = new Tank(0,Direction.Up,"ip",2);
+        IMGR = new InMemoryGameRepository();
+        IMGR.join("ip");
+        assertTrue(IMGR.move(tank.getId(), Direction.Up));
+        Thread.sleep(450);
+        assertTrue(IMGR.move(tank.getId(), Direction.Down));
     }
 }

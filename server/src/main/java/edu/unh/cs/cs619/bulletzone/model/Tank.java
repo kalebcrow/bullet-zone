@@ -2,7 +2,11 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jdk.internal.org.jline.utils.Log;
+
 public class Tank extends FieldEntity {
+
+    // typeIndex 0 for tank, 1 for miner, 2 for builder
 
     private static final String TAG = "Tank";
 
@@ -33,6 +37,9 @@ public class Tank extends FieldEntity {
         this.ip = ip;
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
+        this.lastMoveTime = 0;
+        this.lastFireTime = 0;
+        this.numberOfBullets = 0;
     }
 
     @Override
@@ -44,7 +51,7 @@ public class Tank extends FieldEntity {
     public void hit(int damage) {
         life = life - damage;
         System.out.println("Tank life: " + id + " : " + life);
-//		Log.d(TAG, "TankId: " + id + " hit -> life: " + life);
+		//Log.d(TAG, "TankId: " + id + " hit -> life: " + life);
 
         if (life <= 0) {
 //			Log.d(TAG, "Tank event");
@@ -59,7 +66,11 @@ public class Tank extends FieldEntity {
     public void setLastMoveTime(long lastMoveTime) {
         this.lastMoveTime = lastMoveTime;
     }
-    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
+    public long getAllowedMoveInterval() {
+        System.out.println(allowedMoveIntervals[typeIndex]);
+        System.out.println(typeIndex);
+        return allowedMoveIntervals[typeIndex];
+    }
     public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
 
 
