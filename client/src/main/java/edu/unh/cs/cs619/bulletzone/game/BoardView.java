@@ -10,6 +10,7 @@ import org.androidannotations.annotations.EBean;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -69,6 +70,7 @@ public class BoardView {
     @AfterInject
     public void setBusProvider(){
         busProvider.getEventBus().register(tileEventHandler);
+        busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
@@ -147,6 +149,26 @@ public class BoardView {
         tiles[event.location] = event.movedTile;
         gridAdapter.updateList(tiles);
 
+    }
+
+    /**
+     * Subscribes to update
+     */
+    private Object gridEventHandler = new Object()
+    {
+        @Subscribe
+        public void onUpdateGrid(GridUpdateEvent event) {
+            updateGrid(event);
+        }
+    };
+
+    /**
+     *
+     * @param event update specific tile
+     */
+    private void updateGrid(GridUpdateEvent event) {
+        this.setUsingJSON(event.gw.getGrid());
+        gridAdapter.updateList(tiles);
     }
 
 

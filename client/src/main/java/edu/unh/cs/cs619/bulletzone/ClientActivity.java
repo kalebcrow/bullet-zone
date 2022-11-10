@@ -92,26 +92,7 @@ public class ClientActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        busProvider.getEventBus().unregister(gridEventHandler);
     }
-
-    /**
-     * Otto has a limitation (as per design) that it will only find
-     * methods on the immediate class type. As a result, if at runtime this instance
-     * actually points to a subclass implementation, the methods registered in this class will
-     * not be found. This immediately becomes a problem when using the AndroidAnnotations
-     * framework as it always produces a subclass of annotated classes.
-     *
-     * To get around the class hierarchy limitation, one can use a separate anonymous class to
-     * handle the events.
-     */
-    private Object gridEventHandler = new Object()
-    {
-        @Subscribe
-        public void onUpdateGrid(GridUpdateEvent event) {
-            updateGrid(event.gw);
-        }
-    };
 
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
@@ -130,7 +111,6 @@ public class ClientActivity extends Activity {
     @AfterInject
     void afterInject() {
         tankController.afterInject();
-        busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
@@ -139,18 +119,8 @@ public class ClientActivity extends Activity {
     @Background
     void joinAsync() {
         tankController.joinGame();
-        gridPollTask.doPoll();
-    }
-
-    /**
-     * updateGrid: Updates the local grid using grid from
-     * argument gridWrapper
-     * @param gw
-     */
-    public void updateGrid(GridWrapper gw) {
-        boardView.setUsingJSON(gw.getGrid());
-        mGridAdapter.updateList(boardView.getTiles());
         boardView.setGridAdapter(mGridAdapter);
+        gridPollTask.doPoll();
     }
 
     /**
