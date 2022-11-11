@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public final class Game {
 
 
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, Long> playersIP = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, HashMap<String,Long>> playersIP = new ConcurrentHashMap<>();
 
     private final Object monitor = new Object();
 
@@ -43,14 +44,16 @@ public final class Game {
         return holderGrid;
     }
 
-    public void addTank(String ip, Tank tank) {
+    public void addTank(String ip, Tank tank, String key) {
         synchronized (tanks) {
             tanks.put(tank.getId(), tank);
-            playersIP.put(ip, tank.getId());
+            HashMap<String, Long> map = playersIP.get(ip);
+            map.put(key, tank.getId());
+            playersIP.put(ip, map);
         }
     }
 
-    public Tank getTank(int tankId) {
+    public Tank getTank(Long tankId) {
         return tanks.get(tankId);
     }
 
@@ -77,9 +80,9 @@ public final class Game {
         }
     }
 
-    public Tank getTank(String ip){
+    public HashMap<String,Long> getTanks(String ip){
         if (playersIP.containsKey(ip)){
-            return tanks.get(playersIP.get(ip));
+            return playersIP.get(ip);
         }
         return null;
     }

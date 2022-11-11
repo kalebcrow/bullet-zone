@@ -27,6 +27,7 @@ import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
+import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 @RestController
@@ -45,14 +46,18 @@ class GamesController {
     @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    ResponseEntity<LongWrapper> join(HttpServletRequest request) {
-        Tank tank;
+    ResponseEntity<LongArrayWrapper> join(HttpServletRequest request) {
+        Tank[] tank;
         try {
             tank = gameRepository.join(request.getRemoteAddr());
-            log.info("Player joined: tankId={} IP={}", tank.getId(), request.getRemoteAddr());
+            Long[] tankIds = new Long[3];
+            for(int i=0;i<3;i++){
+                tankIds[i] = tank[i].getId();
+            }
+            log.info("Player joined: tankId={} IP={}", tank[0].getId(), request.getRemoteAddr());
 
-            return new ResponseEntity<LongWrapper>(
-                    new LongWrapper(tank.getId()),
+            return new ResponseEntity<LongArrayWrapper>(
+                    new LongArrayWrapper(tankIds),
                     HttpStatus.CREATED
             );
         } catch (RestClientException e) {

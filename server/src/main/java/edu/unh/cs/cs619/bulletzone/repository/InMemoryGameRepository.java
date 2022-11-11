@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Timer;
@@ -9,7 +10,6 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
-import edu.unh.cs.cs619.bulletzone.model.Controller.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
@@ -18,7 +18,7 @@ import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Road;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.Controller.VehicleController;
+import edu.unh.cs.cs619.bulletzone.model.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.model.events.AddTankEvent;
@@ -70,24 +70,29 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank join(String ip) {
+    public Tank[] join(String ip) {
         synchronized (this.monitor) {
-            Tank tank, miner, builder;
+
+            HashMap<String, Long> tankMap = game.getTanks(ip);
+            Tank[] tanks = new Tank[3];
+
             if (game == null) {
                 this.create();
             }
 
-            if( (tank = game.getTank(ip)) != null){
-                return tank;
-            }
+            if(tankMap.containsKey("tank")) tanks[0] = game.getTank(tankMap.get("tank"));
+            if(tankMap.containsKey("miner")) tanks[1] = game.getTank(tankMap.get("miner"));
+            if(tankMap.containsKey("builder"))tanks[2] = game.getTank(tankMap.get("builder"));
+            if(tankMap.size()!=0) return tanks;
+
 
             Long tankId = this.idGenerator.getAndIncrement();
             Long minerID = this.idGenerator.getAndIncrement();
             Long builderID = this.idGenerator.getAndIncrement();
 
-            tank = new Tank(tankId, Direction.Up, ip, 0);
-            miner = new Tank(minerID, Direction.Up, ip, 1);
-            builder = new Tank(builderID, Direction.Up, ip, 2);
+            tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
+            tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
+            tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
 
             Random random = new Random();
             int x;
@@ -99,18 +104,44 @@ public class InMemoryGameRepository implements GameRepository {
                 y = random.nextInt(FIELD_DIM);
                 FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
                 if (!fieldElement.isPresent()) {
-                    fieldElement.setFieldEntity(tank);
-                    tank.setParent(fieldElement);
+                    fieldElement.setFieldEntity(tanks[0]);
+                    tanks[0].setParent(fieldElement);
                     break;
                 }
             }
-
-            game.addTank(ip, tank);
             game.addEvent(new AddTankEvent(x, y , tankId));
+            for (; ; ) {
+                x = random.nextInt(FIELD_DIM);
+                y = random.nextInt(FIELD_DIM);
+                FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                if (!fieldElement.isPresent()) {
+                    fieldElement.setFieldEntity(tanks[1]);
+                    tanks[1].setParent(fieldElement);
+                    break;
+                }
+            }
+            game.addEvent(new AddTankEvent(x, y , minerID));
+            for (; ; ) {
+                x = random.nextInt(FIELD_DIM);
+                y = random.nextInt(FIELD_DIM);
+                FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                if (!fieldElement.isPresent()) {
+                    fieldElement.setFieldEntity(tanks[2]);
+                    tanks[2].setParent(fieldElement);
+                    break;
+                }
+            }
+            game.addEvent(new AddTankEvent(x, y , builderID));
 
-            return tank;
+            game.addTank(ip, tanks[0], "tank");
+            game.addTank(ip, tanks[1], "miner");
+            game.addTank(ip, tanks[2], "builder");
+
+
+            return tanks;
         }
     }
+
 
     /**
      * Returns games current board
@@ -148,7 +179,7 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            VehicleController tc = new TankController();
+            TankController tc = new TankController();
             if (!tc.turn(tank, direction)) {
                 return false;
             }
@@ -187,7 +218,7 @@ public class InMemoryGameRepository implements GameRepository {
                 //return false;
                 throw new TankDoesNotExistException(tankId);
             }
-            VehicleController tc = new TankController();
+            TankController tc = new TankController();
             if (!tc.move(tank, direction)) {
                 return false;
             }
@@ -244,7 +275,7 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
 
-            VehicleController tc = new TankController();
+            TankController tc = new TankController();
             int temp = tc.fire(tank, bulletType);
             if (temp == -1) {
                 return false;
