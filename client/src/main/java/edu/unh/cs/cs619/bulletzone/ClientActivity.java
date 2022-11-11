@@ -94,7 +94,7 @@ public class ClientActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        busProvider.getEventBus().unregister(gridEventHandler);
+        super.onDestroy();
         super.onDestroy();
     }
 
@@ -111,30 +111,13 @@ public class ClientActivity extends Activity {
     }
 
     /**
-     * Otto has a limitation (as per design) that it will only find
-     * methods on the immediate class type. As a result, if at runtime this instance
-     * actually points to a subclass implementation, the methods registered in this class will
-     * not be found. This immediately becomes a problem when using the AndroidAnnotations
-     * framework as it always produces a subclass of annotated classes.
-     *
-     * To get around the class hierarchy limitation, one can use a separate anonymous class to
-     * handle the events.
-     */
-    private Object gridEventHandler = new Object()
-    {
-        @Subscribe
-        public void onUpdateGrid(GridUpdateEvent event) {
-            updateGrid(event.gw);
-        }
-    };
-
-    /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
+        boardView.setGridAdapter(mGridAdapter);
         commandInterpreter.setPaused(false);
     }
 
@@ -145,7 +128,6 @@ public class ClientActivity extends Activity {
     @AfterInject
     void afterInject() {
         tankController.afterInject();
-        busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
@@ -159,26 +141,14 @@ public class ClientActivity extends Activity {
         commandInterpreter.setPaused(false);
     }
 
-    /**
-     * updateGrid: Updates the local grid using grid from
-     * argument gridWrapper
-     * @param gw
-     */
-    public void updateGrid(GridWrapper gw) {
-        boardView.setUsingJSON(gw.getGrid());
-        mGridAdapter.updateList(boardView.getTiles());
-        boardView.setGridAdapter(mGridAdapter);
-    }
-
     @Override
     protected void onRestart() {
-        busProvider.getEventBus().register(gridEventHandler);
         gridPollTask.setPaused(false);
+        boardView.reRegister();
         if (started == 1) {
             gridPollTask.doPoll();
         }
         commandInterpreter.setPaused(false);
-        boardView.reRegister();
         super.onRestart();
     }
 
@@ -208,24 +178,6 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        tankController.move(direction);
-    }
-
-    /**
-     * moveAsync: Background movement request
-     * @param direction
-     */
-    @Background
-    void moveAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
-     * turnAsync: Background turn request
-     * @param direction
-     */
-    @Background
-    void turnAsync(byte direction) {
         tankController.move(direction);
     }
 
