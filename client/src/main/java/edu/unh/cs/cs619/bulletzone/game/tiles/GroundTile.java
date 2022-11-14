@@ -1,30 +1,95 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
 import edu.unh.cs.cs619.bulletzone.R;
-
-public class GroundTile extends BlankTile {
+public class BlankTile {
 
     /**
-     * Initializes the ground tile.
      *
-     * @param JsonValue value from server
+     * @return JsonValue
+     */
+    public Integer getJSONValue() {
+        return jsonValue;
+    }
+
+    public Integer jsonValue = -1;
+
+    /**
+     *
+     * @return resourceID
+     */
+    public Integer getResourceID() {
+        return resourceID;
+    }
+
+    /**
+     *
+     * @param resourceID resourceID
+     */
+    public void setResourceID(Integer resourceID) {
+        this.resourceID = resourceID;
+    }
+
+    public Integer resourceID;
+
+    /**
+     *
+     * @return location of tile
+     */
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    /**
+     *
+     * @param location location of tile
+     */
+    public void setLocation(Integer location) {
+        this.location = location;
+    }
+
+    public Integer location;
+
+    /**
+     *
+     * @return the orientation of the tile
+     */
+    public Integer getOrientation() {
+        return orientation;
+    }
+
+    /**
+     *
+     * @param orientation orientation of the tile
+     */
+    public void setOrientation(Integer orientation) {
+        this.orientation = orientation;
+    }
+
+    public Integer orientation;
+
+    /**
+     * make the tile
+     */
+    public BlankTile() {
+        this.resourceID = R.drawable.rocky;
+        this.location = 0;
+        this.jsonValue = 0;
+    }
+
+    /**
+     *
+     * @param JsonValue Value being used from server
      * @param location location
      */
-    public GroundTile(Integer JsonValue, Integer location) {
-        // same as blank tile initialization
-        this.resourceID = R.drawable.blank;
+    public BlankTile(Integer JsonValue, Integer location) {
+        this.resourceID = R.drawable.blank; // SARA
         this.location = location;
+        this.jsonValue = JsonValue;
         orientation = 0;
         int row = location / 16 + 1;
         int column = location % 16 + 1;
         String r = String.valueOf(row);
         String c = String.valueOf(column);
-
-        // making up json values temp until confirmed there are not existing ones
-        if (JsonValue == 10) {
-            this.resourceID = R.drawable.hilly;
-        } else if (JsonValue == 20) {
-            this.resourceID = R.drawable.rocky;
-        }
     }
 }
