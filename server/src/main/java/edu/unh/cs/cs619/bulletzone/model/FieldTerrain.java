@@ -1,17 +1,13 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-import com.google.common.eventbus.EventBus;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
-public abstract class FieldEntity {
+public abstract class FieldTerrain extends FieldEntity {
     //protected static final EventBus eventBus = new EventBus();
     protected FieldHolder parent;
 
     /**
-     * Serializes the current {@link edu.unh.cs.cs619.bulletzone.model.FieldEntity} instance.
+     * Serializes the current {@link FieldTerrain} instance.
      *
-     * @return Integer representation of the current {@link edu.unh.cs.cs619.bulletzone.model.FieldEntity}
+     * @return Integer representation of the current {@link FieldTerrain}
      */
     public abstract int getIntValue();
 
@@ -23,7 +19,7 @@ public abstract class FieldEntity {
         this.parent = parent;
     }
 
-    public abstract FieldEntity copy();
+    public abstract FieldTerrain copy();
 
     public void hit(int damage) {
     }

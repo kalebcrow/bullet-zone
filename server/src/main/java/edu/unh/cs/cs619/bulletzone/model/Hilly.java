@@ -1,6 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-public class Hilly extends FieldEntity {
+public class Hilly extends FieldTerrain {
     double speed = 0.5;
     int pos;
 
@@ -14,11 +14,11 @@ public class Hilly extends FieldEntity {
 
     @Override
     public int getIntValue() {
-        return 10;
+        return 2;
     }
 
     @Override
-    public FieldEntity copy() {
+    public FieldTerrain copy() {
         return new Hilly();
     }
 

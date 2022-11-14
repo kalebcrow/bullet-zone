@@ -1,30 +1,31 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-public class Hilly extends FieldEntity {
-    double speed = 0.5;
+public class Meadow extends FieldTerrain {
+    double speed = 0;
     int pos;
 
-    public Hilly(){
+
+    public Meadow(){
 
     }
 
-    public Hilly(int pos){
+    public Meadow(int pos){
         this.pos = pos;
     }
 
     @Override
     public int getIntValue() {
-        return 10;
+        return 0;
     }
 
     @Override
-    public FieldEntity copy() {
-        return new Hilly();
+    public FieldTerrain copy() {
+        return new Meadow();
     }
 
     @Override
     public String toString() {
-        return "H";
+        return "M";
     }
 
     public int getPos(){
