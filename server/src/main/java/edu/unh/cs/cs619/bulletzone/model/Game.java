@@ -3,7 +3,6 @@ package edu.unh.cs.cs619.bulletzone.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -64,14 +63,19 @@ public final class Game {
             List<Optional<FieldEntity>> entities = new ArrayList<Optional<FieldEntity>>();
 
             FieldEntity entity;
+            FieldTerrain terrain;
             for (FieldHolder holder : holderGrid) {
-                if (holder.isPresent()) {
+                if (holder.isEntityPresent()) {
                     entity = holder.getEntity();
                     entity = entity.copy();
 
                     entities.add(Optional.<FieldEntity>of(entity));
-                } else {
-                    entities.add(Optional.<FieldEntity>empty());
+                } else if (!holder.isEntityPresent()){
+                    // should always set the terrain?
+                    terrain = holder.getTerrain();
+                    terrain = terrain.copy();
+
+                    entities.add(Optional.<FieldEntity>of(terrain));
                 }
             }
             return entities;
@@ -94,19 +98,22 @@ public final class Game {
         }
     }
 
-    public int[][] getGrid2D() {
-        int[][] grid = new int[FIELD_DIM][FIELD_DIM];
+    public int[][][] getGrid2D() {
+        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][2];
 
         synchronized (holderGrid) {
             FieldHolder holder;
             for (int i = 0; i < FIELD_DIM; i++) {
                 for (int j = 0; j < FIELD_DIM; j++) {
                     holder = holderGrid.get(i * FIELD_DIM + j);
-                    if (holder.isPresent()) {
-                        grid[i][j] = holder.getEntity().getIntValue();
+                    // set entity if there is one
+                    if (holder.isEntityPresent()) {
+                        grid[i][j][1] = holder.getEntity().getIntValue();
                     } else {
-                        grid[i][j] = 0;
+                        grid[i][j][1] = -1; // make it blank if theres no entity
                     }
+                    // set terrain (should always be there)
+                    grid[i][j][0] = holder.getTerrain().getIntValue();
                 }
             }
         }
