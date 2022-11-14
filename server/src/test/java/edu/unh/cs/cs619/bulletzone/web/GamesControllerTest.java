@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
+import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 import static org.mockito.Mockito.mock;
@@ -65,7 +66,7 @@ public class GamesControllerTest {
         request.setRemoteAddr("100.0.0.0");
         repo = new InMemoryGameRepository();
         gamesController = new GamesController(repo);
-        ResponseEntity<LongWrapper> l = gamesController.join(request);
+        ResponseEntity<LongArrayWrapper> l = gamesController.join(request);
         //Leave game
         gamesController.leave(0);
         //test that tank does not exist

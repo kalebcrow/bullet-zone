@@ -70,7 +70,6 @@ public class TankController {
 
             //Causes tank to wait to move
             tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
-            System.out.println(tank.getAllowedMoveInterval());
             //Check for tank moving forwards or backwards
         return isSameRelativeDirection(tank.getDirection(), direction);
     }
