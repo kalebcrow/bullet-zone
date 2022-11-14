@@ -1,12 +1,10 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import android.util.Log;
-
 import com.squareup.otto.Bus;
 
-import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
@@ -20,12 +18,13 @@ public class MoveTankEvent extends ExecutableEvent {
      * Execution of event
      */
     public void execute(Bus bus) {
-
         TankTile tile = TankList.getTankList().getLocation(ID);
         if (tile == null) {
             return;
         }
+
         Integer location = tile.getLocation();
+        Integer prevJSONValue = getJSONValueFromString(terrain);
         Integer prevlocation = location;
 
         if (direction == 0) {
@@ -41,7 +40,20 @@ public class MoveTankEvent extends ExecutableEvent {
 
         tileUpdateEvent = new TileUpdateEvent(location, tile);
         bus.post(tileUpdateEvent);
-        bus.post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
+        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(prevJSONValue, location)));
+    }
+
+    private Integer getJSONValueFromString(String terrain) {
+        // using given son values
+        if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
     }
 
     /**
