@@ -1,20 +1,18 @@
 package edu.unh.cs.cs619.bulletzone.ui;
 
-import android.content.res.Resources;
-import android.graphics.drawable.TransitionDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
 import edu.unh.cs.cs619.bulletzone.R;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.TileFactory;
+import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 
 @EBean
 public class GridAdapter extends BaseAdapter {
@@ -22,16 +20,15 @@ public class GridAdapter extends BaseAdapter {
     private final Object monitor = new Object();
     @SystemService
     protected LayoutInflater inflater;
-    private BlankTile[] mEntities = new BlankTile[256];
+    private GroundTile[][] mEntities = new GroundTile[256][2];
 
     /**
      * updateList: updates the stored list of tiles via the new
      * array of BlankTiles
      * @param tiles
      */
-    public void updateList(BlankTile[] tiles) {
+    public void updateList(GroundTile[][] tiles) {
         synchronized (monitor) {
-
             mEntities = tiles;
             this.notifyDataSetChanged();
         }
@@ -82,15 +79,30 @@ public class GridAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.field_item, null);
         }
 
-        if (convertView instanceof ImageView) {
+        if (convertView instanceof RelativeLayout) { //ImageView) {
+            //GroundTile terrainTile =
             synchronized (monitor) {
-                ImageView imageView = (ImageView) convertView;
-                if (mEntities[position] != null) {
-                    imageView.setImageResource(mEntities[position].getResourceID());
-                    imageView.setRotation(mEntities[position].getOrientation()/2 * 90);
+                // making it so there are multiple images in the cells
+                RelativeLayout relativeLayout = (RelativeLayout) convertView;
+                relativeLayout.setPadding(0,0,0,0);
+                ImageView terrain = (ImageView) relativeLayout.getChildAt(0);
+                ImageView item = (ImageView) relativeLayout.getChildAt(1);
+                //ImageView vehicle = (ImageView) relativeLayout.getChildAt(2);
+
+                if (mEntities[position][0] != null) {
+                    // check cell is not null then set terrain
+                    terrain.setImageResource(mEntities[position][0].getResourceID());//terrain.setBackgroundResource(mEntities[position].getTerrain());
+                    terrain.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
+                    // check for improvements (just walls right now)
+                    item.setImageResource(mEntities[position][1].getResourceID());
+                    item.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
+
+                    terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
+                    item.setRotation(mEntities[position][1].getOrientation()/2 * 90);
 
                 } else {
-                    imageView.setImageResource(R.drawable.blank);
+                    // somethings wrong // SARA
+                    terrain.setImageResource(R.drawable.redtank);
                 }
             }
         }
