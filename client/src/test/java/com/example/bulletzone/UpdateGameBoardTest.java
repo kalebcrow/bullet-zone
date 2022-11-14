@@ -1,21 +1,16 @@
 package com.example.bulletzone;
 
-import org.androidannotations.annotations.AfterInject;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.junit.Assert.*;
 import edu.unh.cs.cs619.bulletzone.R;
-import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
-import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 import com.squareup.otto.Bus;
@@ -31,17 +26,17 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][] mimicJSONArray = new int[16][16];
+        int[][][] mimicJSONArray = new int[16][16][0];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                mimicJSONArray[i][j] = 0;
+                mimicJSONArray[i][j][0] = 0;
 
             }
         }
 
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 12221002;
         testBoardView.setUsingJSON(mimicJSONArray);
         TankTile testTankTile = (TankTile) testBoardView.getTile(0);
 
@@ -77,17 +72,17 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][] mimicJSONArray = new int[16][16];
+        int[][][] mimicJSONArray = new int[16][16][2];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                mimicJSONArray[i][j] = 0;
+                mimicJSONArray[i][j][0] = 0;
 
             }
         }
 
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 12221002;
         testBoardView.setUsingJSON(mimicJSONArray);
         TankTile testTankTile = (TankTile) testBoardView.getTile(0);
 
@@ -123,17 +118,17 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][] mimicJSONArray = new int[16][16];
+        int[][][] mimicJSONArray = new int[16][16][2];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                mimicJSONArray[i][j] = 0;
+                mimicJSONArray[i][j][0] = 0;
 
             }
         }
 
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 12221002;
         testBoardView.setUsingJSON(mimicJSONArray);
         TankTile testTankTile = (TankTile) testBoardView.getTile(0);
 
