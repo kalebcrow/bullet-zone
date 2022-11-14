@@ -53,6 +53,7 @@ public class Tank extends FieldEntity {
     public Tank(){
         ip = null;
         id = 0;
+        typeIndex = -1;
     }
 
     @Override
@@ -132,6 +133,8 @@ public class Tank extends FieldEntity {
         return ip;
     }
 
+    public int getTypeIndex(){return typeIndex;}
+
     public boolean addBundleOfResources(String resourceType) {
         Integer temp = resources.get(resourceType);
         if (temp == null) {
@@ -147,6 +150,16 @@ public class Tank extends FieldEntity {
             return false;
         }
         resources.replace(resourceType, temp - 1);
+        return true;
+    }
+
+    public boolean subtractBundleOfResourcesByAmount(String resourceType, Integer amount)
+    {
+        Integer temp = resources.get(resourceType);
+        if (temp == null || temp == 0) {
+            return false;
+        }
+        resources.replace(resourceType, (temp-amount));
         return true;
     }
 

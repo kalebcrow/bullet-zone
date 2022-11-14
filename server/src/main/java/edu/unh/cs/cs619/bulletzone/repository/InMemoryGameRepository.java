@@ -400,61 +400,108 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean build(long tankId, int type) throws TankDoesNotExistException, BuildingDoesNotExistException
     {
         /*
+        TO DO: timing for build and stop movement while building
         types:
         1 - Road
         2 - Wall
         3 - Indestructible Wall
          */
-        Tank tank = game.getTanks().get(tankId);
+        Tank builder = game.getTanks().get(tankId);
+        Tank miner = new Tank();
+        HashMap<String,Long> tanks = game.getTanks(builder.getIp());
+        assert tanks != null;
+        if(tanks.containsKey("miner"))
+            miner = game.getTank(tanks.get("miner"));
+
+        if(miner.getTypeIndex() != 1)
+            return false;
 
         final Wall wall = new Wall();
         final Road road = new Road();
         final Wall indestructiblewall = new Wall(1000);
 
 
-
-        if (tank == null) {
+        if (builder == null) {
             throw new TankDoesNotExistException(tankId);
         }
-        //if(tank.)
 
-        Direction direction = tank.getDirection();
-        FieldHolder parent = tank.getParent();
+        TankController tc = new TankController();
+        int temp = tc.build(builder, type);
+        if (temp == -1) {
+            return false;
+        }
+
+
+        Direction direction = builder.getDirection();
+        FieldHolder parent = builder.getParent();
         Byte d = Direction.toByte(direction);
         Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
         FieldHolder behind = parent.getNeighbor(behindtank);
-
+        if(behind.isPresent())
+        {
+            return false;
+        }
         switch(type)
         {
             case 1:
-                behind.setFieldEntity(road);
-                break;
+                if(miner.getResourcesByResource("clay") >= 3)
+                {
+                    miner.subtractBundleOfResourcesByAmount("clay",3);
+                    behind.setFieldEntity(road);
+                    return true;
+                }
+                return false;
             case 2:
-                behind.setFieldEntity(wall);
-                break;
+                if(miner.getResourcesByResource("clay") >= 1 && miner.getResourcesByResource("rock") >= 2)
+                {
+                    miner.subtractBundleOfResourcesByAmount("clay",1);
+                    miner.subtractBundleOfResourcesByAmount("rock",2);
+                    behind.setFieldEntity(wall);
+                    return true;
+                }
+                return false;
             case 3:
-                behind.setFieldEntity(indestructiblewall);
-                break;
+                if(miner.getResourcesByResource("clay") >= 3 && miner.getResourcesByResource("rock") >= 3 && miner.getResourcesByResource("iron") >= 3)
+                {
+                    miner.subtractBundleOfResourcesByAmount("rock",3);
+                    miner.subtractBundleOfResourcesByAmount("clay",3);
+                    miner.subtractBundleOfResourcesByAmount("iron",3);
+                    behind.setFieldEntity(indestructiblewall);
+                    return true;
+                }
+                return false;
             default:
                 throw new BuildingDoesNotExistException();
         }
 
         //game.addEvent(new BuildwallEvent);
 
-
-        return true;
     }
 
     @Override
     public boolean dismantle(long tankId) throws TankDoesNotExistException
     {
-        Tank tank = game.getTanks().get(tankId);
+        Tank builder = game.getTanks().get(tankId);
 
-        if (tank == null)
+        if (builder == null)
         {
             throw new TankDoesNotExistException(tankId);
         }
 
+        TankController tc = new TankController();
+        int temp = tc.dismantle(builder);
+        if (temp == -1) {
+            return false;
+        }
+
+        Direction direction = builder.getDirection();
+        FieldHolder parent = builder.getParent();
+        Byte d = Direction.toByte(direction);
+        Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
+        FieldHolder behind = parent.getNeighbor(behindtank);
+
+        //uhhh just realized this can just remove tanks -_- fuck
+        behind.clearField();
 
         return true;
     }

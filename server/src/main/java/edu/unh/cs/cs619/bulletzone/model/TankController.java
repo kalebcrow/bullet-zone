@@ -140,4 +140,13 @@ public class TankController {
         return 1;
     }
 
+    public int dismantle(Tank tank)
+    {
+        if(tank.getLife() == 0){
+            return -1;
+        }
+
+        return 1;
+    }
+
 }
