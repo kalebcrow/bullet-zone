@@ -69,7 +69,6 @@ class GamesController {
     public
     @ResponseBody
     ResponseEntity<GridWrapper> grid() {
-        log.info("------------getting grid----------");
         return new ResponseEntity<GridWrapper>(new GridWrapper(gameRepository.getGrid()), HttpStatus.OK);
     }
 
