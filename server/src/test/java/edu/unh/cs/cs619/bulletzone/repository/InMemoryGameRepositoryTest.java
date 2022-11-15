@@ -217,5 +217,7 @@ public class InMemoryGameRepositoryTest {
         assert(repo.dismantle(tankId) == true);
         ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity(); //exception thrown here
     }
+
+
 }
 

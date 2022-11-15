@@ -86,8 +86,8 @@ public class InMemoryGameRepository implements GameRepository {
                 Long builderID = this.idGenerator.getAndIncrement();
 
                 tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(minerID, Direction.Up, ip, 2);
-                tanks[2] = new Tank(builderID, Direction.Up, ip, 1);
+                tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");

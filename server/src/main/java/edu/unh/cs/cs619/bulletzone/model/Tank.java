@@ -41,7 +41,7 @@ public class Tank extends FieldEntity {
         this.ip = ip;
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
-        if (typeIndex == 2) {
+        if (typeIndex == 1) {
             resources.put("rock", 0);
             resources.put("iron", 0);
             resources.put("clay", 0);
