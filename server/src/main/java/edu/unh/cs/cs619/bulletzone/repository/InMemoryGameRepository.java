@@ -2,12 +2,16 @@ package edu.unh.cs.cs619.bulletzone.repository;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.MoveToCommand;
+import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
@@ -371,6 +375,101 @@ public class InMemoryGameRepository implements GameRepository {
             GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
             boardBuilder.create();
         }
+    }
+
+    public void moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
+
+        // Find tank
+        Tank tank = game.getTanks().get(tankId);
+        if (tank == null) {
+            //Log.i(TAG, "Cannot find user with id: " + tankId);
+            //return false;
+            throw new TankDoesNotExistException(tankId);
+        }
+
+        //find the current location of the tank
+        int[][] grid2d = game.getGrid2D();
+        int currentLocation = -1;
+        int test;
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                test = grid2d[i][j];
+                test = test % 10000000;
+                test = test / 10000;
+
+                if(tankId == (long)test){
+
+                    currentLocation = i*16 + j;
+                    break;
+
+                }
+            }
+
+            if(currentLocation != -1){
+                break;
+            }
+
+        }
+
+        //with location of tank on the board and desired location,
+        //determine direction of y value movement, north or south
+        Direction yValueMovement = null;
+        if((currentLocation/16) > (desiredLocation/16)){
+            yValueMovement = Direction.Up;
+        }
+        else if((currentLocation/16) < (desiredLocation/16)){
+            yValueMovement = Direction.Down;
+        }
+        else if((currentLocation/16) == (desiredLocation/16)){
+            yValueMovement = null;
+        }
+
+        Direction xValueMovement = null;
+        if((currentLocation%16) > (desiredLocation%16)){
+            yValueMovement = Direction.Left;
+        }
+        else if((currentLocation/16) < (desiredLocation/16)){
+            yValueMovement = Direction.Right;
+        }
+        else if((currentLocation/16) == (desiredLocation/16)){
+            yValueMovement = null;
+        }
+
+        //create list of Move To Commands
+        ArrayList<MoveToCommand> MoveToList = new ArrayList<>();
+
+        Direction currentDirection = tank.getDirection();
+
+        if(yValueMovement == Direction.Up){
+            //queue up moves to get the tank to face up
+            if(currentDirection == Direction.Down){
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+            }
+            else if(currentDirection == Direction.Left){
+                MoveToList.add(new TurnCommand(tankId, Direction.Right, this));
+            }
+            else if(currentDirection == Direction.Right){
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+            }
+        }
+        else if(yValueMovement == Direction.Down){
+            //queue up moves to get the tank to face down
+            if(currentDirection == Direction.Up){
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+            }
+            else if(currentDirection == Direction.Left){
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+            }
+            else if(currentDirection == Direction.Right){
+                MoveToList.add(new TurnCommand(tankId, Direction.Right, this));
+            }
+
+        }
+
+
     }
 
     /**

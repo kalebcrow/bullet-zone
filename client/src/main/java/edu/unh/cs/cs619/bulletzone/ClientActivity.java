@@ -41,6 +41,11 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.moveTo.MoveToInterpreter;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
@@ -66,6 +71,8 @@ public class ClientActivity extends Activity {
     @ViewById
     protected TextView textViewGarage;
 
+    protected TextView textViewMoveTo;
+
     @Bean
     TankController tankController;
 
@@ -84,6 +91,8 @@ public class ClientActivity extends Activity {
     CommandInterpreter commandInterpreter;
 
     Button buttonAction;
+
+    private int selectedCoordinates = -1;
 
     /**
      * Remote tank identifier
@@ -206,8 +215,10 @@ public class ClientActivity extends Activity {
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
         Button buttonReplay = findViewById(R.id.buttonReplay);
         Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+        Button moveToButton = (Button) findViewById(R.id.moveToButton);
         buttonAction = findViewById(R.id.buttonAction);
         Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
+        textViewMoveTo = (TextView) findViewById(R.id.moveToTextView);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
         buttonFire.setVisibility(View.VISIBLE);
@@ -218,6 +229,8 @@ public class ClientActivity extends Activity {
         buttonJoin.setVisibility(View.INVISIBLE);
         buttonReplay.setVisibility(View.VISIBLE);
         buttonReplay1.setVisibility(View.INVISIBLE);
+        textViewMoveTo.setVisibility(View.VISIBLE);
+        moveToButton.setVisibility(View.VISIBLE);
         started = 1;
 
         vehicleSpinner.setVisibility(View.VISIBLE);
@@ -386,6 +399,29 @@ public class ClientActivity extends Activity {
             BuilderFragment myBuilderFragment = new BuilderFragment();
             myBuilderFragment.setContext(this);
             myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
+
+        }
+
+    }
+
+    @ItemClick(R.id.gridView)
+    void gridSelection(int position){
+
+        selectedCoordinates = position;
+        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        Log.d(TAG, "Grid Selection of " + position);
+
+    }
+
+    @Click(R.id.moveToButton)
+    void moveToLocation(){
+
+        if(selectedCoordinates == -1){
+            Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
+        }
+        else{
+
+            //REST call sending tankID and selected coordinates
 
         }
 
