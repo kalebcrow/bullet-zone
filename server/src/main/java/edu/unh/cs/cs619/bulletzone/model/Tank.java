@@ -132,11 +132,11 @@ public class Tank extends FieldEntity {
     }
     public int getTypeIndex(){return typeIndex;}
 
-    public boolean addBundleOfResources(int resourceType) {
+    public boolean addBundleOfResources(int resourceType, int amount) {
         if (resourceType < 0 || resourceType >= 3) {
             return false;
         }
-        resources[resourceType]++;
+        resources[resourceType]+= amount;
         return true;
     }
 
@@ -148,25 +148,6 @@ public class Tank extends FieldEntity {
             return false;
         }
         resources[resourceType] -= amount;
-        return true;
-    }
-
-    public boolean subtractBundleOfResourcesByAmount(String resourceType, Integer amount)
-    {
-        Integer temp = resources.get(resourceType);
-        if (temp == null || temp == 0) {
-            return false;
-        }
-        resources.replace(resourceType, (temp-amount));
-        return true;
-    }
-    public boolean addBundleOfResourcesByAmount(String resourceType, Integer amount)
-    {
-        Integer temp = resources.get(resourceType);
-        if (temp == null) {
-            return false;
-        }
-        resources.replace(resourceType, (temp+amount));
         return true;
     }
 

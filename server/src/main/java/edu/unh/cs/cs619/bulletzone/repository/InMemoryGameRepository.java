@@ -656,19 +656,19 @@ public class InMemoryGameRepository implements GameRepository {
                         System.out.println("Starting mining process");
                         switch (resourceTile.getIntValue()) {
                             case 0:
-                                if (!miner.addBundleOfResources(2)) {
+                                if (!miner.addBundleOfResources(2, 1)) {
                                     System.out.println("Failed to add clay resource type to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding clay to stash");
                             case 1:
-                                if (!miner.addBundleOfResources(0)) {
+                                if (!miner.addBundleOfResources(0, 1)) {
                                     System.out.println("Failed to add clay resource rock to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
                             case 2:
-                                if (!miner.addBundleOfResources(1)) {
+                                if (!miner.addBundleOfResources(1, 1)) {
                                     System.out.println("Failed to add clay resource iron to stash");
                                     cancel();
                                 }
