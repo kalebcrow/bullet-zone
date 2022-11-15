@@ -450,7 +450,7 @@ public class InMemoryGameRepository implements GameRepository {
 
                 switch (type) {
                     case 1:
-                        if (miner.getResourcesByResource("clay") >= 3) {
+                        if (miner.getResourcesByResource(2) >= 3) {
                             builder.allowMovement = false;
                             Thread.sleep(3000);
                             miner.subtractBundleOfResourcesByAmount("clay", 3);
@@ -460,7 +460,7 @@ public class InMemoryGameRepository implements GameRepository {
                         }
                         return false;
                     case 2:
-                        if (miner.getResourcesByResource("clay") >= 1 && miner.getResourcesByResource("rock") >= 2) {
+                        if (miner.getResourcesByResource(2) >= 1 && miner.getResourcesByResource(0) >= 2) {
                             builder.allowMovement = false;
                             Thread.sleep(3000);
                             miner.subtractBundleOfResourcesByAmount("clay", 1);
@@ -471,7 +471,7 @@ public class InMemoryGameRepository implements GameRepository {
                         }
                         return false;
                     case 3:
-                        if (miner.getResourcesByResource("clay") >= 3 && miner.getResourcesByResource("rock") >= 3 && miner.getResourcesByResource("iron") >= 3) {
+                        if (miner.getResourcesByResource(2) >= 3 && miner.getResourcesByResource(0) >= 3 && miner.getResourcesByResource(1) >= 3) {
                             builder.allowMovement = false;
                             Thread.sleep(9000);
                             miner.subtractBundleOfResourcesByAmount("rock", 3);
