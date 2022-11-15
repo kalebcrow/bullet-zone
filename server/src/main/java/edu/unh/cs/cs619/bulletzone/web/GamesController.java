@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
@@ -136,6 +137,16 @@ class GamesController {
     ResponseEntity<EventWrapper> event(@PathVariable long timeStamp) {
         return new ResponseEntity<EventWrapper>(
                 new EventWrapper(gameRepository.getEvents(timeStamp)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/mine", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> mine(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.mine(tankId)),
                 HttpStatus.OK
         );
     }
