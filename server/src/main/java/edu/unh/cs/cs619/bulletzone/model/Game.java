@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public final class Game {
     /**

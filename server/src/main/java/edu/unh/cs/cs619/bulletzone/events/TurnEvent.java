@@ -1,7 +1,5 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
+package edu.unh.cs.cs619.bulletzone.events;
 
-
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 
 public class TurnEvent extends GridEvent {
 

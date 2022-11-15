@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
+package edu.unh.cs.cs619.bulletzone.events;
 
 public class DestroyTankEvent extends GridEvent{
 
