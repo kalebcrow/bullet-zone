@@ -19,6 +19,8 @@ public class Tank extends FieldEntity {
     private long lastMoveTime;
     private final int[] allowedMoveIntervals = {500,800,1000};
     private final int[] allowedTurnIntervals = {500,800,300};
+    private final int[] takesDamage = {10, 5, 10};
+    private final int[] givesDamage = {10, 10, 5};
 
     private long lastFireTime;
     private final int[] allowedFireIntervals = {1500,200,1000};
@@ -157,6 +159,14 @@ public class Tank extends FieldEntity {
 
     public int[] getAllResources() {
         return resources;
+    }
+
+    public int getDamageModifier() {
+        return takesDamage[typeIndex];
+    }
+
+    public int giveDamageModifier() {
+        return givesDamage[typeIndex];
     }
 
 }

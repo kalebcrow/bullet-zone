@@ -256,8 +256,18 @@ public class InMemoryGameRepository implements GameRepository {
                 isCompleted = true;
             } else {
                 isCompleted = false;
+                FieldEntity ent = nextField.getEntity();
+                if (ent.toString().equals("R") || ent.toString().equals("IW") || ent.toString().equals("B")) {
+                    return false;
+                }
+                ent.hit((int)Math.ceil(tank.getLife() / tank.giveDamageModifier()));
+                if (ent.toString().equals("T")) {
+                    Tank newTank = (Tank) ent;
+                    tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
+                } else {
+                    tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
+                }
             }
-
             return isCompleted;
         }
     }
