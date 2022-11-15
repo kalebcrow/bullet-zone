@@ -1,9 +1,9 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
+package edu.unh.cs.cs619.bulletzone.events;
 
 
 import java.util.HashMap;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public class MineEvent extends GridEvent {
 

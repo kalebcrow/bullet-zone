@@ -23,6 +23,13 @@ public class GameBoardBuilder {
     /**
      * Creates a new board from specified game returns if no current game
      */
+    public void testCreate(){
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
+    }
+
     public void create() {
             if(game == null) {
                 return;

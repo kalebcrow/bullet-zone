@@ -75,11 +75,7 @@ public class Tank extends FieldEntity {
     public void setLastMoveTime(long lastMoveTime) {
         this.lastMoveTime = lastMoveTime;
     }
-    public long getAllowedMoveInterval() {
-        System.out.println(allowedMoveIntervals[typeIndex]);
-        System.out.println(typeIndex);
-        return allowedMoveIntervals[typeIndex];
-    }
+    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
     public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
 
 

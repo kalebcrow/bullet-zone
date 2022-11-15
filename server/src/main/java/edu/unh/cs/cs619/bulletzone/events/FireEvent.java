@@ -1,6 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.events;
-
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+package edu.unh.cs.cs619.bulletzone.events;
 
 public class FireEvent extends GridEvent {
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public final class Game {
     /**
@@ -47,6 +47,9 @@ public final class Game {
     public void addTank(String ip, Tank tank, String key) {
         synchronized (tanks) {
             tanks.put(tank.getId(), tank);
+            if(!playersIP.containsKey(ip)){
+                playersIP.put(ip, new HashMap<>());
+            }
             HashMap<String, Long> map = playersIP.get(ip);
             map.put(key, tank.getId());
             playersIP.put(ip, map);
