@@ -134,6 +134,13 @@ public class TankController {
         return bulletType;
     }
 
+    public boolean mine(Tank tank)
+            throws LimitExceededException, TankDoesNotExistException {
+        checkNotNull(tank);
+
+        return tank.getLife() != 0;
+    }
+
     public int build(Tank tank, int building)
     {
         if(tank.getLife() == 0){
@@ -151,5 +158,4 @@ public class TankController {
 
         return 1;
     }
-
 }
