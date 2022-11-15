@@ -331,11 +331,10 @@ public class ClientActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 // set the text view with user info
-                Bundle bundle = data.getExtras();
-                setGarageTextView(bundle);
-
                 // also set the user id so you know if logged in or not
+                Bundle bundle = data.getExtras();
                 userID = bundle.getLong("userID");
+                setGarageTextView(bundle);
             }
         }
     }
