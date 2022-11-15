@@ -33,16 +33,13 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsOnlyOncePerAllowedMoveTime() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip", 0);
-        tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        IMGR.join("ip");
-        IMGR.turn(tank.getId(), Direction.Left);
-        IMGR.turn(tank.getId(), Direction.Down);
-        IMGR.turn(tank.getId(), Direction.Right);
+        Tank[] tanks = IMGR.join("ip");
+        IMGR.turn(tanks[0].getId(), Direction.Left);
+        IMGR.turn(tanks[0].getId(), Direction.Down);
+        IMGR.turn(tanks[0].getId(), Direction.Right);
         Game game = IMGR.getGame();
-        tank = game.getTanks("ip");
-        assertEquals(Direction.Left, tank.getDirection());
+        assertEquals(Direction.Left, game.getTank(tanks[0].getId()).getDirection());
     }
 
     @Test
@@ -71,17 +68,14 @@ public class TankControllerTest {
 
     @Test
     public void move_MovesOnlyOncePerAllowedMoveTime() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip", 0);
-        tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        IMGR.join("ip");
-        IMGR.move(tank.getId(), Direction.Up);
+        Tank[] tanks = IMGR.join("ip");
+        IMGR.move(tanks[0].getId(), Direction.Up);
         long millis = System.currentTimeMillis() + 10000;
-        IMGR.move(tank.getId(), Direction.Down);
-        IMGR.move(tank.getId(), Direction.Right);
+        IMGR.move(tanks[0].getId(), Direction.Down);
+        IMGR.move(tanks[0].getId(), Direction.Right);
         Game game = IMGR.getGame();
-        tank = game.getTank("ip");
-        assertTrue(tank.getLastMoveTime() <= millis);
+        assertTrue(game.getTank(tanks[0].getId()).getLastMoveTime() <= millis);
     }
 
     @Test
@@ -104,27 +98,18 @@ public class TankControllerTest {
 
     @Test
     public void fire_DoesNotFireWithin500MillisecondsAfterPreviousFire_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank(0, Direction.Up, "ip", 0);
-        tank.setLastMoveTime(System.currentTimeMillis());
         IMGR = new InMemoryGameRepository();
-        tank.setNumberOfBullets(0);
-        IMGR.join("ip");
-        IMGR.fire(tank.getId(), 1);
-        IMGR.fire(tank.getId(), 1);
+        Tank[] tanks = IMGR.join("ip");
+        IMGR.fire(tanks[0].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
-        tank = game.getTank("ip");
-        assertEquals(1, tank.getNumberOfBullets());
+        assertEquals(1, game.getTank(tanks[0].getId()).getNumberOfBullets());
     }
 
     // testing basic moving, turning, and firing constraints for miner and builder
 
     @Test
     public void move_MinerMovingAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
-        tank = new Tank(0,Direction.Up,"ip",2);
-        IMGR = new InMemoryGameRepository();
-        IMGR.join("ip");
-        assertTrue(IMGR.move(tank.getId(), Direction.Up));
-        Thread.sleep(450);
-        assertTrue(IMGR.move(tank.getId(), Direction.Down));
+
     }
 }

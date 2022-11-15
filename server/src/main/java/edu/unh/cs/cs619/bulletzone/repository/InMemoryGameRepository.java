@@ -73,70 +73,70 @@ public class InMemoryGameRepository implements GameRepository {
     public Tank[] join(String ip) {
         synchronized (this.monitor) {
 
-            HashMap<String, Long> tankMap = game.getTanks(ip);
-            Tank[] tanks = new Tank[3];
-
             if (game == null) {
                 this.create();
             }
 
-            if(tankMap.containsKey("tank")) tanks[0] = game.getTank(tankMap.get("tank"));
-            if(tankMap.containsKey("miner")) tanks[1] = game.getTank(tankMap.get("miner"));
-            if(tankMap.containsKey("builder"))tanks[2] = game.getTank(tankMap.get("builder"));
-            if(tankMap.size()!=0) return tanks;
+            Tank[] tanks = new Tank[3];
 
+            if(game.getTanks(ip) == null) {
+                Long tankId = this.idGenerator.getAndIncrement();
+                Long minerID = this.idGenerator.getAndIncrement();
+                Long builderID = this.idGenerator.getAndIncrement();
 
-            Long tankId = this.idGenerator.getAndIncrement();
-            Long minerID = this.idGenerator.getAndIncrement();
-            Long builderID = this.idGenerator.getAndIncrement();
+                tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
 
-            tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
-            tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
-            tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
+                game.addTank(ip, tanks[0], "tank");
+                game.addTank(ip, tanks[1], "miner");
+                game.addTank(ip, tanks[2], "builder");
 
-            Random random = new Random();
-            int x;
-            int y;
+                Random random = new Random();
+                int x;
+                int y;
 
-            // This may run for forever.. If there is no free space. XXX
-            for (; ; ) {
-                x = random.nextInt(FIELD_DIM);
-                y = random.nextInt(FIELD_DIM);
-                FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                if (!fieldElement.isPresent()) {
-                    fieldElement.setFieldEntity(tanks[0]);
-                    tanks[0].setParent(fieldElement);
-                    break;
+                // This may run for forever.. If there is no free space. XXX
+                for (; ; ) {
+                    x = random.nextInt(FIELD_DIM);
+                    y = random.nextInt(FIELD_DIM);
+                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                    if (!fieldElement.isPresent()) {
+                        fieldElement.setFieldEntity(tanks[0]);
+                        tanks[0].setParent(fieldElement);
+                        break;
+                    }
                 }
-            }
-            game.addEvent(new AddTankEvent(x, y , tankId));
-            for (; ; ) {
-                x = random.nextInt(FIELD_DIM);
-                y = random.nextInt(FIELD_DIM);
-                FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                if (!fieldElement.isPresent()) {
-                    fieldElement.setFieldEntity(tanks[1]);
-                    tanks[1].setParent(fieldElement);
-                    break;
+                game.addEvent(new AddTankEvent(x, y, tankId));
+                for (; ; ) {
+                    x = random.nextInt(FIELD_DIM);
+                    y = random.nextInt(FIELD_DIM);
+                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                    if (!fieldElement.isPresent()) {
+                        fieldElement.setFieldEntity(tanks[1]);
+                        tanks[1].setParent(fieldElement);
+                        break;
+                    }
                 }
-            }
-            game.addEvent(new AddTankEvent(x, y , minerID));
-            for (; ; ) {
-                x = random.nextInt(FIELD_DIM);
-                y = random.nextInt(FIELD_DIM);
-                FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                if (!fieldElement.isPresent()) {
-                    fieldElement.setFieldEntity(tanks[2]);
-                    tanks[2].setParent(fieldElement);
-                    break;
+                game.addEvent(new AddTankEvent(x, y, minerID));
+                for (; ; ) {
+                    x = random.nextInt(FIELD_DIM);
+                    y = random.nextInt(FIELD_DIM);
+                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                    if (!fieldElement.isPresent()) {
+                        fieldElement.setFieldEntity(tanks[2]);
+                        tanks[2].setParent(fieldElement);
+                        break;
+                    }
                 }
+                game.addEvent(new AddTankEvent(x, y, builderID));
+
+            } else {
+                HashMap<String,Long> map = game.getTanks(ip);
+                tanks[0] = game.getTank(map.get("tank"));
+                tanks[1] = game.getTank(map.get("miner"));
+                tanks[2] = game.getTank(map.get("builder"));
             }
-            game.addEvent(new AddTankEvent(x, y , builderID));
-
-            game.addTank(ip, tanks[0], "tank");
-            game.addTank(ip, tanks[1], "miner");
-            game.addTank(ip, tanks[2], "builder");
-
 
             return tanks;
         }
