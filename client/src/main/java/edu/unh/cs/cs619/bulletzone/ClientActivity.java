@@ -234,7 +234,7 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonReplay1)
     protected void onButtonReplay1(){
         boardView.deRegister();
-        Intent intent = new Intent(this, ReplayActivity.class);
+        Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }
 
@@ -255,7 +255,7 @@ public class ClientActivity extends Activity {
         gridPollTask.setPaused(true);
         HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         commandInterpreter.clear();
-        Intent intent = new Intent(this, ReplayActivity.class);
+        Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }
 
@@ -321,7 +321,7 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonLogin)
     void login() {
-        Intent intent = new Intent(this, AuthenticateActivity.class);
+        Intent intent = new Intent(this, AuthenticateActivity_.class);
         startActivityForResult(intent, 1);
     }
 
