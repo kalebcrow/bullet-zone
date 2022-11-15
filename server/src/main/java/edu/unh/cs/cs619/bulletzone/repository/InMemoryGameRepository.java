@@ -10,6 +10,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
+import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -453,9 +455,10 @@ public class InMemoryGameRepository implements GameRepository {
                         if (miner.getResourcesByResource(2) >= 3) {
                             builder.allowMovement = false;
                             Thread.sleep(3000);
-                            miner.subtractBundleOfResourcesByAmount("clay", 3);
+                            miner.subtractBundleOfResources(2, 3);
                             behind.setFieldEntity(road);
                             builder.allowMovement = true;
+                            game.addEvent(new BuildEvent(tankId,miner.getAllResources()));
                             return true;
                         }
                         return false;
@@ -463,10 +466,11 @@ public class InMemoryGameRepository implements GameRepository {
                         if (miner.getResourcesByResource(2) >= 1 && miner.getResourcesByResource(0) >= 2) {
                             builder.allowMovement = false;
                             Thread.sleep(3000);
-                            miner.subtractBundleOfResourcesByAmount("clay", 1);
-                            miner.subtractBundleOfResourcesByAmount("rock", 2);
+                            miner.subtractBundleOfResources(2, 1);
+                            miner.subtractBundleOfResources(0, 2);
                             behind.setFieldEntity(wall);
                             builder.allowMovement = true;
+                            game.addEvent(new BuildEvent(tankId,miner.getAllResources()));
                             return true;
                         }
                         return false;
@@ -474,11 +478,13 @@ public class InMemoryGameRepository implements GameRepository {
                         if (miner.getResourcesByResource(2) >= 3 && miner.getResourcesByResource(0) >= 3 && miner.getResourcesByResource(1) >= 3) {
                             builder.allowMovement = false;
                             Thread.sleep(9000);
-                            miner.subtractBundleOfResourcesByAmount("rock", 3);
-                            miner.subtractBundleOfResourcesByAmount("clay", 3);
-                            miner.subtractBundleOfResourcesByAmount("iron", 3);
+                            miner.subtractBundleOfResources(0, 3);
+                            miner.subtractBundleOfResources(2, 3);
+                            miner.subtractBundleOfResources(1, 3);
                             behind.setFieldEntity(indestructiblewall);
                             builder.allowMovement = true;
+                            game.addEvent(new BuildEvent(tankId,miner.getAllResources()));
+
                             return true;
                         }
                         return false;
@@ -534,23 +540,25 @@ public class InMemoryGameRepository implements GameRepository {
             {
                 if(structure.getIntValue() == 1500)
                 {
-                    miner.addBundleOfResourcesByAmount("rock",3);
-                    miner.addBundleOfResourcesByAmount("clay",3);
-                    miner.addBundleOfResourcesByAmount("iron",3);
+                    miner.addBundleOfResources(0,3);
+                    miner.addBundleOfResources(2,3);
+                    miner.addBundleOfResources(1,3);
                     behind.clearField();
                 }
                 else
                 {
-                    miner.addBundleOfResourcesByAmount("rock",2);
-                    miner.addBundleOfResourcesByAmount("clay",1);
+                    miner.addBundleOfResources(0,2);
+                    miner.addBundleOfResources(2,1);
                     behind.clearField();
                 }
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
                 return true;
             }
             else if(structure.toString() == "R")
             {
-                miner.addBundleOfResourcesByAmount("clay",3);
+                miner.addBundleOfResources(2,3);
                 behind.clearField();
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
                 return true;
             }
             else
