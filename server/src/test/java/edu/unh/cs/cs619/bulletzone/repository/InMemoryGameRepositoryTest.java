@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
+import static org.junit.Assert.assertNull;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,10 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
@@ -148,6 +154,68 @@ public class InMemoryGameRepositoryTest {
         }
         repo.getEvents(System.currentTimeMillis());
         assert (repo.getEvents(System.currentTimeMillis() - 180000).size() <= 360);
+    }
+
+    @Test
+    public void testBuildFunction_tankJoinedAndBuildRoad_createdRoad() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResourcesByAmount("clay",10);
+        tank[1].addBundleOfResourcesByAmount("iron",10);
+        tank[1].addBundleOfResourcesByAmount("rock",10);
+        repo.build(tankId,1);
+        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
+        assert(ent.toString() == "R");
+    }
+
+    @Test
+    public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResourcesByAmount("clay",10);
+        tank[1].addBundleOfResourcesByAmount("iron",10);
+        tank[1].addBundleOfResourcesByAmount("rock",10);
+        repo.build(tankId,2);
+        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
+        assert(ent.toString() == "W");
+    }
+
+    @Test
+    public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResourcesByAmount("clay",10);
+        tank[1].addBundleOfResourcesByAmount("iron",10);
+        tank[1].addBundleOfResourcesByAmount("rock",10);
+        repo.build(tankId,3);
+        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
+        assert(ent.toString() == "W");
+    }
+
+    @Test
+    public void testBuildFunction_tankJoinedWithNoResources_wallNotCreated() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("");
+        Long tankId = tank[2].getId();
+        assert(repo.build(tankId,3) == false);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testDestroyFunction_tankJoinedAndDestroyWall_removedWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResourcesByAmount("clay",10);
+        tank[1].addBundleOfResourcesByAmount("iron",10);
+        tank[1].addBundleOfResourcesByAmount("rock",10);
+        repo.build(tankId,2);
+        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
+        assert(ent.toString() == "W");
+        assert(repo.dismantle(tankId) == true);
+        ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity(); //exception thrown here
     }
 }
 

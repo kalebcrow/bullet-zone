@@ -15,6 +15,7 @@ public class Tank extends FieldEntity {
 
     private final String ip;
 
+    public boolean allowMovement = true;
     private long lastMoveTime;
     private final int[] allowedMoveIntervals = {500,800,1000};
     private final int[] allowedTurnIntervals = {500,800,300};
@@ -156,6 +157,15 @@ public class Tank extends FieldEntity {
             return false;
         }
         resources.replace(resourceType, (temp-amount));
+        return true;
+    }
+    public boolean addBundleOfResourcesByAmount(String resourceType, Integer amount)
+    {
+        Integer temp = resources.get(resourceType);
+        if (temp == null) {
+            return false;
+        }
+        resources.replace(resourceType, (temp+amount));
         return true;
     }
 

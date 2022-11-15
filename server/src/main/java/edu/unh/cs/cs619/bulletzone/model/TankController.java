@@ -62,6 +62,10 @@ public class TankController {
             if (tank.getLife() == 0) {
                 return false;
             }
+            if (!tank.allowMovement)
+            {
+                return false;
+            }
 
             //Check for bad getLastMoveTime
             long millis = System.currentTimeMillis();

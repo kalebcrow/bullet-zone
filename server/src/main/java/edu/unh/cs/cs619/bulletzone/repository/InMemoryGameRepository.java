@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
@@ -85,8 +86,8 @@ public class InMemoryGameRepository implements GameRepository {
                 Long builderID = this.idGenerator.getAndIncrement();
 
                 tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
+                tanks[1] = new Tank(minerID, Direction.Up, ip, 2);
+                tanks[2] = new Tank(builderID, Direction.Up, ip, 1);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
@@ -399,6 +400,7 @@ public class InMemoryGameRepository implements GameRepository {
     @Override
     public boolean build(long tankId, int type) throws TankDoesNotExistException, BuildingDoesNotExistException
     {
+        synchronized (this.monitor) {
         /*
         TO DO: timing for build and stop movement while building
         types:
@@ -406,75 +408,90 @@ public class InMemoryGameRepository implements GameRepository {
         2 - Wall
         3 - Indestructible Wall
          */
-        Tank builder = game.getTanks().get(tankId);
-        Tank miner = new Tank();
-        HashMap<String,Long> tanks = game.getTanks(builder.getIp());
-        assert tanks != null;
-        if(tanks.containsKey("miner"))
-            miner = game.getTank(tanks.get("miner"));
+            Tank builder = game.getTanks().get(tankId);
+            Tank miner = new Tank();
+            HashMap<String, Long> tanks = game.getTanks(builder.getIp());
+            assert tanks != null;
+            if (tanks.containsKey("miner"))
+                miner = game.getTank(tanks.get("miner"));
 
-        if(miner.getTypeIndex() != 1)
-            return false;
-
-        final Wall wall = new Wall();
-        final Road road = new Road();
-        final Wall indestructiblewall = new Wall(1000);
-
-
-        if (builder == null) {
-            throw new TankDoesNotExistException(tankId);
-        }
-
-        TankController tc = new TankController();
-        int temp = tc.build(builder, type);
-        if (temp == -1) {
-            return false;
-        }
-
-
-        Direction direction = builder.getDirection();
-        FieldHolder parent = builder.getParent();
-        Byte d = Direction.toByte(direction);
-        Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
-        FieldHolder behind = parent.getNeighbor(behindtank);
-        if(behind.isPresent())
-        {
-            return false;
-        }
-        switch(type)
-        {
-            case 1:
-                if(miner.getResourcesByResource("clay") >= 3)
-                {
-                    miner.subtractBundleOfResourcesByAmount("clay",3);
-                    behind.setFieldEntity(road);
-                    return true;
-                }
+            if (miner.getTypeIndex() != 2)
                 return false;
-            case 2:
-                if(miner.getResourcesByResource("clay") >= 1 && miner.getResourcesByResource("rock") >= 2)
-                {
-                    miner.subtractBundleOfResourcesByAmount("clay",1);
-                    miner.subtractBundleOfResourcesByAmount("rock",2);
-                    behind.setFieldEntity(wall);
-                    return true;
-                }
-                return false;
-            case 3:
-                if(miner.getResourcesByResource("clay") >= 3 && miner.getResourcesByResource("rock") >= 3 && miner.getResourcesByResource("iron") >= 3)
-                {
-                    miner.subtractBundleOfResourcesByAmount("rock",3);
-                    miner.subtractBundleOfResourcesByAmount("clay",3);
-                    miner.subtractBundleOfResourcesByAmount("iron",3);
-                    behind.setFieldEntity(indestructiblewall);
-                    return true;
-                }
-                return false;
-            default:
-                throw new BuildingDoesNotExistException();
-        }
 
-        //game.addEvent(new BuildwallEvent);
+            final Wall wall = new Wall();
+            final Road road = new Road();
+            final Wall indestructiblewall = new Wall(1000);
+
+
+            if (builder == null) {
+                throw new TankDoesNotExistException(tankId);
+            }
+
+            TankController tc = new TankController();
+            int temp = tc.build(builder, type);
+            if (temp == -1) {
+                return false;
+            }
+
+
+            Direction direction = builder.getDirection();
+            FieldHolder parent = builder.getParent();
+            Byte d = Direction.toByte(direction);
+            Direction behindtank = Direction.fromByte((byte) ((d + 4) % 8));
+            FieldHolder behind = parent.getNeighbor(behindtank);
+
+            if (behind.isPresent()) {
+                return false;
+            }
+
+            long interval = builder.getAllowedMoveInterval();
+
+            try {
+
+                switch (type) {
+                    case 1:
+                        if (miner.getResourcesByResource("clay") >= 3) {
+                            builder.allowMovement = false;
+                            Thread.sleep(3000);
+                            miner.subtractBundleOfResourcesByAmount("clay", 3);
+                            behind.setFieldEntity(road);
+                            builder.allowMovement = true;
+                            return true;
+                        }
+                        return false;
+                    case 2:
+                        if (miner.getResourcesByResource("clay") >= 1 && miner.getResourcesByResource("rock") >= 2) {
+                            builder.allowMovement = false;
+                            Thread.sleep(3000);
+                            miner.subtractBundleOfResourcesByAmount("clay", 1);
+                            miner.subtractBundleOfResourcesByAmount("rock", 2);
+                            behind.setFieldEntity(wall);
+                            builder.allowMovement = true;
+                            return true;
+                        }
+                        return false;
+                    case 3:
+                        if (miner.getResourcesByResource("clay") >= 3 && miner.getResourcesByResource("rock") >= 3 && miner.getResourcesByResource("iron") >= 3) {
+                            builder.allowMovement = false;
+                            Thread.sleep(9000);
+                            miner.subtractBundleOfResourcesByAmount("rock", 3);
+                            miner.subtractBundleOfResourcesByAmount("clay", 3);
+                            miner.subtractBundleOfResourcesByAmount("iron", 3);
+                            behind.setFieldEntity(indestructiblewall);
+                            builder.allowMovement = true;
+                            return true;
+                        }
+                        return false;
+                    default:
+                        throw new BuildingDoesNotExistException();
+                }
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
+            //game.addEvent(new BuildwallEvent);
+        }
+        return false;
 
     }
 
@@ -483,10 +500,20 @@ public class InMemoryGameRepository implements GameRepository {
     {
         Tank builder = game.getTanks().get(tankId);
 
+
         if (builder == null)
         {
             throw new TankDoesNotExistException(tankId);
         }
+
+        Tank miner = new Tank();
+        HashMap<String, Long> tanks = game.getTanks(builder.getIp());
+        assert tanks != null;
+        if (tanks.containsKey("miner"))
+            miner = game.getTank(tanks.get("miner"));
+
+        if (miner.getTypeIndex() != 2)
+            return false;
 
         TankController tc = new TankController();
         int temp = tc.dismantle(builder);
@@ -500,10 +527,42 @@ public class InMemoryGameRepository implements GameRepository {
         Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
         FieldHolder behind = parent.getNeighbor(behindtank);
 
-        //uhhh just realized this can just remove tanks -_- fuck
-        behind.clearField();
+        if(behind.isPresent())
+        {
+            FieldEntity structure = behind.getEntity();
+            if(structure.toString() == "W")
+            {
+                if(structure.getIntValue() == 1500)
+                {
+                    miner.addBundleOfResourcesByAmount("rock",3);
+                    miner.addBundleOfResourcesByAmount("clay",3);
+                    miner.addBundleOfResourcesByAmount("iron",3);
+                    behind.clearField();
+                }
+                else
+                {
+                    miner.addBundleOfResourcesByAmount("rock",2);
+                    miner.addBundleOfResourcesByAmount("clay",1);
+                    behind.clearField();
+                }
+                return true;
+            }
+            else if(structure.toString() == "R")
+            {
+                miner.addBundleOfResourcesByAmount("clay",3);
+                behind.clearField();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
 
-        return true;
     }
 
     /**
