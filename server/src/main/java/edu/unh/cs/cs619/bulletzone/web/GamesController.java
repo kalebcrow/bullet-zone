@@ -45,14 +45,14 @@ class GamesController {
         this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "{userID}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    ResponseEntity<LongWrapper> join(HttpServletRequest request) {
+    ResponseEntity<LongWrapper> join(@PathVariable long userID, HttpServletRequest request) {
         Tank tank;
         try {
-            tank = gameRepository.join(request.getRemoteAddr());
-            log.info("Player joined: tankId={} IP={}", tank.getId(), request.getRemoteAddr());
+            tank = gameRepository.join(userID, request.getRemoteAddr());
+            log.info("Player joined: userID={} tankId={} IP={}", tank.getUserID(), tank.getId(), request.getRemoteAddr());
 
             return new ResponseEntity<LongWrapper>(
                     new LongWrapper(tank.getId()),

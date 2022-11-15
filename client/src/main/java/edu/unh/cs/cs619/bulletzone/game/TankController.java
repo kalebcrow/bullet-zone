@@ -28,6 +28,8 @@ public class TankController {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
+    //private long userID;
+
     private Long tankID;
     //private Long minerID
     //private Long BuilderID
@@ -132,9 +134,10 @@ public class TankController {
     }
 
     @Background
-    public void joinGame(){
+    public void joinGame(long userID){
         try {
-            tankID = restClient.join().getResult();
+            tankID = restClient.join(userID).getResult();
+            //this.userID = userID;
         } catch (Exception e) {
 
         }

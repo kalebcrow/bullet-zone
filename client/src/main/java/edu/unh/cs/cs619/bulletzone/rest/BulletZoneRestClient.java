@@ -25,7 +25,7 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  */
 
 //Please fix when we submit
-//@Rest(rootUrl = "http://10.21.169.112:8080/games",
+//@Rest(rootUrl = "http://10.21.139.238:8080/games",
 //@Rest(rootUrl = "http://10.21.138.125:8080/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
 @Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
@@ -37,8 +37,8 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 public interface BulletZoneRestClient extends RestClientErrorHandling {
     void setRootUrl(String rootUrl);
 
-    @Post("")
-    LongWrapper join() throws RestClientException;
+    @Post("/{userID}")
+    LongWrapper join(@Path long userID) throws RestClientException;
 
     @Get("")
     GridWrapper grid();

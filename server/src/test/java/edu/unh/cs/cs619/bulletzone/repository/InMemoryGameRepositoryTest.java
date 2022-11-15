@@ -32,8 +32,8 @@ public class InMemoryGameRepositoryTest {
 
     @Test
     public void testJoin() throws Exception {
-        Tank tank = repo.join("");
-        Tank tank2 = repo.join("10");
+        Tank tank = repo.join(0,"");
+        Tank tank2 = repo.join(0,"10");
         Assert.assertEquals(tank.getId(), 0);
         Assert.assertEquals(tank2.getId(), 1);
         Assert.assertNotNull(tank);
@@ -73,7 +73,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
         //tank joins and is first player
-        Tank tank = repo.join("10");
+        Tank tank = repo.join(0,"10");
         Assert.assertNotNull(tank);
         Assert.assertEquals(tank.getId(), 0);
 
@@ -95,7 +95,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoined_ReturnsAddTankEvent() {
         repo.create();
-        Tank tank = repo.join("");
+        Tank tank = repo.join(0,"");
         LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 500);
         assert (update.size() == 1);
         assert (update.getFirst().getType() == "addTank");
@@ -104,7 +104,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSizeAndContents() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
+        Tank tank = repo.join(0,"");
         Long tankID = tank.getId();
         for (int i = 0; i < 10; i++) {
             repo.move(tankID, Direction.Up);
@@ -121,7 +121,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverMinute_ReturnsAtLeastEventsFromLastMinute() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
+        Tank tank = repo.join(0,"");
         Long tankID = tank.getId();
         for (int i = 0; i < 60; i++) {
             repo.move(tankID, Direction.Up);
@@ -137,7 +137,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverThreeMinutes_ReturnsEventsFromNoMoreThanThreeMinutesAgo() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank tank = repo.join("");
+        Tank tank = repo.join(0,"");
         Long tankID = tank.getId();
 
         for (int i = 0; i < 180; i++) {

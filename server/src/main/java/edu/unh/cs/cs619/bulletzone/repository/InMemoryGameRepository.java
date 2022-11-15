@@ -67,7 +67,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank join(String ip) {
+    public Tank join(long userID, String ip) {
         synchronized (this.monitor) {
             Tank tank;
             if (game == null) {
@@ -80,7 +80,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             Long tankId = this.idGenerator.getAndIncrement();
 
-            tank = new Tank(tankId, Direction.Up, ip);
+            tank = new Tank(userID, tankId, Direction.Up, ip);
             tank.setLife(TANK_LIFE);
 
             Random random = new Random();
