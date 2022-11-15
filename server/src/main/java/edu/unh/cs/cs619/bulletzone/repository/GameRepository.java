@@ -3,6 +3,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -26,6 +27,9 @@ public interface GameRepository {
 
     boolean fire(long tankId, int strength)
             throws TankDoesNotExistException, LimitExceededException;
+
+    boolean mine(long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType;
 
     public void leave(long tankId)
             throws TankDoesNotExistException;

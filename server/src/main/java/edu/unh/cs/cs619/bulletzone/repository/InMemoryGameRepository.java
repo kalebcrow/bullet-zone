@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,6 +12,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
+import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
@@ -25,6 +28,7 @@ import edu.unh.cs.cs619.bulletzone.model.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.model.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.TurnEvent;
@@ -53,6 +57,7 @@ public class InMemoryGameRepository implements GameRepository {
     /**
      * Tank's default life [life]
      */
+    boolean mine = false;
     private static final int TANK_LIFE = 100;
     private final Timer timer = new Timer();
     private final AtomicLong idGenerator = new AtomicLong();
@@ -168,6 +173,7 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean turn(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
+            mine = false;
             checkNotNull(direction);
 
             // Find user
@@ -208,8 +214,8 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean move(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
+            mine = false;
             // Find tank
-
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
@@ -263,7 +269,7 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean fire(long tankId, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
         synchronized (this.monitor) {
-
+            mine = false;
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
@@ -419,5 +425,90 @@ public class InMemoryGameRepository implements GameRepository {
 
     public LinkedList<GridEvent> getEvents(Long time) {
         return game.getEvents(time);
+    }
+
+    @Override
+    public boolean mine(long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        synchronized (this.monitor) {
+            //If mine is already hit
+            if (mine) {
+                return false;
+            }
+            // Find user
+            Tank miner = game.getTanks().get(tankId);
+            if (miner == null) {
+                //Log.i(TAG, "Cannot find user with id: " + tankId);
+                throw new TankDoesNotExistException(tankId);
+            }
+
+            TankController tc = new TankController();
+            if (!tc.mine(miner)) {
+                return false;
+            }
+
+            FieldHolder parent = miner.getParent();
+            FieldTerrain resourceTile = parent.getTerrain();
+            if(resourceTile == null)
+            {
+                return false;
+            }
+            mine = true;
+
+            //Initial pause for the mining process
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (monitor) {
+                        if (!mine) {
+                            cancel();
+                        }
+                        TankController tc = new TankController();
+                        try {
+                            if (!tc.mine(miner)) { //This means tanks life is at 0
+                                cancel();
+                            }
+                        } catch (LimitExceededException | TankDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("Starting mining process");
+                        switch (resourceTile.getIntValue()) {
+                            case 0:
+                                if (!miner.addBundleOfResources(2)) {
+                                    System.out.println("Failed to add clay resource type to stash");
+                                    cancel();
+                                }
+                                System.out.println("Finished mining process, adding clay to stash");
+                            case 1:
+                                if (!miner.addBundleOfResources(0)) {
+                                    System.out.println("Failed to add clay resource rock to stash");
+                                    cancel();
+                                }
+                                System.out.println("Finished mining process, adding rock to stash");
+                            case 2:
+                                if (!miner.addBundleOfResources(1)) {
+                                    System.out.println("Failed to add clay resource iron to stash");
+                                    cancel();
+                                }
+                                System.out.println("Finished mining process, adding iron to stash");
+                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                            default:
+                                try {
+                                    throw new InvalidResourceTileType();
+                                } catch (InvalidResourceTileType e) {
+                                    e.printStackTrace();
+                                }
+                        }
+                    }
+                }
+            }, 20, 1000);
+            return true;
+        }
     }
 }

@@ -28,7 +28,10 @@ public class Tank extends FieldEntity {
     private final int[] healths = {100,300,80};
     private int life;
 
-    private HashMap<String, Integer> resources = new HashMap<>();
+    private int[] resources;
+    //rock = index 0
+    //iron = index 1
+    //clay = index 2
 
     private Direction direction;
 
@@ -40,10 +43,8 @@ public class Tank extends FieldEntity {
         this.ip = ip;
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
-        if (typeIndex == 2) {
-            resources.put("rock", 0);
-            resources.put("iron", 0);
-            resources.put("clay", 0);
+        if (typeIndex == 1) {
+            resources = new int[]{0,0,0};
         }
         this.lastMoveTime = 0;
         this.lastFireTime = 0;
@@ -127,26 +128,31 @@ public class Tank extends FieldEntity {
         return ip;
     }
 
-    public boolean addBundleOfResources(String resourceType) {
-        Integer temp = resources.get(resourceType);
-        if (temp == null) {
+    public boolean addBundleOfResources(int resourceType) {
+        if (resourceType < 0 || resourceType >= 3) {
             return false;
         }
-        resources.replace(resourceType, temp + 1);
+        resources[resourceType]++;
         return true;
     }
 
-    public boolean subtractBundleOfResources(String resourceType) {
-        Integer temp = resources.get(resourceType);
-        if (temp == null || temp == 0) {
+    public boolean subtractBundleOfResources(int resourceType, int amount) {
+        if (resourceType < 0 || resourceType >= 3) {
             return false;
         }
-        resources.replace(resourceType, temp - 1);
+        if (resources[resourceType] < amount) {
+            return false;
+        }
+        resources[resourceType] -= amount;
         return true;
     }
 
-    public Integer getResourcesByResource(String resourceType) {
-        return resources.get(resourceType);
+    public Integer getResourcesByResource(int resourceType) {
+        return resources[resourceType];
+    }
+
+    public int[] getAllResources() {
+        return resources;
     }
 
 }

@@ -12,6 +12,7 @@ public class GridEvent implements Serializable {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    protected int[] resources = new int[]{0, 0, 0};
 
     public Integer getID() {
         return ID;
@@ -51,6 +52,14 @@ public class GridEvent implements Serializable {
 
     public Long getTime(){
         return this.time;
+    }
+
+    public int[] getResources() {
+        return resources;
+    }
+
+    public void setResources(int[] resources) {
+        this.resources = resources;
     }
 
 
