@@ -120,3 +120,20 @@ public class GroundTile {
         return R.drawable.blank;
     }
 }
+
+/*
+package edu.unh.cs.cs619.bulletzone.game.tiles;
+
+import edu.unh.cs.cs619.bulletzone.R;
+
+public class GroundTile extends BlankTile {
+
+    /**
+     * Initializes the ground tile.
+     *
+     * @param JsonValue value from server
+     * @param location location
+
+}
+
+ */

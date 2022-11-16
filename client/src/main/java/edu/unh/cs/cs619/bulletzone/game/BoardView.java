@@ -123,7 +123,6 @@ public class BoardView {
         int value = 0;
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
-
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
                 this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
                 value++;

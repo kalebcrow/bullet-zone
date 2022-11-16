@@ -67,7 +67,6 @@ public class GameBoardBuilder {
     GameBoardBuilder(Game game)
     {
         this.game = game;
-        log.info("------------getting GAME----------");
     }
 
 
@@ -75,11 +74,9 @@ public class GameBoardBuilder {
      * Creates a new board from specified game returns if no current game
      */
     public void create() {
-            log.info("------------creating GAME----------");
             if(game == null) {
                 return;
             }
-            log.info("------------actually creating GAME----------");
             createFieldHolderGrid(game);
 
             // Test // TODO Move to more appropriate place (and if desired, integrate map loader)
