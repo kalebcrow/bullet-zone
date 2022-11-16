@@ -432,7 +432,8 @@ public class InMemoryGameRepository implements GameRepository {
 
             final Wall wall = new Wall();
             final Road road = new Road();
-            final Wall indestructiblewall = new Wall(1000);
+            final Wall indestructiblewall = new Wall(100000);
+            indestructiblewall.name = "ID";
 
 
             if (builder == null) {
@@ -548,19 +549,18 @@ public class InMemoryGameRepository implements GameRepository {
             FieldEntity structure = behind.getEntity();
             if(structure.toString() == "W")
             {
-                if(structure.getIntValue() == 1500)
-                {
-                    miner.addBundleOfResources(0,3);
-                    miner.addBundleOfResources(2,3);
-                    miner.addBundleOfResources(1,3);
-                    behind.clearField();
-                }
-                else
-                {
-                    miner.addBundleOfResources(0,2);
-                    miner.addBundleOfResources(2,1);
-                    behind.clearField();
-                }
+                miner.addBundleOfResources(0,2);
+                miner.addBundleOfResources(2,1);
+                behind.clearField();
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
+                return true;
+            }
+            else if(structure.toString() == "ID")
+            {
+                miner.addBundleOfResources(0,3);
+                miner.addBundleOfResources(2,3);
+                miner.addBundleOfResources(1,3);
+                behind.clearField();
                 game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
                 return true;
             }
