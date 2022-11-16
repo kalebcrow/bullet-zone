@@ -1,17 +1,15 @@
 package edu.unh.cs.cs619.bulletzone;
 
-import org.graalvm.compiler.lir.sparc.SPARCMove;
-
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
-public class MoveCommand extends MoveToCommand{
+public class MoveCommand extends Command {
 
-    public MoveCommand(long tankID, Direction direction, InMemoryGameRepository gameRepository){
-        super(tankID, direction, gameRepository);
+    public MoveCommand(long tankID, Direction direction, InMemoryGameRepository gameRepository, long delay){
+        super(tankID, direction, gameRepository, delay);
     }
 
     public boolean execute(){

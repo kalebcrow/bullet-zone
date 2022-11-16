@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import edu.unh.cs.cs619.bulletzone.MoveToCommand;
+import edu.unh.cs.cs619.bulletzone.Command;
+import edu.unh.cs.cs619.bulletzone.MoveCommand;
 import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -33,6 +33,8 @@ import edu.unh.cs.cs619.bulletzone.model.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.TurnEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 @Component
@@ -427,48 +429,104 @@ public class InMemoryGameRepository implements GameRepository {
 
         Direction xValueMovement = null;
         if((currentLocation%16) > (desiredLocation%16)){
-            yValueMovement = Direction.Left;
+            xValueMovement = Direction.Left;
         }
-        else if((currentLocation/16) < (desiredLocation/16)){
-            yValueMovement = Direction.Right;
+        else if((currentLocation%16) < (desiredLocation%16)){
+            xValueMovement = Direction.Right;
         }
-        else if((currentLocation/16) == (desiredLocation/16)){
-            yValueMovement = null;
+        else if((currentLocation%16) == (desiredLocation%16)){
+            xValueMovement = null;
         }
 
         //create list of Move To Commands
-        ArrayList<MoveToCommand> MoveToList = new ArrayList<>();
-
+        ArrayList<Command> MoveToList = new ArrayList<>();
+        long placeholderDelay = 800*2; //longest possible delay for moving
         Direction currentDirection = tank.getDirection();
+
+        //special cases: on same y or x coordinate, or both
+        if(xValueMovement == null && yValueMovement == null){
+            //trying to move to current coordinates
+            return;
+        }
+        else if(xValueMovement == null && yValueMovement != null){
+            //moving to spot only directly above/below of current position
+
+            if(yValueMovement == Direction.Up){
+                //queue up moves to get the tank to face up
+                if(currentDirection == Direction.Down){
+
+                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+            }
+            else if(yValueMovement == Direction.Down){
+                //queue up moves to get the tank to face down
+                if(currentDirection == Direction.Up){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+
+            }
+
+            for(int i = 0; i < Math.abs((currentLocation/16) - (desiredLocation/16)); i++){
+
+                if(yValueMovement == Direction.Up){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+                else if(yValueMovement == Direction.Down){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+
+            }
+
+        }
+        else if(xValueMovement != null || yValueMovement == null){
+
+        }
+
+        /*
+        long placeholderDelay = 800*2; //longest possible delay for moving
 
         if(yValueMovement == Direction.Up){
             //queue up moves to get the tank to face up
             if(currentDirection == Direction.Down){
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
             }
-            else if(currentDirection == Direction.Left){
-                MoveToList.add(new TurnCommand(tankId, Direction.Right, this));
-            }
-            else if(currentDirection == Direction.Right){
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+            else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
             }
         }
         else if(yValueMovement == Direction.Down){
             //queue up moves to get the tank to face down
             if(currentDirection == Direction.Up){
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
             }
-            else if(currentDirection == Direction.Left){
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this));
-            }
-            else if(currentDirection == Direction.Right){
-                MoveToList.add(new TurnCommand(tankId, Direction.Right, this));
+            else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
             }
 
         }
 
+        test = 0;
+        while( yValueMovement != null && test < Math.abs((currentLocation/16) - (desiredLocation/16))){
+
+            if (yValueMovement == Direction.Down) {
+
+            }
+            else if()
+
+        }
+
+         */
 
     }
 

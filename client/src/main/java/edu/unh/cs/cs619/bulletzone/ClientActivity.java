@@ -45,7 +45,6 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
-import edu.unh.cs.cs619.bulletzone.moveTo.MoveToInterpreter;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;

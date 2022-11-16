@@ -6,10 +6,10 @@ import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
-public class TurnCommand extends MoveToCommand{
+public class TurnCommand extends Command {
 
-    public TurnCommand(long tankID, Direction direction, InMemoryGameRepository gameRepository){
-        super(tankID, direction, gameRepository);
+    public TurnCommand(long tankID, Direction direction, InMemoryGameRepository gameRepository, long delay){
+        super(tankID, direction, gameRepository, delay);
     }
 
     @Override
