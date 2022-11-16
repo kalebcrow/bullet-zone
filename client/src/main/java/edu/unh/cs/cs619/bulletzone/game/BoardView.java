@@ -123,6 +123,7 @@ public class BoardView {
         int value = 0;
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
+
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
                 this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
                 value++;
@@ -143,10 +144,10 @@ public class BoardView {
 
     /**
      *
-     * @param event update specific tile
+     * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateTile(TileUpdateEvent event) {
-        tiles[event.location][0] = event.movedTile;
+        tiles[event.location][1] = event.movedTile;
         gridAdapter.updateList(tiles);
 
     }

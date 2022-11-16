@@ -5,6 +5,7 @@ import com.squareup.otto.Bus;
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
@@ -40,11 +41,11 @@ public class MoveTankEvent extends ExecutableEvent {
 
         tileUpdateEvent = new TileUpdateEvent(location, tile);
         bus.post(tileUpdateEvent);
-        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(prevJSONValue, location)));
+        bus.post(new TileUpdateEvent(prevlocation, new ObstacleTile(prevJSONValue,location)));//Tile(prevJSONValue, location)));
     }
 
     private Integer getJSONValueFromString(String terrain) {
-        // using given son values
+        // using given json values
         if (terrain.equals("H")) {
             return 2;
         } else if (terrain.equals("R")) {

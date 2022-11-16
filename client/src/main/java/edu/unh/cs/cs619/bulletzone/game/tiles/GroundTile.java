@@ -103,7 +103,7 @@ public class GroundTile {
         } else if (JsonValue == 1) {
             this.resourceID = R.drawable.rocky;
         } else if (JsonValue == 0) {
-            this.resourceID = R.drawable.meadow;// somethng is wrong SARA
+            this.resourceID = R.drawable.meadow;
         }
     }
 
@@ -120,20 +120,3 @@ public class GroundTile {
         return R.drawable.blank;
     }
 }
-
-/*
-package edu.unh.cs.cs619.bulletzone.game.tiles;
-
-import edu.unh.cs.cs619.bulletzone.R;
-
-public class GroundTile extends BlankTile {
-
-    /**
-     * Initializes the ground tile.
-     *
-     * @param JsonValue value from server
-     * @param location location
-
-}
-
- */

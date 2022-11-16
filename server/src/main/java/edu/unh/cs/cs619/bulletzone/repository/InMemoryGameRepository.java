@@ -234,6 +234,11 @@ public class InMemoryGameRepository implements GameRepository {
                 tank.setParent(nextField);
 
                 log.debug("---------------MOVING TANK from " + parent.getTerrain().toString() + " to " + nextField.getTerrain().toString());
+                if (parent.isEntityPresent()) {
+                    log.debug("---------------MOVING TANK from " + parent.getEntity().toString());
+                } else {
+                    log.debug("not moving from a tank tile -----------------------------");
+                }
                 game.addEvent(new MoveTankEvent(tankId, toByte(direction), parent.getTerrain().toString()));
 
                 isCompleted = true;

@@ -97,12 +97,12 @@ public class GridAdapter extends BaseAdapter {
                     item.setImageResource(mEntities[position][1].getResourceID());
                     item.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
 
-                    terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
+                    //terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
                     item.setRotation(mEntities[position][1].getOrientation()/2 * 90);
 
                 } else {
                     // somethings wrong // SARA
-                    terrain.setImageResource(R.drawable.redtank);
+                    terrain.setImageResource(R.drawable.blank);
                 }
             }
         }
