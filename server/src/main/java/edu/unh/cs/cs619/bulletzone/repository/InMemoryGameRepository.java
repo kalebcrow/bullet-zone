@@ -433,7 +433,7 @@ public class InMemoryGameRepository implements GameRepository {
             final Wall wall = new Wall();
             final Road road = new Road();
             final Wall indestructiblewall = new Wall(100000);
-            indestructiblewall.name = "ID";
+            indestructiblewall.name = "IW";
 
 
             if (builder == null) {
