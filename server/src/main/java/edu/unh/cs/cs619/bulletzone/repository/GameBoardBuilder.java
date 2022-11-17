@@ -5,12 +5,14 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Hilly;
 import edu.unh.cs.cs619.bulletzone.model.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Rocky;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 
@@ -98,9 +100,9 @@ public class GameBoardBuilder {
                 }
 
                 if (improvementGrid[i][j].equals("I")) {
-                    game.getHolderGrid().get(count).setFieldEntity(new Wall());
+                    game.getHolderGrid().get(count).setFieldResource(new Clay());//.setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
-                    game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
+                    game.getHolderGrid().get(count).setFieldResource(new Rock());//.setFieldEntity(new Wall(1500, count));
                 }
 
                 count++;

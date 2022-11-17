@@ -9,13 +9,13 @@
         android:translationZ="0dp"
         android:contentDescription="@string/terrain" />
     <ImageView
-        android:id="@+id/itemtile"
+        android:id="@+id/resourcetile"
         android:layout_width="5dp"
         android:layout_height="5dp"
         android:translationZ="1dp"
         android:contentDescription="@string/item" />
     <ImageView
-        android:id="@+id/vehicletile"
+        android:id="@+id/entitytile"
         android:layout_width="5dp"
         android:layout_height="5dp"
         android:translationZ="2dp"

@@ -66,7 +66,7 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
-        tiles = new GroundTile[256][2]; // represents [terrain][entity]
+        tiles = new GroundTile[256][3]; // represents [terrain][resources][entity]
     }
 
     @AfterInject
@@ -81,7 +81,7 @@ public class BoardView {
      * @return get build
      */
     public GroundTile getTile(int index) {
-        return tiles[index][1]; // defaults to one because only used to test entities?
+        return tiles[index][2]; // defaults to two because only used to test entities?
     }
 
     /**
@@ -109,8 +109,9 @@ public class BoardView {
         if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2) {
             tiles[index][0] = cell; // set terrain
         } else {
-            tiles[index][1] = cell; // set entity
+            tiles[index][2] = cell; // set entity
         }
+        // not worrying about [1] for right now
     }
 
     /**
@@ -131,7 +132,8 @@ public class BoardView {
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
-                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
+                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // resource ( + road?)
+                this.tiles[value][2] = this.tileFactory.makeTile(arr[i][ii][2], value); // entity (tank, wall, etc)
                 value++;
             }
         }
@@ -153,7 +155,7 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateTile(TileUpdateEvent event) {
-        tiles[event.location][1] = event.movedTile;
+        tiles[event.location][2] = event.movedTile;
         Log.d("TimeDiff", "received event: " + System.currentTimeMillis());
         gridAdapter.updateList(tiles);
 

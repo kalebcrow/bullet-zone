@@ -4,6 +4,7 @@ package edu.unh.cs.cs619.bulletzone.game;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 
 //Not sure if this needs to be a singleton but it is now
@@ -44,6 +45,8 @@ public class TileFactory {
         //} else
         if (JsonValue == 0 || JsonValue == 1 || JsonValue == 2) {
             return new GroundTile(JsonValue, location);
+        } else if (JsonValue == 501 || JsonValue == 502 || JsonValue == 503 || JsonValue == 7){
+            return new ResourceTile(JsonValue, location);
         } else if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);
         } else if (JsonValue >= 2000000 && JsonValue < 3000000) {

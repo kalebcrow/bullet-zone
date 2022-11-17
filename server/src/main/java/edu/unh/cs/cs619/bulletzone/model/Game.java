@@ -99,7 +99,7 @@ public final class Game {
     }
 
     public int[][][] getGrid2D() {
-        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][2];
+        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][3];
 
         synchronized (holderGrid) {
             FieldHolder holder;
@@ -108,7 +108,13 @@ public final class Game {
                     holder = holderGrid.get(i * FIELD_DIM + j);
                     // set entity if there is one
                     if (holder.isEntityPresent()) {
-                        grid[i][j][1] = holder.getEntity().getIntValue();
+                        grid[i][j][2] = holder.getEntity().getIntValue();
+                    } else {
+                        grid[i][j][2] = -1; // make it blank if theres no entity
+                    }
+                    // set resource if there is one
+                    if (holder.isResourcePresent()) {
+                        grid[i][j][1] = holder.getResource().getIntValue();
                     } else {
                         grid[i][j][1] = -1; // make it blank if theres no entity
                     }
