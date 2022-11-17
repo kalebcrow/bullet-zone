@@ -243,10 +243,10 @@ public class InMemoryGameRepository implements GameRepository {
                 // adding a check for field type (blank, hilly, or rocky) for speed purposes
                 if (nextField.getTerrain().toString().equals("R")) {
                     // rocky
-                    speed = 500;
+                    speed = tank.getAllowedMoveInterval() * 2;
                 } else if (nextField.getTerrain().toString().equals("H")) {
                     // hilly
-                    speed = 250;
+                    speed = tank.getAllowedMoveInterval() * 1.5;
                 } else {
                     // meadow
                     speed = 0;
