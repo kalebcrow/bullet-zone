@@ -84,9 +84,9 @@ public class InMemoryGameRepositoryTest {
         Assert.assertEquals(tank[0].getId(), 0);
 
         //tank leaves and is no longer present in the FieldHolder
-        Assert.assertEquals(true, tank[0].getParent().isPresent());
+        Assert.assertEquals(true, tank[0].getParent().isEntityPresent());
         repo.leave(tank[0].getId());
-        Assert.assertEquals(false, tank[0].getParent().isPresent());
+        Assert.assertEquals(false, tank[0].getParent().isEntityPresent());
 
         thrown.expect(TankDoesNotExistException.class);
         repo.turn(tank[0].getId(), Direction.Right);

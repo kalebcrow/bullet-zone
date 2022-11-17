@@ -49,7 +49,7 @@ public class TankControllerTest {
         tank = new Tank(0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertFalse(tc.move(tank, Direction.Left));
+        assertFalse(tc.move(tank, Direction.Left, 0));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class TankControllerTest {
         tank = new Tank(0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertTrue(tc.move(tank, Direction.Up));
+        assertTrue(tc.move(tank, Direction.Up, 0));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class TankControllerTest {
         tank = new Tank(0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertTrue(tc.move(tank, Direction.Down));
+        assertTrue(tc.move(tank, Direction.Down, 0));
     }
 
     @Test

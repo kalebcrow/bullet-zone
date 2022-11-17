@@ -22,7 +22,7 @@ public class HistoryReader {
 
     public LinkedList<GridEvent> history;
     public Context context;
-    public int[][] array;
+    public int[][][] array;
 
 
 
@@ -86,7 +86,7 @@ public class HistoryReader {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
 
-        array = gson.fromJson(ret, int[][].class);
+        array = gson.fromJson(ret, int[][][].class);
 
         ret = "";
         try {
