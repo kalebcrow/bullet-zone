@@ -17,6 +17,14 @@ public class FieldHolder {
     private Optional<FieldEntity> entityHolder = Optional.empty();
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
     private Optional<FieldEntity> improvementHolder = Optional.empty();
+    private int pos;
+
+    public FieldHolder(int i){
+        this.pos = i;
+    }
+
+    public FieldHolder(){}
+    public int getPos(){ return this.pos;}
 
     public void addNeighbor(Direction direction, FieldHolder fieldHolder) {
         neighbors.put(checkNotNull(direction), checkNotNull(fieldHolder));
