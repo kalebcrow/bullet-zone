@@ -392,20 +392,24 @@ public class InMemoryGameRepository implements GameRepository {
      * @throws TankDoesNotExistException throws if the specified tank does not exist
      */
     @Override
-    public void leave(long tankId)
+    public void leave(long[] tankId)
             throws TankDoesNotExistException {
         synchronized (this.monitor) {
-            if (!this.game.getTanks().containsKey(tankId)) {
-                throw new TankDoesNotExistException(tankId);
-            }
+            for (int i = 0; i < 3; i++){
+                if (!this.game.getTanks().containsKey(tankId[i])) {
+                    throw new TankDoesNotExistException(tankId[i]);
+                }
 
-            System.out.println("leave() called, tank ID: " + tankId);
+            System.out.println("leave() called, tank ID: " + tankId[i]);
 
-            Tank tank = game.getTanks().get(tankId);
+            Tank tank = game.getTanks().get(tankId[i]);
             FieldHolder parent = tank.getParent();
             parent.clearField();
-            game.addEvent(new DestroyTankEvent(tank.getId()));
-            game.removeTank(tankId);
+            if(tank.getLife() > 0) {
+                game.addEvent(new DestroyTankEvent(tank.getId()));
+            }
+            game.removeTank(tankId[i]);
+        }
         }
     }
 

@@ -68,9 +68,9 @@ public class GamesControllerTest {
         gamesController = new GamesController(repo);
         ResponseEntity<LongArrayWrapper> l = gamesController.join(request);
         //Leave game
-        gamesController.leave(0);
+        gamesController.leave(new long[]{0,1,2});
         //test that tank does not exist
-        gamesController.leave(0);
+        gamesController.leave(new long[]{0,1,2});
         //mockMvc.perform(delete("/{id}/leave",)).andExpect(status().isOk());
     }
 

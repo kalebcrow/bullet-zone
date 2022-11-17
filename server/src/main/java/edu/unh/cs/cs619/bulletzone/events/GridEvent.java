@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class GridEvent implements Serializable {
 
-    //Big dumbsky
     protected Long time;
     protected String type;
     protected Integer ID = -1;
