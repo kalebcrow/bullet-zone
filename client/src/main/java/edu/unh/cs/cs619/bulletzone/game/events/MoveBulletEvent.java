@@ -1,16 +1,32 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import android.util.Log;
-
 import com.squareup.otto.Bus;
 
-import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class MoveBulletEvent extends ExecutableEvent {
+
+    private String[][] terrainGrid = {
+            {"M", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M", "M", "M", "M"}, // 0
+            {"M", "M", "M", "R", "R", "R", "R", "R", "M", "M", "M", "M", "M", "M", "M", "M"}, // 1
+            {"M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 2
+            {"M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 3
+            {"M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 4
+            {"M", "M", "M", "R", "R", "M", "M", "M", "M", "M", "H", "H", "M", "M", "M", "H"}, // 5
+            {"R", "R", "R", "R", "R", "M", "M", "M", "M", "M", "H", "H", "M", "M", "M", "H"}, // 6
+            {"M", "R", "R", "R", "M", "M", "M", "H", "H", "H", "H", "H", "M", "H", "M", "H"}, // 7
+            {"M", "R", "R", "R", "R", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H"}, // 8
+            {"M", "M", "M", "R", "M", "M", "M", "M", "M", "H", "H", "H", "M", "H", "H", "H"}, // 9
+            {"H", "M", "M", "M", "M", "M", "M", "M", "M", "H", "M", "H", "M", "H", "H", "H"}, // 10
+            {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "M", "M", "M", "M", "H"}, // 11
+            {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "R", "M", "M", "H", "H"}, // 12
+            {"H", "H", "H", "H", "M", "M", "M", "M", "M", "R", "R", "M", "M", "M", "M", "M"}, // 13
+            {"H", "H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M"}, // 14
+            {"H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "M", "M"}, // 15
+    };
 
     public MoveBulletEvent(GridEvent event) {
         super(event);
@@ -26,6 +42,10 @@ public class MoveBulletEvent extends ExecutableEvent {
             return;
         }
         Integer location = tile.getLocation();
+        int row = location / 16;
+        int col = location % 16;
+
+        Integer jsonValue = getJSONValueFromString(terrainGrid[row][col]);
         Integer prevlocation = location;
 
 
@@ -41,8 +61,21 @@ public class MoveBulletEvent extends ExecutableEvent {
 
         tile.setLocation(location);
 
-        bus.post(new TileUpdateEvent(prevlocation, new BlankTile(0, prevlocation)));
+        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(jsonValue, prevlocation)));
         bus.post(new TileUpdateEvent(location, tile));
+    }
+
+    private Integer getJSONValueFromString(String terrain) {
+        // using given son values
+        if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
     }
 
     private Integer goingUp(Integer location) {

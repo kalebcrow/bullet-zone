@@ -39,6 +39,20 @@ public class Bullet extends FieldEntity {
         return direction;
     }
 
+    public Direction getOppositeDirection() {
+        Direction opp = Direction.Down;
+        if (direction.compareTo(Direction.Up) == 0) {
+            opp = Direction.Down;
+        } else if (direction.compareTo(Direction.Down) == 0) {
+            opp = Direction.Up;
+        } else if (direction.compareTo(Direction.Left) == 0) {
+            opp = Direction.Right;
+        } else if (direction.compareTo(Direction.Right) == 0) {
+            opp = Direction.Left;
+        }
+        return opp;
+    }
+
     public void setDirection(Direction direction) {
         this.direction = direction;
     }

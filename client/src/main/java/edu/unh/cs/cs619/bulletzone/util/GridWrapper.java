@@ -4,22 +4,22 @@ package edu.unh.cs.cs619.bulletzone.util;
  * Created by simon on 10/1/14.
  */
 public class GridWrapper {
-    private int[][] grid;
+    private int[][][] grid;
 
     private long timeStamp;
 
     public GridWrapper() {
     }
 
-    public GridWrapper(int[][] grid) {
+    public GridWrapper(int[][][] grid) {
         this.grid = grid;
     }
 
-    public int[][] getGrid() {
+    public int[][][] getGrid() {
         return this.grid;
     }
 
-    public void setGrid(int[][] grid) {
+    public void setGrid(int[][][] grid) {
         this.grid = grid;
     }
 

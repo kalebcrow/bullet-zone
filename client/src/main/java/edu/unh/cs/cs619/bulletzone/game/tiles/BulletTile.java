@@ -3,7 +3,7 @@ package edu.unh.cs.cs619.bulletzone.game.tiles;
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
 
-public class BulletTile extends BlankTile {
+public class BulletTile extends GroundTile {
 
     /**
      *

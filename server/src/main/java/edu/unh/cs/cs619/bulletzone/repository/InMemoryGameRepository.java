@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -70,6 +72,9 @@ public class InMemoryGameRepository implements GameRepository {
     private Game game = null;
     private int bulletDamage[]={10,30,50};
     private int trackActiveBullets[]={0,0,0,0};
+
+    private static final Logger log = LoggerFactory.getLogger(InMemoryGameRepository.class);
+
 
     /**
      * Allows a new tank to join the game
@@ -156,7 +161,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return returns the current games grid in a 2d array
      */
     @Override
-    public int[][] getGrid() {
+    public int[][][] getGrid() {
         synchronized (this.monitor) {
             if (game == null) {
                 this.create();
@@ -227,18 +232,42 @@ public class InMemoryGameRepository implements GameRepository {
                 //return false;
                 throw new TankDoesNotExistException(tankId);
             }
-            TankController tc = new TankController();
-            if (!tc.move(tank, direction)) {
-                return false;
-            }
 
             FieldHolder parent = tank.getParent();
 
             FieldHolder nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
 
+            double speed = 0;
+            if (nextField.isEntityPresent()) {
+                // adding a check for field type (blank, hilly, or rocky) for speed purposes
+                if (nextField.getTerrain().toString().equals("R")) {
+                    // rocky
+                    speed = 500;
+                } else if (nextField.getTerrain().toString().equals("H")) {
+                    // hilly
+                    speed = 250;
+                } else {
+                    // meadow
+                    speed = 0;
+                }
+            }
+
+            TankController tc = new TankController();
+            if (!tc.move(tank, direction, speed)) {
+                return false;
+            }
+
+            parent = tank.getParent();
+
+            FieldHolder nextField = parent.getNeighbor(direction);
+            checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
+            nextField = parent.getNeighbor(direction);
+            checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
+
+
             boolean isCompleted;
-            if (!nextField.isPresent()) {
+            if (!nextField.isEntityPresent()) {
                 // If the next field is empty move the user
 
                 /*try {
@@ -246,12 +275,12 @@ public class InMemoryGameRepository implements GameRepository {
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }*/
-
                 parent.clearField();
                 nextField.setFieldEntity(tank);
                 tank.setParent(nextField);
-                game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
 
+                log.debug("---------------MOVING TANK from " + parent.getTerrain().toString() + " to " + nextField.getTerrain().toString());
+                game.addEvent(new MoveTankEvent(tankId, toByte(direction), parent.getTerrain().toString()));
 
                 isCompleted = true;
             } else {
@@ -330,21 +359,28 @@ public class InMemoryGameRepository implements GameRepository {
                         FieldHolder nextField = currentField
                                 .getNeighbor(direction);
 
+                        Direction oppDirection = bullet.getDirection();
+                        FieldHolder previousField = currentField
+                                .getNeighbor(oppDirection);
+                        String previousterrain = previousField.getTerrain().toString();
+                        String terrain = currentField.getTerrain().toString();
+
+
                         // Is the bullet visible on the field?
-                        boolean isVisible = currentField.isPresent()
+                        boolean isVisible = currentField.isEntityPresent()
                                 && (currentField.getEntity() == bullet);
 
 
-                            if (nextField.isPresent()) {
+                            if (nextField.isEntityPresent()) {
                                 // Something is there, hit it
                                 nextField.getEntity().hit(bullet.getDamage());
-                                if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId));
+                                if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
 
                                 if ( nextField.getEntity() instanceof  Tank){
                                     Tank t = (Tank) nextField.getEntity();
                                     System.out.println("tank is hit, tank life: " + t.getLife());
                                     if (t.getLife() <= 0 ){
-                                        game.addEvent(new DestroyTankEvent(t.getId()));
+                                        game.addEvent(new DestroyTankEvent(t.getId(), terrain));
                                         t.getParent().clearField();
                                         t.setParent(null);
                                     }
@@ -352,7 +388,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 else if ( nextField.getEntity() instanceof  Wall){
                                     Wall w = (Wall) nextField.getEntity();
                                     if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
-                                        game.addEvent(new DestroyWallEvent(w.getPos()+1));
+                                        game.addEvent(new DestroyWallEvent(w.getPos()+1, terrain));
                                         game.getHolderGrid().get(w.getPos()).clearField();
                                     }
                                 }
@@ -370,7 +406,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     game.addEvent(new FireEvent(finalTankID, finalBulletId, toByte(direction)));
                                     fireIndicator[0] = false;
                                 }
-                                else game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction)));
+                                else game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction), terrain));
                                 // Remove bullet from field
                                 currentField.clearField();
                             }
@@ -404,7 +440,7 @@ public class InMemoryGameRepository implements GameRepository {
             Tank tank = game.getTanks().get(tankId);
             FieldHolder parent = tank.getParent();
             parent.clearField();
-            game.addEvent(new DestroyTankEvent(tank.getId()));
+            game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
             game.removeTank(tankId);
         }
     }

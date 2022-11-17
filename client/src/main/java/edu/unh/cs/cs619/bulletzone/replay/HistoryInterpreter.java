@@ -11,7 +11,10 @@ import org.androidannotations.annotations.UiThread;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
@@ -135,6 +138,15 @@ public class HistoryInterpreter extends Thread {
                 break;
             case "destroyBullet":
                 event = new DestroyBulletEvent(currEvent);
+                break;
+            case "addObstacleEvent":
+                event = new AddObstacleEvent(currEvent);
+                break;
+            case "damageWallEvent":
+                event = new DamageWallEvent(currEvent);
+                break;
+            case "damageTankEvent":
+                event = new DamageTankEvent(currEvent);
                 break;
             default:
                 event = new ExecutableEvent(currEvent);
