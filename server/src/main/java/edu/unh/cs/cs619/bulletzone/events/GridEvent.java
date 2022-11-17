@@ -10,7 +10,6 @@ import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 
 public class GridEvent implements Serializable {
 
-    //Big d
     protected Long time;
     protected String type;
     protected Integer ID = -1;
