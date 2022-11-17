@@ -240,4 +240,42 @@ public class TankControllerTest {
         Game game = IMGR.getGame();
         assertEquals(4, game.getTank(tanks[1].getId()).getNumberOfBullets());
     }
+
+    @Test
+    public void moveToTest(){
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join("idk");
+        int[][] grid2d = IMGR.getGrid();
+
+        System.out.println("Controlling tank with id " + tanks[0].getId());
+
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        //test command
+        try {
+            IMGR.moveTo(tanks[0].getId(), 0);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+    }
+
 }

@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -10,6 +11,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.Command;
+import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
+import edu.unh.cs.cs619.bulletzone.MoveCommand;
+import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
@@ -39,6 +44,8 @@ import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 @Component
@@ -608,6 +615,147 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    public void moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
+
+        // Find tank
+        Tank tank = game.getTanks().get(tankId);
+        if (tank == null) {
+            //Log.i(TAG, "Cannot find user with id: " + tankId);
+            //return false;
+            throw new TankDoesNotExistException(tankId);
+        }
+
+        //find the current location of the tank
+        int[][] grid2d = game.getGrid2D();
+        int currentLocation = -1;
+        int test;
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                if(grid2d[i][j] >= 10000000 && grid2d[i][j] < 20000000){
+
+                    test = grid2d[i][j];
+                    test = test % 10000000;
+                    test = test / 10000;
+
+                    if(tankId == (long)test){
+
+                        currentLocation = i*16 + j;
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            if(currentLocation != -1){
+                break;
+            }
+
+        }
+
+        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation);
+
+        //with location of tank on the board and desired location,
+        //determine direction of y value movement, north or south
+        Direction yValueMovement = null;
+        if((currentLocation/16) > (desiredLocation/16)){
+            yValueMovement = Direction.Up;
+        }
+        else if((currentLocation/16) < (desiredLocation/16)){
+            yValueMovement = Direction.Down;
+        }
+        else if((currentLocation/16) == (desiredLocation/16)){
+            yValueMovement = null;
+        }
+
+        Direction xValueMovement = null;
+        if((currentLocation%16) > (desiredLocation%16)){
+            xValueMovement = Direction.Left;
+        }
+        else if((currentLocation%16) < (desiredLocation%16)){
+            xValueMovement = Direction.Right;
+        }
+        else if((currentLocation%16) == (desiredLocation%16)){
+            xValueMovement = null;
+        }
+
+        System.out.println("XValueMovement: " + xValueMovement + "\tYValueMovement: " + yValueMovement);
+
+
+        //create list of Move To Commands
+        ArrayList<Command> MoveToList = new ArrayList<>();
+        long placeholderDelay = 800*2; //longest possible delay for moving
+        Direction currentDirection = tank.getDirection();
+
+        //special cases: on same y or x coordinate, or both
+        if(xValueMovement == null && yValueMovement == null){
+            //trying to move to current coordinates
+            return;
+        }
+        else if(xValueMovement != null && yValueMovement != null){
+
+            if(yValueMovement == Direction.Up){
+                //queue up moves to get the tank to face up
+                if(currentDirection == Direction.Down){
+
+                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+            }
+            else if(yValueMovement == Direction.Down){
+                //queue up moves to get the tank to face down
+                if(currentDirection == Direction.Up){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+
+            }
+
+            int yValueDistance = Math.abs((currentLocation/16) - (desiredLocation/16));
+
+            //System.out.println("YValueDistance: " + yValueDistance);
+
+            for(int i = 0; i < yValueDistance; i++){
+                if(yValueMovement == Down){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+            }
+
+            if(xValueMovement == Left){
+                MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+            }
+            else{
+                MoveToList.add(new TurnCommand(tankId, Direction.Right, this, placeholderDelay));
+            }
+
+            int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
+            for(int i = 0; i < xValueDistance; i++){
+                if(xValueMovement == Left){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Left, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tankId, Direction.Right, this, placeholderDelay));
+                }
+            }
+
+        }
+
+        CommandInterpreter commandInterpreter = new CommandInterpreter(MoveToList);
+        commandInterpreter.executeSequence();
+
+    }
+
     /**
      * Returns the current game
      * @return current active game
@@ -621,10 +769,12 @@ public class InMemoryGameRepository implements GameRepository {
         return game.getEvents(time);
     }
 
+
     @Override
     public boolean mine(long tankId)
             throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
         synchronized (this.monitor) {
+            /*
             //If mine is already hit
             if (mine) {
                 return false;
@@ -702,7 +852,11 @@ public class InMemoryGameRepository implements GameRepository {
                     }
                 }
             }, 20, 1000);
+
+             */
             return true;
         }
     }
+
+
 }
