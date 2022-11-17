@@ -23,6 +23,16 @@ public class GridPollerTask {
     @Bean
     BusProvider busProvider;
 
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    boolean paused = false;
+
     @RestService
     BulletZoneRestClient restClient;
 
@@ -34,7 +44,7 @@ public class GridPollerTask {
         GridWrapper gw = restClient.grid();
         onGridUpdate(restClient.grid());
         timestamp = gw.getTimeStamp();
-        while (true) {
+        while (!paused) {
 
             EventWrapper hw = restClient.event(timestamp);
             timestamp = hw.getTimeStamp();

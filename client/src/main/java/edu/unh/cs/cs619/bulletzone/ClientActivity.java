@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -21,6 +26,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.Rest;
@@ -34,6 +41,7 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
@@ -52,6 +60,8 @@ public class ClientActivity extends Activity {
 
     @ViewById
     protected GridView gridView;
+
+    public int started = 0;
 
     @ViewById
     protected TextView textViewGarage;
@@ -73,6 +83,8 @@ public class ClientActivity extends Activity {
     @Bean
     CommandInterpreter commandInterpreter;
 
+    Button buttonAction;
+
     /**
      * Remote tank identifier
      */
@@ -87,31 +99,26 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        busProvider.getEventBus().unregister(gridEventHandler);
+        super.onDestroy();
     }
 
-    /**
-     * Otto has a limitation (as per design) that it will only find
-     * methods on the immediate class type. As a result, if at runtime this instance
-     * actually points to a subclass implementation, the methods registered in this class will
-     * not be found. This immediately becomes a problem when using the AndroidAnnotations
-     * framework as it always produces a subclass of annotated classes.
-     *
-     * To get around the class hierarchy limitation, one can use a separate anonymous class to
-     * handle the events.
-     */
-    private Object gridEventHandler = new Object()
-    {
-        @Subscribe
-        public void onUpdateGrid(GridUpdateEvent event) {
-            updateGrid(event.gw);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        commandInterpreter.pause();
+        if (commandInterpreter.getEventHistory().size() != 0) {
+            HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         }
-    };
+
+        gridPollTask.setPaused(true);
+        commandInterpreter.clear();
+    }
 
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
@@ -120,7 +127,8 @@ public class ClientActivity extends Activity {
         joinAsync();
         SystemClock.sleep(500);
         gridView.setAdapter(mGridAdapter);
-        //tankController.setRestClient(restClient);
+        boardView.setGridAdapter(mGridAdapter);
+        commandInterpreter.setPaused(false);
     }
 
     /**
@@ -130,7 +138,6 @@ public class ClientActivity extends Activity {
     @AfterInject
     void afterInject() {
         tankController.afterInject();
-        busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
@@ -139,18 +146,20 @@ public class ClientActivity extends Activity {
     @Background
     void joinAsync() {
         tankController.joinGame();
+        gridPollTask.setPaused(false);
         gridPollTask.doPoll();
+        commandInterpreter.setPaused(false);
     }
 
-    /**
-     * updateGrid: Updates the local grid using grid from
-     * argument gridWrapper
-     * @param gw
-     */
-    public void updateGrid(GridWrapper gw) {
-        boardView.setUsingJSON(gw.getGrid());
-        mGridAdapter.updateList(boardView.getTiles());
-        boardView.setGridAdapter(mGridAdapter);
+    @Override
+    protected void onRestart() {
+        gridPollTask.setPaused(false);
+        boardView.reRegister();
+        if (started == 1) {
+            gridPollTask.doPoll();
+        }
+        commandInterpreter.setPaused(false);
+        super.onRestart();
     }
 
     /**
@@ -183,24 +192,6 @@ public class ClientActivity extends Activity {
     }
 
     /**
-     * moveAsync: Background movement request
-     * @param direction
-     */
-    @Background
-    void moveAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
-     * turnAsync: Background turn request
-     * @param direction
-     */
-    @Background
-    void turnAsync(byte direction) {
-        tankController.move(direction);
-    }
-
-    /**
      * startGame: Initializes view when join game is selected
      */
     @Click(R.id.buttonJoin)
@@ -213,18 +204,38 @@ public class ClientActivity extends Activity {
         Button buttonRight = findViewById(R.id.buttonRight);
         Button buttonJoin = findViewById(R.id.buttonJoin);
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
+        Button buttonReplay = findViewById(R.id.buttonReplay);
+        Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+        buttonAction = findViewById(R.id.buttonAction);
+        Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
         buttonFire.setVisibility(View.VISIBLE);
         buttonUp.setVisibility(View.VISIBLE);
         buttonDown.setVisibility(View.VISIBLE);
         buttonRight.setVisibility(View.VISIBLE);
+        buttonAction.setVisibility(View.VISIBLE);
         buttonJoin.setVisibility(View.INVISIBLE);
+        buttonReplay.setVisibility(View.VISIBLE);
+        buttonReplay1.setVisibility(View.INVISIBLE);
+        started = 1;
 
-        //R.id.buttonLeft
-        //tankId = restClient.join().getResult();
-        //tankController.setTankID(tankId);
-        //gridPollTask.doPoll();
+        vehicleSpinner.setVisibility(View.VISIBLE);
+        String[] vehicles = {"Tank", "Miner", "Builder"};
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vehicleSpinner.setAdapter(aa);
+
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
+    @Click(R.id.buttonReplay1)
+    protected void onButtonReplay1(){
+        boardView.deRegister();
+        Intent intent = new Intent(this, ReplayActivity_.class);
+        startActivityForResult(intent, 1);
     }
 
     /**
@@ -233,6 +244,19 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
         afterViewInjection();
+    }
+
+    /**
+     * onButtonRespawn: Resets client on the death of user
+     */
+    @Click(R.id.buttonReplay)
+    protected void onButtonReplay(){
+        commandInterpreter.pause();
+        gridPollTask.setPaused(true);
+        HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
+        commandInterpreter.clear();
+        Intent intent = new Intent(this, ReplayActivity_.class);
+        startActivityForResult(intent, 1);
     }
 
     /**
@@ -270,9 +294,9 @@ public class ClientActivity extends Activity {
         builder.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //System.out.println("leaveGame() called, tank ID: "+tankId);
-                BackgroundExecutor.cancelAll("grid_poller_task", true);
-                //restClient.leave(tankId);
                 tankController.leaveGame();
+                finish();
+                //restClient.leave(tankId);
             }
         });
         builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
@@ -346,5 +370,51 @@ public class ClientActivity extends Activity {
 
         // ensures user wants to leave before leaving
         leaveDialog(message);
+    }
+
+    @Click(R.id.buttonAction)
+    void vehicleAction(){
+
+        if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
+            //stub
+            //presumably some call to TankController requesting mine action
+        }
+        else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
+
+            //another stub
+            //open builder popup
+            BuilderFragment myBuilderFragment = new BuilderFragment();
+            myBuilderFragment.setContext(this);
+            myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
+
+        }
+
+    }
+
+    @ItemSelect(R.id.vehicle_spinner)
+    void changeTank(boolean selected, int position){
+
+        switch (position) {
+            case 0:
+                tankController.setCurrentVehicle(TankController.Vehicle.TANK);
+                buttonAction.setText("ACTION");
+                buttonAction.setClickable(false);
+                buttonAction.setAlpha(.5f);
+                break;
+            case 1:
+                tankController.setCurrentVehicle(TankController.Vehicle.MINER);
+                buttonAction.setText("MINE");
+                buttonAction.setClickable(true);
+                buttonAction.setAlpha(1);
+                break;
+            case 2:
+                tankController.setCurrentVehicle(TankController.Vehicle.BUILDER);
+                buttonAction.setText("BUILDER MENU");
+                buttonAction.setClickable(true);
+                buttonAction.setAlpha(1);
+                break;
+        }
+
+
     }
 }
