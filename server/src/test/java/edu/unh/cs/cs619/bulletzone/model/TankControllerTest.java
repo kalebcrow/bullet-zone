@@ -310,6 +310,38 @@ public class TankControllerTest {
             System.out.println();
         }
 
+        try {
+            IMGR.moveTo(tanks[1].getId(), 154);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        try {
+            IMGR.moveTo(tanks[1].getId(), 43);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
     }
 
 }

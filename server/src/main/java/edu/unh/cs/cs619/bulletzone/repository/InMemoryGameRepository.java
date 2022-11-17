@@ -631,7 +631,7 @@ public class InMemoryGameRepository implements GameRepository {
         //find the current location of the tank
         int[][] grid2d = game.getGrid2D();
         int currentLocation = -1;
-        int test;
+        int test = -1;
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
@@ -656,6 +656,22 @@ public class InMemoryGameRepository implements GameRepository {
                 break;
             }
 
+        }
+
+        //determine tank type: 0 = tank, 1 = miner, 2 = builder
+
+        long baseDelay;
+        if(test % 3 == 0){
+            System.out.println("Tank");
+            baseDelay = 500;
+        }
+        else if(test % 3 == 1){
+            System.out.println("Miner");
+            baseDelay = 800;
+        }
+        else{
+            System.out.println("Builder");
+            baseDelay = 300;
         }
 
         System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation);
