@@ -74,7 +74,6 @@ public class GridAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.field_item, null);
         }
@@ -101,7 +100,7 @@ public class GridAdapter extends BaseAdapter {
                     item.setRotation(mEntities[position][1].getOrientation()/2 * 90);
 
                 } else {
-                    // somethings wrong // SARA
+                    // somethings wrong
                     terrain.setImageResource(R.drawable.blank);
                 }
             }

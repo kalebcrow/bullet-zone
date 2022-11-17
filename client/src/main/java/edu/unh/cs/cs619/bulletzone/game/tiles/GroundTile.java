@@ -87,7 +87,7 @@ public class GroundTile {
      */
     public GroundTile(Integer JsonValue, Integer location) {
         // same as blank tile initialization
-        this.resourceID = R.drawable.blank; // SARA
+        this.resourceID = R.drawable.blank;
         this.location = location;
         this.jsonValue = JsonValue;
         this.terrainJsonValue = JsonValue;

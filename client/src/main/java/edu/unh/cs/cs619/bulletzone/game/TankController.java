@@ -13,8 +13,14 @@ import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class TankController {
+
+    public enum Vehicle {
+        TANK,
+        MINER,
+        BUILDER
+    }
 
     @RestService
     BulletZoneRestClient restClient;
@@ -23,9 +29,11 @@ public class TankController {
     BZRestErrorhandler bzRestErrorhandler;
 
     private Long tankID;
+    //private Long minerID
+    //private Long BuilderID
     private int tankOrientation;
     private static volatile TankController INSTANCE = null;
-
+    private Vehicle currentVehicle = Vehicle.TANK;
 
     /**
      * TankController
@@ -144,4 +152,12 @@ public class TankController {
         restClient.leave(tankID);
     }
 
+    public void setCurrentVehicle(Vehicle currentVehicle){
+        Log.d("TankController", "Tank Changed to: " + currentVehicle);
+        this.currentVehicle = currentVehicle;
+    }
+
+    public Vehicle getCurrentVehicle() {
+        return currentVehicle;
+    }
 }

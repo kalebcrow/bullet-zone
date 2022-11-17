@@ -10,6 +10,7 @@
     <string name="fire">FIRE</string>
     <string name="join">JOIN</string>
     <string name="leave">LEAVE</string>
+    <string name="action">ACTION</string>
     <string name="title_activity_my">MyActivity</string>
     <string name="griditem">GridItem</string>
     <string name="Yes">Yes</string>
@@ -17,5 +18,10 @@
     <string name="terrain" />
     <string name="item">item</string>
     <string name="vehicle">vehicle</string>
+    <string-array name="vehicles_array">
+        <item>Tank</item>
+        <item>Miner</item>
+        <item>Builder</item>
+    </string-array>
 
 </resources>
