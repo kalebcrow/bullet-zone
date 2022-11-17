@@ -6,10 +6,12 @@ import android.util.Log;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -57,13 +59,18 @@ public class CommandInterpreter {
 
     public EventWrapper ew;
 
+    private final Object monitor = new Object();
+
+    private boolean waiting;
+
     /**
      * Command interpreter
      *
      */
     public CommandInterpreter() {
         eventHistory = new LinkedList<>();
-
+        waiting = false;
+        updateBoard();
     }
 
     @AfterInject
@@ -79,54 +86,89 @@ public class CommandInterpreter {
     {
         @Subscribe
         public void onCommandHistoryUpdateEvent(HistoryUpdateEvent event) {
-            updateBoard(event);
+            addToHistory(event);
         }
     };
 
     /**
      *
-     * @param event event
      */
-    private void updateBoard(HistoryUpdateEvent event) {
-        this.ew = event.getHw();
-        LinkedList<GridEvent> history = ew.getUpdate();
-        for (int i = 0; i < history.size(); i++) {
-            GridEvent currEvent = history.get(i);
-            if (!paused) {
-                interpret(currEvent).execute(busProvider.getEventBus());
+    @Background
+    public void updateBoard() {
+        synchronized (monitor) {
+            if (eventHistory.isEmpty()) {
+                try {
+                        waiting = true;
+                        monitor.wait();
+                        Log.d("Yeah", "we cool");
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    System.err.println("Thread Interrupted");
+                }
             }
-            eventHistory.add(history.get(i));
-
+            GridEvent currEvent = eventHistory.get(0);
+            int i = 0;
+            while (true) {
+                if (!paused) {
+                    interpret(currEvent);
+                }
+                i++;
+                if (eventHistory.size() != i - 1) {
+                    try {
+                        waiting = true;
+                        monitor.wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        System.err.println("Thread Interrupted");
+                    }
+                }
+                currEvent = eventHistory.get(i);
+            }
         }
     }
+
+    private void addToHistory(HistoryUpdateEvent event) {
+        this.ew = event.getHw();
+        eventHistory.addAll(ew.getUpdate());
+
+        synchronized (monitor) {
+            if (waiting && ew.getUpdate().size() != 0) {
+                waiting = false;
+                monitor.notify();
+            }
+        }
+
+    }
+
 
     /**
      *
      * @param currEvent restEvent
      * @return executable event
      */
-     private ExecutableEvent interpret(GridEvent currEvent) {
-         ExecutableEvent event;
+    @UiThread
+    public void interpret(GridEvent currEvent) {
+        ExecutableEvent event;
         switch (currEvent.getType()) {
-             case "moveTank":
-                 event = new MoveTankEvent(currEvent);
-                 break;
-             case "moveBullet":
-                 event = new MoveBulletEvent(currEvent);
-                 break;
-             case "destroyTank":
-                 event = new DestroyTankEvent(currEvent);
-                 break;
-             case "destroyWall":
-                 event = new DestroyWallEvent(currEvent);
-                 break;
-             case "fire":
-                 Log.d("Yeah", "we cool");
-                 event = new FireEvent(currEvent);
-                 break;
-             case "turn":
-                 event = new TurnEvent(currEvent);
-                 break;
+            case "moveTank":
+                event = new MoveTankEvent(currEvent);
+                break;
+            case "moveBullet":
+                event = new MoveBulletEvent(currEvent);
+                break;
+            case "destroyTank":
+                event = new DestroyTankEvent(currEvent);
+                break;
+            case "destroyWall":
+                event = new DestroyWallEvent(currEvent);
+                break;
+            case "fire":
+                Log.d("Yeah", "we cool");
+                event = new FireEvent(currEvent);
+                break;
+            case "turn":
+                event = new TurnEvent(currEvent);
+                break;
             case "addTank":
                 event = new AddTankEvent(currEvent);
                 break;
@@ -135,10 +177,10 @@ public class CommandInterpreter {
                 break;
             default:
                 event = new ExecutableEvent(currEvent);
-         }
+        }
 
-        return event;
-     }
+        event.execute(busProvider.getEventBus());
+    }
 
      public void pause() {
          paused = true;
