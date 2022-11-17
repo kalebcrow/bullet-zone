@@ -39,7 +39,7 @@ public class BoardView {
     public GroundTile[][] tiles;
     public int[][][] tileInput;
     public TileFactory tileFactory;
-    public int[] resources;
+    public int[] resources; //rock iron clay
     public boolean paused;
 
     /**

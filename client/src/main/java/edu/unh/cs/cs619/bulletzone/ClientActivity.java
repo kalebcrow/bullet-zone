@@ -357,9 +357,9 @@ public class ClientActivity extends Activity {
         String message = "User ID: " + userID + "\n" +
                 "Balance: " + bankAccountBalance + "\n" +
                 "Garage: " + tank + "\n" +
-                "Clay: " + boardView.resources[0] + "\n" +
-                "Rock: " + boardView.resources[1] + "\n" +
-                "Iron: " + boardView.resources[2];
+                "Rock: " + boardView.resources[0] + "\n" +
+                "Iron: " + boardView.resources[1] + "\n" +
+                "Clay: " + boardView.resources[2];
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }

@@ -52,22 +52,7 @@ public class TankTile extends GroundTile {
         this.location = location;
         ID = findID(JsonValue);
         boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(ID)));
-
-
-        //This is what was the default in the grid adapter view (By plumdog)
-        if (JsonValue >= 10000000 && JsonValue <= 20000000) {
-             if (friendly) {
-                 this.resourceID = R.drawable.tank;
-
-             } else {
-                 this.resourceID = R.drawable.redtank;
-             }
-        }
-
-        orientation = findOrientation(JsonValue);
-        if (friendly) {
-            TankController.getTankController().setTankOrientation(orientation);
-        }
+        determineResourceID(friendly);
 
         TankList.getTankList().addTank(ID, this);
     }
@@ -83,14 +68,7 @@ public class TankTile extends GroundTile {
         this.location = location;
         ID = TankID;
         boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(TankID)));
-
-        //This is what was the default in the grid adapter view (By plumdog)
-        if (friendly) {
-            this.resourceID = R.drawable.tank;
-
-        } else {
-            this.resourceID = R.drawable.redtank;
-        }
+        determineResourceID(friendly);
 
         this.orientation = orientation;
         if (friendly) {
@@ -130,4 +108,38 @@ public class TankTile extends GroundTile {
         return Integer.parseInt(String.copyValueOf(digits1, offset, 1));
     }
 
-}
+    private void determineResourceID(boolean freindly) {
+        if (freindly) {
+            switch (ID % 3) {
+                // Tank
+                case 0:
+                    resourceID = R.drawable.tank;
+                    break;
+                // Miner
+                case 1:
+                    resourceID = R.drawable.miner;
+                    break;
+                // Builder
+                case 3:
+                    resourceID = R.drawable.builder;
+                    break;
+                }
+        } else {
+                switch (ID % 3) {
+                    // Tank
+                    case 0:
+                        resourceID = R.drawable.redtank;
+                        break;
+                    // Miner
+                    case 1:
+                        resourceID = R.drawable.redminer;
+                        break;
+                    // Builder
+                    case 3:
+                        resourceID = R.drawable.redbuilder;
+                        break;
+                }
+            }
+        }
+    }
+
