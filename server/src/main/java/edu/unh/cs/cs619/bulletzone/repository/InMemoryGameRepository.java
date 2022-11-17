@@ -22,6 +22,7 @@ import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.FieldTerrain;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -114,7 +115,7 @@ public class InMemoryGameRepository implements GameRepository {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isPresent()) {
+                    if (!fieldElement.isEntityPresent()) {
                         fieldElement.setFieldEntity(tanks[0]);
                         tanks[0].setParent(fieldElement);
                         break;
@@ -125,7 +126,7 @@ public class InMemoryGameRepository implements GameRepository {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isPresent()) {
+                    if (!fieldElement.isEntityPresent()) {
                         fieldElement.setFieldEntity(tanks[1]);
                         tanks[1].setParent(fieldElement);
                         break;
@@ -136,7 +137,7 @@ public class InMemoryGameRepository implements GameRepository {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isPresent()) {
+                    if (!fieldElement.isEntityPresent()) {
                         fieldElement.setFieldEntity(tanks[2]);
                         tanks[2].setParent(fieldElement);
                         break;
@@ -239,7 +240,6 @@ public class InMemoryGameRepository implements GameRepository {
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
 
             double speed = 0;
-            if (nextField.isEntityPresent()) {
                 // adding a check for field type (blank, hilly, or rocky) for speed purposes
                 if (nextField.getTerrain().toString().equals("R")) {
                     // rocky
@@ -251,7 +251,14 @@ public class InMemoryGameRepository implements GameRepository {
                     // meadow
                     speed = 0;
                 }
+            if(nextField.isImprovementPresent())
+            {
+                if(nextField.getImprovement().toString() == "R")
+                {
+                    speed = speed/2;
+                }
             }
+
 
             TankController tc = new TankController();
             if (!tc.move(tank, direction, speed)) {
@@ -260,7 +267,6 @@ public class InMemoryGameRepository implements GameRepository {
 
             parent = tank.getParent();
 
-            FieldHolder nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
             nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
@@ -463,7 +469,7 @@ public class InMemoryGameRepository implements GameRepository {
             if (tanks.containsKey("miner"))
                 miner = game.getTank(tanks.get("miner"));
 
-            if (miner.getTypeIndex() != 2)
+            if (miner.getTypeIndex() != 1)
                 return false;
 
             final Wall wall = new Wall();
@@ -489,7 +495,11 @@ public class InMemoryGameRepository implements GameRepository {
             Direction behindtank = Direction.fromByte((byte) ((d + 4) % 8));
             FieldHolder behind = parent.getNeighbor(behindtank);
 
-            if (behind.isPresent()) {
+            if (behind.isEntityPresent()) {
+                return false;
+            }
+            if( behind.isImprovementPresent())
+            {
                 return false;
             }
 
@@ -503,7 +513,7 @@ public class InMemoryGameRepository implements GameRepository {
                             builder.allowMovement = false;
                             Thread.sleep(3000);
                             miner.subtractBundleOfResources(2, 3);
-                            behind.setFieldEntity(road);
+                            behind.setImprovementEntity(road);
                             builder.allowMovement = true;
                             game.addEvent(new BuildEvent(tankId,miner.getAllResources()));
                             return true;
@@ -565,7 +575,7 @@ public class InMemoryGameRepository implements GameRepository {
         if (tanks.containsKey("miner"))
             miner = game.getTank(tanks.get("miner"));
 
-        if (miner.getTypeIndex() != 2)
+        if (miner.getTypeIndex() != 1)
             return false;
 
         TankController tc = new TankController();
@@ -580,7 +590,7 @@ public class InMemoryGameRepository implements GameRepository {
         Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
         FieldHolder behind = parent.getNeighbor(behindtank);
 
-        if(behind.isPresent())
+        if(behind.isEntityPresent())
         {
             FieldEntity structure = behind.getEntity();
             if(structure.toString() == "W")
@@ -600,11 +610,18 @@ public class InMemoryGameRepository implements GameRepository {
                 game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
                 return true;
             }
-            else if(structure.toString() == "R")
+            else
             {
-                miner.addBundleOfResources(2,3);
+                return false;
+            }
+        }
+        else if(behind.isImprovementPresent())
+        {
+            FieldEntity structure = behind.getImprovement();
+            if(structure.toString() == "R") {
+                miner.addBundleOfResources(2, 3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources()));
+                game.addEvent(new DismantleEvent(tankId, miner.getAllResources()));
                 return true;
             }
             else

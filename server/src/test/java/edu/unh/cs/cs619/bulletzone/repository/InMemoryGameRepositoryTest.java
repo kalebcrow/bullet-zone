@@ -84,9 +84,9 @@ public class InMemoryGameRepositoryTest {
         Assert.assertEquals(tank[0].getId(), 0);
 
         //tank leaves and is no longer present in the FieldHolder
-        Assert.assertEquals(true, tank[0].getParent().isPresent());
+        Assert.assertEquals(true, tank[0].getParent().isEntityPresent());
         repo.leave(tank[0].getId());
-        Assert.assertEquals(false, tank[0].getParent().isPresent());
+        Assert.assertEquals(false, tank[0].getParent().isEntityPresent());
 
         thrown.expect(TankDoesNotExistException.class);
         repo.turn(tank[0].getId(), Direction.Right);
@@ -165,12 +165,12 @@ public class InMemoryGameRepositoryTest {
         tank[1].addBundleOfResources(1,10);
         tank[1].addBundleOfResources(2,10);
         repo.build(tankId,1);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
+        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getImprovement();
         assert(ent.toString() == "R");
     }
 
     @Test
-    public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+    public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
         Tank[] tank = repo.join("");
         Long tankId = tank[2].getId();
@@ -183,7 +183,7 @@ public class InMemoryGameRepositoryTest {
     }
 
     @Test
-    public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
+    public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
         Tank[] tank = repo.join("");
         Long tankId = tank[2].getId();
@@ -192,7 +192,7 @@ public class InMemoryGameRepositoryTest {
         tank[1].addBundleOfResources(2,10);
         repo.build(tankId,3);
         FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
-        assert(ent.toString() == "W");
+        assert(ent.toString() == "IW");
     }
 
     @Test

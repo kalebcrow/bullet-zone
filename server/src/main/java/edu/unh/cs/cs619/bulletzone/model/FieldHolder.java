@@ -16,7 +16,7 @@ public class FieldHolder {
     // should hold a terrain and also an item
     private Optional<FieldEntity> entityHolder = Optional.empty();
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
-    //private Optional<FieldResource> resourceHolder = Optional.empty();
+    private Optional<FieldEntity> improvementHolder = Optional.empty();
 
     public void addNeighbor(Direction direction, FieldHolder fieldHolder) {
         neighbors.put(checkNotNull(direction), checkNotNull(fieldHolder));
@@ -51,6 +51,20 @@ public class FieldHolder {
                 "FieldEntity cannot be null."));
     }
 
+    public boolean isImprovementPresent(){
+        return improvementHolder.isPresent();
+    }
+
+    public FieldEntity getImprovement() {
+        return improvementHolder.get();
+    }
+
+    public void setImprovementEntity(FieldEntity entity) {
+        // set current entity
+        improvementHolder = Optional.of(checkNotNull(entity,
+                "FieldEntity cannot be null."));
+    }
+
     public void setTerrain(FieldTerrain terrain) {
         terrainHolder = Optional.of(checkNotNull(terrain,
                 "FieldEntity cannot be null."));
@@ -58,6 +72,10 @@ public class FieldHolder {
 
     public void clearField() {
         entityHolder = Optional.empty();
+    }
+
+    public void clearImprovement() {
+        improvementHolder = Optional.empty();
     }
 
 }

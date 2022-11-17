@@ -3,7 +3,7 @@ package edu.unh.cs.cs619.bulletzone.events;
 
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public class MoveTankEvent extends GridEvent {
 
