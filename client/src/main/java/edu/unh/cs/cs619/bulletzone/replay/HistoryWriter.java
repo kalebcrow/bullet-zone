@@ -37,7 +37,7 @@ public class HistoryWriter {
         }
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("tiles.json", Context.MODE_PRIVATE));
-            outputStreamWriter.write(gson.toJson(array[1]));
+            outputStreamWriter.write(gson.toJson(array));
             outputStreamWriter.close();
         }
         catch (IOException e) {
