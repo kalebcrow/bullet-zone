@@ -126,7 +126,6 @@ public class CommandInterpreter {
                  event = new DestroyWallEvent(currEvent);
                  break;
              case "fire":
-                 Log.d("Yeah", "we cool");
                  event = new FireEvent(currEvent);
                  break;
              case "turn":
@@ -144,7 +143,7 @@ public class CommandInterpreter {
              case "damageWallEvent":
                  event = new DamageWallEvent(currEvent);
                  break;
-             case "damageTankEvent":
+             case "damage":
                  event = new DamageTankEvent(currEvent);
                  break;
              case "mine":

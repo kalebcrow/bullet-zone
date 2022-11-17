@@ -101,6 +101,15 @@ public class TankController {
         this.tankID[index] = tankID;
     }
 
+    /**
+     *
+     * @param tankID set tankID
+     */
+    public void setTankIDs(Long[] tankID) {
+        this.tankID = tankID;
+    }
+
+
     public boolean containsTankID(Long tankID) {
         for (int i = 0; i < 3; i++) {
             if (Objects.equals(this.tankID[i], tankID)) {
@@ -109,6 +118,8 @@ public class TankController {
         }
         return  false;
     }
+
+
 
     public int getTankOrientation() {
         return tankOrientation;
