@@ -330,7 +330,10 @@ public class ClientActivity extends Activity {
         String tank = bundle.getString("items");
         String message = "User ID: " + userID + "\n" +
                 "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank;
+                "Garage: " + tank + "\n" +
+                "Clay: " + boardView.resources[0] + "\n" +
+                "Rock: " + boardView.resources[1] + "\n" +
+                "Iron: " + boardView.resources[2];
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
