@@ -199,7 +199,7 @@ public class GameBoardBuilder {
         synchronized (this.monitor) {
             game.getHolderGrid().clear();
             for (int i = 0; i < FIELD_DIM * FIELD_DIM; i++) {
-                game.getHolderGrid().add(new FieldHolder());
+                game.getHolderGrid().add(new FieldHolder(i));
             }
 
             FieldHolder targetHolder;
