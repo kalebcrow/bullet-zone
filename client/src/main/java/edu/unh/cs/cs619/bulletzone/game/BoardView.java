@@ -38,6 +38,7 @@ public class BoardView {
     public BlankTile[] tiles;
     public int[][] tileInput;
     public TileFactory tileFactory;
+    public int[] resources;
 
     /**
      *
@@ -63,6 +64,7 @@ public class BoardView {
     public BoardView() {
         tileFactory = TileFactory.getFactory();
         tiles = new BlankTile[256];
+        resources = new int[3];
 
     }
 
@@ -146,7 +148,6 @@ public class BoardView {
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location] = event.movedTile;
         gridAdapter.updateList(tiles);
-
     }
 
 
