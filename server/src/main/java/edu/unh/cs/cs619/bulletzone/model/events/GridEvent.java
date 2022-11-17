@@ -2,6 +2,10 @@ package edu.unh.cs.cs619.bulletzone.model.events;
 
 
 import java.io.Serializable;
+import java.util.Optional;
+
+import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 
 
 public class GridEvent implements Serializable {
@@ -12,6 +16,15 @@ public class GridEvent implements Serializable {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    protected String terrain = "";
+
+    public String getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(String terrain) {
+        this.terrain = terrain;
+    }
 
     public int getTankType() {
         return tankType;
