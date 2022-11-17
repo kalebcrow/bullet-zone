@@ -9,6 +9,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.rest.spring.annotations.RestService;
 
+import java.util.Objects;
+
 import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
@@ -22,7 +24,17 @@ public class TankController {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
-    private Long tankID;
+    private Long tankID[];
+
+    public Long getCurrentTankID() {
+        return currentTankID;
+    }
+
+    public void setCurrentTankID(int index) {
+        this.currentTankID = tankID[index];
+    }
+
+    private Long currentTankID;
     private int tankOrientation;
     private static volatile TankController INSTANCE = null;
 
@@ -31,7 +43,7 @@ public class TankController {
      * TankController
      */
     public TankController() {
-        tankID = 0L;
+        tankID = new Long[3];
         tankOrientation = 0;
         INSTANCE = this;
     }
@@ -71,7 +83,7 @@ public class TankController {
      *
      * @return tankID
      */
-    public Long getTankID() {
+    public Long[] getTankID() {
         return tankID;
     }
 
@@ -79,8 +91,17 @@ public class TankController {
      *
      * @param tankID set tankID
      */
-    public void setTankID(Long tankID) {
-        this.tankID = tankID;
+    public void setTankID(int index, Long tankID) {
+        this.tankID[index] = tankID;
+    }
+
+    public boolean containsTankID(Long tankID) {
+        for (int i = 0; i < 3; i++) {
+            if (Objects.equals(this.tankID[i], tankID)) {
+                return true;
+            }
+        }
+        return  false;
     }
 
     public int getTankOrientation() {
@@ -114,12 +135,12 @@ public class TankController {
         int value = direction - tankOrientation;
 
         if (direction == tankOrientation) {
-            restClient.move(tankID, direction);
+            restClient.move(currentTankID, direction);
         } else if (Math.abs(direction - tankOrientation) != 4) {
-            restClient.turn(tankID,direction);
+            restClient.turn(currentTankID,direction);
             tankOrientation = direction;
         } else {
-            restClient.move(tankID, direction);
+            restClient.move(currentTankID, direction);
         }
     }
 
@@ -127,6 +148,7 @@ public class TankController {
     public void joinGame(){
         try {
             tankID = restClient.join().getResult();
+            currentTankID = tankID[0];
         } catch (Exception e) {
 
         }
@@ -135,13 +157,15 @@ public class TankController {
 
     @Background
     public void fire(){
-        restClient.fire(tankID);
+        restClient.fire(currentTankID);
     }
 
     @Background
     public void leaveGame(){
-        System.out.println("leaveGame() called, tank ID: " + tankID);
-        restClient.leave(tankID);
+        System.out.println("leaveGame() called, tank ID: " + tankID.toString());
+        for (int i = 0; i < 3; i++) {
+            restClient.leave(tankID[i]);
+        }
     }
 
 }

@@ -51,12 +51,12 @@ public class TankTile extends BlankTile {
         this.resourceID = R.drawable.blank;
         this.location = location;
         ID = findID(JsonValue);
-        Long controller = TankController.getTankController().getTankID();
+        boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(ID)));
 
 
         //This is what was the default in the grid adapter view (By plumdog)
         if (JsonValue >= 10000000 && JsonValue <= 20000000) {
-             if (ID == Math.toIntExact(controller)) {
+             if (friendly) {
                  this.resourceID = R.drawable.tank;
 
              } else {
@@ -65,7 +65,7 @@ public class TankTile extends BlankTile {
         }
 
         orientation = findOrientation(JsonValue);
-        if (ID == Math.toIntExact(controller)) {
+        if (friendly) {
             TankController.getTankController().setTankOrientation(orientation);
         }
 
@@ -82,10 +82,10 @@ public class TankTile extends BlankTile {
         this.resourceID = R.drawable.blank;
         this.location = location;
         ID = TankID;
-        Long controller = TankController.getTankController().getTankID();
+        boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(TankID)));
 
         //This is what was the default in the grid adapter view (By plumdog)
-        if (ID == Math.toIntExact(controller)) {
+        if (friendly) {
             this.resourceID = R.drawable.tank;
 
         } else {
@@ -93,7 +93,7 @@ public class TankTile extends BlankTile {
         }
 
         this.orientation = orientation;
-        if (ID == Math.toIntExact(controller)) {
+        if (friendly) {
             TankController.getTankController().setTankOrientation(orientation);
         }
 
