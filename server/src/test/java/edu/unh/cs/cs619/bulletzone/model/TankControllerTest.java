@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
@@ -239,5 +241,65 @@ public class TankControllerTest {
 
         Game game = IMGR.getGame();
         assertEquals(4, game.getTank(tanks[1].getId()).getNumberOfBullets());
+    }
+
+    @Test
+    public void mine_MinerMiningResourceAddsIronResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain.setTerrain(new Hilly());
+        Integer val = 2;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.mine(tanks[1].getId());
+        Thread.sleep(2000);
+        IMGR.turn(tanks[1].getId(), Direction.Right);
+        assertEquals(val, tanks[1].getResourcesByResource(1));
+    }
+
+    @Test
+    public void mine_MinerMiningResourceAddsClayResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain.setTerrain(new Meadow());
+        Integer val = 2;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.mine(tanks[1].getId());
+        Thread.sleep(2000);
+        IMGR.turn(tanks[1].getId(), Direction.Right);
+        assertEquals(val, tanks[1].getResourcesByResource(2));
+    }
+
+    @Test
+    public void mine_MinerMiningResourceAddsRockResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain.setTerrain(new Rocky());
+        Integer val = 2;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.mine(tanks[1].getId());
+        Thread.sleep(2000);
+        IMGR.turn(tanks[1].getId(), Direction.Right);
+        assertEquals(val, tanks[1].getResourcesByResource(0));
+    }
+
+    @Test
+    public void mine_MoveCancelsMineAction_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain.setTerrain(new Meadow());
+        Integer val = 1;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.mine(tanks[1].getId());
+        IMGR.turn(tanks[1].getId(), Direction.Right);
+        Thread.sleep(2000);
+        assertEquals(val, tanks[1].getResourcesByResource(2));
     }
 }

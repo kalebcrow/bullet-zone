@@ -736,12 +736,14 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding clay to stash");
+                                break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
                                     System.out.println("Failed to add clay resource rock to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
+                                break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {
                                     System.out.println("Failed to add clay resource iron to stash");
@@ -749,6 +751,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 }
                                 System.out.println("Finished mining process, adding iron to stash");
                                 game.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                break;
                             default:
                                 try {
                                     throw new InvalidResourceTileType();
