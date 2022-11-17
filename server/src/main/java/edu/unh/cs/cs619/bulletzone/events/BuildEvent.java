@@ -7,10 +7,12 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public class BuildEvent extends GridEvent {
 
-    public BuildEvent(Long tankID, int[] resources) {
+    public BuildEvent(Long tankID, int[] resources, int buildType, int pos) {
         this.ID = Math.toIntExact(tankID);
         this.type = "build";
         this.time = System.currentTimeMillis();
         this.resources = resources;
+        this.buildType = buildType;
+        this.pos = pos;
     }
 }
