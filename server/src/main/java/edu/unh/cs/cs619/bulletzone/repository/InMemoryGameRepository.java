@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
+import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
@@ -299,8 +300,10 @@ public class InMemoryGameRepository implements GameRepository {
                 if (ent.toString().equals("T")) {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
+                    game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
+                    game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
                 }
             }
             return isCompleted;
@@ -385,6 +388,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 if ( nextField.getEntity() instanceof  Tank){
                                     Tank t = (Tank) nextField.getEntity();
                                     System.out.println("tank is hit, tank life: " + t.getLife());
+                                    game.addEvent(new DamageEvent(Math.toIntExact(t.getId()), t.getLife()));
                                     if (t.getLife() <= 0 ){
                                         game.addEvent(new DestroyTankEvent(t.getId(), terrain));
                                         t.getParent().clearField();
