@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
+import org.graalvm.compiler.lir.sparc.SPARCMove;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 @Component
@@ -694,6 +697,7 @@ public class InMemoryGameRepository implements GameRepository {
             //trying to move to current coordinates
             return;
         }
+        //must move in both the x and y coordinate
         else if(xValueMovement != null && yValueMovement != null){
 
             if(yValueMovement == Direction.Up){
@@ -750,6 +754,75 @@ public class InMemoryGameRepository implements GameRepository {
             }
 
         }
+        //only need to move in the x coordinate
+        else if(xValueMovement != null && yValueMovement == null){
+            //only moving horizontally
+
+            if(xValueMovement == Left){
+                if(currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                }
+                else if(currentDirection == Up || currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                }
+            }
+            else if(xValueMovement == Right){
+
+                if(xValueMovement == Left){
+                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Right, this, placeholderDelay));
+                }
+                else if(currentDirection == Up || currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tankId, Right, this, placeholderDelay));
+                }
+
+            }
+
+            int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
+            for(int i = 0; i < xValueDistance; i++){
+                if(xValueMovement == Left){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Left, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tankId, Direction.Right, this, placeholderDelay));
+                }
+            }
+
+        }
+        //only need to move vertically
+        else if(xValueMovement == null && yValueMovement != null){
+            if(yValueMovement == Up){
+                if(currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                }
+                else if(currentDirection == Left || currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                }
+            }
+            else if(yValueMovement == Down){
+                if(currentDirection == Up){
+                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tankId, Down, this, placeholderDelay));
+                }
+                else if(currentDirection == Left || currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tankId, Down, this, placeholderDelay));
+                }
+            }
+
+            int yValueDistance = Math.abs((currentLocation/16) - (desiredLocation/16));
+            for(int i = 0; i < yValueDistance; i++){
+                if(yValueMovement == Down){
+                    MoveToList.add(new MoveCommand(tankId, Direction.Down, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                }
+            }
+
+        }
+
 
         CommandInterpreter commandInterpreter = new CommandInterpreter(MoveToList);
         commandInterpreter.executeSequence();

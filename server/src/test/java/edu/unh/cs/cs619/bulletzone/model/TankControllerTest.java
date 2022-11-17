@@ -244,7 +244,7 @@ public class TankControllerTest {
     @Test
     public void moveToTest(){
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join("idk");
+        Tank[] tanks = IMGR.join(ip);
         int[][] grid2d = IMGR.getGrid();
 
         System.out.println("Controlling tank with id " + tanks[0].getId());
@@ -265,6 +265,40 @@ public class TankControllerTest {
             e.printStackTrace();
         }
 
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        //strictly horizontal movement
+        try {
+            IMGR.moveTo(tanks[0].getId(), 15);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        //try strictly vertical movement
+        try {
+            IMGR.moveTo(tanks[0].getId(), 95);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
 
         grid2d = IMGR.getGrid();
         for(int i = 0; i < 16; i++){
