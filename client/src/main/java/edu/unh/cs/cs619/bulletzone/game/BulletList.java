@@ -32,6 +32,10 @@ public class BulletList {
         return INSTANCE;
     }
 
+    public void clear(){
+        bullets.clear();
+    }
+
     /**
      *
      * @param bulletID bulletID

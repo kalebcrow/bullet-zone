@@ -9,7 +9,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
+import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -23,7 +24,7 @@ public class BoardView {
      *
      * @return the tiles
      */
-    public BlankTile[] getTiles() {
+    public GroundTile[][] getTiles() {
         return tiles;
     }
 
@@ -31,20 +32,23 @@ public class BoardView {
      *
      * @param tiles tiles
      */
-    public void setTiles(BlankTile[] tiles) {
+    public void setTiles(GroundTile[][] tiles) {
         this.tiles = tiles;
     }
 
-    public BlankTile[] tiles;
-    public int[][] tileInput;
+    public GroundTile[][] tiles;
+    public int[][][] tileInput;
     public TileFactory tileFactory;
     public int[] resources;
+    public boolean paused;
 
     /**
      *
      * @return return gridAdapter
      */
     public GridAdapter getGridAdapter() {
+        TankList.getTankList().clear();
+        BulletList.getBulletList().clear();
         return gridAdapter;
     }
 
@@ -63,14 +67,14 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
-        tiles = new BlankTile[256];
         resources = new int[3];
-
+        tiles = new GroundTile[256][2]; // represents [terrain][entity]
     }
 
     @AfterInject
     public void setBusProvider(){
         busProvider.getEventBus().register(tileEventHandler);
+        busProvider.getEventBus().register(gridEventHandler);
     }
 
     /**
@@ -78,8 +82,8 @@ public class BoardView {
      * @param index index to get tile
      * @return get build
      */
-    public BlankTile getTile(int index) {
-        return tiles[index];
+    public GroundTile getTile(int index) {
+        return tiles[index][1]; // defaults to one because only used to test entities?
     }
 
     /**
@@ -103,8 +107,12 @@ public class BoardView {
      * @param index index
      * @param cell cell
      */
-    public void setCell(int index, BlankTile cell) {
-        tiles[index] = cell;
+    public void setCell(int index, GroundTile cell) {
+        if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2) {
+            tiles[index][0] = cell; // set terrain
+        } else {
+            tiles[index][1] = cell; // set entity
+        }
     }
 
     /**
@@ -119,12 +127,13 @@ public class BoardView {
      *
      * @param arr array to set the value
      */
-    public void setUsingJSON(int[][] arr) {
+    public void setUsingJSON(int[][][] arr) {
         this.tileInput = arr;
         int value = 0;
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
-                this.tiles[value] = this.tileFactory.makeTile(arr[i][ii], value);
+                this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
+                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
                 value++;
             }
         }
@@ -143,12 +152,44 @@ public class BoardView {
 
     /**
      *
-     * @param event update specific tile
+     * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateTile(TileUpdateEvent event) {
-        tiles[event.location] = event.movedTile;
+        tiles[event.location][1] = event.movedTile;
+        Log.d("TimeDiff", "received event: " + System.currentTimeMillis());
         gridAdapter.updateList(tiles);
     }
 
+    /**
+     * Subscribes to update
+     */
+    private Object gridEventHandler = new Object()
+    {
+        @Subscribe
+        public void onUpdateGrid(GridUpdateEvent event) {
+            updateGrid(event);
+        }
+    };
 
+    /**
+     *
+     * @param event update specific tile
+     */
+    private void updateGrid(GridUpdateEvent event) {
+        this.setUsingJSON(event.gw.getGrid());
+        gridAdapter.updateList(tiles);
+    }
+
+    public void deRegister() {
+        busProvider.getEventBus().unregister(tileEventHandler);
+        busProvider.getEventBus().unregister(gridEventHandler);
+    }
+
+    /**
+     *
+     */
+    public void reRegister() {
+        busProvider.getEventBus().register(tileEventHandler);
+        busProvider.getEventBus().register(gridEventHandler);
+    }
 }

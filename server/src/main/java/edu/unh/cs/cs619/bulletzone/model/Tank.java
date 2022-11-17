@@ -15,9 +15,12 @@ public class Tank extends FieldEntity {
 
     private final String ip;
 
+    public boolean allowMovement = true;
     private long lastMoveTime;
     private final int[] allowedMoveIntervals = {500,800,1000};
     private final int[] allowedTurnIntervals = {500,800,300};
+    private final int[] takesDamage = {10, 5, 10};
+    private final int[] givesDamage = {10, 10, 5};
 
     private long lastFireTime;
     private final int[] allowedFireIntervals = {1500,200,1000};
@@ -49,6 +52,12 @@ public class Tank extends FieldEntity {
         this.lastMoveTime = 0;
         this.lastFireTime = 0;
         this.numberOfBullets = 0;
+    }
+
+    public Tank(){
+        ip = null;
+        id = 0;
+        typeIndex = -1;
     }
 
     @Override
@@ -123,12 +132,13 @@ public class Tank extends FieldEntity {
     public String getIp(){
         return ip;
     }
+    public int getTypeIndex(){return typeIndex;}
 
-    public boolean addBundleOfResources(int resourceType) {
+    public boolean addBundleOfResources(int resourceType, int amount) {
         if (resourceType < 0 || resourceType >= 3) {
             return false;
         }
-        resources[resourceType]++;
+        resources[resourceType]+= amount;
         return true;
     }
 
@@ -149,6 +159,14 @@ public class Tank extends FieldEntity {
 
     public int[] getAllResources() {
         return resources;
+    }
+
+    public int getDamageModifier() {
+        return takesDamage[typeIndex];
+    }
+
+    public int giveDamageModifier() {
+        return givesDamage[typeIndex];
     }
 
 }

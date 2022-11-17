@@ -18,7 +18,9 @@ import org.springframework.web.client.RestClientException;
 import javax.servlet.http.HttpServletRequest;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
@@ -116,7 +118,7 @@ class GamesController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{tankId}/leave", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    HttpStatus leave(@PathVariable long tankId)
+    HttpStatus leave(@PathVariable long[] tankId)
             throws TankDoesNotExistException {
         //System.out.println("Games Controller leave() called, tank ID: "+tankId);
         gameRepository.leave(tankId);
@@ -136,6 +138,36 @@ class GamesController {
     ResponseEntity<EventWrapper> event(@PathVariable long timeStamp) {
         return new ResponseEntity<EventWrapper>(
                 new EventWrapper(gameRepository.getEvents(timeStamp)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/mine", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> mine(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.mine(tankId)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/build/{buildingType}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> build(@PathVariable long tankId, @PathVariable int buildingType)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType, BuildingDoesNotExistException {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.build(tankId,buildingType)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/dismantle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> dismantle(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.dismantle(tankId)),
                 HttpStatus.OK
         );
     }

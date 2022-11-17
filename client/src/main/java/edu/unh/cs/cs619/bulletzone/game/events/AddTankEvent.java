@@ -21,7 +21,7 @@ public class AddTankEvent extends ExecutableEvent {
      */
     @Override
     public void execute(Bus bus) {
-        Integer location = pos - 1;
+        Integer location = pos;
         Integer orientation = 0;
         bus.post(new TileUpdateEvent(location, new TankTile(ID, location, orientation)));
     }

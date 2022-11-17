@@ -3,6 +3,7 @@ package edu.unh.cs.cs619.bulletzone.repository;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
@@ -15,7 +16,7 @@ public interface GameRepository {
 
     Tank[] join(String ip);
 
-    int[][] getGrid();
+    int[][][] getGrid();
 
     LinkedList<GridEvent> getEvents(Long time);
 
@@ -31,7 +32,13 @@ public interface GameRepository {
     boolean mine(long tankId)
             throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType;
 
-    public void leave(long tankId)
+    public void leave(long[] tankId)
+            throws TankDoesNotExistException;
+
+    boolean build(long tankId, int type)
+            throws TankDoesNotExistException, BuildingDoesNotExistException;
+
+    boolean dismantle(long tankId)
             throws TankDoesNotExistException;
 
     Game getGame()
