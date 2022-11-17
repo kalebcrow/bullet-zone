@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="5dp"
-    android:layout_height="5dp">
+    android:layout_width="51px"
+    android:layout_height="51px"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true">
     <ImageView
         android:id="@+id/terraintile"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
+        android:layout_width="51px"
+        android:layout_height="51px"
         android:translationZ="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/terrain" />
     <ImageView
         android:id="@+id/itemtile"
@@ -20,6 +24,4 @@
         android:layout_height="5dp"
         android:translationZ="2dp"
         android:contentDescription="@string/vehicle" />
-
 </RelativeLayout>
-<!-- android:background="@android:color/holo_green_dark" -->
