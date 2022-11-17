@@ -11,6 +11,7 @@ import org.androidannotations.annotations.EBean;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -75,6 +76,7 @@ public class BoardView {
     public void setBusProvider(){
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
+        busProvider.getEventBus().register(resourceEventHandler);
     }
 
     /**
@@ -172,6 +174,25 @@ public class BoardView {
     };
 
     /**
+     * Subscribes to update
+     */
+    private Object resourceEventHandler = new Object()
+    {
+        @Subscribe
+        public void onUpdateResource(ResourceEvent event) {
+            updateResource(event);
+        }
+    };
+
+    /**
+     *
+     * @param event update specific OBSTACLE/VEHICLE tile
+     */
+    private void updateResource( ResourceEvent event) {
+        resources = event.resources;
+    }
+
+    /**
      *
      * @param event update specific tile
      */
@@ -183,6 +204,7 @@ public class BoardView {
     public void deRegister() {
         busProvider.getEventBus().unregister(tileEventHandler);
         busProvider.getEventBus().unregister(gridEventHandler);
+        busProvider.getEventBus().unregister(resourceEventHandler);
     }
 
     /**
@@ -191,5 +213,6 @@ public class BoardView {
     public void reRegister() {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
+        busProvider.getEventBus().register(resourceEventHandler);
     }
 }
