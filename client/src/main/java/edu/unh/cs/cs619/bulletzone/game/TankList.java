@@ -49,6 +49,10 @@ public class TankList {
         return tanks.get(tankID);
     }
 
+    public void clear(){
+        tanks.clear();
+    }
+
     /**
      * removes tank in hashmap
      * @param tankID id

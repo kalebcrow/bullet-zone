@@ -2,11 +2,8 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import com.squareup.otto.Bus;
 
-import org.androidannotations.annotations.UiThread;
-
-import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
-import edu.unh.cs.cs619.bulletzone.game.tiles.BlankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
@@ -20,13 +17,28 @@ public class DestroyTankEvent extends ExecutableEvent{
      * runs the command updating the board
      */
     public void execute(Bus bus) {
-        TankTile tile =TankList.getTankList().getLocation(ID);
+        TankTile tile = TankList.getTankList().getLocation(ID);
+
+        Integer jsonValue = getJSONValueFromString(terrain);
 
         if (tile == null) {
             return;
         }
 
-        bus.post(new TileUpdateEvent(tile.getLocation(), new BlankTile(0, tile.getLocation())));
+        bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(jsonValue, tile.getLocation())));
         TankList.getTankList().remove(ID);
+    }
+
+    private Integer getJSONValueFromString(String terrain) {
+        // using given son values
+        if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
     }
 }

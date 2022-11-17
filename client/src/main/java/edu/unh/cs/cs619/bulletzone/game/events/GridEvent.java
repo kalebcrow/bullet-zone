@@ -10,6 +10,35 @@ public class GridEvent implements Serializable {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    protected String terrain = "";
+
+    /**
+     *
+     * @return String representing terrain
+     */
+    public String getTerrain() {
+        return terrain;
+    }
+
+    /**
+     *
+     * @param terrain string representing terrain
+     */
+    public void setTerrain(String terrain) {
+        this.terrain = terrain;
+    }
+
+
+    public int getTankType() {
+        return tankType;
+    }
+
+    public void setTankType(int tankType) {
+        this.tankType = tankType;
+    }
+
+    //1 is regular 2 is builder 3 is steve
+    protected int tankType = -1;
 
     /**
      *

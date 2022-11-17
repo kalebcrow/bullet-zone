@@ -19,6 +19,7 @@ public class ExecutableEvent {
         ID = gridEvent.getID();
         direction = gridEvent.getDirection();
         pos = gridEvent.getPos() - 1;
+        terrain = gridEvent.getTerrain();
     }
 
     protected Long time;
@@ -26,7 +27,25 @@ public class ExecutableEvent {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    protected String terrain = "";
     public TileUpdateEvent tileUpdateEvent;
+
+    /**
+     *
+     * @return String representing terrain
+     */
+    public String getTerrain() {
+        return terrain;
+    }
+
+    /**
+     *
+     * @param terrain String representing Terrain
+     */
+    public void setTerrain(String terrain) {
+        this.terrain = terrain;
+    }
+
 
     /**
      *

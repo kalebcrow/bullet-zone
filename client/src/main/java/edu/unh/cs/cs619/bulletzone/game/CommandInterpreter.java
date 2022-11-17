@@ -13,7 +13,10 @@ import org.androidannotations.annotations.UiThread;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
@@ -26,7 +29,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class CommandInterpreter {
 
     private static volatile CommandInterpreter INSTANCE = null;
@@ -35,12 +38,34 @@ public class CommandInterpreter {
     @Bean
     BusProvider busProvider;
 
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    boolean paused = false;
+
+    public LinkedList<GridEvent> getEventHistory() {
+        return eventHistory;
+    }
+
+    public void setEventHistory(LinkedList<GridEvent> eventHistory) {
+        this.eventHistory = eventHistory;
+    }
+
+    LinkedList<GridEvent> eventHistory;
+
     public EventWrapper ew;
 
     /**
      * Command interpreter
+     *
      */
     public CommandInterpreter() {
+        eventHistory = new LinkedList<>();
 
     }
 
@@ -49,19 +74,8 @@ public class CommandInterpreter {
         busProvider.getEventBus().register(CommandHistoryUpdateHandler);
     }
 
-    /**
-     *
-     * @return Gets command interpreter
-     */
-    public static CommandInterpreter getCommandInterpreter() {
-        if(INSTANCE == null) {
-            synchronized (CommandInterpreter.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new CommandInterpreter();
-                }
-            }
-        }
-        return INSTANCE;
+    public void clear() {
+        eventHistory.clear();
     }
 
     private Object CommandHistoryUpdateHandler = new Object()
@@ -79,10 +93,12 @@ public class CommandInterpreter {
     private void updateBoard(HistoryUpdateEvent event) {
         this.ew = event.getHw();
         LinkedList<GridEvent> history = ew.getUpdate();
-
         for (int i = 0; i < history.size(); i++) {
             GridEvent currEvent = history.get(i);
-            interpret(currEvent).execute(busProvider.getEventBus());
+            if (!paused) {
+                interpret(currEvent).execute(busProvider.getEventBus());
+            }
+            eventHistory.add(history.get(i));
 
         }
     }
@@ -94,7 +110,7 @@ public class CommandInterpreter {
      */
      private ExecutableEvent interpret(GridEvent currEvent) {
          ExecutableEvent event;
-        switch (currEvent.getType()) {
+         switch (currEvent.getType()) {
              case "moveTank":
                  event = new MoveTankEvent(currEvent);
                  break;
@@ -114,16 +130,30 @@ public class CommandInterpreter {
              case "turn":
                  event = new TurnEvent(currEvent);
                  break;
-            case "addTank":
-                event = new AddTankEvent(currEvent);
-                break;
-            case "destroyBullet":
-                event = new DestroyBulletEvent(currEvent);
-                break;
-            default:
-                event = new ExecutableEvent(currEvent);
+             case "addTank":
+                 event = new AddTankEvent(currEvent);
+                 break;
+             case "destroyBullet":
+                 event = new DestroyBulletEvent(currEvent);
+                 break;
+             case "addObstacleEvent":
+                 event = new AddObstacleEvent(currEvent);
+                 break;
+             case "damageWallEvent":
+                 event = new DamageWallEvent(currEvent);
+                 break;
+             case "damageTankEvent":
+                 event = new DamageTankEvent(currEvent);
+                 break;
+             default:
+                 event = new ExecutableEvent(currEvent);
          }
 
-        return event;
+         return event;
      }
+
+     public void pause() {
+         paused = true;
+     }
+
 }

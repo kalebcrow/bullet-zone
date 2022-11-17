@@ -16,7 +16,7 @@ public interface GameRepository {
 
     Tank[] join(String ip);
 
-    int[][] getGrid();
+    int[][][] getGrid();
 
     LinkedList<GridEvent> getEvents(Long time);
 
