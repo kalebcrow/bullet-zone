@@ -112,7 +112,7 @@ public class HistoryReader {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
         if (!ret.equals("")) {
-            TankController.getTankController().setTankID(Long.parseLong(ret));
+            TankController.getTankController().setTankIDs(gson.fromJson(ret, Long[].class));
         }
 
 

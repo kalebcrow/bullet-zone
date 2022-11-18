@@ -22,10 +22,7 @@ public class DamageTankEvent extends ExecutableEvent {
         }
 
         //Add health parameter and do minus
-        //        tile.health = this.pos;
-
-
+        tile.health = this.pos;
         bus.post(new TileUpdateEvent(tile.getLocation(),  tile));
-        TankList.getTankList().remove(ID);
     }
 }

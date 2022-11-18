@@ -19,13 +19,11 @@ public class DestroyTankEvent extends ExecutableEvent{
     public void execute(Bus bus) {
         TankTile tile = TankList.getTankList().getLocation(ID);
 
-        Integer jsonValue = getJSONValueFromString(terrain);
-
         if (tile == null) {
             return;
         }
 
-        bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(jsonValue, tile.getLocation())));
+        bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(5, tile.getLocation())));
         TankList.getTankList().remove(ID);
     }
 

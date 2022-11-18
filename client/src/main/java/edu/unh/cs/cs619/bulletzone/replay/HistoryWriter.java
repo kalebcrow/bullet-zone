@@ -45,7 +45,7 @@ public class HistoryWriter {
         }
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("tanks.json", Context.MODE_PRIVATE));
-            outputStreamWriter.write(TankController.getTankController().getTankID().toString());
+            outputStreamWriter.write(gson.toJson(TankController.getTankController().getTankID()));
             outputStreamWriter.close();
         }
         catch (IOException e) {
