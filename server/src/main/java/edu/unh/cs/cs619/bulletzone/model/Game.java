@@ -2,17 +2,27 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.androidannotations.annotations.Background;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.Timer;
 
 import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
+import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 public final class Game {
+    private static final Logger log = LoggerFactory.getLogger(Game.class);
+
     /**
      * Field dimensions
      */
@@ -27,7 +37,11 @@ public final class Game {
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Long> playersIP = new ConcurrentHashMap<>();
 
+    private final ConcurrentMap<Long, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
+
     private final Object monitor = new Object();
+
+    private final Timer timer = new Timer();
 
     public Game() {
         this.id = 0;
@@ -98,10 +112,14 @@ public final class Game {
         }
     }
 
-    public int[][][] getGrid2D() {
+    public int[][][] getGrid2D() throws InterruptedException {
+        // start randomly spawning resources
+        getRandomResources();
+
         int[][][] grid = new int[FIELD_DIM][FIELD_DIM][3];
 
         synchronized (holderGrid) {
+            // get the grid
             FieldHolder holder;
             for (int i = 0; i < FIELD_DIM; i++) {
                 for (int j = 0; j < FIELD_DIM; j++) {
@@ -112,8 +130,8 @@ public final class Game {
                     } else {
                         grid[i][j][2] = -1; // make it blank if theres no entity
                     }
-                    // set resource if there is one
-                    if (holder.isResourcePresent()) {
+                    // randomly set resource if there is one
+                    if (holder.isResourcePresent()) { // ROAD // TODO road
                         grid[i][j][1] = holder.getResource().getIntValue();
                     } else {
                         grid[i][j][1] = -1; // make it blank if theres no entity
@@ -125,6 +143,56 @@ public final class Game {
         }
 
         return grid;
+    }
+
+    private void getRandomResources() {
+        timer.schedule(new TimerTask() {
+
+                           @Override
+                           public void run() {
+                               // do something
+                               setRandomResources();
+                           }
+                       }, 0, 1000);
+    }
+
+    private void setRandomResources() {
+        log.debug("-------------------------setting resource0");
+        double prob = 0.25 * (tanks.size() / (itemsOnGrid.size() + 1));
+        boolean addingRandomResource = false;
+        FieldResource fr;
+        double row = -1;
+        double col = -1;
+        if (prob >= 0.01) {
+            // add a random resource
+            addingRandomResource = true;
+            double itemType = (Math.random() * (4));
+            if (itemType >= 0 && itemType < 1) {
+                fr = new Clay();
+            } else if (itemType >= 1 && itemType < 2) {
+                fr = new Iron();
+            } else if (itemType >= 2 && itemType < 3) {
+                fr = new Rock();
+            } else {
+                fr = new Thingamajig();
+            }
+
+            boolean added = false;
+            while (!added) {
+                int location = (int) (Math.random() * (256));
+                // TODO add check for entity
+                if (!holderGrid.get(location).isResourcePresent()) {
+                    holderGrid.get(location).setFieldResource(fr);
+                    added = true;
+                    log.debug("adding!------------------------------------------");
+                }
+            }
+        }
+
+        // poll server every 1000ms
+        //SystemClock.sleep(1000);
+        //Thread.sleep(1000);
+        log.debug("addded? randomm--------------------------------");
     }
 
     // Adds to the event history

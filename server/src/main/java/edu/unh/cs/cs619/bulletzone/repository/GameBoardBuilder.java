@@ -11,9 +11,11 @@ import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Hilly;
+import edu.unh.cs.cs619.bulletzone.model.Iron;
 import edu.unh.cs.cs619.bulletzone.model.Meadow;
 import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Rocky;
+import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 
 public class GameBoardBuilder {
@@ -45,26 +47,22 @@ public class GameBoardBuilder {
 
     private String[][] improvementGrid = {
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", " ", " "}, // 1
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", "TB", " "}, // 1
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", "RB", " ", "I", " ", " "}, // 2
+            {" ", "I", " ", "CB", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", "IB", " ", " ", " ", " ", "IB", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", "CB", " ", " "}, // 9
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
+            {" ", "I", " ", "TB", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", "D", "D", "D", "D", " "}, // 12
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 13
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 14
+            {" ", " ", " ", " ", " ", " ", " ", " ", "RB", " ", " ", " ", " ", " ", " ", " "}, // 14
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
     };
-
-
-
-    //private String[][]
 
     GameBoardBuilder(Game game)
     {
@@ -100,10 +98,21 @@ public class GameBoardBuilder {
                 }
 
                 if (improvementGrid[i][j].equals("I")) {
-                    game.getHolderGrid().get(count).setFieldResource(new Clay());//.setFieldEntity(new Wall());
+                    game.getHolderGrid().get(count).setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
-                    game.getHolderGrid().get(count).setFieldResource(new Rock());//.setFieldEntity(new Wall(1500, count));
+                    game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
+                } else if (improvementGrid[i][j].equals("CB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Clay()); // temp
+                } else if (improvementGrid[i][j].equals("IB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Iron()); // temp
+                } else if (improvementGrid[i][j].equals("RB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Rock()); // temp
+                } else if (improvementGrid[i][j].equals("TB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Thingamajig()); // temp
                 }
+
+                // second layer would be roads
+                // third layer is walls + vehicles + resources
 
                 count++;
             }

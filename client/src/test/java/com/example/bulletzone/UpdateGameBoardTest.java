@@ -72,7 +72,7 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][2];
+        int[][][] mimicJSONArray = new int[16][16][3];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
@@ -118,7 +118,7 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][2];
+        int[][][] mimicJSONArray = new int[16][16][3];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 

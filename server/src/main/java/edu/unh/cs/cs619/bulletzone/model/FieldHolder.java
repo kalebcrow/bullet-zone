@@ -16,7 +16,7 @@ public class FieldHolder {
     // should hold a terrain and also an item
     private Optional<FieldEntity> entityHolder = Optional.empty();
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
-    private Optional<FieldResource> resourceHolder = Optional.empty();
+    private Optional<FieldResource> roadHolder = Optional.empty();
 
     public void addNeighbor(Direction direction, FieldHolder fieldHolder) {
         neighbors.put(checkNotNull(direction), checkNotNull(fieldHolder));
@@ -31,8 +31,8 @@ public class FieldHolder {
         return entityHolder.isPresent();
     }
 
-    public boolean isResourcePresent() {
-        return resourceHolder.isPresent();
+    public boolean isRoadPresent() {
+        return roadHolder.isPresent();
     }
 
     public FieldTerrain getTerrain() {
@@ -46,12 +46,12 @@ public class FieldHolder {
     }
 
     public FieldResource getResource() {
-        return resourceHolder.get();
+        return roadHolder.get();
     }
 
     public void setFieldResource(FieldResource resource) {
         // set current entity
-        resourceHolder = Optional.of(checkNotNull(resource,
+        roadHolder = Optional.of(checkNotNull(resource,
                 "FieldTerrain cannot be null."));
     }
 

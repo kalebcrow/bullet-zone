@@ -9,7 +9,7 @@
         android:translationZ="0dp"
         android:contentDescription="@string/terrain" />
     <ImageView
-        android:id="@+id/resourcetile"
+        android:id="@+id/roadtile"
         android:layout_width="5dp"
         android:layout_height="5dp"
         android:translationZ="1dp"

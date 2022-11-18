@@ -12,6 +12,8 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
+import android.util.Log;
+
 /**
  * Created by simon on 10/3/14.
  */
@@ -36,16 +38,17 @@ public class GridPollerTask {
     @RestService
     BulletZoneRestClient restClient;
 
+    GridWrapper gw;
+    long timestamp;
+
     @Background(id = "grid_poller_task")
     // TODO: disable trace
     // @Trace(tag="CustomTag", level=Log.WARN)
     public void doPoll() {
-        long timestamp;
-        GridWrapper gw = restClient.grid();
+        gw = restClient.grid();
         onGridUpdate(restClient.grid());
         timestamp = gw.getTimeStamp();
         while (!paused) {
-
             EventWrapper hw = restClient.event(timestamp);
             timestamp = hw.getTimeStamp();
             onCommandHistoryUpdate(hw);
@@ -53,6 +56,23 @@ public class GridPollerTask {
             SystemClock.sleep(500);
         }
     }
+
+    /*
+    @Background(id = "grid_resource_task")
+    // TODO: disable trace
+    // @Trace(tag="CustomTag", level=Log.WARN)
+    public void makeResources() {
+        while (!paused) {
+            // determine if adding a resource or not
+            // currently just going to check if this works
+            //Log.d("hi", "timestamp: " + timestamp);
+            //restClient.event
+
+            // poll server every 1000ms
+            SystemClock.sleep(1000);
+        }
+    }
+    */
 
     @UiThread
     public void onGridUpdate(GridWrapper gw) {

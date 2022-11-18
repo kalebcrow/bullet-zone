@@ -92,7 +92,7 @@ public class GridAdapter extends BaseAdapter {
                     // check cell is not null then set terrain
                     terrain.setImageResource(mEntities[position][0].getResourceID());
                     terrain.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
-                    // check for resources (aka items i believe)
+                    // check for roads
                     item.setImageResource(mEntities[position][1].getResourceID());
                     item.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
                     // check for improvements (just walls right now)

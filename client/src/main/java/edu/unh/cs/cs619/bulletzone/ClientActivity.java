@@ -149,6 +149,7 @@ public class ClientActivity extends Activity {
         tankController.joinGame();
         gridPollTask.setPaused(false);
         gridPollTask.doPoll();
+        gridPollTask.makeResources();
         commandInterpreter.setPaused(false);
     }
 

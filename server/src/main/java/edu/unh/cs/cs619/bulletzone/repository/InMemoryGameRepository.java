@@ -12,8 +12,10 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
+import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.FieldResource;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
@@ -100,7 +102,6 @@ public class InMemoryGameRepository implements GameRepository {
                 FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y); // SARA
                 if (!fieldElement.isEntityPresent()) {
                     fieldElement.setFieldEntity(tank);
-                    //fieldElement.setFieldTerrain(fieldElement.getTerrain());
                     tank.setParent(fieldElement);
                     break;
                 }
@@ -118,7 +119,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return returns the current games grid in a 2d array
      */
     @Override
-    public int[][][] getGrid() {
+    public int[][][] getGrid() throws InterruptedException {
         synchronized (this.monitor) {
             if (game == null) {
                 this.create();
@@ -321,27 +322,33 @@ public class InMemoryGameRepository implements GameRepository {
                                 && (currentField.getEntity() == bullet);
 
 
-                            if (nextField.isEntityPresent()) {
-                                // Something is there, hit it
-                                nextField.getEntity().hit(bullet.getDamage());
-                                if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
+                        if (nextField.isEntityPresent()) {
+                            // Something is there, hit it
+                            nextField.getEntity().hit(bullet.getDamage());
+                            if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
 
-                                if ( nextField.getEntity() instanceof  Tank){
-                                    Tank t = (Tank) nextField.getEntity();
-                                    System.out.println("tank is hit, tank life: " + t.getLife());
-                                    if (t.getLife() <= 0 ){
-                                        game.addEvent(new DestroyTankEvent(t.getId(), terrain));
-                                        t.getParent().clearField();
-                                        t.setParent(null);
-                                    }
+                            if ( nextField.getEntity() instanceof  Tank){
+                                Tank t = (Tank) nextField.getEntity();
+                                System.out.println("tank is hit, tank life: " + t.getLife());
+                                if (t.getLife() <= 0 ){
+                                    game.addEvent(new DestroyTankEvent(t.getId(), terrain));
+                                    t.getParent().clearField();
+                                    t.setParent(null);
                                 }
-                                else if ( nextField.getEntity() instanceof  Wall){
-                                    Wall w = (Wall) nextField.getEntity();
-                                    if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
-                                        game.addEvent(new DestroyWallEvent(w.getPos()+1, terrain));
-                                        game.getHolderGrid().get(w.getPos()).clearField();
-                                    }
+                            }
+                            else if ( nextField.getEntity() instanceof  Wall){
+                                Wall w = (Wall) nextField.getEntity();
+                                if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
+                                    game.addEvent(new DestroyWallEvent(w.getPos()+1, terrain));
+                                    game.getHolderGrid().get(w.getPos()).clearField();
                                 }
+                            } else if ( nextField.getEntity() instanceof FieldResource ) {
+                                FieldResource fr = (FieldResource) nextField.getEntity();
+                                if (fr.getIntValue() == 501) {
+                                    // clay
+                                    game.addEvent(new DestroyResourceEvent());
+                                }
+                            }
                             if (isVisible) {
                                 // Remove bullet from field
                                 currentField.clearField();
@@ -350,6 +357,18 @@ public class InMemoryGameRepository implements GameRepository {
                             tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
                             cancel();
 
+                        } else if (nextField.isResourcePresent()) {
+                            // destroy the resource and the bullet
+                            if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
+                            //game.addEvent(new DestroyResourceEvent(nextField));
+
+                            if (isVisible) {
+                                // Remove bullet from field
+                                currentField.clearField();
+                            }
+                            trackActiveBullets[bullet.getBulletId()]=0;
+                            tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
+                            cancel();
                         } else {
                             if (isVisible) {
                                 if(fireIndicator[0]){
@@ -363,7 +382,7 @@ public class InMemoryGameRepository implements GameRepository {
 
                             nextField.setFieldEntity(bullet);
                             bullet.setParent(nextField);
-                            }
+                        }
                     }
                 }
             }, 0, BULLET_PERIOD);

@@ -127,12 +127,14 @@ public class BoardView {
      * @param arr array to set the value
      */
     public void setUsingJSON(int[][][] arr) {
+        Log.d("testing", "set using json");
         this.tileInput = arr;
         int value = 0;
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
+                Log.d("json", "(" + i + ", " + ii + ")");
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
-                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // resource ( + road?)
+                this.tiles[value][1] = this.tileFactory.makeTile(-1, value); // resource ( + road?) // arr[i][ii][1]
                 this.tiles[value][2] = this.tileFactory.makeTile(arr[i][ii][2], value); // entity (tank, wall, etc)
                 value++;
             }
@@ -168,6 +170,7 @@ public class BoardView {
     {
         @Subscribe
         public void onUpdateGrid(GridUpdateEvent event) {
+            Log.d("testing", "on update grid");
             updateGrid(event);
         }
     };
@@ -177,6 +180,8 @@ public class BoardView {
      * @param event update specific tile
      */
     private void updateGrid(GridUpdateEvent event) {
+        Log.d("testing", "updated grid");
+
         this.setUsingJSON(event.gw.getGrid());
         gridAdapter.updateList(tiles);
     }
