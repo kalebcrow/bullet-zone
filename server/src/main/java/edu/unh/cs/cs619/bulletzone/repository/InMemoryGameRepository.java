@@ -13,6 +13,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.Command;
 import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.MoveCommand;
@@ -93,7 +97,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank[] join(String ip) {
+    public Tank[] join(long userID, String ip) {
         synchronized (this.monitor) {
 
             if (game == null) {
@@ -108,9 +112,9 @@ public class InMemoryGameRepository implements GameRepository {
                 Long minerID = this.idGenerator.getAndIncrement();
                 Long builderID = this.idGenerator.getAndIncrement();
 
-                tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
+                tanks[0] = new Tank(userID, tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(userID, minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(userID, builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
@@ -481,14 +485,24 @@ public class InMemoryGameRepository implements GameRepository {
 
             System.out.println("leave() called, tank ID: " + tankId[i]);
 
-            Tank tank = game.getTanks().get(tankId[i]);
-            FieldHolder parent = tank.getParent();
-            parent.clearField();
-            if(tank.getLife() > 0) {
-                game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+                Tank tank = game.getTanks().get(tankId[i]);
+
+                if (i == 1 && tank.getUserID() != -1) {
+                    DataRepository data = new DataRepository();
+                    GameUserRepository users = new GameUserRepository();
+                    GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
+                    String username = gu.getUsername();
+                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
+                    data.modifyAccountBalance(username, amount);
+                }
+
+                FieldHolder parent = tank.getParent();
+                parent.clearField();
+                if(tank.getLife() > 0) {
+                    game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+                }
+                game.removeTank(tankId[i]);
             }
-            game.removeTank(tankId[i]);
-        }
         }
     }
 
@@ -714,15 +728,15 @@ public class InMemoryGameRepository implements GameRepository {
         }
 
         //find the current location of the tank
-        int[][] grid2d = game.getGrid2D();
+        int[][][] grid3d = game.getGrid2D();
         int currentLocation = -1;
         int test = -1;
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                if(grid2d[i][j] >= 10000000 && grid2d[i][j] < 20000000){
+                if(grid3d[i][j][2] >= 10000000 && grid3d[i][j][2] < 20000000){
 
-                    test = grid2d[i][j];
+                    test = grid3d[i][j][2];
                     test = test % 10000000;
                     test = test / 10000;
 
@@ -1027,7 +1041,6 @@ public class InMemoryGameRepository implements GameRepository {
                     }
                 }
             }, 20, 1000);
-
             return true;
         }
     }

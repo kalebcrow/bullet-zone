@@ -39,8 +39,8 @@ public class InMemoryGameRepositoryTest {
 
     @Test
     public void testJoin() throws Exception {
-        Tank[] tank = repo.join("");
-        Tank[] tank2 = repo.join("10");
+        Tank[] tank = repo.join(0,"");
+        Tank[] tank2 = repo.join(0,"10");
         Assert.assertEquals(tank[0].getId(), 0);
         Assert.assertEquals(tank2[0].getId(), 1);
         Assert.assertNotNull(tank);
@@ -80,7 +80,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
         //tank joins and is first player
-        Tank[] tank = repo.join("10");
+        Tank[] tank = repo.join(0,"10");
         Assert.assertNotNull(tank);
         Assert.assertEquals(tank[0].getId(), 0);
 
@@ -104,7 +104,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoined_ReturnsAddTankEvent() {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 500);
         assert (update.size() == 1);
         assert (update.getFirst().getType() == "addTank");
@@ -113,7 +113,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSizeAndContents() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankID = tank[0].getId();
         for (int i = 0; i < 10; i++) {
             repo.move(tankID, Direction.Up);
@@ -130,7 +130,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverMinute_ReturnsAtLeastEventsFromLastMinute() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankID = tank[0].getId();
         for (int i = 0; i < 60; i++) {
             repo.move(tankID, Direction.Up);
@@ -146,7 +146,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_EventsAccrueOverThreeMinutes_ReturnsEventsFromNoMoreThanThreeMinutesAgo() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankID = tank[0].getId();
 
         for (int i = 0; i < 180; i++) {
@@ -162,7 +162,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildRoad_createdRoad() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -175,7 +175,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -188,7 +188,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -201,7 +201,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuildFunction_tankJoinedWithNoResources_wallNotCreated() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         assert(!repo.build(tankId, 3));
     }
@@ -209,7 +209,7 @@ public class InMemoryGameRepositoryTest {
     @Test(expected = NoSuchElementException.class)
     public void testDestroyFunction_tankJoinedAndDestroyWall_removedWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -224,7 +224,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuild_movementWhileBuilding_returnsFalse() throws BuildingDoesNotExistException, TankDoesNotExistException, IllegalTransitionException, LimitExceededException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -237,7 +237,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testBuild_fireWhileBuilding_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -249,7 +249,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testMoveBuild_moveIntoCreatedRoad_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -261,7 +261,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testMoveBuild_moveIntoCreatedWall_returnsFalse() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -273,7 +273,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testMoveDismantle_moveIntoDismantledWall_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -288,14 +288,14 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testDismantle_dismantleEmptySpace_returnsFalse() throws TankDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         assert(!repo.dismantle(tankId));
     }
     @Test
     public void testMoveBuild_moveWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -328,7 +328,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testFireBuild_fireWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join("");
+        Tank[] tank = repo.join(0,"");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);

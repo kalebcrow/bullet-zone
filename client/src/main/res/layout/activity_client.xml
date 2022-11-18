@@ -70,6 +70,16 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/HealthText"
+                    android:layout_width="match_parent"
+                    android:layout_height="377dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:inputType="textMultiLine"
+                    android:text="Health"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -82,6 +92,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
+
+
 
         <Button
             android:id="@+id/buttonDown"

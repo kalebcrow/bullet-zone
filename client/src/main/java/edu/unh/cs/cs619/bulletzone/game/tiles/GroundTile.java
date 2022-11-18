@@ -13,6 +13,7 @@ public class GroundTile {
 
     public Integer jsonValue = -1;
     public Integer terrainJsonValue = -1;
+    public Integer health = 0;
 
     /**
      *
@@ -77,6 +78,7 @@ public class GroundTile {
         this.resourceID = R.drawable.meadow;
         this.location = 0;
         this.jsonValue = 0;
+        this.orientation = 0;
     }
 
     /**

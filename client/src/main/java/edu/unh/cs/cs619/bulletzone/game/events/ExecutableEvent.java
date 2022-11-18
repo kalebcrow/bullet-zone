@@ -20,6 +20,7 @@ public class ExecutableEvent {
         direction = gridEvent.getDirection();
         pos = gridEvent.getPos() - 1;
         terrain = gridEvent.getTerrain();
+        buildType = gridEvent.buildType;
     }
 
     protected Long time;
@@ -29,6 +30,9 @@ public class ExecutableEvent {
     protected int pos = -1;
     protected String terrain = "";
     public TileUpdateEvent tileUpdateEvent;
+    protected int[] resources = new int[]{0, 0, 0};
+    protected Integer buildType;
+
 
     /**
      *
