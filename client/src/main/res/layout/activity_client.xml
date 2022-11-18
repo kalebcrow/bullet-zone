@@ -20,18 +20,20 @@
         <GridView
             android:id="@+id/gridView"
             android:layout_width="match_parent"
-            android:layout_height="604dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:background="#FFFFFF"
             android:fadeScrollbars="false"
             android:numColumns="16"
             android:padding="-2dp"
+            android:horizontalSpacing="0dp"
+            android:verticalSpacing="0dp"
             tools:listitem="@layout/field_item" />
 
         <TextView
             android:id="@+id/HealthText"
             android:layout_width="match_parent"
-            android:layout_height="243dp"
+            android:layout_height="377dp"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="0dp"
             android:inputType="textMultiLine"
