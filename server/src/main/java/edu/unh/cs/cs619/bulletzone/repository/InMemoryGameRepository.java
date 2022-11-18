@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
@@ -449,13 +450,19 @@ public class InMemoryGameRepository implements GameRepository {
                     throw new TankDoesNotExistException(tankId[i]);
                 }
 
-                GameUserRepository users = new GameUserRepository();
-                GameUser gu = users.getUser(1);
-                gu.getUsername();
-
                 System.out.println("leave() called, tank ID: " + tankId[i]);
 
                 Tank tank = game.getTanks().get(tankId[i]);
+
+                if (i == 1) {
+                    DataRepository data = new DataRepository();
+                    GameUserRepository users = new GameUserRepository();
+                    GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
+                    String username = gu.getUsername();
+                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
+                    data.modifyAccountBalance(username, amount);
+                }
+
                 FieldHolder parent = tank.getParent();
                 parent.clearField();
                 if(tank.getLife() > 0) {
