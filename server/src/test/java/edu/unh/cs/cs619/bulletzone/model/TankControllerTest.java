@@ -306,15 +306,15 @@ public class TankControllerTest {
     @Test
     public void moveToTest(){
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join("");
-        int[][] grid2d = IMGR.getGrid();
+        Tank[] tanks = IMGR.join(0,"ip");
+        int[][][] grid2d = IMGR.getGrid();
 
         System.out.println("Controlling tank with id " + tanks[0].getId());
 
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j] + "\t");
+                System.out.print(grid2d[i][j][2] + "\t");
 
             }
             System.out.println();
@@ -332,7 +332,7 @@ public class TankControllerTest {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j] + "\t");
+                System.out.print(grid2d[i][j][2] + "\t");
 
             }
             System.out.println();

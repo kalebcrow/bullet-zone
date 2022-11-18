@@ -728,15 +728,15 @@ public class InMemoryGameRepository implements GameRepository {
         }
 
         //find the current location of the tank
-        int[][] grid2d = game.getGrid2D();
+        int[][][] grid3d = game.getGrid2D();
         int currentLocation = -1;
         int test = -1;
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                if(grid2d[i][j] >= 10000000 && grid2d[i][j] < 20000000){
+                if(grid3d[i][j][2] >= 10000000 && grid3d[i][j][2] < 20000000){
 
-                    test = grid2d[i][j];
+                    test = grid3d[i][j][2];
                     test = test % 10000000;
                     test = test / 10000;
 
