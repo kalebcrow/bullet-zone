@@ -618,7 +618,9 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
-    public void moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
+    //makes good faith effort to arrive at requested location by moving vertically then horizontally
+    //stops if it detects it will hit an entity
+    public boolean moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
 
         // Find tank
         Tank tank = game.getTanks().get(tankId);
@@ -711,7 +713,7 @@ public class InMemoryGameRepository implements GameRepository {
         //special cases: on same y or x coordinate, or both
         if(xValueMovement == null && yValueMovement == null){
             //trying to move to current coordinates
-            return;
+            return true;
         }
         //must move in both the x and y coordinate
         else if(xValueMovement != null && yValueMovement != null){
@@ -841,7 +843,7 @@ public class InMemoryGameRepository implements GameRepository {
 
 
         CommandInterpreter commandInterpreter = new CommandInterpreter(MoveToList);
-        commandInterpreter.executeSequence();
+        return commandInterpreter.executeSequence();
 
     }
 
