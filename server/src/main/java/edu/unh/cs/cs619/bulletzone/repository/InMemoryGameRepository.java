@@ -312,7 +312,7 @@ public class InMemoryGameRepository implements GameRepository {
                 tank.setParent(nextField);
 
                 log.debug("---------------MOVING TANK from " + parent.getTerrain().toString() + " to " + nextField.getTerrain().toString());
-                game.addEvent(new MoveTankEvent(tankId, toByte(direction), parent.getTerrain().toString()));
+                game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
 
                 isCompleted = true;
             } else {

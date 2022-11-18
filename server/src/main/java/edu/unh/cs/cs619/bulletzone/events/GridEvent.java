@@ -19,6 +19,7 @@ public class GridEvent implements Serializable {
     protected String terrain = "";
     protected int buildType = -1;
 
+
     public String getTerrain() {
         return terrain;
     }
