@@ -66,7 +66,7 @@ public class GamesControllerTest {
         request.setRemoteAddr("100.0.0.0");
         repo = new InMemoryGameRepository();
         gamesController = new GamesController(repo);
-        ResponseEntity<LongArrayWrapper> l = gamesController.join(request);
+        ResponseEntity<LongArrayWrapper> l = gamesController.join(0, request);
         //Leave game
         gamesController.leave(new long[]{0,1,2});
         //test that tank does not exist

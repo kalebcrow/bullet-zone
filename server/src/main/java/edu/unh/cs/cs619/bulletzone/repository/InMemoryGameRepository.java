@@ -87,7 +87,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank[] join(String ip) {
+    public Tank[] join(long userID, String ip) {
         synchronized (this.monitor) {
 
             if (game == null) {
@@ -102,9 +102,9 @@ public class InMemoryGameRepository implements GameRepository {
                 Long minerID = this.idGenerator.getAndIncrement();
                 Long builderID = this.idGenerator.getAndIncrement();
 
-                tanks[0] = new Tank(tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(builderID, Direction.Up, ip, 2);
+                tanks[0] = new Tank(userID, tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(userID, minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(userID, builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
@@ -448,7 +448,7 @@ public class InMemoryGameRepository implements GameRepository {
                 if (!this.game.getTanks().containsKey(tankId[i])) {
                     throw new TankDoesNotExistException(tankId[i]);
                 }
-                
+
                 GameUserRepository users = new GameUserRepository();
                 GameUser gu = users.getUser(1);
                 gu.getUsername();
