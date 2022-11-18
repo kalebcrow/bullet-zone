@@ -41,7 +41,7 @@ public class TankController {
     }
 
     private Long currentTankID;
-    private int tankOrientation;
+    private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
 
@@ -50,7 +50,7 @@ public class TankController {
      */
     public TankController() {
         tankID = new Long[3];
-        tankOrientation = 0;
+        tankOrientation = new int[0];
         INSTANCE = this;
     }
 
@@ -122,15 +122,22 @@ public class TankController {
 
 
     public int getTankOrientation() {
-        return tankOrientation;
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        return tankOrientation[othervalue];
     }
 
     /**
      *
      * @param tankOrientation tankOriention
      */
-    public void setTankOrientation(int tankOrientation) {
-        this.tankOrientation = tankOrientation;
+    public void setTankOrientation(int orientation, int tankmodulo) {
+        this.tankOrientation[tankmodulo] = orientation;
     }
 
     public void passContext(Context context){
@@ -149,13 +156,20 @@ public class TankController {
      */
     @Background
     public void move(byte direction) {
-        int value = direction - tankOrientation;
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
 
-        if (direction == tankOrientation) {
+        int value = direction - tankOrientation[othervalue];
+
+        if (direction == tankOrientation[othervalue]) {
             restClient.move(currentTankID, direction);
-        } else if (Math.abs(direction - tankOrientation) != 4) {
+        } else if (Math.abs(direction - tankOrientation[othervalue]) != 4) {
             restClient.turn(currentTankID,direction);
-            tankOrientation = direction;
+            tankOrientation[othervalue] = direction;
         } else {
             restClient.move(currentTankID, direction);
         }
@@ -167,7 +181,7 @@ public class TankController {
             tankID = restClient.join().getResult();
             currentTankID = tankID[0];
         } catch (Exception e) {
-
+            Log.d("Yeah", e.toString());
         }
 
     }
@@ -188,6 +202,15 @@ public class TankController {
     public void setCurrentVehicle(Vehicle currentVehicle){
         Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
+        if (currentVehicle == Vehicle.BUILDER) {
+            currentTankID = tankID[2];
+        } else if (currentVehicle == Vehicle.MINER) {
+            currentTankID = tankID[1];
+        } else {
+            currentTankID = tankID[0];
+        }
+
+
     }
 
     public Vehicle getCurrentVehicle() {

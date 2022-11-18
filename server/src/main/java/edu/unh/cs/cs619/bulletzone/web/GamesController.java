@@ -56,7 +56,7 @@ class GamesController {
             for(int i=0;i<3;i++){
                 tankIds[i] = tank[i].getId();
             }
-            log.info("Player joined: tankId={} IP={}", tank[0].getId(), request.getRemoteAddr());
+            log.info("Player joined: tankId={}, {}, {} IP={}", tank[0].getId(), tank[1].getId(), tank[2].getId(), request.getRemoteAddr());
 
             return new ResponseEntity<LongArrayWrapper>(
                     new LongArrayWrapper(tankIds),

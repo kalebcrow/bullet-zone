@@ -53,6 +53,11 @@ public class TankTile extends GroundTile {
         ID = findID(JsonValue);
         boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(ID)));
         determineResourceID(friendly);
+        orientation = findOrientation(JsonValue);
+
+        if (friendly) {
+            TankController.getTankController().setTankOrientation(orientation, ID % 3);
+        }
 
         TankList.getTankList().addTank(ID, this);
     }
@@ -72,7 +77,7 @@ public class TankTile extends GroundTile {
 
         this.orientation = orientation;
         if (friendly) {
-            TankController.getTankController().setTankOrientation(orientation);
+            TankController.getTankController().setTankOrientation(orientation, ID % 3);
         }
 
         TankList.getTankList().addTank(ID, this);
@@ -120,7 +125,7 @@ public class TankTile extends GroundTile {
                     resourceID = R.drawable.miner;
                     break;
                 // Builder
-                case 3:
+                case 2:
                     resourceID = R.drawable.builder;
                     break;
                 }
@@ -135,7 +140,7 @@ public class TankTile extends GroundTile {
                         resourceID = R.drawable.redminer;
                         break;
                     // Builder
-                    case 3:
+                    case 2:
                         resourceID = R.drawable.redbuilder;
                         break;
                 }

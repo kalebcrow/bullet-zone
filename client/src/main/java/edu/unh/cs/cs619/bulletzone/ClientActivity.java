@@ -99,6 +99,7 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
+        boardView.setGarageText(textViewGarage);
 
     }
 

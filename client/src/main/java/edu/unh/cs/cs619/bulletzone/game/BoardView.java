@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -42,6 +43,16 @@ public class BoardView {
     public TileFactory tileFactory;
     public int[] resources; //rock iron clay
     public boolean paused;
+
+    public TextView getGarageText() {
+        return garageText;
+    }
+
+    public void setGarageText(TextView garageText) {
+        this.garageText = garageText;
+    }
+
+    public TextView garageText;
 
     /**
      *
@@ -190,6 +201,14 @@ public class BoardView {
      */
     private void updateResource( ResourceEvent event) {
         resources = event.resources;
+        String message =
+                "Rock: " + this.resources[0] + "\n" +
+                "Iron: " + this.resources[1] + "\n" +
+                "Clay: " + this.resources[2];
+
+        if (garageText != null) {
+            garageText.setText(message);
+        }
     }
 
     /**
