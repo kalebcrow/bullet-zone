@@ -18,10 +18,13 @@ import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.FieldResource;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Iron;
 import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankController;
 import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.model.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.model.events.DestroyBulletEvent;
@@ -116,7 +119,7 @@ public class InMemoryGameRepository implements GameRepository {
 
     /**
      * Returns games current board
-     * @return returns the current games grid in a 2d array
+     * @return returns the current games grid in a 3d array
      */
     @Override
     public int[][][] getGrid() throws InterruptedException {
@@ -125,7 +128,7 @@ public class InMemoryGameRepository implements GameRepository {
                 this.create();
             }
         }
-        return game.getGrid2D();
+        return game.getGrid3D();
     }
 
     /**
@@ -222,8 +225,19 @@ public class InMemoryGameRepository implements GameRepository {
 
 
             boolean isCompleted;
-            if (!nextField.isEntityPresent()) {
-                // If the next field is empty move the user
+            boolean resourceEntity = isResource(nextField);
+            if (!nextField.isEntityPresent() || resourceEntity) {
+                // pick up the resource if here
+                if (resourceEntity) {
+                    // TODO actually pick up resource and add it to the cache
+                    // pickUpResource(nextField, usedID);
+                    // OR game.addEvent(new PickUpResourceEvent());
+
+                    // clear the field so the tank can move onto it
+                    nextField.clearField();
+                }
+
+                // If the next field is "empty" move the user
 
                 /*try {
                     Thread.sleep(500);
@@ -234,7 +248,6 @@ public class InMemoryGameRepository implements GameRepository {
                 nextField.setFieldEntity(tank);
                 tank.setParent(nextField);
 
-                log.debug("---------------MOVING TANK from " + parent.getTerrain().toString() + " to " + nextField.getTerrain().toString());
                 game.addEvent(new MoveTankEvent(tankId, toByte(direction), parent.getTerrain().toString()));
 
                 isCompleted = true;
@@ -244,6 +257,23 @@ public class InMemoryGameRepository implements GameRepository {
 
             return isCompleted;
         }
+    }
+
+    /**
+     * check if the next field has a resource on it
+     *
+     * @param nextField the next field
+     * @return if resource available
+     */
+    private boolean isResource(FieldHolder nextField) {
+        if (nextField.isEntityPresent()) {
+            FieldResource fr = (FieldResource) nextField.getEntity();
+            log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
+            return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
+                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+
+        }
+        return false;
     }
 
     /**
@@ -310,17 +340,12 @@ public class InMemoryGameRepository implements GameRepository {
                         FieldHolder nextField = currentField
                                 .getNeighbor(direction);
 
-                        Direction oppDirection = bullet.getDirection();
-                        FieldHolder previousField = currentField
-                                .getNeighbor(oppDirection);
-                        String previousterrain = previousField.getTerrain().toString();
+                        // get current terrain to pass to events
                         String terrain = currentField.getTerrain().toString();
-
 
                         // Is the bullet visible on the field?
                         boolean isVisible = currentField.isEntityPresent()
                                 && (currentField.getEntity() == bullet);
-
 
                         if (nextField.isEntityPresent()) {
                             // Something is there, hit it
@@ -342,12 +367,25 @@ public class InMemoryGameRepository implements GameRepository {
                                     game.addEvent(new DestroyWallEvent(w.getPos()+1, terrain));
                                     game.getHolderGrid().get(w.getPos()).clearField();
                                 }
-                            } else if ( nextField.getEntity() instanceof FieldResource ) {
+                            } else {
+                                // it is a field resource (but doesn't like when i call it field resource)
                                 FieldResource fr = (FieldResource) nextField.getEntity();
+                                log.debug("-----------------tried to FIRE onto a resource entity with int value: " + fr.getIntValue());
+                                // in this instance no one gets to pick up the resource
                                 if (fr.getIntValue() == 501) {
-                                    // clay
-                                    game.addEvent(new DestroyResourceEvent());
+                                    Clay c = (Clay) fr;
+                                    game.getHolderGrid().get(c.getPos()).clearField();
+                                } else if (fr.getIntValue() == 502) {
+                                    Rock r = (Rock) fr;
+                                    game.getHolderGrid().get(r.getPos()).clearField();
+                                } else if (fr.getIntValue() == 503) {
+                                    Iron i = (Iron) fr;
+                                    game.getHolderGrid().get(i.getPos()).clearField();
+                                } else if (fr.getIntValue() == 7) {
+                                    Thingamajig t = (Thingamajig) fr;
+                                    game.getHolderGrid().get(t.getPos()).clearField();
                                 }
+                                //game.addEvent(new DestroyResourceEvent()); // TODO complete the destroy resource event
                             }
                             if (isVisible) {
                                 // Remove bullet from field
@@ -357,18 +395,6 @@ public class InMemoryGameRepository implements GameRepository {
                             tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
                             cancel();
 
-                        } else if (nextField.isResourcePresent()) {
-                            // destroy the resource and the bullet
-                            if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
-                            //game.addEvent(new DestroyResourceEvent(nextField));
-
-                            if (isVisible) {
-                                // Remove bullet from field
-                                currentField.clearField();
-                            }
-                            trackActiveBullets[bullet.getBulletId()]=0;
-                            tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
-                            cancel();
                         } else {
                             if (isVisible) {
                                 if(fireIndicator[0]){

@@ -13,10 +13,10 @@ public class FieldHolder {
 
     private final Map<Direction, FieldHolder> neighbors = new HashMap<Direction, FieldHolder>();
 
-    // should hold a terrain and also an item
+    // should hold a terrain and also an item and a road
     private Optional<FieldEntity> entityHolder = Optional.empty();
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
-    private Optional<FieldResource> roadHolder = Optional.empty();
+    private Optional<FieldResource> roadHolder = Optional.empty(); // TODO create a FieldRoad, i dont know the json value so leaving it
 
     public void addNeighbor(Direction direction, FieldHolder fieldHolder) {
         neighbors.put(checkNotNull(direction), checkNotNull(fieldHolder));
@@ -45,13 +45,13 @@ public class FieldHolder {
                 "FieldTerrain cannot be null."));
     }
 
-    public FieldResource getResource() {
+    public FieldResource getRoad() {
         return roadHolder.get();
     }
 
-    public void setFieldResource(FieldResource resource) {
-        // set current entity
-        roadHolder = Optional.of(checkNotNull(resource,
+    public void setFieldRoad(FieldResource road) {
+        // set current road tile
+        roadHolder = Optional.of(checkNotNull(road,
                 "FieldTerrain cannot be null."));
     }
 

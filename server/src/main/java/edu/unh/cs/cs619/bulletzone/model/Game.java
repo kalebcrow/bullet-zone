@@ -2,7 +2,6 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.androidannotations.annotations.Background;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,30 +111,28 @@ public final class Game {
         }
     }
 
-    public int[][][] getGrid2D() throws InterruptedException {
+    public int[][][] getGrid3D() throws InterruptedException {
         // start randomly spawning resources
-        getRandomResources();
+        //getRandomResources(); // TODO add randomly spawning resources
 
         int[][][] grid = new int[FIELD_DIM][FIELD_DIM][3];
 
         synchronized (holderGrid) {
-            // get the grid
+            // get the grid // SARA
             FieldHolder holder;
             for (int i = 0; i < FIELD_DIM; i++) {
                 for (int j = 0; j < FIELD_DIM; j++) {
                     holder = holderGrid.get(i * FIELD_DIM + j);
                     // set entity if there is one
+                    grid[i][j][2] = -1; // make it blank if theres no entity
                     if (holder.isEntityPresent()) {
                         grid[i][j][2] = holder.getEntity().getIntValue();
-                    } else {
-                        grid[i][j][2] = -1; // make it blank if theres no entity
                     }
-                    // randomly set resource if there is one
-                    if (holder.isResourcePresent()) { // ROAD // TODO road
-                        grid[i][j][1] = holder.getResource().getIntValue();
-                    } else {
-                        grid[i][j][1] = -1; // make it blank if theres no entity
-                    }
+                    // TODO road, currently does not exist
+                    grid[i][j][1] = -1; // make it blank if theres no road
+                    //if (holder.isRoadPresent()) {
+                    //    grid[i][j][1] = holder.getRoad().getIntValue();
+                    //}
                     // set terrain (should always be there)
                     grid[i][j][0] = holder.getTerrain().getIntValue();
                 }
@@ -180,9 +177,8 @@ public final class Game {
             boolean added = false;
             while (!added) {
                 int location = (int) (Math.random() * (256));
-                // TODO add check for entity
-                if (!holderGrid.get(location).isResourcePresent()) {
-                    holderGrid.get(location).setFieldResource(fr);
+                if (!holderGrid.get(location).isEntityPresent()) {
+                    holderGrid.get(location).setFieldEntity(fr);
                     added = true;
                     log.debug("adding!------------------------------------------");
                 }
@@ -192,7 +188,7 @@ public final class Game {
         // poll server every 1000ms
         //SystemClock.sleep(1000);
         //Thread.sleep(1000);
-        log.debug("addded? randomm--------------------------------");
+        log.debug("added? random resource--------------------------------");
     }
 
     // Adds to the event history

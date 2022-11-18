@@ -68,7 +68,7 @@ class GamesController {
     @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
-    ResponseEntity<GridWrapper> grid() {
+    ResponseEntity<GridWrapper> grid() throws InterruptedException {
         return new ResponseEntity<GridWrapper>(new GridWrapper(gameRepository.getGrid()), HttpStatus.OK);
     }
 
