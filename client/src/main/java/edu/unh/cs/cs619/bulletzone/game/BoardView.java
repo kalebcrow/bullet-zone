@@ -169,7 +169,6 @@ public class BoardView {
      */
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location][1] = event.movedTile;
-        Log.d("TimeDiff", "received event: " + System.currentTimeMillis());
         gridAdapter.updateList(tiles);
     }
 

@@ -50,7 +50,7 @@ public class TankController {
      */
     public TankController() {
         tankID = new Long[3];
-        tankOrientation = new int[0];
+        tankOrientation = new int[3];
         INSTANCE = this;
     }
 
@@ -134,7 +134,6 @@ public class TankController {
 
     /**
      *
-     * @param tankOrientation tankOriention
      */
     public void setTankOrientation(int orientation, int tankmodulo) {
         this.tankOrientation[tankmodulo] = orientation;
