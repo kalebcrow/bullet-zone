@@ -27,6 +27,9 @@ public class CommandInterpreter {
 
             }
 
+            //dynmaically set delay based on tank type and
+            //cmd.tank.getParent().getTerrain?
+
             returnBoolean = cmd.execute();
             if(returnBoolean == false){
                 break;
