@@ -171,4 +171,15 @@ class GamesController {
                 HttpStatus.OK
         );
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/moveTo/{desiredLocation}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> moveTo(@PathVariable long tankId, @PathVariable int desiredLocation)
+            throws TankDoesNotExistException{
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.moveTo(tankId, desiredLocation)),
+                HttpStatus.OK
+        );
+    }
+
 }

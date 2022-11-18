@@ -302,4 +302,112 @@ public class TankControllerTest {
         Thread.sleep(2000);
         assertEquals(val, tanks[1].getResourcesByResource(2));
     }
+
+    @Test
+    public void moveToTest(){
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join("");
+        int[][] grid2d = IMGR.getGrid();
+
+        System.out.println("Controlling tank with id " + tanks[0].getId());
+
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        //test command
+        try {
+            IMGR.moveTo(tanks[0].getId(), 0);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        /*
+
+        //strictly horizontal movement
+        try {
+            IMGR.moveTo(tanks[0].getId(), 15);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        //try strictly vertical movement
+        try {
+            IMGR.moveTo(tanks[0].getId(), 95);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        try {
+            IMGR.moveTo(tanks[1].getId(), 154);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+        try {
+            IMGR.moveTo(tanks[1].getId(), 43);
+        } catch (TankDoesNotExistException e) {
+            e.printStackTrace();
+        }
+
+        grid2d = IMGR.getGrid();
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                System.out.print(grid2d[i][j] + "\t");
+
+            }
+            System.out.println();
+        }
+
+         */
+
+    }
+
 }

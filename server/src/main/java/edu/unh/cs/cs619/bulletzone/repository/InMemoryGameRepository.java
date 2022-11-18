@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -16,6 +17,10 @@ import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
+import edu.unh.cs.cs619.bulletzone.Command;
+import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
+import edu.unh.cs.cs619.bulletzone.MoveCommand;
+import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
@@ -47,6 +52,10 @@ import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 @Component
@@ -111,45 +120,57 @@ public class InMemoryGameRepository implements GameRepository {
                 game.addTank(ip, tanks[1], "miner");
                 game.addTank(ip, tanks[2], "builder");
 
-                Random random = new Random();
-                int x;
-                int y;
+                if(ip == ""){
+                    FieldHolder place = game.getHolderGrid().get(16);
+                    place.setFieldEntity(tanks[0]);
+                    tanks[0].setParent(place);
+                    place = game.getHolderGrid().get(33);
+                    place.setFieldEntity(tanks[1]);
+                    tanks[1].setParent(place);
+                    place = game.getHolderGrid().get(251);
+                    place.setFieldEntity(tanks[2]);
+                    tanks[2].setParent(place);
+                } else {
 
-                // This may run for forever.. If there is no free space. XXX
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[0]);
-                        tanks[0].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, tankId));
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[1]);
-                        tanks[1].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, minerID));
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[2]);
-                        tanks[2].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, builderID));
+                    Random random = new Random();
+                    int x;
+                    int y;
 
+                    // This may run for forever.. If there is no free space. XXX
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[0]);
+                            tanks[0].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, tankId));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[1]);
+                            tanks[1].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, minerID));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[2]);
+                            tanks[2].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, builderID));
+                }
             } else {
                 HashMap<String,Long> map = game.getTanks(ip);
                 tanks[0] = game.getTank(map.get("tank"));
@@ -305,9 +326,21 @@ public class InMemoryGameRepository implements GameRepository {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 }
             }
             return isCompleted;
@@ -450,7 +483,7 @@ public class InMemoryGameRepository implements GameRepository {
                     throw new TankDoesNotExistException(tankId[i]);
                 }
 
-                System.out.println("leave() called, tank ID: " + tankId[i]);
+            System.out.println("leave() called, tank ID: " + tankId[i]);
 
                 Tank tank = game.getTanks().get(tankId[i]);
 
@@ -478,7 +511,6 @@ public class InMemoryGameRepository implements GameRepository {
     {
         synchronized (this.monitor) {
         /*
-        TO DO: timing for build and stop movement while building
         types:
         1 - Road
         2 - Wall
@@ -681,6 +713,235 @@ public class InMemoryGameRepository implements GameRepository {
             GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
             boardBuilder.testCreate();
         }
+    }
+
+    //makes good faith effort to arrive at requested location by moving vertically then horizontally
+    //stops if it detects it will hit an entity
+    public boolean moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
+
+        // Find tank
+        Tank tank = game.getTanks().get(tankId);
+        if (tank == null) {
+            //Log.i(TAG, "Cannot find user with id: " + tankId);
+            //return false;
+            throw new TankDoesNotExistException(tankId);
+        }
+
+        //find the current location of the tank
+        int[][] grid2d = game.getGrid2D();
+        int currentLocation = -1;
+        int test = -1;
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+
+                if(grid2d[i][j] >= 10000000 && grid2d[i][j] < 20000000){
+
+                    test = grid2d[i][j];
+                    test = test % 10000000;
+                    test = test / 10000;
+
+                    if(tankId == (long)test){
+
+                        currentLocation = i*16 + j;
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            if(currentLocation != -1){
+                break;
+            }
+
+        }
+
+        //determine tank type: 0 = tank, 1 = miner, 2 = builder
+
+        long baseDelay;
+        if(test % 3 == 0){
+            System.out.println("Tank");
+            baseDelay = 500;
+        }
+        else if(test % 3 == 1){
+            System.out.println("Miner");
+            baseDelay = 800;
+        }
+        else{
+            System.out.println("Builder");
+            baseDelay = 300;
+        }
+
+        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation);
+
+        //with location of tank on the board and desired location,
+        //determine direction of y value movement, north or south
+        Direction yValueMovement = null;
+        if((currentLocation/16) > (desiredLocation/16)){
+            yValueMovement = Direction.Up;
+        }
+        else if((currentLocation/16) < (desiredLocation/16)){
+            yValueMovement = Direction.Down;
+        }
+        else if((currentLocation/16) == (desiredLocation/16)){
+            yValueMovement = null;
+        }
+
+        Direction xValueMovement = null;
+        if((currentLocation%16) > (desiredLocation%16)){
+            xValueMovement = Direction.Left;
+        }
+        else if((currentLocation%16) < (desiredLocation%16)){
+            xValueMovement = Direction.Right;
+        }
+        else if((currentLocation%16) == (desiredLocation%16)){
+            xValueMovement = null;
+        }
+
+        System.out.println("XValueMovement: " + xValueMovement + "\tYValueMovement: " + yValueMovement);
+
+
+        //create list of Move To Commands
+        ArrayList<Command> MoveToList = new ArrayList<>();
+        long placeholderDelay = 800*2; //longest possible delay for moving
+        Direction currentDirection = tank.getDirection();
+
+        //special cases: on same y or x coordinate, or both
+        if(xValueMovement == null && yValueMovement == null){
+            //trying to move to current coordinates
+            return true;
+        }
+        //must move in both the x and y coordinate
+        else if(xValueMovement != null && yValueMovement != null){
+
+            if(yValueMovement == Direction.Up){
+                //queue up moves to get the tank to face up
+                if(currentDirection == Direction.Down){
+
+                    MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Up, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tank, Direction.Up, this, placeholderDelay));
+                }
+            }
+            else if(yValueMovement == Direction.Down){
+                //queue up moves to get the tank to face down
+                if(currentDirection == Direction.Up){
+                    MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Down, this, placeholderDelay));
+                }
+                else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
+                    MoveToList.add(new TurnCommand(tank, Direction.Down, this, placeholderDelay));
+                }
+
+            }
+
+            int yValueDistance = Math.abs((currentLocation/16) - (desiredLocation/16));
+
+            //System.out.println("YValueDistance: " + yValueDistance);
+
+            for(int i = 0; i < yValueDistance; i++){
+                if(yValueMovement == Down){
+                    MoveToList.add(new MoveCommand(tank, Direction.Down, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tank, Direction.Up, this, placeholderDelay));
+                }
+            }
+
+            if(xValueMovement == Left){
+                MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
+            }
+            else{
+                MoveToList.add(new TurnCommand(tank, Direction.Right, this, placeholderDelay));
+            }
+
+            int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
+            for(int i = 0; i < xValueDistance; i++){
+                if(xValueMovement == Left){
+                    MoveToList.add(new MoveCommand(tank, Direction.Left, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tank, Direction.Right, this, placeholderDelay));
+                }
+            }
+
+        }
+        //only need to move in the x coordinate
+        else if(xValueMovement != null && yValueMovement == null){
+            //only moving horizontally
+
+            if(xValueMovement == Left){
+                if(currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                }
+                else if(currentDirection == Up || currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                }
+            }
+            else if(xValueMovement == Right){
+
+                if(xValueMovement == Left){
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Right, this, placeholderDelay));
+                }
+                else if(currentDirection == Up || currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tank, Right, this, placeholderDelay));
+                }
+
+            }
+
+            int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
+            for(int i = 0; i < xValueDistance; i++){
+                if(xValueMovement == Left){
+                    MoveToList.add(new MoveCommand(tank, Direction.Left, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tank, Direction.Right, this, placeholderDelay));
+                }
+            }
+
+        }
+        //only need to move vertically
+        else if(xValueMovement == null && yValueMovement != null){
+            if(yValueMovement == Up){
+                if(currentDirection == Down){
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                }
+                else if(currentDirection == Left || currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                }
+            }
+            else if(yValueMovement == Down){
+                if(currentDirection == Up){
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Down, this, placeholderDelay));
+                }
+                else if(currentDirection == Left || currentDirection == Right){
+                    MoveToList.add(new TurnCommand(tank, Down, this, placeholderDelay));
+                }
+            }
+
+            int yValueDistance = Math.abs((currentLocation/16) - (desiredLocation/16));
+            for(int i = 0; i < yValueDistance; i++){
+                if(yValueMovement == Down){
+                    MoveToList.add(new MoveCommand(tank, Direction.Down, this, placeholderDelay));
+                }
+                else{
+                    MoveToList.add(new MoveCommand(tank, Direction.Up, this, placeholderDelay));
+                }
+            }
+
+        }
+
+
+        CommandInterpreter commandInterpreter = new CommandInterpreter(MoveToList);
+        return commandInterpreter.executeSequence();
+
     }
 
     /**

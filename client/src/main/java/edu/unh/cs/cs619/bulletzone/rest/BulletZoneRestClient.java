@@ -70,4 +70,8 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
 
     @Delete("/{tankId}/leave")
     BooleanWrapper leave(@Path long tankId);
+
+    @Put("/{tankId}/moveTo/{desiredLocation}")
+    BooleanWrapper moveTo(@Path long tankId, @Path int desiredLocation);
+
 }
