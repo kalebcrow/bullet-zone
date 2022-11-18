@@ -16,7 +16,7 @@ public interface GameRepository {
 
     Tank[] join(String ip);
 
-    int[][] getGrid();
+    int[][][] getGrid();
 
     LinkedList<GridEvent> getEvents(Long time);
 
@@ -32,7 +32,7 @@ public interface GameRepository {
     boolean mine(long tankId)
             throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType;
 
-    public void leave(long tankId)
+    public void leave(long[] tankId)
             throws TankDoesNotExistException;
 
     boolean build(long tankId, int type)

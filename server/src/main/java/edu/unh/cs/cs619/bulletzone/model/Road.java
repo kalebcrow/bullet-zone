@@ -1,20 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 public class Road extends FieldEntity {
-    int destructValue, pos;
+    int pos;
 
-    public Road(){
-        this.destructValue = 1000;
-    }
+    public Road(){}
 
-    public Road(int destructValue, int pos){
-        this.destructValue = destructValue;
+    public Road(int pos){
         this.pos = pos;
-    }
-
-    public Road(int destructValue)
-    {
-        this.destructValue = destructValue;
     }
 
     @Override
@@ -24,7 +16,7 @@ public class Road extends FieldEntity {
 
     @Override
     public int getIntValue() {
-        return destructValue;
+        return 0;
     }
 
     @Override

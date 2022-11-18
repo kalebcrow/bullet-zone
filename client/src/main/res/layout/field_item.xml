@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="5dp"
-    android:layout_height="5dp"
-    android:background="@android:color/holo_green_dark"
-    android:contentDescription="@string/griditem"
-    android:layout_margin="0dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="51px"
+    android:layout_height="51px"
     android:scaleType="fitXY"
-    android:adjustViewBounds="true"/>
+    android:adjustViewBounds="true">
+    <ImageView
+        android:id="@+id/terraintile"
+        android:layout_width="51px"
+        android:layout_height="51px"
+        android:translationZ="0dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/terrain" />
+    <ImageView
+        android:id="@+id/itemtile"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:translationZ="1dp"
+        android:contentDescription="@string/item" />
+    <ImageView
+        android:id="@+id/vehicletile"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:translationZ="2dp"
+        android:contentDescription="@string/vehicle" />
+</RelativeLayout>

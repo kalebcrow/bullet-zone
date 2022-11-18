@@ -4,7 +4,7 @@ import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 
-public class TankTile extends BlankTile {
+public class TankTile extends GroundTile {
 
 
     /**

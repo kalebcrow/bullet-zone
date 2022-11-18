@@ -30,10 +30,10 @@ public class HttpLoggerInterceptor implements ClientHttpRequestInterceptor {
         if (req.getMethod().equals("GET")) {
             ObjectMapper mapper = new ObjectMapper();
             GridWrapper gw = mapper.readValue(res.getBody(), GridWrapper.class);
-            int[][] grid = gw.getGrid();
+            int[][][] grid = gw.getGrid();
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
-                    System.out.print(grid[i][j]);
+                    System.out.print(grid[i][j][0]);
                 }
                 System.out.println("");
             }

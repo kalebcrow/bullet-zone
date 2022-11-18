@@ -2,7 +2,7 @@ package edu.unh.cs.cs619.bulletzone.game.tiles;
 
 import edu.unh.cs.cs619.bulletzone.R;
 
-public class ObstacleTile extends BlankTile {
+public class ObstacleTile extends GroundTile {
 
     /**
      *
@@ -12,6 +12,7 @@ public class ObstacleTile extends BlankTile {
     public ObstacleTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
         this.location = location;
+        this.jsonValue = JsonValue;
         int row = location / 16 + 1;
         int column = location % 16 + 1;
         String r = String.valueOf(row);
