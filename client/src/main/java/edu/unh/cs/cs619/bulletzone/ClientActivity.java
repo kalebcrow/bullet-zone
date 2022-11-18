@@ -75,7 +75,8 @@ public class ClientActivity extends Activity {
      * User identifier
      */
     private long userID = -1;
-    boolean loginScreenLoaded = false;
+    // TODO make work
+    boolean testing = true;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -184,7 +185,11 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonJoin)
     void startGame() {
         // this should only work if the user if logged in
-        if (userID > 0) {
+        if (userID > 0 || testing) {
+            if (testing) {
+                // set the garage anyway
+                textViewGarage.setText("Using user id: " + userID);
+            }
             afterViewInjection();
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
@@ -315,7 +320,7 @@ public class ClientActivity extends Activity {
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
         startActivityForResult(intent, 1);
-        loginScreenLoaded = true; // for some reason is not loading right now
+        testing = false; // for some reason is not loading right now
     }
 
     /**
