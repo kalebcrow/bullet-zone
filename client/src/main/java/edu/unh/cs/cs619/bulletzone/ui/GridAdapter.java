@@ -90,15 +90,11 @@ public class GridAdapter extends BaseAdapter {
 
                 if (mEntities[position][0] != null) {
                     // check cell is not null then set terrain
-                    terrain.setImageResource(mEntities[position][0].getResourceID());
-                    terrain.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
-                    // check for roads
+                    terrain.setImageResource(mEntities[position][0].getResourceID());//terrain.setBackgroundResource(mEntities[position].getTerrain());
+                    // check for improvements (just walls right now)
                     item.setImageResource(mEntities[position][1].getResourceID());
-                    item.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
                     // check for improvements (just walls right now)
                     entity.setImageResource(mEntities[position][2].getResourceID());
-                    entity.setLayoutParams(new RelativeLayout.LayoutParams(50,50));
-
                     //terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
                     entity.setRotation(mEntities[position][2].getOrientation()/2 * 90);
 

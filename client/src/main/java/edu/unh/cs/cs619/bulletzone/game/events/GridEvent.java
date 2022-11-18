@@ -12,6 +12,16 @@ public class GridEvent implements Serializable {
     protected int pos = -1;
     protected int[] resources; // TODO i added this variable so it builds, but it still crashes when you try to move
     protected String terrain = "";
+    protected int buildType = -1;
+    protected int[] resources = new int[]{0, 0, 0};
+
+    public int getBuildType() {
+        return buildType;
+    }
+
+    public void setBuildType(int buildType) {
+        this.buildType = buildType;
+    }
 
     /**
      *
@@ -119,6 +129,14 @@ public class GridEvent implements Serializable {
      */
     public Long getTime(){
         return this.time;
+    }
+
+    public int[] getResources() {
+        return resources;
+    }
+
+    public void setResources(int[] resources) {
+        this.resources = resources;
     }
 
 

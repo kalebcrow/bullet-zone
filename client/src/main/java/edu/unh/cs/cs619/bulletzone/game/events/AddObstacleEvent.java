@@ -20,6 +20,13 @@ public class AddObstacleEvent extends ExecutableEvent {
     public void execute(Bus bus) {
         Integer location = pos;
         Integer orientation = 0;
-        bus.post(new TileUpdateEvent(location, new ObstacleTile(ID, location)));
+        if (buildType == 1) {
+            buildType = 0;
+        } else if (buildType == 2) {
+            buildType = 2000;
+        } else {
+            buildType = 1000;
+        }
+        bus.post(new TileUpdateEvent(location, new ObstacleTile(buildType, location)));
     }
 }
