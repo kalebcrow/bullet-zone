@@ -66,6 +66,8 @@ public class ClientActivity extends Activity {
 
     Button buttonAction;
 
+    boolean loggedIn = false;
+
     /**
      * Remote tank identifier
      */
@@ -223,6 +225,7 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+            loggedIn = true;
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
@@ -323,9 +326,13 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonLogin)
     void login() {
-        Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivityForResult(intent, 1);
-        testing = false; // for some reason is not loading right now
+        if (!loggedIn) {
+            Intent intent = new Intent(this, AuthenticateActivity_.class);
+            startActivityForResult(intent, 1);
+            testing = false; // for some reason is not loading right now
+            loggedIn = true;
+            startGame();
+        }
     }
 
     /**
