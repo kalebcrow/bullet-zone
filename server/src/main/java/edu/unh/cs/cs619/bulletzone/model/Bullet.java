@@ -88,7 +88,7 @@ public class Bullet extends FieldEntity {
 
     //does bullet traveling loop
     private final Timer timer = new Timer();
-    public void travel(){
+    public void travel(Tank tank){
         int finalBulletId = bulletId;
         final Long finalTankID = tank.getId();
         final boolean[] fireIndicator = {true};
