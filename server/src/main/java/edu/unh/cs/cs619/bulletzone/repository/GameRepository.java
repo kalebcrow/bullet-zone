@@ -14,7 +14,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public interface GameRepository {
 
-    Tank[] join(String ip);
+    Tank[] join(long userID, String ip);
 
     int[][][] getGrid();
 
@@ -40,6 +40,9 @@ public interface GameRepository {
 
     boolean dismantle(long tankId)
             throws TankDoesNotExistException;
+
+    boolean moveTo(long tankId, int desiredLocation)
+        throws TankDoesNotExistException;
 
     Game getGame()
             throws GameDoesNotExistException;

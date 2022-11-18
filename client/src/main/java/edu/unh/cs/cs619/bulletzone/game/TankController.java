@@ -175,9 +175,9 @@ public class TankController {
     }
 
     @Background
-    public void joinGame(){
+    public void joinGame(long userID){
         try {
-            tankID = restClient.join().getResult();
+            tankID = restClient.join(userID).getResult();
             currentTankID = tankID[0];
         } catch (Exception e) {
             Log.d("Yeah", e.toString());

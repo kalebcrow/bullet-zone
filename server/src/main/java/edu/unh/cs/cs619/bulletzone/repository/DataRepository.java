@@ -55,7 +55,6 @@ public class DataRepository {
                 GameItem tank = bzdata.items.create(bzdata.types.TankFrame);
                 bzdata.items.addItemToContainer(tank, garage);
                 bzdata.permissions.setOwner(tank, user);
-
                 // create a bank account for the user
                 BankAccount account = bzdata.accounts.create();
                 bzdata.accounts.modifyBalance(account, 1000);
@@ -79,6 +78,17 @@ public class DataRepository {
             return bankAccount.getBalance();
         } else {
             return 0;
+        }
+    }
+
+    public boolean modifyAccountBalance(String username, double amount) {
+        GameUser user = bzdata.users.getUser(username);
+        if (user != null) {
+            BankAccount account = user.getOwnedAccounts().iterator().next();
+            bzdata.accounts.modifyBalance(account, amount);
+            return true;
+        } else {
+            return false;
         }
     }
 

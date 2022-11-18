@@ -45,13 +45,13 @@ class GamesController {
         this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "{userID}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    ResponseEntity<LongArrayWrapper> join(HttpServletRequest request) {
+    ResponseEntity<LongArrayWrapper> join(@PathVariable long userID, HttpServletRequest request) {
         Tank[] tank;
         try {
-            tank = gameRepository.join(request.getRemoteAddr());
+            tank = gameRepository.join(userID, request.getRemoteAddr());
             Long[] tankIds = new Long[3];
             for(int i=0;i<3;i++){
                 tankIds[i] = tank[i].getId();
@@ -171,4 +171,15 @@ class GamesController {
                 HttpStatus.OK
         );
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/moveTo/{desiredLocation}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> moveTo(@PathVariable long tankId, @PathVariable int desiredLocation)
+            throws TankDoesNotExistException{
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.moveTo(tankId, desiredLocation)),
+                HttpStatus.OK
+        );
+    }
+
 }
