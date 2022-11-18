@@ -99,8 +99,6 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
-        boardView.setGarageText(textViewGarage);
-
     }
 
     @Override
@@ -128,6 +126,8 @@ public class ClientActivity extends Activity {
     protected void afterViewInjection() {
         joinAsync();
         SystemClock.sleep(500);
+        boardView.setGarageText(textViewGarage);
+        boardView.healthText = findViewById(R.id.HealthText);
         gridView.setAdapter(mGridAdapter);
         boardView.setGridAdapter(mGridAdapter);
         commandInterpreter.setPaused(false);

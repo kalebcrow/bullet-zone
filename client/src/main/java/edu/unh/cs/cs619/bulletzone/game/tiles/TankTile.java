@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.tiles;
 
+import android.util.Log;
+
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
@@ -54,6 +56,7 @@ public class TankTile extends GroundTile {
         boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(ID)));
         determineResourceID(friendly);
         orientation = findOrientation(JsonValue);
+        health = findHealth(JsonValue);
 
         if (friendly) {
             TankController.getTankController().setTankOrientation(orientation, ID % 3);
@@ -107,11 +110,17 @@ public class TankTile extends GroundTile {
         String number = String.valueOf(JSONValue);
         char[] digits1 = number.toCharArray();
         int offset = 6;
-        if (resourceID != R.drawable.bullet) {
-            offset = 7;
-        }
         return Integer.parseInt(String.copyValueOf(digits1, offset, 1));
     }
+
+    private Integer findHealth(Integer JSONValue) {
+        String number = String.valueOf(JSONValue);
+        Log.d("Tank Health", "Json Value " + number);
+        char[] digits1 = number.toCharArray();
+        int offset = 4;
+        return Integer.parseInt(String.copyValueOf(digits1, offset, 3));
+    }
+
 
     private void determineResourceID(boolean freindly) {
         if (freindly) {

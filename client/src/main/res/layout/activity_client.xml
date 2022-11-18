@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:andriod="http://schemas.android.com/apk/res-auto"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,8 +37,8 @@
             android:layout_height="377dp"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="0dp"
-            android:inputType="textMultiLine"
             android:text="Health"
+            android:inputType="text|textMultiLine|textNoSuggestions"
             android:visibility="invisible" />
 
     </RelativeLayout>

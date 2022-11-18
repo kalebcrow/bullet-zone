@@ -6,11 +6,15 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import java.util.HashMap;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
@@ -53,6 +57,7 @@ public class BoardView {
     }
 
     public TextView garageText;
+    public TextView healthText;
 
     /**
      *
@@ -170,6 +175,18 @@ public class BoardView {
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location][1] = event.movedTile;
         gridAdapter.updateList(tiles);
+        StringBuilder health = new StringBuilder();
+        health.append("Health\n");
+
+        TankList tankList = TankList.getTankList();
+        TankController tankController = TankController.getTankController();
+
+        for (int i = 0; i < tankController.getTankID().length; i++) {
+            TankTile tile = (TankTile) tankList.getLocation(Math.toIntExact(tankController.getTankID()[i]));
+            health.append("TankID: ").append(tile.getID()).append(" Health ").append(tile.health).append("\n");
+        }
+
+        healthText.setText(health.toString());
     }
 
     /**
