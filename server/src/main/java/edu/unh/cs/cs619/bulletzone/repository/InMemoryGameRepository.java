@@ -107,45 +107,57 @@ public class InMemoryGameRepository implements GameRepository {
                 game.addTank(ip, tanks[1], "miner");
                 game.addTank(ip, tanks[2], "builder");
 
-                Random random = new Random();
-                int x;
-                int y;
+                if(ip == ""){
+                    FieldHolder place = game.getHolderGrid().get(16);
+                    place.setFieldEntity(tanks[0]);
+                    tanks[0].setParent(place);
+                    place = game.getHolderGrid().get(33);
+                    place.setFieldEntity(tanks[1]);
+                    tanks[1].setParent(place);
+                    place = game.getHolderGrid().get(251);
+                    place.setFieldEntity(tanks[2]);
+                    tanks[2].setParent(place);
+                } else {
 
-                // This may run for forever.. If there is no free space. XXX
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[0]);
-                        tanks[0].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, tankId));
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[1]);
-                        tanks[1].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, minerID));
-                for (; ; ) {
-                    x = random.nextInt(FIELD_DIM);
-                    y = random.nextInt(FIELD_DIM);
-                    FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
-                        fieldElement.setFieldEntity(tanks[2]);
-                        tanks[2].setParent(fieldElement);
-                        break;
-                    }
-                }
-                game.addEvent(new AddTankEvent(x, y, builderID));
+                    Random random = new Random();
+                    int x;
+                    int y;
 
+                    // This may run for forever.. If there is no free space. XXX
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[0]);
+                            tanks[0].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, tankId));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[1]);
+                            tanks[1].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, minerID));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent()) {
+                            fieldElement.setFieldEntity(tanks[2]);
+                            tanks[2].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    game.addEvent(new AddTankEvent(x, y, builderID));
+                }
             } else {
                 HashMap<String,Long> map = game.getTanks(ip);
                 tanks[0] = game.getTank(map.get("tank"));
@@ -301,9 +313,21 @@ public class InMemoryGameRepository implements GameRepository {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 }
             }
             return isCompleted;
@@ -464,7 +488,6 @@ public class InMemoryGameRepository implements GameRepository {
     {
         synchronized (this.monitor) {
         /*
-        TO DO: timing for build and stop movement while building
         types:
         1 - Road
         2 - Wall
