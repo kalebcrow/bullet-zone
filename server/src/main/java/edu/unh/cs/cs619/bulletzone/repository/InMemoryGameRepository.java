@@ -301,9 +301,21 @@ public class InMemoryGameRepository implements GameRepository {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    if (tank.getLife() <= 0 ){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
+                        tank.getParent().clearField();
+                        tank.setParent(null);
+                    }
                 }
             }
             return isCompleted;
@@ -464,7 +476,6 @@ public class InMemoryGameRepository implements GameRepository {
     {
         synchronized (this.monitor) {
         /*
-        TO DO: timing for build and stop movement while building
         types:
         1 - Road
         2 - Wall
