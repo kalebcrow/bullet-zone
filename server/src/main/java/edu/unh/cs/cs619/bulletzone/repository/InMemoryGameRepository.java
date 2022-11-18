@@ -720,21 +720,21 @@ public class InMemoryGameRepository implements GameRepository {
                 //queue up moves to get the tank to face up
                 if(currentDirection == Direction.Down){
 
-                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Up, this, placeholderDelay));
                 }
                 else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
-                    MoveToList.add(new TurnCommand(tankId, Direction.Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Up, this, placeholderDelay));
                 }
             }
             else if(yValueMovement == Direction.Down){
                 //queue up moves to get the tank to face down
                 if(currentDirection == Direction.Up){
-                    MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Down, this, placeholderDelay));
                 }
                 else if(currentDirection == Direction.Left || currentDirection == Direction.Right){
-                    MoveToList.add(new TurnCommand(tankId, Direction.Down, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Direction.Down, this, placeholderDelay));
                 }
 
             }
@@ -745,27 +745,27 @@ public class InMemoryGameRepository implements GameRepository {
 
             for(int i = 0; i < yValueDistance; i++){
                 if(yValueMovement == Down){
-                    MoveToList.add(new MoveCommand(tankId, Direction.Down, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Down, this, placeholderDelay));
                 }
                 else{
-                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Up, this, placeholderDelay));
                 }
             }
 
             if(xValueMovement == Left){
-                MoveToList.add(new TurnCommand(tankId, Direction.Left, this, placeholderDelay));
+                MoveToList.add(new TurnCommand(tank, Direction.Left, this, placeholderDelay));
             }
             else{
-                MoveToList.add(new TurnCommand(tankId, Direction.Right, this, placeholderDelay));
+                MoveToList.add(new TurnCommand(tank, Direction.Right, this, placeholderDelay));
             }
 
             int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
             for(int i = 0; i < xValueDistance; i++){
                 if(xValueMovement == Left){
-                    MoveToList.add(new MoveCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Left, this, placeholderDelay));
                 }
                 else{
-                    MoveToList.add(new MoveCommand(tankId, Direction.Right, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Right, this, placeholderDelay));
                 }
             }
 
@@ -776,21 +776,21 @@ public class InMemoryGameRepository implements GameRepository {
 
             if(xValueMovement == Left){
                 if(currentDirection == Right){
-                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
                 }
                 else if(currentDirection == Up || currentDirection == Down){
-                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
                 }
             }
             else if(xValueMovement == Right){
 
                 if(xValueMovement == Left){
-                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Right, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Right, this, placeholderDelay));
                 }
                 else if(currentDirection == Up || currentDirection == Down){
-                    MoveToList.add(new TurnCommand(tankId, Right, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Right, this, placeholderDelay));
                 }
 
             }
@@ -798,10 +798,10 @@ public class InMemoryGameRepository implements GameRepository {
             int xValueDistance = Math.abs((currentLocation%16) - (desiredLocation%16));
             for(int i = 0; i < xValueDistance; i++){
                 if(xValueMovement == Left){
-                    MoveToList.add(new MoveCommand(tankId, Direction.Left, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Left, this, placeholderDelay));
                 }
                 else{
-                    MoveToList.add(new MoveCommand(tankId, Direction.Right, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Right, this, placeholderDelay));
                 }
             }
 
@@ -810,30 +810,30 @@ public class InMemoryGameRepository implements GameRepository {
         else if(xValueMovement == null && yValueMovement != null){
             if(yValueMovement == Up){
                 if(currentDirection == Down){
-                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
                 }
                 else if(currentDirection == Left || currentDirection == Right){
-                    MoveToList.add(new TurnCommand(tankId, Up, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Up, this, placeholderDelay));
                 }
             }
             else if(yValueMovement == Down){
                 if(currentDirection == Up){
-                    MoveToList.add(new TurnCommand(tankId, Left, this, placeholderDelay));
-                    MoveToList.add(new TurnCommand(tankId, Down, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Left, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Down, this, placeholderDelay));
                 }
                 else if(currentDirection == Left || currentDirection == Right){
-                    MoveToList.add(new TurnCommand(tankId, Down, this, placeholderDelay));
+                    MoveToList.add(new TurnCommand(tank, Down, this, placeholderDelay));
                 }
             }
 
             int yValueDistance = Math.abs((currentLocation/16) - (desiredLocation/16));
             for(int i = 0; i < yValueDistance; i++){
                 if(yValueMovement == Down){
-                    MoveToList.add(new MoveCommand(tankId, Direction.Down, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Down, this, placeholderDelay));
                 }
                 else{
-                    MoveToList.add(new MoveCommand(tankId, Direction.Up, this, placeholderDelay));
+                    MoveToList.add(new MoveCommand(tank, Direction.Up, this, placeholderDelay));
                 }
             }
 

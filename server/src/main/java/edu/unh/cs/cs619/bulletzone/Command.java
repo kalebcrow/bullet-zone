@@ -1,18 +1,20 @@
 package edu.unh.cs.cs619.bulletzone;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class Command {
 
-    long tankID;
+    Tank tank;
     Direction direction;
     InMemoryGameRepository gameRepository;
     long delay;
+    final String ConcreteCommandType = "Command";
 
-    public Command(long tankID, Direction direction, InMemoryGameRepository gameRepository, long delay){
+    public Command(Tank tank, Direction direction, InMemoryGameRepository gameRepository, long delay){
 
-        this.tankID = tankID;
+        this.tank = tank;
         this.direction = direction;
         this.gameRepository = gameRepository;
         this.delay = delay;
@@ -21,6 +23,10 @@ public class Command {
 
     public boolean execute() {
         return false;
+    }
+
+    public String getConcreteCommandType(){
+        return ConcreteCommandType;
     }
 
 }

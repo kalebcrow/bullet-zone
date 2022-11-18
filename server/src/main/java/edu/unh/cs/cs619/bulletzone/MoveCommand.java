@@ -4,19 +4,23 @@ import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class MoveCommand extends Command {
 
-    public MoveCommand(long tankID, Direction direction, InMemoryGameRepository gameRepository, long delay){
-        super(tankID, direction, gameRepository, delay);
+    final String ConcreteCommandType = "Move";
+
+    public MoveCommand(Tank tank, Direction direction, InMemoryGameRepository gameRepository, long delay){
+        super(tank, direction, gameRepository, delay);
     }
 
+    @Override
     public boolean execute(){
 
         boolean returnVariable = false;
         try {
-            returnVariable = gameRepository.move(tankID, direction);
+            returnVariable = gameRepository.move(tank.getId(), direction);
         } catch (TankDoesNotExistException e) {
             e.printStackTrace();
         } catch (IllegalTransitionException e) {
@@ -25,8 +29,6 @@ public class MoveCommand extends Command {
             e.printStackTrace();
         }
 
-        System.out.println("Move command");
-
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
@@ -34,6 +36,11 @@ public class MoveCommand extends Command {
         }
 
         return returnVariable;
+    }
+
+    @Override
+    public String getConcreteCommandType(){
+        return ConcreteCommandType;
     }
 
 }

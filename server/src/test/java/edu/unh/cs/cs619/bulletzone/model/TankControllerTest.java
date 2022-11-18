@@ -244,7 +244,7 @@ public class TankControllerTest {
     @Test
     public void moveToTest(){
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(ip);
+        Tank[] tanks = IMGR.join("");
         int[][] grid2d = IMGR.getGrid();
 
         System.out.println("Controlling tank with id " + tanks[0].getId());
@@ -275,6 +275,8 @@ public class TankControllerTest {
             }
             System.out.println();
         }
+
+        /*
 
         //strictly horizontal movement
         try {
@@ -341,6 +343,8 @@ public class TankControllerTest {
             }
             System.out.println();
         }
+
+         */
 
     }
 
