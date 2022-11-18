@@ -313,11 +313,18 @@ public class InMemoryGameRepository implements GameRepository {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    game.addEvent(new DamageEvent(Math.toIntExact(newTank.getId()), newTank.getLife()));
                     if (tank.getLife() <= 0 ){
                         String terrain = tank.getParent().getTerrain().toString();
                         game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
                         tank.getParent().clearField();
                         tank.setParent(null);
+                    }
+                    if (newTank.getLife() <= 0){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(newTank.getId(), terrain));
+                        newTank.getParent().clearField();
+                        newTank.setParent(null);
                     }
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
