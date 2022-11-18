@@ -208,6 +208,8 @@ public class ClientActivity extends Activity {
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
         Button buttonReplay = findViewById(R.id.buttonReplay);
         Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+        TextView health= findViewById(R.id.HealthText);
+        health.setVisibility(View.VISIBLE);
         buttonAction = findViewById(R.id.buttonAction);
         Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
         buttonRespawn.setVisibility(View.VISIBLE);
