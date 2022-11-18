@@ -66,6 +66,8 @@ public class ClientActivity extends Activity {
     @ViewById
     protected TextView textViewGarage;
 
+    protected TextView textViewMoveTo;
+
     @Bean
     TankController tankController;
 
@@ -76,6 +78,7 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
+    private int selectedCoordinates = -1;
 
     @Bean
     BoardView boardView;
@@ -207,9 +210,9 @@ public class ClientActivity extends Activity {
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
         Button buttonReplay = findViewById(R.id.buttonReplay);
         Button buttonReplay1 = findViewById(R.id.buttonReplay1);
-        Button buttonMoveTo = findViewById(R.id.moveToButton);
-
+        textViewMoveTo = (TextView) findViewById(R.id.moveToTextView);
         buttonAction = findViewById(R.id.buttonAction);
+        Button moveToButton = (Button) findViewById(R.id.moveToButton);
         Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
         buttonRespawn.setVisibility(View.VISIBLE);
         buttonLeft.setVisibility(View.VISIBLE);
@@ -221,6 +224,9 @@ public class ClientActivity extends Activity {
         buttonJoin.setVisibility(View.INVISIBLE);
         buttonReplay.setVisibility(View.VISIBLE);
         buttonReplay1.setVisibility(View.INVISIBLE);
+        textViewMoveTo.setVisibility(View.VISIBLE);
+        moveToButton.setVisibility(View.VISIBLE);
+
         started = 1;
 
         vehicleSpinner.setVisibility(View.VISIBLE);
@@ -418,4 +424,29 @@ public class ClientActivity extends Activity {
 
 
     }
+
+    @ItemClick(R.id.gridView)
+    void gridSelection(int position){
+
+        selectedCoordinates = position;
+        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        Log.d(TAG, "Grid Selection of " + position);
+
+    }
+
+    @Click(R.id.moveToButton)
+    void moveToLocation(){
+
+        if(selectedCoordinates == -1){
+            Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
+        }
+        else{
+
+            tankController.moveTo(selectedCoordinates);
+
+        }
+
+    }
+
+
 }

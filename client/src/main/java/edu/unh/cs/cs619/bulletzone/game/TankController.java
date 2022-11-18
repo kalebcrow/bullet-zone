@@ -138,6 +138,9 @@ public class TankController {
             tankID = s[0];
             minerID = s[1];
             builderID = s[2];
+
+            Log.d("TankController", "Tank: " + tankID + "Miner: " + minerID + "Builder: " + builderID);
+
             //tankID = restClient.join().getResult();
         } catch (Exception e) {
 
@@ -165,6 +168,7 @@ public class TankController {
         leaveArray[0] = tankID;
         leaveArray[1] = minerID;
         leaveArray[2] = builderID;
+
         restClient.leave(leaveArray);
 
     }
