@@ -12,6 +12,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
@@ -445,17 +448,21 @@ public class InMemoryGameRepository implements GameRepository {
                 if (!this.game.getTanks().containsKey(tankId[i])) {
                     throw new TankDoesNotExistException(tankId[i]);
                 }
+                
+                GameUserRepository users = new GameUserRepository();
+                GameUser gu = users.getUser(1);
+                gu.getUsername();
 
-            System.out.println("leave() called, tank ID: " + tankId[i]);
+                System.out.println("leave() called, tank ID: " + tankId[i]);
 
-            Tank tank = game.getTanks().get(tankId[i]);
-            FieldHolder parent = tank.getParent();
-            parent.clearField();
-            if(tank.getLife() > 0) {
-                game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+                Tank tank = game.getTanks().get(tankId[i]);
+                FieldHolder parent = tank.getParent();
+                parent.clearField();
+                if(tank.getLife() > 0) {
+                    game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+                }
+                game.removeTank(tankId[i]);
             }
-            game.removeTank(tankId[i]);
-        }
         }
     }
 
