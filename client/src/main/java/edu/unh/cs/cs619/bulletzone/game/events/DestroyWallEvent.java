@@ -18,7 +18,21 @@ public class DestroyWallEvent extends  ExecutableEvent {
      * runs the command updating the board
      */
     public void execute(Bus bus) {
+        int jsonValue = getJSONValueFromString(terrain);
 
-         bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(0, pos)));
+        bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(jsonValue, pos)));
+    }
+
+    private Integer getJSONValueFromString(String terrain) {
+        // using given son values
+        if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
     }
 }

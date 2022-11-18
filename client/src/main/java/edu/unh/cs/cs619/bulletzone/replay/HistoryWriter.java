@@ -16,9 +16,9 @@ public class HistoryWriter {
 
     LinkedList<GridEvent> history;
     Context context;
-    int[][] array;
+    int[][][] array;
 
-    public HistoryWriter(LinkedList<GridEvent> history, int[][] array, Context context) {
+    public HistoryWriter(LinkedList<GridEvent> history, int[][][] array, Context context) {
         this.array = array;
         this.history = history;
         this.context = context;

@@ -16,6 +16,9 @@
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="LogInBeforePlayingMessage">Log in before playing!</string>
+    <string name="terrain" />
+    <string name="item">item</string>
+    <string name="vehicle">vehicle</string>
     <string-array name="vehicles_array">
         <item>Tank</item>
         <item>Miner</item>

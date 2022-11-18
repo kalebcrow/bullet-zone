@@ -111,6 +111,7 @@ public class ReplayActivity extends Activity {
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
         } else {
+            // TODO array[1] refers to the entities only (not terrain)
             boardView.setUsingJSON(historyReader.array);
             mGridAdapter.updateList(boardView.getTiles());
             historyInterpreter.setEventHistory(historyReader.history);

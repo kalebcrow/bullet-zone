@@ -49,22 +49,23 @@ public class TankController {
      * @throws LimitExceededException not used
      * @throws TankDoesNotExistException not used
      */
-    public boolean move(Tank tank, Direction direction)
+    public boolean move(Tank tank, Direction direction, double speed)
             throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-            checkNotNull(direction);
-            checkNotNull(tank);
+        checkNotNull(direction);
+        checkNotNull(tank);
 
-            if (tank.getLife() == 0) {
-                return false;
-            }
+        if (tank.getLife() == 0) {
+            return false;
+        }
 
-            //Check for bad getLastMoveTime
-            long millis = System.currentTimeMillis();
-            if (millis < tank.getLastMoveTime())
-                return false;
+        //Check for bad getLastMoveTime
+        long millis = System.currentTimeMillis();
+        if (millis < tank.getLastMoveTime())
+            return false;
 
-            //Causes tank to wait to move
-            tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
+        //Causes tank to wait to move
+        long terrainSpeed = (long) (speed + tank.getAllowedMoveInterval());
+        tank.setLastMoveTime(millis + terrainSpeed);
 
             //Check for tank moving forwards or backwards
         return isSameRelativeDirection(tank.getDirection(), direction);

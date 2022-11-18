@@ -13,7 +13,10 @@ import org.androidannotations.annotations.UiThread;
 import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
@@ -107,7 +110,7 @@ public class CommandInterpreter {
      */
      private ExecutableEvent interpret(GridEvent currEvent) {
          ExecutableEvent event;
-        switch (currEvent.getType()) {
+         switch (currEvent.getType()) {
              case "moveTank":
                  event = new MoveTankEvent(currEvent);
                  break;
@@ -127,17 +130,26 @@ public class CommandInterpreter {
              case "turn":
                  event = new TurnEvent(currEvent);
                  break;
-            case "addTank":
-                event = new AddTankEvent(currEvent);
-                break;
-            case "destroyBullet":
-                event = new DestroyBulletEvent(currEvent);
-                break;
-            default:
-                event = new ExecutableEvent(currEvent);
+             case "addTank":
+                 event = new AddTankEvent(currEvent);
+                 break;
+             case "destroyBullet":
+                 event = new DestroyBulletEvent(currEvent);
+                 break;
+             case "addObstacleEvent":
+                 event = new AddObstacleEvent(currEvent);
+                 break;
+             case "damageWallEvent":
+                 event = new DamageWallEvent(currEvent);
+                 break;
+             case "damageTankEvent":
+                 event = new DamageTankEvent(currEvent);
+                 break;
+             default:
+                 event = new ExecutableEvent(currEvent);
          }
 
-        return event;
+         return event;
      }
 
      public void pause() {

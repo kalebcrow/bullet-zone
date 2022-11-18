@@ -101,6 +101,7 @@ public class ClientActivity extends Activity {
         super.onStop();
         commandInterpreter.pause();
         if (commandInterpreter.getEventHistory().size() != 0) {
+            // TODO array[1] refers to the entities only (not terrain)
             HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         }
 
@@ -250,6 +251,7 @@ public class ClientActivity extends Activity {
     protected void onButtonReplay(){
         commandInterpreter.pause();
         gridPollTask.setPaused(true);
+        // TODO array[1] refers to the entities only (not terrain)
         HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);
