@@ -14,9 +14,19 @@ public class FieldHolder {
     private final Map<Direction, FieldHolder> neighbors = new HashMap<Direction, FieldHolder>();
 
     // should hold a terrain and also an item and a road
-    private Optional<FieldEntity> entityHolder = Optional.empty();
+    private Optional<FieldEntity> entityHolder = Optional.empty(); // holds vehicles, walls, and resources
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
     private Optional<FieldResource> roadHolder = Optional.empty(); // TODO create a FieldRoad, i dont know the json value so leaving it
+
+    private Optional<FieldEntity> improvementHolder = Optional.empty();
+    private int pos;
+
+    public FieldHolder(int i){
+        this.pos = i;
+    }
+
+    public FieldHolder(){}
+    public int getPos(){ return this.pos;}
 
     public void addNeighbor(Direction direction, FieldHolder fieldHolder) {
         neighbors.put(checkNotNull(direction), checkNotNull(fieldHolder));
@@ -65,6 +75,20 @@ public class FieldHolder {
                 "FieldEntity cannot be null."));
     }
 
+    public boolean isImprovementPresent(){
+        return improvementHolder.isPresent();
+    }
+
+    public FieldEntity getImprovement() {
+        return improvementHolder.get();
+    }
+
+    public void setImprovementEntity(FieldEntity entity) {
+        // set current entity
+        improvementHolder = Optional.of(checkNotNull(entity,
+                "FieldEntity cannot be null."));
+    }
+
     public void setTerrain(FieldTerrain terrain) {
         terrainHolder = Optional.of(checkNotNull(terrain,
                 "FieldEntity cannot be null."));
@@ -72,6 +96,10 @@ public class FieldHolder {
 
     public void clearField() {
         entityHolder = Optional.empty();
+    }
+
+    public void clearImprovement() {
+        improvementHolder = Optional.empty();
     }
 
 }

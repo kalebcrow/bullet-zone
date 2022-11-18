@@ -64,15 +64,60 @@ public class GameBoardBuilder {
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
     };
 
+    private String[][] testTerrainGrid = {
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 0
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 1
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 2
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 3
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 4
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 5
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 6
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 7
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 8
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 9
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 10
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 11
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 12
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 13
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 14
+            {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"}, // 15
+    };
+
+    private String[][] testImprovementGrid = {
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 1
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 2
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 3
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 4
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 5
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 9
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 10
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 11
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 12
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 13
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 14
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
+    };
+
     GameBoardBuilder(Game game)
     {
         this.game = game;
     }
 
-
     /**
      * Creates a new board from specified game returns if no current game
      */
+    public void testCreate(){
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
+        testCreateInitialGrid(game);
+    }
+
     public void create() {
             if(game == null) {
                 return;
@@ -195,6 +240,31 @@ public class GameBoardBuilder {
          */
     }
 
+    private void testCreateInitialGrid(Game game) {
+        // add each level of the square - terrain --> improvements --> vehicle
+        // for now just doing terrain
+        int count = 0;
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                if (testTerrainGrid[i][j].equals("M")) {
+                    game.getHolderGrid().get(count).setFieldTerrain(new Meadow());
+                } else if (testTerrainGrid[i][j].equals("H")) {
+                    game.getHolderGrid().get(count).setFieldTerrain(new Hilly());
+                } else if (testTerrainGrid[i][j].equals("R")) {
+                    game.getHolderGrid().get(count).setFieldTerrain(new Rocky());
+                }
+
+                if (testImprovementGrid[i][j].equals("I")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Wall());
+                } else if (testImprovementGrid[i][j].equals("D")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
+                }
+
+                count++;
+            }
+        }
+    }
+
     /**
      * Creates a 16*16 grid.
      * @param game specified game to create board for
@@ -203,7 +273,7 @@ public class GameBoardBuilder {
         synchronized (this.monitor) {
             game.getHolderGrid().clear();
             for (int i = 0; i < FIELD_DIM * FIELD_DIM; i++) {
-                game.getHolderGrid().add(new FieldHolder());
+                game.getHolderGrid().add(new FieldHolder(i));
             }
 
             FieldHolder targetHolder;

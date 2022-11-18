@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -15,9 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.Timer;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public final class Game {
     private static final Logger log = LoggerFactory.getLogger(Game.class);
@@ -34,7 +35,7 @@ public final class Game {
 
 
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, Long> playersIP = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, HashMap<String,Long>> playersIP = new ConcurrentHashMap<>();
 
     private final ConcurrentMap<Long, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
 
@@ -56,14 +57,19 @@ public final class Game {
         return holderGrid;
     }
 
-    public void addTank(String ip, Tank tank) {
+    public void addTank(String ip, Tank tank, String key) {
         synchronized (tanks) {
             tanks.put(tank.getId(), tank);
-            playersIP.put(ip, tank.getId());
+            if(!playersIP.containsKey(ip)){
+                playersIP.put(ip, new HashMap<>());
+            }
+            HashMap<String, Long> map = playersIP.get(ip);
+            map.put(key, tank.getId());
+            playersIP.put(ip, map);
         }
     }
 
-    public Tank getTank(int tankId) {
+    public Tank getTank(Long tankId) {
         return tanks.get(tankId);
     }
 
@@ -95,9 +101,9 @@ public final class Game {
         }
     }
 
-    public Tank getTank(String ip){
+    public HashMap<String,Long> getTanks(String ip){
         if (playersIP.containsKey(ip)){
-            return tanks.get(playersIP.get(ip));
+            return playersIP.get(ip);
         }
         return null;
     }
@@ -111,7 +117,7 @@ public final class Game {
         }
     }
 
-    public int[][][] getGrid3D() throws InterruptedException {
+    public int[][][] getGrid3D() {
         // start randomly spawning resources
         //getRandomResources(); // TODO add randomly spawning resources
 

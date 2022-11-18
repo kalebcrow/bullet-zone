@@ -2,29 +2,11 @@ package edu.unh.cs.cs619.bulletzone.repository;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicLong;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import edu.unh.cs.cs619.bulletzone.datalayer.BulletZoneData;
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
-import edu.unh.cs.cs619.bulletzone.datalayer.permission.OwnableEntity;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
-import edu.unh.cs.cs619.bulletzone.model.Bullet;
-import edu.unh.cs.cs619.bulletzone.model.Direction;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Game;
-import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
-import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Wall;
-import edu.unh.cs.cs619.bulletzone.web.AccountController;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -73,7 +55,6 @@ public class DataRepository {
                 GameItem tank = bzdata.items.create(bzdata.types.TankFrame);
                 bzdata.items.addItemToContainer(tank, garage);
                 bzdata.permissions.setOwner(tank, user);
-
                 // create a bank account for the user
                 BankAccount account = bzdata.accounts.create();
                 bzdata.accounts.modifyBalance(account, 1000);
@@ -97,6 +78,17 @@ public class DataRepository {
             return bankAccount.getBalance();
         } else {
             return 0;
+        }
+    }
+
+    public boolean modifyAccountBalance(String username, double amount) {
+        GameUser user = bzdata.users.getUser(username);
+        if (user != null) {
+            BankAccount account = user.getOwnedAccounts().iterator().next();
+            bzdata.accounts.modifyBalance(account, amount);
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -4,51 +4,32 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.Rest;
-import org.androidannotations.rest.spring.annotations.RestService;
-import org.androidannotations.rest.spring.api.RestClientHeaders;
-import org.androidannotations.api.BackgroundExecutor;
-
-import java.io.Serializable;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
-import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
-import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
-import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
-import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
-import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -89,6 +70,13 @@ public class ClientActivity extends Activity {
      * Remote tank identifier
      */
     //private long tankId = -1;
+
+    /**
+     * User identifier
+     */
+    private long userID = -1;
+    // TODO make work
+    boolean testing = true;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -145,7 +133,7 @@ public class ClientActivity extends Activity {
      */
     @Background
     void joinAsync() {
-        tankController.joinGame();
+        tankController.joinGame(userID);
         gridPollTask.setPaused(false);
         gridPollTask.doPoll();
         commandInterpreter.setPaused(false);
@@ -196,35 +184,44 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonJoin)
     void startGame() {
-        afterViewInjection();
-        Button buttonFire = findViewById(R.id.buttonFire);
-        Button buttonLeft = findViewById(R.id.buttonLeft);
-        Button buttonUp = findViewById(R.id.buttonUp);
-        Button buttonDown = findViewById(R.id.buttonDown);
-        Button buttonRight = findViewById(R.id.buttonRight);
-        Button buttonJoin = findViewById(R.id.buttonJoin);
-        Button buttonRespawn = findViewById(R.id.buttonRespawn);
-        Button buttonReplay = findViewById(R.id.buttonReplay);
-        Button buttonReplay1 = findViewById(R.id.buttonReplay1);
-        buttonAction = findViewById(R.id.buttonAction);
-        Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
-        buttonRespawn.setVisibility(View.VISIBLE);
-        buttonLeft.setVisibility(View.VISIBLE);
-        buttonFire.setVisibility(View.VISIBLE);
-        buttonUp.setVisibility(View.VISIBLE);
-        buttonDown.setVisibility(View.VISIBLE);
-        buttonRight.setVisibility(View.VISIBLE);
-        buttonAction.setVisibility(View.VISIBLE);
-        buttonJoin.setVisibility(View.INVISIBLE);
-        buttonReplay.setVisibility(View.VISIBLE);
-        buttonReplay1.setVisibility(View.INVISIBLE);
-        started = 1;
+        // this should only work if the user if logged in
+        if (userID > 0 || testing) {
+            if (testing) {
+                // set the garage anyway
+                textViewGarage.setText("Using user id: " + userID);
+            }
+            afterViewInjection();
+            Button buttonFire = findViewById(R.id.buttonFire);
+            Button buttonLeft = findViewById(R.id.buttonLeft);
+            Button buttonUp = findViewById(R.id.buttonUp);
+            Button buttonDown = findViewById(R.id.buttonDown);
+            Button buttonRight = findViewById(R.id.buttonRight);
+            Button buttonJoin = findViewById(R.id.buttonJoin);
+            Button buttonRespawn = findViewById(R.id.buttonRespawn);
+            Button buttonReplay = findViewById(R.id.buttonReplay);
+            Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+            buttonAction = findViewById(R.id.buttonAction);
+            Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
+            buttonRespawn.setVisibility(View.VISIBLE);
+            buttonLeft.setVisibility(View.VISIBLE);
+            buttonFire.setVisibility(View.VISIBLE);
+            buttonUp.setVisibility(View.VISIBLE);
+            buttonDown.setVisibility(View.VISIBLE);
+            buttonRight.setVisibility(View.VISIBLE);
+            buttonAction.setVisibility(View.VISIBLE);
+            buttonJoin.setVisibility(View.INVISIBLE);
+            buttonReplay.setVisibility(View.VISIBLE);
+            buttonReplay1.setVisibility(View.INVISIBLE);
+            started = 1;
 
-        vehicleSpinner.setVisibility(View.VISIBLE);
-        String[] vehicles = {"Tank", "Miner", "Builder"};
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vehicleSpinner.setAdapter(aa);
+            vehicleSpinner.setVisibility(View.VISIBLE);
+            String[] vehicles = {"Tank", "Miner", "Builder"};
+            ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            vehicleSpinner.setAdapter(aa);
+        } else {
+            textViewGarage.setText(R.string.LogInBeforePlayingMessage);
+        }
 
     }
 
@@ -323,6 +320,7 @@ public class ClientActivity extends Activity {
     void login() {
         Intent intent = new Intent(this, AuthenticateActivity_.class);
         startActivityForResult(intent, 1);
+        testing = false; // for some reason is not loading right now
     }
 
     /**
@@ -337,7 +335,11 @@ public class ClientActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                setGarageTextView(data);
+                // set the text view with user info
+                // also set the user id so you know if logged in or not
+                Bundle bundle = data.getExtras();
+                userID = bundle.getLong("userID");
+                setGarageTextView(bundle);
             }
         }
     }
@@ -345,11 +347,9 @@ public class ClientActivity extends Activity {
     /**
      * Set the garage text view with the user balance and garage.
      *
-     * @param data The intent data
+     * @param bundle The intent data converted to a bundle
      */
-    private void setGarageTextView(Intent data) {
-        Bundle bundle = data.getExtras();
-        long userID = bundle.getLong("userID");
+    private void setGarageTextView(Bundle bundle) {
         long bankAccountBalance = bundle.getLong("bankAccountBalance");
         String tank = bundle.getString("items");
         String message = "User ID: " + userID + "\n" +

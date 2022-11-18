@@ -3,7 +3,7 @@ package edu.unh.cs.cs619.bulletzone.util;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import edu.unh.cs.cs619.bulletzone.model.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public class EventWrapper implements Serializable {
 

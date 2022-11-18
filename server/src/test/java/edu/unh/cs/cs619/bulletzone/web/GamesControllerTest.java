@@ -5,24 +5,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import edu.unh.cs.cs619.bulletzone.BulletZoneServer;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
-import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
+import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 import static org.mockito.Mockito.mock;
@@ -72,11 +66,11 @@ public class GamesControllerTest {
         request.setRemoteAddr("100.0.0.0");
         repo = new InMemoryGameRepository();
         gamesController = new GamesController(repo);
-        ResponseEntity<LongWrapper> l = gamesController.join(request);
+        ResponseEntity<LongArrayWrapper> l = gamesController.join(0, request);
         //Leave game
-        gamesController.leave(0);
+        gamesController.leave(new long[]{0,1,2});
         //test that tank does not exist
-        gamesController.leave(0);
+        gamesController.leave(new long[]{0,1,2});
         //mockMvc.perform(delete("/{id}/leave",)).andExpect(status().isOk());
     }
 

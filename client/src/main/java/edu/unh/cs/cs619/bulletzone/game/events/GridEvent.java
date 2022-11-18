@@ -10,6 +10,7 @@ public class GridEvent implements Serializable {
     protected Integer ID = -1;
     protected byte direction = -1;
     protected int pos = -1;
+    protected int[] resources; // TODO i added this variable so it builds, but it still crashes when you try to move
     protected String terrain = "";
 
     /**

@@ -17,19 +17,19 @@ import org.springframework.web.client.RestClientException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.LinkedList;
-
 import edu.unh.cs.cs619.bulletzone.model.Direction;
-import edu.unh.cs.cs619.bulletzone.model.IllegalTransitionException;
-import edu.unh.cs.cs619.bulletzone.model.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankController;
-import edu.unh.cs.cs619.bulletzone.model.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.GameDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
 import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
+import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 @RestController
@@ -45,17 +45,21 @@ class GamesController {
         this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "{userID}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    ResponseEntity<LongWrapper> join(HttpServletRequest request) {
-        Tank tank;
+    ResponseEntity<LongArrayWrapper> join(@PathVariable long userID, HttpServletRequest request) {
+        Tank[] tank;
         try {
-            tank = gameRepository.join(request.getRemoteAddr());
-            log.info("Player joined: tankId={} IP={}", tank.getId(), request.getRemoteAddr());
+            tank = gameRepository.join(userID, request.getRemoteAddr());
+            Long[] tankIds = new Long[3];
+            for(int i=0;i<3;i++){
+                tankIds[i] = tank[i].getId();
+            }
+            log.info("Player joined: tankId={} IP={}", tank[0].getId(), request.getRemoteAddr());
 
-            return new ResponseEntity<LongWrapper>(
-                    new LongWrapper(tank.getId()),
+            return new ResponseEntity<LongArrayWrapper>(
+                    new LongArrayWrapper(tankIds),
                     HttpStatus.CREATED
             );
         } catch (RestClientException e) {
@@ -68,7 +72,7 @@ class GamesController {
     @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
-    ResponseEntity<GridWrapper> grid() throws InterruptedException {
+    ResponseEntity<GridWrapper> grid() {
         return new ResponseEntity<GridWrapper>(new GridWrapper(gameRepository.getGrid()), HttpStatus.OK);
     }
 
@@ -114,7 +118,7 @@ class GamesController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{tankId}/leave", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    HttpStatus leave(@PathVariable long tankId)
+    HttpStatus leave(@PathVariable long[] tankId)
             throws TankDoesNotExistException {
         //System.out.println("Games Controller leave() called, tank ID: "+tankId);
         gameRepository.leave(tankId);
@@ -137,4 +141,45 @@ class GamesController {
                 HttpStatus.OK
         );
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/mine", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> mine(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.mine(tankId)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/build/{buildingType}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> build(@PathVariable long tankId, @PathVariable int buildingType)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType, BuildingDoesNotExistException {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.build(tankId,buildingType)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/dismantle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> dismantle(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.dismantle(tankId)),
+                HttpStatus.OK
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/moveTo/{desiredLocation}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> moveTo(@PathVariable long tankId, @PathVariable int desiredLocation)
+            throws TankDoesNotExistException{
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.moveTo(tankId, desiredLocation)),
+                HttpStatus.OK
+        );
+    }
+
 }

@@ -2,14 +2,19 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.TimerTask;
+import static org.graalvm.compiler.replacements.Log.print;
 
-import edu.unh.cs.cs619.bulletzone.repository.GameRepository;
-import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
+import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
+import jdk.internal.org.jline.utils.Log;
+
 
 public class TankController {
-    Game game;
-    private int bulletDelay[]={500,1000,1500};
+
+    private static final String TAG = "TankController";
 
     /**
      *
@@ -35,7 +40,7 @@ public class TankController {
                 return false;
 
             //Causes tank to wait to move
-            tank.setLastMoveTime(millis + tank.getAllowedMoveInterval());
+            tank.setLastMoveTime(millis + tank.getAllowedTurnInterval());
 
             return !isSameRelativeDirection(tank.getDirection(), direction); // TODO check
     }
@@ -54,9 +59,13 @@ public class TankController {
         checkNotNull(direction);
         checkNotNull(tank);
 
-        if (tank.getLife() == 0) {
-            return false;
-        }
+            if (tank.getLife() == 0) {
+                return false;
+            }
+            if (!tank.allowMovement)
+            {
+                return false;
+            }
 
         //Check for bad getLastMoveTime
         long millis = System.currentTimeMillis();
@@ -122,10 +131,33 @@ public class TankController {
             bulletType = 1;
         }
 
-        tank.setLastFireTime(millis + bulletDelay[bulletType - 1]);
+        tank.setLastFireTime(millis + tank.getAllowedFireInterval());
 
         return bulletType;
     }
 
+    public boolean mine(Tank tank)
+            throws LimitExceededException, TankDoesNotExistException {
+        checkNotNull(tank);
 
+        return tank.getLife() != 0;
+    }
+
+    public int build(Tank tank, int building)
+    {
+        if(tank.getLife() == 0){
+            return -1;
+        }
+
+        return 1;
+    }
+
+    public int dismantle(Tank tank)
+    {
+        if(tank.getLife() == 0){
+            return -1;
+        }
+
+        return 1;
+    }
 }
