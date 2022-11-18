@@ -29,8 +29,8 @@ public class TankController {
     BZRestErrorhandler bzRestErrorhandler;
 
     private Long tankID;
-    //private Long minerID
-    //private Long BuilderID
+    private Long minerID;
+    private Long builderID;
     private int tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
@@ -136,6 +136,8 @@ public class TankController {
         try {
             Long[] s = restClient.join().getResult();
             tankID = s[0];
+            minerID = s[1];
+            builderID = s[2];
             //tankID = restClient.join().getResult();
         } catch (Exception e) {
 
@@ -145,13 +147,26 @@ public class TankController {
 
     @Background
     public void fire(){
-        restClient.fire(tankID);
+        if(currentVehicle == Vehicle.TANK){
+            restClient.fire(tankID);
+        }
+        else if(currentVehicle == Vehicle.MINER){
+            restClient.fire(minerID);
+        }
+        else{
+            restClient.fire(builderID);
+        }
     }
 
     @Background
     public void leaveGame(){
-        System.out.println("leaveGame() called, tank ID: " + tankID);
-        restClient.leave(tankID);
+
+        long leaveArray[] = new long[3];
+        leaveArray[0] = tankID;
+        leaveArray[1] = minerID;
+        leaveArray[2] = builderID;
+        restClient.leave(leaveArray);
+
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
@@ -162,4 +177,66 @@ public class TankController {
     public Vehicle getCurrentVehicle() {
         return currentVehicle;
     }
+
+    public void mine(){
+
+        if(currentVehicle == Vehicle.MINER){
+            restClient.mine(minerID);
+        }
+        else{
+            Log.d("TankController", "Error: Mine called when currentVehicle is not Miner");
+        }
+
+    }
+
+    public void builderActions(int desiredAction){
+
+        if(currentVehicle == Vehicle.BUILDER){
+
+            //0 == dismantle
+            if(desiredAction == 0){
+                restClient.dismantle(builderID);
+            }
+            //10 == indestructible wall
+            else if(desiredAction == 10){
+                //serverside, indestructible wall is 3
+                restClient.build(builderID, 3);
+            }
+            //11 == road
+            else if(desiredAction == 11){
+                //serverside, road is 1
+                restClient.build(builderID, 1);
+            }
+            //12 == wall
+            else if(desiredAction == 12){
+                //serverside, wall is 3
+                restClient.build(builderID, 2);
+            }
+            else{
+
+                Log.d("TankController", "Error: Invalid value received in builderAction");
+
+            }
+
+        }
+        else{
+
+            Log.d("TankController", "Error: Non-builder trying to call build/dismantle");
+
+        }
+
+    }
+
+    public void moveTo(int desiredLocation){
+        if(currentVehicle == Vehicle.TANK){
+            restClient.moveTo(tankID, desiredLocation);
+        }
+        else if(currentVehicle == Vehicle.MINER){
+            restClient.moveTo(minerID, desiredLocation);
+        }
+        else{
+            restClient.moveTo(builderID, desiredLocation);
+        }
+    }
+
 }

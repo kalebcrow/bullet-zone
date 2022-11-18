@@ -207,6 +207,8 @@ public class ClientActivity extends Activity {
         Button buttonRespawn = findViewById(R.id.buttonRespawn);
         Button buttonReplay = findViewById(R.id.buttonReplay);
         Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+        Button buttonMoveTo = findViewById(R.id.moveToButton);
+
         buttonAction = findViewById(R.id.buttonAction);
         Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
         buttonRespawn.setVisibility(View.VISIBLE);
@@ -378,13 +380,10 @@ public class ClientActivity extends Activity {
     void vehicleAction(){
 
         if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
-            //stub
-            //presumably some call to TankController requesting mine action
+            tankController.mine();
         }
         else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
 
-            //another stub
-            //open builder popup
             BuilderFragment myBuilderFragment = new BuilderFragment();
             myBuilderFragment.setContext(this);
             myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
