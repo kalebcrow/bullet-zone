@@ -1,16 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
-import android.util.Log;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-
-import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
@@ -57,6 +53,15 @@ public class BoardView {
     }
 
     public TextView garageText;
+
+    public TextView getHealthText() {
+        return healthText;
+    }
+
+    public void setHealthText(TextView healthText) {
+        this.healthText = healthText;
+    }
+
     public TextView healthText;
 
     /**
@@ -175,6 +180,10 @@ public class BoardView {
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location][1] = event.movedTile;
         gridAdapter.updateList(tiles);
+        updateHealth();
+    }
+
+    public void updateHealth() {
         StringBuilder health = new StringBuilder();
         health.append("Health\n");
 
@@ -188,6 +197,7 @@ public class BoardView {
 
         healthText.setText(health.toString());
     }
+
 
     /**
      * Subscribes to update
@@ -234,6 +244,7 @@ public class BoardView {
     private void updateGrid(GridUpdateEvent event) {
         this.setUsingJSON(event.gw.getGrid());
         gridAdapter.updateList(tiles);
+        updateHealth();
     }
 
     public void deRegister() {

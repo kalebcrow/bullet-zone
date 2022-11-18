@@ -124,12 +124,12 @@ public class ClientActivity extends Activity {
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        joinAsync();
-        SystemClock.sleep(500);
         boardView.setGarageText(textViewGarage);
-        boardView.healthText = findViewById(R.id.HealthText);
+        boardView.setHealthText(findViewById(R.id.HealthText));
         gridView.setAdapter(mGridAdapter);
         boardView.setGridAdapter(mGridAdapter);
+        joinAsync();
+        SystemClock.sleep(500);
         commandInterpreter.setPaused(false);
     }
 
