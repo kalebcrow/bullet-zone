@@ -21,7 +21,7 @@ public class CommandInterpreter {
 
             //prevent vehicle from hitting something and taking damage
             if(cmd.getConcreteCommandType() == "Move"){
-                if(cmd.tank.getParent().getNeighbor(cmd.direction).isPresent() == true){
+                if(cmd.tank.getParent().getNeighbor(cmd.direction).isEntityPresent() == true){
                     return false;
                 }
 

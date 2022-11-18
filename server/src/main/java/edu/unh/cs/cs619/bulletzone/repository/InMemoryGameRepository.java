@@ -487,7 +487,7 @@ public class InMemoryGameRepository implements GameRepository {
 
                 Tank tank = game.getTanks().get(tankId[i]);
 
-                if (i == 1) {
+                if (i == 1 && tank.getUserID() != -1) {
                     DataRepository data = new DataRepository();
                     GameUserRepository users = new GameUserRepository();
                     GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
