@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -226,6 +227,7 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateResource( ResourceEvent event) {
+        Log.d("Yeah", "Value: " + event.resources[0] + " " + event.resources[1] + " " + event.resources[2]);
         resources = event.resources;
         String message =
                 "Rock: " + this.resources[0] + "\n" +
