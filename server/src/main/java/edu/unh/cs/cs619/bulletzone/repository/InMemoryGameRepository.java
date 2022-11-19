@@ -498,9 +498,11 @@ public class InMemoryGameRepository implements GameRepository {
                     DataRepository data = new DataRepository();
                     GameUserRepository users = new GameUserRepository();
                     GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                    String username = gu.getUsername();
-                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
-                    data.modifyAccountBalance(username, amount);
+                    if (gu != null) {
+                        String username = gu.getUsername();
+                        double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
+                        data.modifyAccountBalance(username, amount);
+                    }
                 }
 
                 FieldHolder parent = tank.getParent();
@@ -741,7 +743,7 @@ public class InMemoryGameRepository implements GameRepository {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                if(grid3d[i][j][2] >= 10000000 && grid3d[i][j][2] < 20000000){
+                if(grid3d[i][j][1] >= 10000000 && grid3d[i][j][1] < 20000000){
 
                     test = grid3d[i][j][2];
                     test = test % 10000000;
@@ -764,6 +766,7 @@ public class InMemoryGameRepository implements GameRepository {
 
         }
 
+
         //determine tank type: 0 = tank, 1 = miner, 2 = builder
 
         long baseDelay;
@@ -780,7 +783,7 @@ public class InMemoryGameRepository implements GameRepository {
             baseDelay = 300;
         }
 
-        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation);
+        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation + "\t desired location: " + desiredLocation);
 
         //with location of tank on the board and desired location,
         //determine direction of y value movement, north or south
