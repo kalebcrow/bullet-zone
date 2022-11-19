@@ -11,7 +11,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
 import edu.unh.cs.cs619.bulletzone.R;
-import edu.unh.cs.cs619.bulletzone.game.TileFactory;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 
 @EBean
@@ -93,10 +92,10 @@ public class GridAdapter extends BaseAdapter {
                     terrain.setImageResource(mEntities[position][0].getResourceID());//terrain.setBackgroundResource(mEntities[position].getTerrain());
                     road.setImageResource(mEntities[position][2].getResourceID());
                     // check for improvements (just walls right now)
-                    entity.setImageResource(mEntities[position][1].getResourceID());
+//                    entity.setImageResource(mEntities[position][1].getResourceID());
 
                     //terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
-                    entity.setRotation(mEntities[position][1].getOrientation()/2 * 90);
+                    //entity.setRotation(mEntities[position][1].getOrientation()/2 * 90);
 
                 } else {
                     // somethings wrong

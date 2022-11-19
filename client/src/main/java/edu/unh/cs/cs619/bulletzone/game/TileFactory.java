@@ -7,8 +7,8 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
-import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.RoadTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 
 //Not sure if this needs to be a singleton but it is now
 public class TileFactory {
