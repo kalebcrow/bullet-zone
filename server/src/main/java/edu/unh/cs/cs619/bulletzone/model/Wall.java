@@ -1,8 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
+import edu.unh.cs.cs619.bulletzone.events.DestroyWallEvent;
+import edu.unh.cs.cs619.bulletzone.events.EventManager;
+
 public class Wall extends FieldEntity {
     int destructValue, pos;
     public String name = "W";
+    private EventManager eventManager = EventManager.getInstance();
     public Wall(){
         this.destructValue = 1000;
     }
@@ -11,6 +15,20 @@ public class Wall extends FieldEntity {
         this.destructValue = destructValue;
         this.pos = pos;
     }
+
+    @Override
+    public void hit(int damage){
+        if (destructValue < 1000 && destructValue < 2000 ){
+            destructValue -= damage;
+            if(destructValue <= 1000){
+                eventManager.addEvent(new DestroyWallEvent(pos));
+                parent.clearField();
+                parent = null;
+            }
+        }
+
+    }
+
     public Wall(int destructValue)
     {
         this.destructValue = destructValue;
@@ -33,4 +51,6 @@ public class Wall extends FieldEntity {
     public int getPos(){
         return pos;
     }
+    @Override
+    public int getLife(){return this.destructValue - 1000;}
 }

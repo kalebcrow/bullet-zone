@@ -9,6 +9,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.rest.spring.annotations.RestService;
 
+import java.util.Objects;
+
 import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
@@ -28,10 +30,18 @@ public class TankController {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
-    private Long tankID;
-    //private Long minerID
-    //private Long BuilderID
-    private int tankOrientation;
+    private Long[] tankID;
+
+    public Long getCurrentTankID() {
+        return currentTankID;
+    }
+
+    public void setCurrentTankID(int index) {
+        this.currentTankID = tankID[index];
+    }
+
+    private Long currentTankID;
+    private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
 
@@ -39,8 +49,8 @@ public class TankController {
      * TankController
      */
     public TankController() {
-        tankID = 0L;
-        tankOrientation = 0;
+        tankID = new Long[3];
+        tankOrientation = new int[3];
         INSTANCE = this;
     }
 
@@ -79,7 +89,7 @@ public class TankController {
      *
      * @return tankID
      */
-    public Long getTankID() {
+    public Long[] getTankID() {
         return tankID;
     }
 
@@ -87,20 +97,46 @@ public class TankController {
      *
      * @param tankID set tankID
      */
-    public void setTankID(Long tankID) {
-        this.tankID = tankID;
-    }
-
-    public int getTankOrientation() {
-        return tankOrientation;
+    public void setTankID(int index, Long tankID) {
+        this.tankID[index] = tankID;
     }
 
     /**
      *
-     * @param tankOrientation tankOriention
+     * @param tankID set tankID
      */
-    public void setTankOrientation(int tankOrientation) {
-        this.tankOrientation = tankOrientation;
+    public void setTankIDs(Long[] tankID) {
+        this.tankID = tankID;
+    }
+
+
+    public boolean containsTankID(Long tankID) {
+        for (int i = 0; i < 3; i++) {
+            if (Objects.equals(this.tankID[i], tankID)) {
+                return true;
+            }
+        }
+        return  false;
+    }
+
+
+
+    public int getTankOrientation() {
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        return tankOrientation[othervalue];
+    }
+
+    /**
+     *
+     */
+    public void setTankOrientation(int orientation, int tankmodulo) {
+        this.tankOrientation[tankmodulo] = orientation;
     }
 
     public void passContext(Context context){
@@ -119,47 +155,124 @@ public class TankController {
      */
     @Background
     public void move(byte direction) {
-        int value = direction - tankOrientation;
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
 
-        if (direction == tankOrientation) {
-            restClient.move(tankID, direction);
-        } else if (Math.abs(direction - tankOrientation) != 4) {
-            restClient.turn(tankID,direction);
-            tankOrientation = direction;
+        int value = direction - tankOrientation[othervalue];
+
+        if (direction == tankOrientation[othervalue]) {
+            restClient.move(currentTankID, direction);
+        } else if (Math.abs(direction - tankOrientation[othervalue]) != 4) {
+            restClient.turn(currentTankID,direction);
+            tankOrientation[othervalue] = direction;
         } else {
-            restClient.move(tankID, direction);
+            restClient.move(currentTankID, direction);
         }
     }
 
     @Background
     public void joinGame(long userID){
         try {
-            Long[] s = restClient.join(userID).getResult();
-            tankID = s[0];
-            //tankID = restClient.join().getResult();
+            tankID = restClient.join(userID).getResult();
+            currentTankID = tankID[0];
         } catch (Exception e) {
-
+            Log.d("Yeah", e.toString());
         }
 
     }
 
     @Background
     public void fire(){
-        restClient.fire(tankID);
+        restClient.fire(currentTankID);
     }
 
     @Background
     public void leaveGame(){
-        System.out.println("leaveGame() called, tank ID: " + tankID);
-        restClient.leave(tankID);
+        System.out.println("leaveGame() called, tank ID: " + tankID.toString());
+        long[] leaveArray = new long[3];
+        for (int i = 0; i < 3; i++) {
+            leaveArray[i] = tankID[i].longValue();
+        }
+        restClient.leave(leaveArray);
+
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
         Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
+        if (currentVehicle == Vehicle.BUILDER) {
+            currentTankID = tankID[2];
+        } else if (currentVehicle == Vehicle.MINER) {
+            currentTankID = tankID[1];
+        } else {
+            currentTankID = tankID[0];
+        }
+
+
     }
 
     public Vehicle getCurrentVehicle() {
         return currentVehicle;
     }
+
+    @Background
+    public void mine(){
+
+        if(currentVehicle == Vehicle.MINER){
+            restClient.mine(tankID[1]);
+        }
+        else{
+            Log.d("TankController", "Error: Mine called when currentVehicle is not Miner");
+        }
+
+    }
+
+    @Background
+    public void builderActions(int desiredAction){
+
+        if(currentVehicle == Vehicle.BUILDER){
+
+            //0 == dismantle
+            if(desiredAction == 0){
+                restClient.dismantle(tankID[2]);
+            }
+            //10 == indestructible wall
+            else if(desiredAction == 10){
+                //serverside, indestructible wall is 3
+                restClient.build(tankID[2], 3);
+            }
+            //11 == road
+            else if(desiredAction == 11){
+                //serverside, road is 1
+                restClient.build(tankID[2], 1);
+            }
+            //12 == wall
+            else if(desiredAction == 12){
+                //serverside, wall is 3
+                restClient.build(tankID[2], 2);
+            }
+            else{
+
+                Log.d("TankController", "Error: Invalid value received in builderAction");
+
+            }
+
+        }
+        else{
+
+            Log.d("TankController", "Error: Non-builder trying to call build/dismantle");
+
+        }
+
+    }
+
+    @Background
+    public void moveTo(int desiredLocation){
+        restClient.moveTo(currentTankID, desiredLocation);
+    }
+
 }

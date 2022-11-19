@@ -27,4 +27,5 @@ public class Road extends FieldEntity {
     public int getPos(){
         return pos;
     }
+
 }

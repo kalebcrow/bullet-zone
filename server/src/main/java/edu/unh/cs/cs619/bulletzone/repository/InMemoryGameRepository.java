@@ -24,6 +24,7 @@ import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
+import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -79,13 +80,15 @@ public class InMemoryGameRepository implements GameRepository {
     /**
      * Tank's default life [life]
      */
+    private TankController tc = new TankController();
+    private EventManager eventManager = EventManager.getInstance();
     boolean mine = false;
     private static final int TANK_LIFE = 100;
     private final Timer timer = new Timer();
     private final AtomicLong idGenerator = new AtomicLong();
     private final Object monitor = new Object();
     private Game game = null;
-    private int bulletDamage[]={10,30,50};
+    private int bulletDamage[]={30,5,10};
     private int trackActiveBullets[]={0,0,0,0};
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryGameRepository.class);
@@ -147,7 +150,7 @@ public class InMemoryGameRepository implements GameRepository {
                             break;
                         }
                     }
-                    game.addEvent(new AddTankEvent(x, y, tankId));
+                    eventManager.addEvent(new AddTankEvent(x, y, tankId));
                     for (; ; ) {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
@@ -158,7 +161,7 @@ public class InMemoryGameRepository implements GameRepository {
                             break;
                         }
                     }
-                    game.addEvent(new AddTankEvent(x, y, minerID));
+                    eventManager.addEvent(new AddTankEvent(x, y, minerID));
                     for (; ; ) {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
@@ -169,7 +172,7 @@ public class InMemoryGameRepository implements GameRepository {
                             break;
                         }
                     }
-                    game.addEvent(new AddTankEvent(x, y, builderID));
+                    eventManager.addEvent(new AddTankEvent(x, y, builderID));
                 }
             } else {
                 HashMap<String,Long> map = game.getTanks(ip);
@@ -220,7 +223,6 @@ public class InMemoryGameRepository implements GameRepository {
                 throw new TankDoesNotExistException(tankId);
             }
 
-            TankController tc = new TankController();
             if (!tc.turn(tank, direction)) {
                 return false;
             }
@@ -232,7 +234,7 @@ public class InMemoryGameRepository implements GameRepository {
             }*/
 
             tank.setDirection(direction);
-            game.addEvent(new TurnEvent(tankId, toByte(direction)));
+            eventManager.addEvent(new TurnEvent(tankId, toByte(direction)));
 
             return true; // TODO check
         }
@@ -255,95 +257,18 @@ public class InMemoryGameRepository implements GameRepository {
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
-                //Log.i(TAG, "Cannot find user with id: " + tankId);
-                //return false;
                 throw new TankDoesNotExistException(tankId);
             }
 
             FieldHolder parent = tank.getParent();
-
             FieldHolder nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
 
-            double speed = 0;
-                // adding a check for field type (blank, hilly, or rocky) for speed purposes
-                if (nextField.getTerrain().toString().equals("R")) {
-                    // rocky
-                    speed = tank.getAllowedMoveInterval() * 2;
-                } else if (nextField.getTerrain().toString().equals("H")) {
-                    // hilly
-                    speed = tank.getAllowedMoveInterval() * 1.5;
-                } else {
-                    // meadow
-                    speed = 0;
-                }
-            if(nextField.isImprovementPresent())
-            {
-                if(nextField.getImprovement().toString() == "R")
-                {
-                    speed = speed/2;
-                }
-            }
-
-
-            TankController tc = new TankController();
-            if (!tc.move(tank, direction, speed)) {
+            if (!tc.move(tank, direction)) {
                 return false;
             }
 
-            parent = tank.getParent();
-
-            checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
-            nextField = parent.getNeighbor(direction);
-            checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
-
-
-            boolean isCompleted;
-            if (!nextField.isEntityPresent()) {
-                // If the next field is empty move the user
-
-                /*try {
-                    Thread.sleep(500);
-                } catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }*/
-                parent.clearField();
-                nextField.setFieldEntity(tank);
-                tank.setParent(nextField);
-
-                log.debug("---------------MOVING TANK from " + parent.getTerrain().toString() + " to " + nextField.getTerrain().toString());
-                game.addEvent(new MoveTankEvent(tankId, toByte(direction)));
-
-                isCompleted = true;
-            } else {
-                isCompleted = false;
-                FieldEntity ent = nextField.getEntity();
-                if (ent.toString().equals("R") || ent.toString().equals("IW") || ent.toString().equals("B")) {
-                    return false;
-                }
-                ent.hit((int)Math.ceil(tank.getLife() / tank.giveDamageModifier()));
-                if (ent.toString().equals("T")) {
-                    Tank newTank = (Tank) ent;
-                    tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
-                    game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
-                    if (tank.getLife() <= 0 ){
-                        String terrain = tank.getParent().getTerrain().toString();
-                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
-                        tank.getParent().clearField();
-                        tank.setParent(null);
-                    }
-                } else {
-                    tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
-                    game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
-                    if (tank.getLife() <= 0 ){
-                        String terrain = tank.getParent().getTerrain().toString();
-                        game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
-                        tank.getParent().clearField();
-                        tank.setParent(null);
-                    }
-                }
-            }
-            return isCompleted;
+            return tank.moveTank(direction);
         }
     }
 
@@ -363,107 +288,25 @@ public class InMemoryGameRepository implements GameRepository {
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
-                //Log.i(TAG, "Cannot find user with id: " + tankId);
-                //return false;
                 throw new TankDoesNotExistException(tankId);
             }
 
-
-            TankController tc = new TankController();
-            int temp = tc.fire(tank, bulletType);
-            if (temp == -1) {
-                return false;
-            }
-
-            bulletType = temp;
+            if (!tc.fire(tank, bulletType)) return false;
 
             //Log.i(TAG, "Cannot find user with id: " + tankId);
             Direction direction = tank.getDirection();
             FieldHolder parent = tank.getParent();
             tank.setNumberOfBullets(tank.getNumberOfBullets() + 1);
-
             int bulletId = tank.getNumberOfBullets()-1;
             trackActiveBullets[bulletId] = 1;
 
             // Create a new bullet to fire
-            final Bullet bullet = new Bullet(tankId, direction, bulletDamage[bulletType-1]);
+            final Bullet bullet = new Bullet(tankId, direction, bulletDamage[bulletType]);
             // Set the same parent for the bullet.
             // This should be only a one way reference.
             bullet.setParent(parent);
             bullet.setBulletId(bulletId);
-            // TODO make it nicer
-            int finalBulletId = bulletId;
-            final Long finalTankID = tank.getId();
-            final boolean[] fireIndicator = {true};
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    synchronized (monitor) {
-                        System.out.println("Active Bullet: "+tank.getNumberOfBullets()+"---- Bullet ID: "+bullet.getIntValue());
-                        FieldHolder currentField = bullet.getParent();
-                        Direction direction = bullet.getDirection();
-                        FieldHolder nextField = currentField
-                                .getNeighbor(direction);
-
-                        Direction oppDirection = bullet.getDirection();
-                        FieldHolder previousField = currentField
-                                .getNeighbor(oppDirection);
-                        String previousterrain = previousField.getTerrain().toString();
-                        String terrain = currentField.getTerrain().toString();
-
-
-                        // Is the bullet visible on the field?
-                        boolean isVisible = currentField.isEntityPresent()
-                                && (currentField.getEntity() == bullet);
-
-
-                            if (nextField.isEntityPresent()) {
-                                // Something is there, hit it
-                                nextField.getEntity().hit(bullet.getDamage());
-                                if(!fireIndicator[0])game.addEvent(new DestroyBulletEvent(finalTankID, finalBulletId, terrain));
-
-                                if ( nextField.getEntity() instanceof  Tank){
-                                    Tank t = (Tank) nextField.getEntity();
-                                    System.out.println("tank is hit, tank life: " + t.getLife());
-                                    game.addEvent(new DamageEvent(Math.toIntExact(t.getId()), t.getLife()));
-                                    if (t.getLife() <= 0 ){
-                                        game.addEvent(new DestroyTankEvent(t.getId(), terrain));
-                                        t.getParent().clearField();
-                                        t.setParent(null);
-                                    }
-                                }
-                                else if ( nextField.getEntity() instanceof  Wall){
-                                    Wall w = (Wall) nextField.getEntity();
-                                    if (w.getIntValue() >1000 && w.getIntValue()<=2000 ){
-                                        game.addEvent(new DestroyWallEvent(w.getPos()+1, terrain));
-                                        game.getHolderGrid().get(w.getPos()).clearField();
-                                    }
-                                }
-                            if (isVisible) {
-                                // Remove bullet from field
-                                currentField.clearField();
-                            }
-                            trackActiveBullets[bullet.getBulletId()]=0;
-                            tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
-                            cancel();
-
-                        } else {
-                            if (isVisible) {
-                                if(fireIndicator[0]){
-                                    game.addEvent(new FireEvent(finalTankID, finalBulletId, toByte(direction)));
-                                    fireIndicator[0] = false;
-                                }
-                                else game.addEvent(new MoveBulletEvent(finalTankID, finalBulletId, toByte(direction), terrain));
-                                // Remove bullet from field
-                                currentField.clearField();
-                            }
-
-                            nextField.setFieldEntity(bullet);
-                            bullet.setParent(nextField);
-                            }
-                    }
-                }
-            }, 0, BULLET_PERIOD);
+            bullet.travel(tank);
 
             return true;
         }
@@ -487,7 +330,7 @@ public class InMemoryGameRepository implements GameRepository {
 
                 Tank tank = game.getTanks().get(tankId[i]);
 
-                if (i == 1) {
+                if (i == 1 && tank.getUserID() != -1) {
                     DataRepository data = new DataRepository();
                     GameUserRepository users = new GameUserRepository();
                     GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
@@ -499,7 +342,7 @@ public class InMemoryGameRepository implements GameRepository {
                 FieldHolder parent = tank.getParent();
                 parent.clearField();
                 if(tank.getLife() > 0) {
-                    game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+                    eventManager.addEvent(new DestroyTankEvent(tank.getId()));
                 }
                 game.removeTank(tankId[i]);
             }
@@ -526,9 +369,9 @@ public class InMemoryGameRepository implements GameRepository {
             if (miner.getTypeIndex() != 1)
                 return false;
 
-            final Wall wall = new Wall();
+            final Wall wall = new Wall(1500);
             final Road road = new Road();
-            final Wall indestructibleWall = new Wall(100000);
+            final Wall indestructibleWall = new Wall();
             indestructibleWall.name = "IW";
 
 
@@ -569,7 +412,7 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(2, 3);
                             behind.setImprovementEntity(road);
                             builder.allowMovement = true;
-                            game.addEvent(new BuildEvent(tankId,miner.getAllResources(),1,behind.getPos()));
+                            eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),1,behind.getPos()));
                             return true;
                         }
                         return false;
@@ -581,7 +424,7 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(0, 2);
                             behind.setFieldEntity(wall);
                             builder.allowMovement = true;
-                            game.addEvent(new BuildEvent(tankId,miner.getAllResources(),2, behind.getPos()));
+                            eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),2, behind.getPos()));
                             return true;
                         }
                         return false;
@@ -594,7 +437,7 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(1, 3);
                             behind.setFieldEntity(indestructibleWall);
                             builder.allowMovement = true;
-                            game.addEvent(new BuildEvent(tankId,miner.getAllResources(),3, behind.getPos()));
+                            eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),3, behind.getPos()));
 
                             return true;
                         }
@@ -652,7 +495,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(0,2);
                 miner.addBundleOfResources(2,1);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
                 return true;
             }
             else if(structure.toString() == "IW")
@@ -661,7 +504,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2,3);
                 miner.addBundleOfResources(1,3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
                 return true;
             }
             else
@@ -675,7 +518,7 @@ public class InMemoryGameRepository implements GameRepository {
             if(structure.toString() == "R") {
                 miner.addBundleOfResources(2, 3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos()));
                 return true;
             }
             else
@@ -954,7 +797,7 @@ public class InMemoryGameRepository implements GameRepository {
     }
 
     public LinkedList<GridEvent> getEvents(Long time) {
-        return game.getEvents(time);
+        return eventManager.getEvents(time);
     }
 
     @Override
@@ -1029,7 +872,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding iron to stash");
-                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             default:
                                 try {

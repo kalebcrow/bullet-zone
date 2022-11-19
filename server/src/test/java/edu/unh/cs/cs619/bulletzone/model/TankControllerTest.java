@@ -51,7 +51,7 @@ public class TankControllerTest {
         tank = new Tank(0, 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertFalse(tc.move(tank, Direction.Left, 0));
+        assertFalse(tc.move(tank, Direction.Left));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TankControllerTest {
         tank = new Tank(0, 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertTrue(tc.move(tank, Direction.Up, 0));
+        assertTrue(tc.move(tank, Direction.Up));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class TankControllerTest {
         tank = new Tank(0, 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
-        assertTrue(tc.move(tank, Direction.Down, 0));
+        assertTrue(tc.move(tank, Direction.Down));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class TankControllerTest {
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(2);
-        assertEquals(-1, tc.fire(tank, 1));
+        assertEquals(false, tc.fire(tank, 1));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class TankControllerTest {
         IMGR.fire(tanks[0].getId(), 1);
         IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
-        assertEquals(1, game.getTank(tanks[0].getId()).getNumberOfBullets());
+        assertEquals(true, game.getTank(tanks[0].getId()).getNumberOfBullets());
     }
 
     // testing basic moving, turning, and firing constraints for miner and builder

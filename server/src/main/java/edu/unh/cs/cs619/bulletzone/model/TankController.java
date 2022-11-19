@@ -54,18 +54,40 @@ public class TankController {
      * @throws LimitExceededException not used
      * @throws TankDoesNotExistException not used
      */
-    public boolean move(Tank tank, Direction direction, double speed)
+    public boolean move(Tank tank, Direction direction)
             throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
         checkNotNull(direction);
         checkNotNull(tank);
 
-            if (tank.getLife() == 0) {
-                return false;
-            }
-            if (!tank.allowMovement)
+        if (tank.getLife() == 0) {
+            return false;
+        }
+        if (!tank.allowMovement)
+        {
+            return false;
+        }
+
+        FieldHolder nextField = tank.getParent().getNeighbor(direction);
+        double speed = 0;
+        // adding a check for field type (blank, hilly, or rocky) for speed purposes
+        if (nextField.getTerrain().toString().equals("R")) {
+            // rocky
+            speed = tank.getAllowedMoveInterval() * 2;
+        } else if (nextField.getTerrain().toString().equals("H")) {
+            // hilly
+            speed = tank.getAllowedMoveInterval() * 1.5;
+        } else {
+            // meadow
+            speed = 0;
+        }
+        if(nextField.isImprovementPresent())
+        {
+            if(nextField.getImprovement().toString() == "R")
             {
-                return false;
+                speed = speed/2;
             }
+        }
+
 
         //Check for bad getLastMoveTime
         long millis = System.currentTimeMillis();
@@ -109,21 +131,21 @@ public class TankController {
      * @throws TankDoesNotExistException not used
      * @throws LimitExceededException not used
      */
-    public int fire(Tank tank, int bulletType)
+    public boolean fire(Tank tank, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
 
         if (tank.getLife() == 0) {
-            return -1;
+            return false;
         }
 
         //Check for tank firing too many bullets
         if (tank.getNumberOfBullets() >= tank.getAllowedNumberOfBullets())
-            return -1;
+            return false;
 
         //Check for bad last fire time
         long millis = System.currentTimeMillis();
         if (millis < tank.getLastFireTime()/*>tank.getAllowedFireInterval()*/){
-            return -1;
+            return false;
         }
 
         if(!(bulletType>=1 && bulletType<=3)) {
@@ -133,7 +155,7 @@ public class TankController {
 
         tank.setLastFireTime(millis + tank.getAllowedFireInterval());
 
-        return bulletType;
+        return true;
     }
 
     public boolean mine(Tank tank)

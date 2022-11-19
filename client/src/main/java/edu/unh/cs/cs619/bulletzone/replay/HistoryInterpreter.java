@@ -91,11 +91,7 @@ public class HistoryInterpreter extends Thread {
                 GridEvent currEvent = eventHistory.get(i);
                 long timeDiff = currEvent.getTime() - prevEvent.getTime();
                 try {
-                    Log.d("TimeDiff", "Timediff: " + timeDiff);
-                    Log.d("TimeDiff", "Before: " + System.currentTimeMillis());
                     Thread.sleep(timeDiff/speed);
-                    Log.d("TimeDiff", "After: " + System.currentTimeMillis());
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -127,7 +123,6 @@ public class HistoryInterpreter extends Thread {
                 event = new DestroyWallEvent(currEvent);
                 break;
             case "fire":
-                Log.d("Yeah", "we cool");
                 event = new FireEvent(currEvent);
                 break;
             case "turn":
