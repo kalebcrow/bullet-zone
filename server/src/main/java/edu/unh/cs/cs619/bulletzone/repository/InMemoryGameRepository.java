@@ -1022,6 +1022,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding clay to stash");
+                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
@@ -1029,6 +1030,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
+                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {
