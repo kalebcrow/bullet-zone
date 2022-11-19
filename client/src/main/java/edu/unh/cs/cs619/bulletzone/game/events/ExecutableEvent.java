@@ -21,6 +21,7 @@ public class ExecutableEvent {
         pos = gridEvent.getPos() - 1;
         terrain = gridEvent.getTerrain();
         buildType = gridEvent.buildType;
+        resources = gridEvent.resources;
     }
 
     protected Long time;

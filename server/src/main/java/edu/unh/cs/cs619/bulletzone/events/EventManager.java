@@ -27,12 +27,12 @@ public class EventManager {
     public void addEvent(GridEvent gridEvent){ events.addFirst(gridEvent); }
     public LinkedList<GridEvent> getEvents(Long time){
         LinkedList<GridEvent> update = new LinkedList<>();
-        ListIterator<GridEvent> it = events.listIterator();
+        ListIterator<GridEvent> it = events.listIterator(0);
         GridEvent item;
         while(it.hasNext()){
             item = it.next();
             if(item.getTime() < time) break;
-            update.addFirst(item);
+            update.addLast(item);
         }
         return update;
     }

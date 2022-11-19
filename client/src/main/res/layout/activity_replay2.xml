@@ -11,32 +11,51 @@
     tools:context=".ReplayActivity">
 
     <RelativeLayout
-        android:id="@+id/LeftSide"
+        android:id="@+id/LinearLayoutControlLeft"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="0dp">
+        android:layout_weight=".5">
 
-        <GridView
-            android:id="@+id/gridView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="604dp"
-            android:layout_marginBottom="0dp"
-            android:background="#FFFFFF"
-            android:fadeScrollbars="false"
-            android:numColumns="16"
-            android:padding="-2dp"
-            tools:listitem="@layout/field_item" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/HealthText"
-            android:layout_width="match_parent"
-            android:layout_height="243dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="0dp"
-            android:inputType="textMultiLine"
-            android:text="Health"
-            android:visibility="invisible" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".43">
+
+                <GridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:numColumns="16"
+                    tools:listitem="@layout/field_item"></GridView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".57">
+
+
+                <TextView
+                    android:id="@+id/HealthText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="50dp"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:text="Health"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 
