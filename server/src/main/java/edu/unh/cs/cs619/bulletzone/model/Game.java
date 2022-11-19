@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.Timer;
 
+import edu.unh.cs.cs619.bulletzone.events.ItemEvent;
+import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
@@ -46,7 +48,7 @@ public final class Game {
 
     public Game() {
         this.id = 0;
-        //getRandomResources();
+        getRandomResources();
     }
 
     @JsonIgnore
@@ -163,11 +165,9 @@ public final class Game {
 
     private void setRandomResources() {
         log.debug("-------------------------setting resource0");
-        double prob = 0.25 * (double)(playersIP.size() / itemsOnGrid.size() + 1);
+        double prob = 0.25 * (double)(playersIP.size() / (itemsOnGrid.size() + 1));
         boolean addingRandomResource = false;
         FieldResource fr;
-        double row = -1;
-        double col = -1;
         Random r = new Random();
         double randomValue = r.nextDouble();
         if (randomValue <= prob) {
@@ -190,6 +190,7 @@ public final class Game {
                 if (!holderGrid.get(location).isEntityPresent()) {
                     holderGrid.get(location).setFieldEntity(fr);
                     itemsOnGrid.put(location, fr);
+                    addEvent(new ItemEvent(location, fr.getIntValue()));
                     added = true;
                     log.debug("adding!------------------------------------------");
                 }
