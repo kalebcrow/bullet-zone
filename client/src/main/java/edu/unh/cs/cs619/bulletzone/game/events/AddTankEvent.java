@@ -17,12 +17,11 @@ public class AddTankEvent extends ExecutableEvent {
 
     /**
      *
-     * @param busProvider the bus sending the event
      */
     @Override
     public void execute(Bus bus) {
         Integer location = pos;
         Integer orientation = 0;
-        bus.post(new TileUpdateEvent(location, new TankTile(ID, location + 1, orientation)));
+        bus.post(new TileUpdateEvent(location, new TankTile(ID, location, orientation)));
     }
 }

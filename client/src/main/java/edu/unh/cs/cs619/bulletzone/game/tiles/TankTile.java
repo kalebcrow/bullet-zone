@@ -10,7 +10,6 @@ public class TankTile extends GroundTile {
 
 
     /**
-     *
      * @return ID
      */
     public Integer getID() {
@@ -18,7 +17,6 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
      * @param ID ID to be set to
      */
     public void setID(Integer ID) {
@@ -26,7 +24,6 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
      * @return orientation
      */
     public Integer getOrientation() {
@@ -34,7 +31,6 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
      * @param orientation orientation of the tile
      */
     public void setOrientation(Integer orientation) {
@@ -45,9 +41,8 @@ public class TankTile extends GroundTile {
 
 
     /**
-     *
      * @param JsonValue jsonValue
-     * @param location location
+     * @param location  location
      */
     public TankTile(Integer JsonValue, Integer location) {
         this.resourceID = R.drawable.blank;
@@ -66,9 +61,8 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
-     * @param TankID tankID
-     * @param location location
+     * @param TankID      tankID
+     * @param location    location
      * @param orientation orientation
      */
     public TankTile(Integer TankID, Integer location, Integer orientation) {
@@ -76,7 +70,7 @@ public class TankTile extends GroundTile {
         this.location = location;
         ID = TankID;
         boolean friendly = TankController.getTankController().containsTankID(Long.parseLong(String.valueOf(TankID)));
-        determineResourceID(friendly);
+        health = determineResourceID(friendly);
 
         this.orientation = orientation;
         if (friendly) {
@@ -87,7 +81,6 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
      * @param JSONValue value
      * @return ID
      */
@@ -101,7 +94,6 @@ public class TankTile extends GroundTile {
     }
 
     /**
-     *
      * @param JSONValue value
      * @return orientation
      */
@@ -122,38 +114,40 @@ public class TankTile extends GroundTile {
     }
 
 
-    private void determineResourceID(boolean freindly) {
+    private Integer determineResourceID(boolean freindly) {
         if (freindly) {
             switch (ID % 3) {
                 // Tank
                 case 0:
                     resourceID = R.drawable.tank;
-                    break;
+                    return 100;
                 // Miner
                 case 1:
                     resourceID = R.drawable.miner;
-                    break;
+                    return 300;
                 // Builder
                 case 2:
                     resourceID = R.drawable.builder;
-                    break;
-                }
+                    return 80;
+            }
         } else {
-                switch (ID % 3) {
-                    // Tank
-                    case 0:
-                        resourceID = R.drawable.redtank;
-                        break;
-                    // Miner
-                    case 1:
-                        resourceID = R.drawable.redminer;
-                        break;
-                    // Builder
-                    case 2:
-                        resourceID = R.drawable.redbuilder;
-                        break;
-                }
+            switch (ID % 3) {
+                // Tank
+                case 0:
+                    resourceID = R.drawable.redtank;
+                    return 100;
+                // Miner
+                case 1:
+                    resourceID = R.drawable.redminer;
+                    return 300;
+                // Builder
+                case 2:
+                    resourceID = R.drawable.redbuilder;
+                    return 80;
             }
         }
+
+        return  0;
     }
+}
 

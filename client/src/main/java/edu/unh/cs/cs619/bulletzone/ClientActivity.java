@@ -115,6 +115,8 @@ public class ClientActivity extends Activity {
         commandInterpreter.clear();
     }
 
+
+
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
@@ -152,6 +154,7 @@ public class ClientActivity extends Activity {
     protected void onRestart() {
         gridPollTask.setPaused(false);
         boardView.reRegister();
+        boardView.setGridAdapter(mGridAdapter);
         if (started == 1) {
             gridPollTask.doPoll();
         }
@@ -246,7 +249,10 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonReplay1)
     protected void onButtonReplay1(){
+        commandInterpreter.pause();
+        gridPollTask.setPaused(true);
         boardView.deRegister();
+        commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }

@@ -17,7 +17,7 @@ public class DismantleEvent extends ExecutableEvent {
     @Override
     public void execute(Bus bus) {
         Integer location = pos + 1;
-        bus.post(new TileUpdateEvent(location, new GroundTile(0, location)));
+        bus.post(new TileUpdateEvent(location, new GroundTile(-1, location)));
         bus.post(new ResourceEvent(new IntArayWrapper(this.resources)));
     }
 }

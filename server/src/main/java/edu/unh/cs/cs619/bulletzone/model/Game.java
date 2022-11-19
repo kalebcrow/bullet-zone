@@ -120,11 +120,11 @@ public final class Game {
                     }
                     if(holder.isImprovementPresent())
                     {
-                        grid[i][j][2] = 1;
+                        grid[i][j][2] = 30000001;
                     }
                     else
                     {
-                        grid[i][j][2] = 0;
+                        grid[i][j][2] = 30000000;
                     }
                     // set terrain (should always be there)
                     grid[i][j][0] = holder.getTerrain().getIntValue();

@@ -14,6 +14,7 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
+import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -91,7 +92,7 @@ public class BoardView {
     public BoardView() {
         tileFactory = TileFactory.getFactory();
         resources = new int[3];
-        tiles = new GroundTile[256][2]; // represents [terrain][entity]
+        tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
     }
 
     @AfterInject
@@ -99,6 +100,7 @@ public class BoardView {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
         busProvider.getEventBus().register(resourceEventHandler);
+        busProvider.getEventBus().register(roadEventHandler);
     }
 
     /**
@@ -158,9 +160,30 @@ public class BoardView {
             for (int ii = 0; ii < 16; ii++) {
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
                 this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
+                this.tiles[value][2] = this.tileFactory.makeTile((Integer) arr[i][ii][2], value); // road
                 value++;
             }
         }
+    }
+
+    /**
+     * Subscribes to update
+     */
+    private Object roadEventHandler = new Object()
+    {
+        @Subscribe
+        public void onRoadUpdate(RoadUpdateEvent event) {
+            updateRoad(event);
+        }
+    };
+
+    /**
+     *
+     * @param event update specific OBSTACLE/VEHICLE tile
+     */
+    private void updateRoad(RoadUpdateEvent event) {
+        tiles[event.location][2] = event.movedTile;
+        gridAdapter.updateList(tiles);
     }
 
     /**
@@ -255,6 +278,8 @@ public class BoardView {
         busProvider.getEventBus().unregister(tileEventHandler);
         busProvider.getEventBus().unregister(gridEventHandler);
         busProvider.getEventBus().unregister(resourceEventHandler);
+        busProvider.getEventBus().unregister(roadEventHandler);
+
     }
 
     /**
@@ -264,5 +289,7 @@ public class BoardView {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
         busProvider.getEventBus().register(resourceEventHandler);
+        busProvider.getEventBus().register(roadEventHandler);
+
     }
 }
