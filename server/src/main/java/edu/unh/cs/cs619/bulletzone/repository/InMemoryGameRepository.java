@@ -329,6 +329,14 @@ public class InMemoryGameRepository implements GameRepository {
                             tank.addBundleOfResources(2, 1);
                             System.out.println("Finished item pickup process, adding clay to stash");
                             game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                        } else if (fr.getIntValue() == 7) {
+                            DataRepository data = new DataRepository();
+                            GameUserRepository users = new GameUserRepository();
+                            GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
+                            String username = gu.getUsername();
+                            Thingamajig tb = (Thingamajig) fr;
+                            double amount = tb.getCredits();
+                            data.modifyAccountBalance(username, amount);
                         } else {
                             System.out.println("Resource ID does not exist");
                         }
