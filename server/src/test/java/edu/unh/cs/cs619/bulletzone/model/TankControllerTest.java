@@ -419,72 +419,67 @@ public class TankControllerTest {
         IMGR.create();
         Tank[] tank = IMGR.join(0,"");
         Long tankId = tank[0].getId();
+
         IMGR.move(tankId,Direction.Up);
-        int position = tank[0].getParent().getPos();
+        tank[0] = IMGR.getGame().getTank(tankId);
         FieldHolder nexttile = tank[0].getParent().getNeighbor(Direction.Up);
         nexttile.setTerrain(new Hilly());
         int movetoposition = tank[0].getParent().getNeighbor(Direction.Up).getPos();
+        int position = tank[0].getParent().getPos();
 
-        System.out.println(movetoposition);
-        System.out.println(position);
-        AtomicInteger testresult = new AtomicInteger();
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(tank[0].getAllowedMoveInterval());
-                /*
-                if(tank[0].getParent().getPos() != position)
-                {
-                    testresult.set(1);
-                }
-                */
-                Thread.sleep(1000);
-                assert(tank[0].getParent().getPos() == movetoposition);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (AssertionError e) {
-                e.printStackTrace();
-                testresult.set(1);
-            }
-        }).start();
-
-        IMGR.move(tankId,Direction.Up);
-        Thread.sleep(3000);
-
+        Thread.sleep(tank[0].getAllowedMoveInterval() - 100);
+        assert(IMGR.move(tankId,Direction.Up) == false);
+        Thread.sleep(100);
+        assert(IMGR.move(tankId,Direction.Up) == true);
+        tank[0] = IMGR.getGame().getTank(tankId);
         position = tank[0].getParent().getPos();
-        System.out.println(position);
-        System.out.print("TankPosition: ");
-        System.out.print(position);
-        System.out.print(" Expected Position: ");
-        System.out.println(movetoposition);
         assert(position == movetoposition);
-        assert(testresult.get() == 0);
     }
 
     @Test
-    public void testMoveBuilder_moveIntoMeadow_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+    public void testMoveBuilder_moveIntoMeadow_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
         Tank[] tank = IMGR.join(0,"");
         Long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        IMGR.build(tankId,1);
-        assert(IMGR.move(tankId, Direction.Down));
+
+        IMGR.move(tankId,Direction.Up);
+        tank[2] = IMGR.getGame().getTank(tankId);
+        FieldHolder nexttile = tank[2].getParent().getNeighbor(Direction.Up);
+        nexttile.setTerrain(new Meadow());
+        int movetoposition = tank[2].getParent().getNeighbor(Direction.Up).getPos();
+        int position = tank[0].getParent().getPos();
+
+        Thread.sleep(tank[2].getAllowedMoveInterval() - 100);
+        assert(IMGR.move(tankId,Direction.Up) == false);
+        Thread.sleep(100);
+        assert(IMGR.move(tankId,Direction.Up) == true);
+        tank[0] = IMGR.getGame().getTank(tankId);
+        position = tank[2].getParent().getPos();
+        assert(position == movetoposition);
     }
 
     @Test
-    public void testMoveMiner_moveIntoRocky_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+    public void testMoveMiner_moveIntoRocky_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
         Tank[] tank = IMGR.join(0,"");
         Long tankId = tank[1].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        IMGR.build(tankId,1);
-        assert(IMGR.move(tankId, Direction.Down));
+
+        IMGR.move(tankId,Direction.Up);
+        tank[1] = IMGR.getGame().getTank(tankId);
+        FieldHolder nexttile = tank[1].getParent().getNeighbor(Direction.Up);
+        nexttile.setTerrain(new Rocky());
+        int movetoposition = tank[1].getParent().getNeighbor(Direction.Up).getPos();
+        int position = tank[0].getParent().getPos();
+
+        Thread.sleep(tank[1].getAllowedMoveInterval() - 100);
+        assert(IMGR.move(tankId,Direction.Up) == false);
+        Thread.sleep(100);
+        assert(IMGR.move(tankId,Direction.Up) == true);
+        tank[1] = IMGR.getGame().getTank(tankId);
+        position = tank[1].getParent().getPos();
+        assert(position == movetoposition);
     }
 
 }
