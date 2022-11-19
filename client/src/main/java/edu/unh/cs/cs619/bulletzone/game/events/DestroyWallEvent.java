@@ -20,7 +20,7 @@ public class DestroyWallEvent extends  ExecutableEvent {
     public void execute(Bus bus) {
         int jsonValue = getJSONValueFromString(terrain);
 
-        bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(jsonValue, pos)));
+        bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(-1, pos)));
     }
 
     /**

@@ -5,6 +5,7 @@ public class Wall extends FieldEntity {
     public String name = "W";
     public Wall(){
         this.destructValue = 1000;
+        this.name = "IW";
     }
 
     public Wall(int destructValue, int pos){

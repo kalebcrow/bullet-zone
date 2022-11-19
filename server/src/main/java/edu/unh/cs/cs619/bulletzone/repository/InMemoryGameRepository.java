@@ -755,7 +755,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(0,2);
                 miner.addBundleOfResources(2,1);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),2));
                 return true;
             }
             else if(structure.toString() == "IW")
@@ -764,7 +764,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2,3);
                 miner.addBundleOfResources(1,3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),3));
                 return true;
             }
             else
@@ -778,7 +778,7 @@ public class InMemoryGameRepository implements GameRepository {
             if(structure.toString() == "R") {
                 miner.addBundleOfResources(2, 3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 1));
                 return true;
             }
             else
@@ -837,7 +837,7 @@ public class InMemoryGameRepository implements GameRepository {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                if(grid3d[i][j][2] >= 10000000 && grid3d[i][j][2] < 20000000){
+                if(grid3d[i][j][1] >= 10000000 && grid3d[i][j][1] < 20000000){
 
                     test = grid3d[i][j][2];
                     test = test % 10000000;
@@ -860,6 +860,7 @@ public class InMemoryGameRepository implements GameRepository {
 
         }
 
+
         //determine tank type: 0 = tank, 1 = miner, 2 = builder
 
         long baseDelay;
@@ -876,7 +877,7 @@ public class InMemoryGameRepository implements GameRepository {
             baseDelay = 300;
         }
 
-        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation);
+        System.out.println("Tank ID: " + tankId + "\tcurrent location: " + currentLocation + "\t desired location: " + desiredLocation);
 
         //with location of tank on the board and desired location,
         //determine direction of y value movement, north or south
