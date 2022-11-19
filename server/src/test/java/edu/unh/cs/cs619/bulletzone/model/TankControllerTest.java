@@ -487,11 +487,13 @@ public class TankControllerTest {
         Tank[] tank = IMGR.join(0,"test");
         Thread.sleep(1000); //Letting server catch up
         Long tankId = tank[1].getId();
+        tank[2].getParent().getNeighbor(Direction.Up).clearField();
 
 
         IMGR.move(tankId,Direction.Up);
         tank[1] = IMGR.getGame().getTank(tankId);
         FieldHolder nexttile = tank[1].getParent().getNeighbor(Direction.Up);
+        nexttile.clearField();
         nexttile.setTerrain(new Rocky());
         int movetoposition = tank[1].getParent().getNeighbor(Direction.Up).getPos();
         int position = tank[0].getParent().getPos();
