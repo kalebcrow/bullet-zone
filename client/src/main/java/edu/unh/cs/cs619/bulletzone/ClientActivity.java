@@ -24,6 +24,7 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.w3c.dom.Text;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
@@ -210,7 +211,10 @@ public class ClientActivity extends Activity {
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             TextView health = findViewById(R.id.HealthText);
+            TextView textViewResources = findViewById(R.id.ResourcesText);
+            boardView.setGarageText(textViewResources);
             health.setVisibility(View.VISIBLE);
+            textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);

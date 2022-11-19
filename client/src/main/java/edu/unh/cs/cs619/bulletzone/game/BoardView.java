@@ -199,6 +199,7 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateResource( ResourceEvent event) {
+        Log.d("BoardView", "ResourceEvent Received");
         resources = event.resources;
         String message =
                 "Rock: " + this.resources[0] + "\n" +
