@@ -24,6 +24,7 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
@@ -144,7 +145,7 @@ public class ClientActivity extends Activity {
     void joinAsync() {
         tankController.joinGame(userID);
         gridPollTask.setPaused(false);
-        gridPollTask.doPoll();
+        //gridPollTask.doPoll();
         commandInterpreter.setPaused(false);
     }
 
@@ -191,8 +192,8 @@ public class ClientActivity extends Activity {
     /**
      * startGame: Initializes view when join game is selected
      */
-    @Click(R.id.buttonJoin)
     void startGame() {
+        //login();
         // this should only work if the user if logged in
         if (userID > 0 || testing) {
             if (testing) {
@@ -205,7 +206,7 @@ public class ClientActivity extends Activity {
             Button buttonUp = findViewById(R.id.buttonUp);
             Button buttonDown = findViewById(R.id.buttonDown);
             Button buttonRight = findViewById(R.id.buttonRight);
-            Button buttonJoin = findViewById(R.id.buttonJoin);
+            //Button buttonJoin = findViewById(R.id.buttonJoin);
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
@@ -222,7 +223,7 @@ public class ClientActivity extends Activity {
             buttonDown.setVisibility(View.VISIBLE);
             buttonRight.setVisibility(View.VISIBLE);
             buttonAction.setVisibility(View.VISIBLE);
-            buttonJoin.setVisibility(View.INVISIBLE);
+            //buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
@@ -336,11 +337,14 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonLogin)
     void login() {
         if (!loggedIn) {
+            gridPollTask.setPaused(true);
+            commandInterpreter.setPaused(false);
+            BackgroundExecutor.cancelAll("PollServer", true);
             Intent intent = new Intent(this, AuthenticateActivity_.class);
             startActivityForResult(intent, 1);
             testing = false; // for some reason is not loading right now
             loggedIn = true;
-            startGame();
+            //startGame();
         }
     }
 
@@ -361,6 +365,7 @@ public class ClientActivity extends Activity {
                 Bundle bundle = data.getExtras();
                 userID = bundle.getLong("userID");
                 setGarageTextView(bundle);
+                startGame();
             }
         }
     }

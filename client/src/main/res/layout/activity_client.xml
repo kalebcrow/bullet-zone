@@ -173,20 +173,10 @@
             android:text="Balance: 0                   Garage Items: None" />
 
         <Button
-            android:id="@+id/buttonJoin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/layoutActionFire"
-            android:layout_alignEnd="@+id/textViewGarage"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="109dp"
-            android:text="Join Game" />
-
-        <Button
             android:id="@+id/buttonReplay1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonJoin"
+
             android:layout_alignEnd="@+id/textViewGarage"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="109dp"
