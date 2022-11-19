@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: Bullet Zone Server
-Implementation-Version: 2.0
-Main-Class: edu.unh.cs.cs619.bulletzone.BulletZoneServer
-

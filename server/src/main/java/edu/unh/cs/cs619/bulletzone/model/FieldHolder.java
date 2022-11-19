@@ -16,7 +16,7 @@ public class FieldHolder {
     // should hold a terrain and also an item and a road
     private Optional<FieldEntity> entityHolder = Optional.empty(); // holds vehicles, walls, and resources
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
-    private Optional<FieldResource> roadHolder = Optional.empty(); // TODO create a FieldRoad, i dont know the json value so leaving it
+    private Optional<FieldResource> resourceHolder = Optional.empty(); // TODO create a FieldRoad, i dont know the json value so leaving it
 
     private Optional<FieldEntity> improvementHolder = Optional.empty();
     private int pos;
@@ -42,7 +42,7 @@ public class FieldHolder {
     }
 
     public boolean isRoadPresent() {
-        return roadHolder.isPresent();
+        return resourceHolder.isPresent();
     }
 
     public FieldTerrain getTerrain() {
@@ -55,13 +55,13 @@ public class FieldHolder {
                 "FieldTerrain cannot be null."));
     }
 
-    public FieldResource getRoad() {
-        return roadHolder.get();
+    public FieldResource getResource() {
+        return resourceHolder.get();
     }
 
     public void setFieldRoad(FieldResource road) {
         // set current road tile
-        roadHolder = Optional.of(checkNotNull(road,
+        resourceHolder = Optional.of(checkNotNull(road,
                 "FieldTerrain cannot be null."));
     }
 

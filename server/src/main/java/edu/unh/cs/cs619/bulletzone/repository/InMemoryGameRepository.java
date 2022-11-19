@@ -306,9 +306,33 @@ public class InMemoryGameRepository implements GameRepository {
 
             boolean isCompleted;
             boolean resourceEntity = isResource(nextField);
-            if (!nextField.isEntityPresent() || resourceEntity) {
+            if (resourceEntity || !nextField.isEntityPresent()) {
                 // pick up the resource if here
                 if (resourceEntity) {
+                    //Grab Miner
+                    Tank miner = new Tank();
+                    HashMap<String, Long> tanks = game.getTanks(tank.getIp());
+                    assert tanks != null;
+                    if (tanks.containsKey("miner"))
+                        miner = game.getTank(tanks.get("miner"));
+                    if (miner.getTypeIndex() == 1) { //Incase this is not the miner
+                        FieldResource fr = (FieldResource) nextField.getEntity();
+                        if (fr.getIntValue() == 503) { //iron
+                            tank.addBundleOfResources(1, 1);
+                            System.out.println("Finished item pickup process, adding iron to stash");
+                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                        } else if (fr.getIntValue() == 502) { //rock
+                            tank.addBundleOfResources(0, 1);
+                            System.out.println("Finished item pickup process, adding rock to stash");
+                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                        } else if (fr.getIntValue() == 501) { //clay
+                            tank.addBundleOfResources(2, 1);
+                            System.out.println("Finished item pickup process, adding clay to stash");
+                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                        } else {
+                            System.out.println("Resource ID does not exist");
+                        }
+                    }
                     // TODO actually pick up resource and add it to the cache
                     // pickUpResource(nextField, usedID);
                     // OR game.addEvent(new PickUpResourceEvent());
