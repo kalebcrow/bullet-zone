@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
@@ -306,11 +308,20 @@ public class TankControllerTest {
     @Test
     public void moveToTest(){
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(0,"ip");
-        int[][][] grid2d = IMGR.getGrid();
+        Tank[] tanks = IMGR.join(0,ip);
 
         System.out.println("Controlling tank with id " + tanks[0].getId());
 
+        Game g = IMGR.getGame();
+        HashMap<String,Long> map = g.getTanks(tanks[0].getIp());
+
+        Tank miner = g.getTank(map.get("miner"));
+        Tank builder = g.getTank(map.get("builder"));
+
+        miner.getParent().clearField();
+        builder.getParent().clearField();
+
+        int[][][] grid2d = IMGR.getGrid();
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
@@ -322,7 +333,7 @@ public class TankControllerTest {
 
         //test command
         try {
-            IMGR.moveTo(tanks[1].getId(), 0);
+            IMGR.moveTo(tanks[0].getId(), 0);
         } catch (TankDoesNotExistException e) {
             e.printStackTrace();
         }
@@ -338,11 +349,10 @@ public class TankControllerTest {
             System.out.println();
         }
 
-        /*
+        assertEquals(tanks[0].getParent().getPos(), 0);
 
-        //strictly horizontal movement
         try {
-            IMGR.moveTo(tanks[0].getId(), 15);
+            IMGR.moveTo(tanks[0].getId(), 240);
         } catch (TankDoesNotExistException e) {
             e.printStackTrace();
         }
@@ -351,15 +361,16 @@ public class TankControllerTest {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j] + "\t");
+                System.out.print(grid2d[i][j][1] + "\t");
 
             }
             System.out.println();
         }
 
-        //try strictly vertical movement
+        assertEquals(tanks[0].getParent().getPos(), 240);
+
         try {
-            IMGR.moveTo(tanks[0].getId(), 95);
+            IMGR.moveTo(tanks[0].getId(), 255);
         } catch (TankDoesNotExistException e) {
             e.printStackTrace();
         }
@@ -368,45 +379,13 @@ public class TankControllerTest {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j] + "\t");
+                System.out.print(grid2d[i][j][1] + "\t");
 
             }
             System.out.println();
         }
 
-        try {
-            IMGR.moveTo(tanks[1].getId(), 154);
-        } catch (TankDoesNotExistException e) {
-            e.printStackTrace();
-        }
-
-        grid2d = IMGR.getGrid();
-        for(int i = 0; i < 16; i++){
-            for(int j = 0; j < 16; j++){
-
-                System.out.print(grid2d[i][j] + "\t");
-
-            }
-            System.out.println();
-        }
-
-        try {
-            IMGR.moveTo(tanks[1].getId(), 43);
-        } catch (TankDoesNotExistException e) {
-            e.printStackTrace();
-        }
-
-        grid2d = IMGR.getGrid();
-        for(int i = 0; i < 16; i++){
-            for(int j = 0; j < 16; j++){
-
-                System.out.print(grid2d[i][j] + "\t");
-
-            }
-            System.out.println();
-        }
-
-         */
+        assertEquals(tanks[0].getParent().getPos(), 255);
 
     }
 
