@@ -122,7 +122,7 @@ public class ClientActivity extends Activity {
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        boardView.setGarageText(textViewGarage);
+        boardView.setGarageText(findViewById(R.id.ResourcesText));
         boardView.setHealthText(findViewById(R.id.HealthText));
 
         gridView.setAdapter(mGridAdapter);
@@ -385,10 +385,7 @@ public class ClientActivity extends Activity {
         String tank = bundle.getString("items");
         String message = "User ID: " + userID + "\n" +
                 "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank + "\n" +
-                "Rock: " + boardView.resources[0] + "\n" +
-                "Iron: " + boardView.resources[1] + "\n" +
-                "Clay: " + boardView.resources[2];
+                "Garage: " + tank + "\n";
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
