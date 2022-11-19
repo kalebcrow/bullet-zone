@@ -88,14 +88,20 @@ public class GridAdapter extends BaseAdapter {
                 ImageView entity = (ImageView) relativeLayout.getChildAt(2);
 
                 if (mEntities[position][0] != null) {
+                    // 0 terrain
+                    // 1 entities
+                    // 2 road
+
                     // check cell is not null then set terrain
-                    terrain.setImageResource(mEntities[position][0].getResourceID());//terrain.setBackgroundResource(mEntities[position].getTerrain());
-                    road.setImageResource(mEntities[position][2].getResourceID());
+                    terrain.setImageResource(mEntities[position][0].getResourceID());
                     // check for improvements (just walls right now)
-//                    entity.setImageResource(mEntities[position][1].getResourceID());
+                    entity.setImageResource(mEntities[position][1].getResourceID());
+                    // check for roads
+                    road.setImageResource(mEntities[position][2].getResourceID());
 
                     //terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
-                    //entity.setRotation(mEntities[position][1].getOrientation()/2 * 90);
+                    entity.setRotation(mEntities[position][1].getOrientation()/2 * 90);
+                    //road.setRotation(mEntities[position][2].getOrientation()/2 * 90);
 
                 } else {
                     // somethings wrong

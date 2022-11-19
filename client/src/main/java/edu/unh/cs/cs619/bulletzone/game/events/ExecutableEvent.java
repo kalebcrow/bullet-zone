@@ -20,6 +20,7 @@ public class ExecutableEvent {
         direction = gridEvent.getDirection();
         pos = gridEvent.getPos() - 1;
         terrain = gridEvent.getTerrain();
+        resource = gridEvent.getResource();
         buildType = gridEvent.buildType;
         resources = gridEvent.resources;
     }
@@ -30,10 +31,27 @@ public class ExecutableEvent {
     protected byte direction = -1;
     protected int pos = -1;
     protected String terrain = "";
+    protected String resource = "";
     public TileUpdateEvent tileUpdateEvent;
     protected int[] resources = new int[]{0, 0, 0};
     protected Integer buildType;
 
+
+    /**
+     *
+     * @return String representing resource
+     */
+    public String getResource() {
+        return resource;
+    }
+
+    /**
+     *
+     * @param resource String representing the resource
+     */
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
 
     /**
      *

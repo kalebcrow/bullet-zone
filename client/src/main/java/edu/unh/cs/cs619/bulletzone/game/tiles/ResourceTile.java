@@ -99,8 +99,8 @@ public class ResourceTile extends GroundTile {
             this.resourceID = R.drawable.clay;
         } else if (JsonValue == 502) {
             this.resourceID = R.drawable.rock;
-        } else if (JsonValue == 502) {
-            this.resourceID = R.drawable.meadow;
+        } else if (JsonValue == 503) {
+            this.resourceID = R.drawable.iron;
         } else if (JsonValue == 7) {
             this.resourceID = R.drawable.thingamajig;
         }

@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
@@ -21,8 +23,10 @@ import edu.unh.cs.cs619.bulletzone.Command;
 import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.MoveCommand;
 import edu.unh.cs.cs619.bulletzone.TurnCommand;
+import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
+import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
@@ -93,6 +97,8 @@ public class InMemoryGameRepository implements GameRepository {
     private Game game = null;
     private int bulletDamage[]={10,30,50};
     private int trackActiveBullets[]={0,0,0,0};
+
+    private final ConcurrentMap<Integer, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryGameRepository.class);
 
@@ -198,6 +204,10 @@ public class InMemoryGameRepository implements GameRepository {
         synchronized (this.monitor) {
             if (game == null) {
                 this.create();
+
+                // since its creating the game also start spawning resources
+                log.debug("creating test and starting resources up--------------------------------");
+                getRandomResources();
             }
         }
         return game.getGrid3D();
@@ -508,22 +518,28 @@ public class InMemoryGameRepository implements GameRepository {
                             } else {
                                 // it is a field resource (but doesn't like when i call it field resource)
                                 FieldResource fr = (FieldResource) nextField.getEntity();
+                                int pos = -1;
                                 log.debug("-----------------tried to FIRE onto a resource entity with int value: " + fr.getIntValue());
                                 // in this instance no one gets to pick up the resource
                                 if (fr.getIntValue() == 501) {
                                     Clay c = (Clay) fr;
-                                    game.getHolderGrid().get(c.getPos()).clearField();
+                                    pos = c.getPos();
+                                    game.getHolderGrid().get(pos).clearField();
                                 } else if (fr.getIntValue() == 502) {
                                     Rock r = (Rock) fr;
-                                    game.getHolderGrid().get(r.getPos()).clearField();
+                                    pos = r.getPos();
+                                    game.getHolderGrid().get(pos).clearField();
                                 } else if (fr.getIntValue() == 503) {
                                     Iron i = (Iron) fr;
-                                    game.getHolderGrid().get(i.getPos()).clearField();
+                                    pos = i.getPos();
+                                    game.getHolderGrid().get(pos).clearField();
                                 } else if (fr.getIntValue() == 7) {
                                     Thingamajig t = (Thingamajig) fr;
-                                    game.getHolderGrid().get(t.getPos()).clearField();
+                                    pos = t.getPos();
+                                    game.getHolderGrid().get(pos).clearField();
                                 }
-                                //game.addEvent(new DestroyResourceEvent()); // TODO complete the destroy resource event
+                                itemsOnGrid.remove(pos);
+                                //game.addEvent(new DestroyResourceEvent(pos, terrain)); // TODO complete the destroy resource event but might not be needed tbh
                             }
                             if (isVisible) {
                                 // Remove bullet from field
@@ -577,9 +593,11 @@ public class InMemoryGameRepository implements GameRepository {
                     DataRepository data = new DataRepository();
                     GameUserRepository users = new GameUserRepository();
                     GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                    String username = gu.getUsername();
-                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
-                    data.modifyAccountBalance(username, amount);
+                    if (gu != null) {
+                        String username = gu.getUsername();
+                        double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
+                        data.modifyAccountBalance(username, amount);
+                    }
                 }
 
                 FieldHolder parent = tank.getParent();
@@ -1130,6 +1148,57 @@ public class InMemoryGameRepository implements GameRepository {
                 }
             }, 20, 1000);
             return true;
+        }
+    }
+
+    private void getRandomResources() {
+        // making it wait a second before starting so it doesn't crash
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                // do something
+                setRandomResources();
+            }
+        }, 1000, 1000);
+    }
+
+    private void setRandomResources() {
+        int numPlayers = game.getPlayersIP().size();
+        ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
+        synchronized (holderGrid) {
+            double prob = 0.25 * (double) (numPlayers / (itemsOnGrid.size() + 1));
+            boolean addingRandomResource = false;
+            FieldResource fr;
+            Random r = new Random();
+            double randomValue = r.nextDouble(); // TODO this will be every second
+            if (randomValue <= prob) {
+                // add a random resource
+                addingRandomResource = true;
+                double itemType = (Math.random() * (4));
+                if (itemType >= 0 && itemType < 1) {
+                    fr = new Clay();
+                } else if (itemType >= 1 && itemType < 2) {
+                    fr = new Iron();
+                } else if (itemType >= 2 && itemType < 3) {
+                    fr = new Rock();
+                } else {
+                    fr = new Thingamajig();
+                }
+
+                boolean added = false;
+                while (!added) {
+                    int location = (int) (Math.random() * (256));
+                    if (!holderGrid.get(location).isEntityPresent()) {
+                        holderGrid.get(location).setFieldEntity(fr);
+                        itemsOnGrid.put(location, fr);
+                        log.debug("adding new thingy---------------------------------");
+                        game.addEvent(new AddResourceEvent(location, fr.toString()));
+                        added = true;
+                    }
+                }
+                added = false;
+            }
         }
     }
 }

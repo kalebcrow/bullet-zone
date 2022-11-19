@@ -1,11 +1,44 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
-import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+import com.squareup.otto.Bus;
 
-public class DestroyResourceEvent extends GridEvent {
-    public DestroyResourceEvent() {
-        //this.ID = (Math.toIntExact(tankID) * 10) + bulletID;
-        this.type = "destroyResource";
-        this.time = System.currentTimeMillis();
+import edu.unh.cs.cs619.bulletzone.game.TankList;
+import edu.unh.cs.cs619.bulletzone.game.TileFactory;
+import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
+
+public class DestroyResourceEvent extends ExecutableEvent {
+
+    public DestroyResourceEvent(GridEvent event) {
+        super(event);
+    }
+
+    /**
+     * runs the command updating the board
+     */
+    public void execute(Bus bus) {
+        int jsonValue = getJSONValueFromString(terrain);
+
+        bus.post(new TileUpdateEvent(pos, TileFactory.getFactory().makeTile(jsonValue, pos)));
+    }
+
+    /**
+     * Converts the json value to the string value
+     *
+     * @param terrain terrain in string form
+     * @return terrain in json form
+     */
+    private Integer getJSONValueFromString(String terrain) {
+        // using given son values
+        if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
     }
 }

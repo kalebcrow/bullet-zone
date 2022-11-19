@@ -47,20 +47,20 @@ public class GameBoardBuilder {
 
     private String[][] improvementGrid = {
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", "TB", " "}, // 1
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", "RB", " ", "I", " ", " "}, // 2
-            {" ", "I", " ", "CB", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", " ", " "}, // 1
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", "IB", " ", " ", " ", " ", "IB", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", "CB", " ", " "}, // 9
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
-            {" ", "I", " ", "TB", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", "D", "D", "D", "D", " "}, // 12
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 13
-            {" ", " ", " ", " ", " ", " ", " ", " ", "RB", " ", " ", " ", " ", " ", " ", " "}, // 14
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 14
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
     };
 
@@ -124,13 +124,11 @@ public class GameBoardBuilder {
             }
             createFieldHolderGrid(game);
 
-            // Test // TODO Move to more appropriate place (and if desired, integrate map loader)
             createInitialGrid(game);
     }
 
     private void createInitialGrid(Game game) {
-        // add each level of the square - terrain --> improvements --> vehicle
-        // for now just doing terrain
+        // add each level of the square - terrain --> improvements/tanks --> bundles
         int count = 0;
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
@@ -146,7 +144,17 @@ public class GameBoardBuilder {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
-                } else if (improvementGrid[i][j].equals("CB")) {
+                }
+
+                // second layer would be roads [2]
+                // third layer is walls + vehicles + resources [1]
+
+                count++;
+            }
+        }
+
+        /*
+                else if (improvementGrid[i][j].equals("CB")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Clay()); // temp
                 } else if (improvementGrid[i][j].equals("IB")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Iron()); // temp
@@ -155,14 +163,7 @@ public class GameBoardBuilder {
                 } else if (improvementGrid[i][j].equals("TB")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Thingamajig()); // temp
                 }
-
-                // second layer would be roads
-                // third layer is walls + vehicles + resources
-
-                count++;
-            }
-        }
-
+                */
 
         /*
         game.getHolderGrid().get(6).setFieldEntity(new Hilly());
