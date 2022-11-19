@@ -318,17 +318,17 @@ public class InMemoryGameRepository implements GameRepository {
                     if (miner.getTypeIndex() == 1) { //Incase this is not the miner
                         FieldResource fr = (FieldResource) nextField.getEntity();
                         if (fr.getIntValue() == 503) { //iron
-                            tank.addBundleOfResources(1, 1);
+                            miner.addBundleOfResources(1, 1);
                             System.out.println("Finished item pickup process, adding iron to stash");
-                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                            game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                         } else if (fr.getIntValue() == 502) { //rock
-                            tank.addBundleOfResources(0, 1);
+                            miner.addBundleOfResources(0, 1);
                             System.out.println("Finished item pickup process, adding rock to stash");
-                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                            game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                         } else if (fr.getIntValue() == 501) { //clay
-                            tank.addBundleOfResources(2, 1);
+                            miner.addBundleOfResources(2, 1);
                             System.out.println("Finished item pickup process, adding clay to stash");
-                            game.addEvent(new MineEvent(tankId, tank.getAllResources()));
+                            game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                         } else if (fr.getIntValue() == 7) {
                             DataRepository data = new DataRepository();
                             GameUserRepository users = new GameUserRepository();

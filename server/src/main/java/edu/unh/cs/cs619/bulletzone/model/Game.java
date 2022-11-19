@@ -46,7 +46,7 @@ public final class Game {
 
     public Game() {
         this.id = 0;
-        getRandomResources();
+        //getRandomResources();
     }
 
     @JsonIgnore
@@ -163,14 +163,14 @@ public final class Game {
 
     private void setRandomResources() {
         log.debug("-------------------------setting resource0");
-        double prob = 0.25 * (double)(tanks.size() / itemsOnGrid.size() + 1);
+        double prob = 0.25 * (double)(playersIP.size() / itemsOnGrid.size() + 1);
         boolean addingRandomResource = false;
         FieldResource fr;
         double row = -1;
         double col = -1;
         Random r = new Random();
         double randomValue = r.nextDouble();
-        if (randomValue >= prob) {
+        if (randomValue <= prob) {
             // add a random resource
             addingRandomResource = true;
             double itemType = (Math.random() * (4));
