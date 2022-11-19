@@ -105,7 +105,7 @@ public final class Game {
     }
 
     public int[][][] getGrid2D() {
-        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][2];
+        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][3];
 
         synchronized (holderGrid) {
             FieldHolder holder;
@@ -117,6 +117,14 @@ public final class Game {
                         grid[i][j][1] = holder.getEntity().getIntValue();
                     } else {
                         grid[i][j][1] = -1; // make it blank if theres no entity
+                    }
+                    if(holder.isImprovementPresent())
+                    {
+                        grid[i][j][2] = 30000001;
+                    }
+                    else
+                    {
+                        grid[i][j][2] = 30000000;
                     }
                     // set terrain (should always be there)
                     grid[i][j][0] = holder.getTerrain().getIntValue();

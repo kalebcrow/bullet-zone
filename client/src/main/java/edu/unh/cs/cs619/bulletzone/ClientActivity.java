@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
@@ -47,6 +49,8 @@ public class ClientActivity extends Activity {
     @ViewById
     protected TextView textViewGarage;
 
+    protected TextView textViewMoveTo;
+
     @Bean
     TankController tankController;
 
@@ -57,6 +61,7 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
+    private int selectedCoordinates = -1;
 
     @Bean
     BoardView boardView;
@@ -204,9 +209,11 @@ public class ClientActivity extends Activity {
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
-            TextView health= findViewById(R.id.HealthText);
+            TextView health = findViewById(R.id.HealthText);
             health.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
+            textViewMoveTo = findViewById(R.id.moveToTextView);
+            Button moveToButton = (Button) findViewById(R.id.moveToButton);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
             buttonRespawn.setVisibility(View.VISIBLE);
             buttonLeft.setVisibility(View.VISIBLE);
@@ -218,6 +225,8 @@ public class ClientActivity extends Activity {
             buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
+            textViewMoveTo.setVisibility(View.VISIBLE);
+            moveToButton.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -391,13 +400,10 @@ public class ClientActivity extends Activity {
     void vehicleAction(){
 
         if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
-            //stub
-            //presumably some call to TankController requesting mine action
+            tankController.mine();
         }
         else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
 
-            //another stub
-            //open builder popup
             BuilderFragment myBuilderFragment = new BuilderFragment();
             myBuilderFragment.setContext(this);
             myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
@@ -432,4 +438,29 @@ public class ClientActivity extends Activity {
 
 
     }
+
+    @ItemClick(R.id.gridView)
+    void gridSelection(int position){
+
+        selectedCoordinates = position;
+        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        Log.d(TAG, "Grid Selection of " + position);
+
+    }
+
+    @Click(R.id.moveToButton)
+    void moveToLocation(){
+
+        if(selectedCoordinates == -1){
+            Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
+        }
+        else{
+
+            tankController.moveTo(selectedCoordinates);
+
+        }
+
+    }
+
+
 }

@@ -26,10 +26,10 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
  */
 
 //Please fix when we submit
-@Rest(rootUrl = "http://10.21.95.176:8080/games",
+//@Rest(rootUrl = "http://10.21.169.112:8080/games",
 //@Rest(rootUrl = "http://10.21.138.125:8080/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
-//@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
 //@Rest(rootUrl = "localhost:8080",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
         // TODO: disable intercepting and logging
@@ -69,9 +69,19 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     BooleanWrapper fire(@Path long tankId);
 
     @Delete("/{tankId}/leave")
-    BooleanWrapper leave(@Path long tankId);
+    BooleanWrapper leave(@Path long tankId[]);
 
     @Put("/{tankId}/moveTo/{desiredLocation}")
     BooleanWrapper moveTo(@Path long tankId, @Path int desiredLocation);
+
+    @Put("/{tankId}/mine")
+    BooleanWrapper mine(@Path long tankId);
+
+    @Put("/{tankId}/dismantle")
+    BooleanWrapper dismantle(@Path long tankId);
+
+    @Put("/{tankId}/build/{buildingType}")
+    BooleanWrapper build(@Path long tankId, @Path int buildingType);
+
 
 }

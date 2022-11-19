@@ -176,6 +176,9 @@ class GamesController {
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<BooleanWrapper> moveTo(@PathVariable long tankId, @PathVariable int desiredLocation)
             throws TankDoesNotExistException{
+
+        System.out.println("\n\n\n\n Move to thing \n\n\n");
+
         return new ResponseEntity<BooleanWrapper>(
                 new BooleanWrapper(gameRepository.moveTo(tankId, desiredLocation)),
                 HttpStatus.OK
