@@ -659,7 +659,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(0,2);
                 miner.addBundleOfResources(2,1);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),2));
                 return true;
             }
             else if(structure.toString() == "IW")
@@ -668,7 +668,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2,3);
                 miner.addBundleOfResources(1,3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),3));
                 return true;
             }
             else
@@ -682,7 +682,7 @@ public class InMemoryGameRepository implements GameRepository {
             if(structure.toString() == "R") {
                 miner.addBundleOfResources(2, 3);
                 behind.clearField();
-                game.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos()));
+                game.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 1));
                 return true;
             }
             else
