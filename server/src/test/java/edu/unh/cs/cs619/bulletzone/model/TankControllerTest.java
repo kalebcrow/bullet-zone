@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -408,6 +410,77 @@ public class TankControllerTest {
 
          */
 
+    }
+
+    @Test
+    public void testMoveTank_moveIntoHilly_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join(0,"");
+        Long tankId = tank[0].getId();
+        IMGR.move(tankId,Direction.Up);
+        int position = tank[0].getParent().getPos();
+        FieldHolder nexttile = tank[0].getParent().getNeighbor(Direction.Up);
+        nexttile.setTerrain(new Hilly());
+        int movetoposition = tank[0].getParent().getNeighbor(Direction.Up).getPos();
+
+        System.out.println(movetoposition);
+        System.out.println(position);
+        AtomicInteger testresult = new AtomicInteger();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(tank[0].getAllowedMoveInterval());
+                /*
+                if(tank[0].getParent().getPos() != position)
+                {
+                    testresult.set(1);
+                }
+                */
+                Thread.sleep(1000);
+                assert(tank[0].getParent().getPos() == movetoposition);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        IMGR.move(tankId,Direction.Up);
+        Thread.sleep(3000);
+
+        position = tank[0].getParent().getPos();
+        System.out.println(position);
+        System.out.print("TankPosition: ");
+        System.out.print(position);
+        System.out.print(" Expected Position: ");
+        System.out.println(movetoposition);
+        assert(position == movetoposition);
+        assert(testresult.get() == 0);
+    }
+
+    @Test
+    public void testMoveBuilder_moveIntoMeadow_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join(0,"");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        IMGR.build(tankId,1);
+        assert(IMGR.move(tankId, Direction.Down));
+    }
+
+    @Test
+    public void testMoveMiner_moveIntoRocky_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join(0,"");
+        Long tankId = tank[1].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        IMGR.build(tankId,1);
+        assert(IMGR.move(tankId, Direction.Down));
     }
 
 }
