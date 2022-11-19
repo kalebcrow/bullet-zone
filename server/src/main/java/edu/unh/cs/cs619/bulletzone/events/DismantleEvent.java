@@ -7,11 +7,12 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public class DismantleEvent extends GridEvent {
 
-    public DismantleEvent(Long tankID, int[] resources, int pos) {
+    public DismantleEvent(Long tankID, int[] resources, int pos, int building) {
         this.ID = Math.toIntExact(tankID);
         this.type = "dismantle";
         this.time = System.currentTimeMillis();
         this.resources = resources;
         this.pos = pos;
+        this.buildType = building;
     }
 }
