@@ -25,24 +25,24 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".5">
+                android:layout_weight=".43">
 
                 <GridView
                     android:id="@+id/gridView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:layout_weight="1"
                     android:background="#FFFFFF"
                     android:numColumns="16"
-                    tools:listitem="@layout/field_item"
-                    android:layout_centerInParent="true"></GridView>
+                    tools:listitem="@layout/field_item"></GridView>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".5">
+                android:layout_weight=".57">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,22 +61,21 @@
                         android:id="@+id/moveToTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No Coordinates Selected Yet"
-                        android:visibility="invisible"
                         android:maxLines="1"
-                        android:textSize="18dp"
+                        android:padding="10dp"
+                        android:text="No Coordinates Selected Yet"
                         android:textColor="#000000"
-                        android:padding="10dp">
-                    </TextView>
+                        android:textSize="18dp"
+                        android:visibility="invisible"></TextView>
 
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/HealthText"
                     android:layout_width="match_parent"
-                    android:layout_height="377dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="50dp"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:text="Health"
                     android:visibility="invisible" />
