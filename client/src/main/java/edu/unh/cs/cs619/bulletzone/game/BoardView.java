@@ -193,7 +193,9 @@ public class BoardView {
 
         for (int i = 0; i < tankController.getTankID().length; i++) {
             TankTile tile = (TankTile) tankList.getLocation(Math.toIntExact(tankController.getTankID()[i]));
-            health.append("TankID: ").append(tile.getID()).append(" Health ").append(tile.health).append("\n");
+            if (tile != null) {
+                health.append("TankID: ").append(tile.getID()).append(" Health ").append(tile.health).append("\n");
+            }
         }
 
         healthText.setText(health.toString());
