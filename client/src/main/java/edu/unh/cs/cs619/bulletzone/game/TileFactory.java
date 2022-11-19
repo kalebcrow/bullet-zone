@@ -1,11 +1,14 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
 
+import android.util.Log;
+
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.RoadTile;
 
 //Not sure if this needs to be a singleton but it is now
 public class TileFactory {
@@ -51,8 +54,10 @@ public class TileFactory {
             return new ObstacleTile(JsonValue, location);
         } else if (JsonValue >= 2000000 && JsonValue < 3000000) {
             return new BulletTile(JsonValue, location);
-        } else if (JsonValue >= 10000000) {
+        } else if (JsonValue < 30000000 && JsonValue >= 10000000) {
             return new TankTile(JsonValue, location);
+        } else if (JsonValue == 30000000 || JsonValue == 30000001) {
+            return new RoadTile(JsonValue, location);
         } else {
             // return blank tile
             return new GroundTile(-1, location);

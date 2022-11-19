@@ -11,8 +11,10 @@ import org.androidannotations.annotations.EBean;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
+import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -54,6 +56,16 @@ public class BoardView {
 
     public TextView garageText;
 
+    public TextView getHealthText() {
+        return healthText;
+    }
+
+    public void setHealthText(TextView healthText) {
+        this.healthText = healthText;
+    }
+
+    public TextView healthText;
+
     /**
      *
      * @return return gridAdapter
@@ -80,7 +92,7 @@ public class BoardView {
     public BoardView() {
         tileFactory = TileFactory.getFactory();
         resources = new int[3];
-        tiles = new GroundTile[256][3]; // represents [terrain][entity]
+        tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
     }
 
     @AfterInject
@@ -88,6 +100,7 @@ public class BoardView {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
         busProvider.getEventBus().register(resourceEventHandler);
+        busProvider.getEventBus().register(roadEventHandler);
     }
 
     /**
@@ -96,7 +109,7 @@ public class BoardView {
      * @return get build
      */
     public GroundTile getTile(int index) {
-        return tiles[index][2]; // defaults to two because only used to test entities?
+        return tiles[index][1]; // defaults to two because only used to test entities?
     }
 
     /**
@@ -124,7 +137,7 @@ public class BoardView {
         if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2) {
             tiles[index][0] = cell; // set terrain
         } else {
-            tiles[index][2] = cell; // set entity
+            tiles[index][1] = cell; // set entity
         }
     }
 
@@ -146,11 +159,31 @@ public class BoardView {
         for (int i = 0; i < 16; i++) {
             for (int ii = 0; ii < 16; ii++) {
                 this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
-                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // road
-                this.tiles[value][2] = this.tileFactory.makeTile(arr[i][ii][2], value); // entity (tank, wall, resource, etc)
+                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
+                this.tiles[value][2] = this.tileFactory.makeTile((Integer) arr[i][ii][2], value); // road
                 value++;
             }
         }
+    }
+
+    /**
+     * Subscribes to update
+     */
+    private Object roadEventHandler = new Object()
+    {
+        @Subscribe
+        public void onRoadUpdate(RoadUpdateEvent event) {
+            updateRoad(event);
+        }
+    };
+
+    /**
+     *
+     * @param event update specific OBSTACLE/VEHICLE tile
+     */
+    private void updateRoad(RoadUpdateEvent event) {
+        tiles[event.location][2] = event.movedTile;
+        gridAdapter.updateList(tiles);
     }
 
     /**
@@ -169,10 +202,30 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateTile(TileUpdateEvent event) {
-        tiles[event.location][2] = event.movedTile;
-        Log.d("TimeDiff", "received event: " + System.currentTimeMillis());
+        tiles[event.location][1] = event.movedTile;
         gridAdapter.updateList(tiles);
+        updateHealth();
     }
+
+    public void updateHealth() {
+        StringBuilder health = new StringBuilder();
+        health.append("Health\n");
+
+        TankList tankList = TankList.getTankList();
+        TankController tankController = TankController.getTankController();
+
+        for (int i = 0; i < tankController.getTankID().length; i++) {
+            TankTile tile = (TankTile) tankList.getLocation(Math.toIntExact(tankController.getTankID()[i]));
+            if (tile != null) {
+                health.append("TankID: ").append(tile.getID()).append(" Health ").append(tile.health).append("\n");
+            }
+        }
+
+        if (healthText != null) {
+            healthText.setText(health.toString());
+        }
+    }
+
 
     /**
      * Subscribes to update
@@ -201,6 +254,7 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateResource( ResourceEvent event) {
+        Log.d("Yeah", "Value: " + event.resources[0] + " " + event.resources[1] + " " + event.resources[2]);
         resources = event.resources;
         String message =
                 "Rock: " + this.resources[0] + "\n" +
@@ -218,13 +272,18 @@ public class BoardView {
      */
     private void updateGrid(GridUpdateEvent event) {
         this.setUsingJSON(event.gw.getGrid());
-        gridAdapter.updateList(tiles);
+        if (gridAdapter != null) {
+            gridAdapter.updateList(tiles);
+        }
+        updateHealth();
     }
 
     public void deRegister() {
         busProvider.getEventBus().unregister(tileEventHandler);
         busProvider.getEventBus().unregister(gridEventHandler);
         busProvider.getEventBus().unregister(resourceEventHandler);
+        busProvider.getEventBus().unregister(roadEventHandler);
+
     }
 
     /**
@@ -234,5 +293,7 @@ public class BoardView {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
         busProvider.getEventBus().register(resourceEventHandler);
+        busProvider.getEventBus().register(roadEventHandler);
+
     }
 }

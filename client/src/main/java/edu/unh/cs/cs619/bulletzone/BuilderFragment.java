@@ -20,6 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import edu.unh.cs.cs619.bulletzone.game.TankController;
+
 public class BuilderFragment extends DialogFragment {
 
     private String TAG = "BuilderFragment";
@@ -114,6 +116,7 @@ public class BuilderFragment extends DialogFragment {
                 }
 
                 Log.d(TAG, "Confirmed Choice: " + returnedAction);
+                TankController.getTankController().builderActions(returnedAction);
                 getFragmentManager().beginTransaction().remove(BuilderFragment.this).commit();
             }
         });

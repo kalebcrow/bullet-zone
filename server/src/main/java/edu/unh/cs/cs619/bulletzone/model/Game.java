@@ -138,11 +138,14 @@ public final class Game {
                     if (holder.isEntityPresent()) {
                         grid[i][j][2] = holder.getEntity().getIntValue();
                     }
-                    // TODO road, currently does not exist
-                    grid[i][j][1] = -1; // make it blank if theres no road
-                    //if (holder.isRoadPresent()) {
-                    //    grid[i][j][1] = holder.getRoad().getIntValue();
-                    //}
+                    if(holder.isImprovementPresent())
+                    {
+                        grid[i][j][2] = 30000001;
+                    }
+                    else
+                    {
+                        grid[i][j][2] = 30000000;
+                    }
                     // set terrain (should always be there)
                     grid[i][j][0] = holder.getTerrain().getIntValue();
                 }

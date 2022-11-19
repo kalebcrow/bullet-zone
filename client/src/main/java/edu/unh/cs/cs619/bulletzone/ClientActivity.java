@@ -13,15 +13,18 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
@@ -47,6 +50,8 @@ public class ClientActivity extends Activity {
     @ViewById
     protected TextView textViewGarage;
 
+    protected TextView textViewMoveTo;
+
     @Bean
     TankController tankController;
 
@@ -57,6 +62,7 @@ public class ClientActivity extends Activity {
     @Bean
     GridPollerTask gridPollTask;
 
+    private int selectedCoordinates = -1;
 
     @Bean
     BoardView boardView;
@@ -89,13 +95,10 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
-        boardView.setGarageText(textViewGarage);
-
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         super.onDestroy();
     }
 
@@ -104,21 +107,28 @@ public class ClientActivity extends Activity {
         super.onStop();
         commandInterpreter.pause();
         if (commandInterpreter.getEventHistory().size() != 0) {
+            // TODO array[1] refers to the entities only (not terrain)
             HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         }
 
+        BackgroundExecutor.cancelAll("grid_poller_task", true);
         gridPollTask.setPaused(true);
         commandInterpreter.clear();
     }
+
+
 
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        joinAsync();
-        SystemClock.sleep(500);
+        boardView.setGarageText(textViewGarage);
+        boardView.setHealthText(findViewById(R.id.HealthText));
+
         gridView.setAdapter(mGridAdapter);
         boardView.setGridAdapter(mGridAdapter);
+        joinAsync();
+        SystemClock.sleep(500);
         commandInterpreter.setPaused(false);
     }
 
@@ -143,15 +153,15 @@ public class ClientActivity extends Activity {
     }
 
     @Override
-    protected void onRestart() {
+    protected void onResume() {
+        gridPollTask.setPaused(false);
         boardView.reRegister();
         boardView.setGridAdapter(mGridAdapter);
-        gridPollTask.setPaused(false);
         if (started == 1) {
             gridPollTask.doPoll();
         }
         commandInterpreter.setPaused(false);
-        super.onRestart();
+        super.onResume();
     }
 
     /**
@@ -204,9 +214,11 @@ public class ClientActivity extends Activity {
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
-            TextView health= findViewById(R.id.HealthText);
+            TextView health = findViewById(R.id.HealthText);
             health.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
+            textViewMoveTo = findViewById(R.id.moveToTextView);
+            Button moveToButton = (Button) findViewById(R.id.moveToButton);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
             buttonRespawn.setVisibility(View.VISIBLE);
             buttonLeft.setVisibility(View.VISIBLE);
@@ -218,6 +230,8 @@ public class ClientActivity extends Activity {
             buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
+            textViewMoveTo.setVisibility(View.VISIBLE);
+            moveToButton.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -229,6 +243,7 @@ public class ClientActivity extends Activity {
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
+
     }
 
     /**
@@ -239,6 +254,7 @@ public class ClientActivity extends Activity {
         commandInterpreter.pause();
         gridPollTask.setPaused(true);
         boardView.deRegister();
+        commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }
@@ -391,13 +407,10 @@ public class ClientActivity extends Activity {
     void vehicleAction(){
 
         if(tankController.getCurrentVehicle() == TankController.Vehicle.MINER){
-            //stub
-            //presumably some call to TankController requesting mine action
+            tankController.mine();
         }
         else if(tankController.getCurrentVehicle() == TankController.Vehicle.BUILDER){
 
-            //another stub
-            //open builder popup
             BuilderFragment myBuilderFragment = new BuilderFragment();
             myBuilderFragment.setContext(this);
             myBuilderFragment.show(this.getFragmentManager(), "MyFragment");
@@ -432,4 +445,29 @@ public class ClientActivity extends Activity {
 
 
     }
+
+    @ItemClick(R.id.gridView)
+    void gridSelection(int position){
+
+        selectedCoordinates = position;
+        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        Log.d(TAG, "Grid Selection of " + position);
+
+    }
+
+    @Click(R.id.moveToButton)
+    void moveToLocation(){
+
+        if(selectedCoordinates == -1){
+            Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
+        }
+        else{
+
+            tankController.moveTo(selectedCoordinates);
+
+        }
+
+    }
+
+
 }

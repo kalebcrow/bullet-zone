@@ -45,8 +45,11 @@ public class GridPollerTask {
     // TODO: disable trace
     // @Trace(tag="CustomTag", level=Log.WARN)
     public void doPoll() {
-        gw = restClient.grid();
-        onGridUpdate(restClient.grid());
+        long timestamp;
+        GridWrapper gw = restClient.grid();
+        if (!paused) {
+            onGridUpdate(restClient.grid());
+        }
         timestamp = gw.getTimeStamp();
         while (!paused) {
             EventWrapper hw = restClient.event(timestamp);
@@ -56,23 +59,6 @@ public class GridPollerTask {
             SystemClock.sleep(500);
         }
     }
-
-    /*
-    @Background(id = "grid_resource_task")
-    // TODO: disable trace
-    // @Trace(tag="CustomTag", level=Log.WARN)
-    public void makeResources() {
-        while (!paused) {
-            // determine if adding a resource or not
-            // currently just going to check if this works
-            //Log.d("hi", "timestamp: " + timestamp);
-            //restClient.event
-
-            // poll server every 1000ms
-            SystemClock.sleep(1000);
-        }
-    }
-    */
 
     @UiThread
     public void onGridUpdate(GridWrapper gw) {

@@ -374,11 +374,18 @@ public class InMemoryGameRepository implements GameRepository {
                     Tank newTank = (Tank) ent;
                     tank.hit((int)Math.floor(newTank.getLife() / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
+                    game.addEvent(new DamageEvent(Math.toIntExact(newTank.getId()), newTank.getLife()));
                     if (tank.getLife() <= 0 ){
                         String terrain = tank.getParent().getTerrain().toString();
                         game.addEvent(new DestroyTankEvent(tank.getId(), terrain));
                         tank.getParent().clearField();
                         tank.setParent(null);
+                    }
+                    if (newTank.getLife() <= 0){
+                        String terrain = tank.getParent().getTerrain().toString();
+                        game.addEvent(new DestroyTankEvent(newTank.getId(), terrain));
+                        newTank.getParent().clearField();
+                        newTank.setParent(null);
                     }
                 } else {
                     tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
@@ -605,9 +612,9 @@ public class InMemoryGameRepository implements GameRepository {
             if (miner.getTypeIndex() != 1)
                 return false;
 
-            final Wall wall = new Wall();
+            final Wall wall = new Wall(1500);
             final Road road = new Road();
-            final Wall indestructibleWall = new Wall(100000);
+            final Wall indestructibleWall = new Wall();
             indestructibleWall.name = "IW";
 
 
@@ -1094,6 +1101,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding clay to stash");
+                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
@@ -1101,6 +1109,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
+                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {
