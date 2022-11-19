@@ -821,7 +821,7 @@ public class InMemoryGameRepository implements GameRepository {
 
         //create list of Move To Commands
         ArrayList<Command> MoveToList = new ArrayList<>();
-        long placeholderDelay = 2000; //longest possible delay for moving
+        long placeholderDelay = 3000; //longest possible delay for moving
         Direction currentDirection = tank.getDirection();
 
         //special cases: on same y or x coordinate, or both
