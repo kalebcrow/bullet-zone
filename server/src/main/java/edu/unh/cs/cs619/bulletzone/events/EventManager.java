@@ -32,7 +32,7 @@ public class EventManager {
         while(it.hasNext()){
             item = it.next();
             if(item.getTime() < time) break;
-            update.addLast(item);
+            update.addFirst(item);
         }
         return update;
     }
