@@ -343,10 +343,12 @@ public class InMemoryGameRepository implements GameRepository {
                             DataRepository data = new DataRepository();
                             GameUserRepository users = new GameUserRepository();
                             GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                            String username = gu.getUsername();
-                            Thingamajig tb = (Thingamajig) fr;
-                            double amount = tb.getCredits();
-                            data.modifyAccountBalance(username, amount);
+                            if (gu != null) {
+                                String username = gu.getUsername();
+                                Thingamajig tb = (Thingamajig) fr;
+                                double amount = tb.getCredits();
+                                data.modifyAccountBalance(username, amount);
+                            }
                         } else {
                             System.out.println("Resource ID does not exist");
                         }
