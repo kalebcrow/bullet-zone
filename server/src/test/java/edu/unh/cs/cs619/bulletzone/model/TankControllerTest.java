@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -441,6 +442,9 @@ public class TankControllerTest {
                 assert(tank[0].getParent().getPos() == movetoposition);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (AssertionError e) {
+                e.printStackTrace();
+                testresult.set(1);
             }
         }).start();
 
