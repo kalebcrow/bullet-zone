@@ -33,13 +33,13 @@ public class TankControllerTest {
 
     @Test public void TankControllerReturnsTankID() {
         long value = 12L;
-        testingUnit.setTankID(value);
-        assertEquals(java.util.Optional.of(value).get(), testingUnit.getTankID());
+        testingUnit.setTankID(0, value);
+        assertEquals(java.util.Optional.of(value).get(), testingUnit.getTankID()[0]);
     }
 
     @Test public void TankControllerMoveCalls() {
         long value = 12L;
-        testingUnit.setTankID(value);
+        testingUnit.setTankID(0, value);
         restClient = Mockito.mock(BulletZoneRestClient.class);
         testingUnit.setRestClient(restClient);
         //forward and backwards
@@ -54,7 +54,7 @@ public class TankControllerTest {
 
     @Test public void TankControllerTurnCalls() {
         long value = 12L;
-        testingUnit.setTankID(value);
+        testingUnit.setTankID(0, value);
         restClient = Mockito.mock(BulletZoneRestClient.class);
         testingUnit.setRestClient(restClient);
 

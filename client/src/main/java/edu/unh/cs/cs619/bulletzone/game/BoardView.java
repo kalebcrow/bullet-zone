@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -11,6 +12,7 @@ import org.androidannotations.annotations.EBean;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -39,7 +41,18 @@ public class BoardView {
     public GroundTile[][] tiles;
     public int[][][] tileInput;
     public TileFactory tileFactory;
+    public int[] resources; //rock iron clay
     public boolean paused;
+
+    public TextView getGarageText() {
+        return garageText;
+    }
+
+    public void setGarageText(TextView garageText) {
+        this.garageText = garageText;
+    }
+
+    public TextView garageText;
 
     /**
      *
@@ -66,6 +79,7 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
+        resources = new int[3];
         tiles = new GroundTile[256][2]; // represents [terrain][entity]
     }
 
@@ -73,6 +87,7 @@ public class BoardView {
     public void setBusProvider(){
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
+        busProvider.getEventBus().register(resourceEventHandler);
     }
 
     /**
@@ -154,9 +169,7 @@ public class BoardView {
      */
     private void updateTile(TileUpdateEvent event) {
         tiles[event.location][1] = event.movedTile;
-        Log.d("TimeDiff", "received event: " + System.currentTimeMillis());
         gridAdapter.updateList(tiles);
-
     }
 
     /**
@@ -171,6 +184,33 @@ public class BoardView {
     };
 
     /**
+     * Subscribes to update
+     */
+    private Object resourceEventHandler = new Object()
+    {
+        @Subscribe
+        public void onUpdateResource(ResourceEvent event) {
+            updateResource(event);
+        }
+    };
+
+    /**
+     *
+     * @param event update specific OBSTACLE/VEHICLE tile
+     */
+    private void updateResource( ResourceEvent event) {
+        resources = event.resources;
+        String message =
+                "Rock: " + this.resources[0] + "\n" +
+                "Iron: " + this.resources[1] + "\n" +
+                "Clay: " + this.resources[2];
+
+        if (garageText != null) {
+            garageText.setText(message);
+        }
+    }
+
+    /**
      *
      * @param event update specific tile
      */
@@ -182,6 +222,7 @@ public class BoardView {
     public void deRegister() {
         busProvider.getEventBus().unregister(tileEventHandler);
         busProvider.getEventBus().unregister(gridEventHandler);
+        busProvider.getEventBus().unregister(resourceEventHandler);
     }
 
     /**
@@ -190,5 +231,6 @@ public class BoardView {
     public void reRegister() {
         busProvider.getEventBus().register(tileEventHandler);
         busProvider.getEventBus().register(gridEventHandler);
+        busProvider.getEventBus().register(resourceEventHandler);
     }
 }

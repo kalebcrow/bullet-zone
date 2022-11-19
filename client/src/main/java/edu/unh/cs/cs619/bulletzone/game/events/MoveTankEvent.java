@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
 import com.squareup.otto.Bus;
 
 import edu.unh.cs.cs619.bulletzone.R;
@@ -23,8 +25,8 @@ public class MoveTankEvent extends ExecutableEvent {
             return;
         }
 
+
         Integer location = tile.getLocation();
-        Integer prevJSONValue = getJSONValueFromString(terrain);
         Integer prevlocation = location;
 
         if (direction == 0) {
@@ -38,9 +40,12 @@ public class MoveTankEvent extends ExecutableEvent {
         }
         tile.setLocation(location);
 
+        Log.d("Moving: ", "TankID: " + tile.ID + " location: " + tile.location);
+
+
         tileUpdateEvent = new TileUpdateEvent(location, tile);
         bus.post(tileUpdateEvent);
-        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(prevJSONValue, location)));
+        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(5, location)));
     }
 
     private Integer getJSONValueFromString(String terrain) {

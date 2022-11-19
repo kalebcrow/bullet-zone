@@ -11,6 +11,16 @@ public class GridEvent implements Serializable {
     protected byte direction = -1;
     protected int pos = -1;
     protected String terrain = "";
+    protected int buildType = -1;
+    protected int[] resources = new int[]{0, 0, 0};
+
+    public int getBuildType() {
+        return buildType;
+    }
+
+    public void setBuildType(int buildType) {
+        this.buildType = buildType;
+    }
 
     /**
      *
@@ -118,6 +128,14 @@ public class GridEvent implements Serializable {
      */
     public Long getTime(){
         return this.time;
+    }
+
+    public int[] getResources() {
+        return resources;
+    }
+
+    public void setResources(int[] resources) {
+        this.resources = resources;
     }
 
 

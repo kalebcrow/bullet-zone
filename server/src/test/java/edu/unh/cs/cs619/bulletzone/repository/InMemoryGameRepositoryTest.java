@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Assert;
@@ -21,6 +22,7 @@ import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
@@ -42,7 +44,7 @@ public class InMemoryGameRepositoryTest {
         Tank[] tank = repo.join(0,"");
         Tank[] tank2 = repo.join(0,"10");
         Assert.assertEquals(tank[0].getId(), 0);
-        Assert.assertEquals(tank2[0].getId(), 1);
+        Assert.assertEquals(tank2[0].getId(), 3);
         Assert.assertNotNull(tank);
         Assert.assertTrue(tank[0].getId() >= 0);
         Assert.assertNotNull(tank[0].getDirection());
@@ -80,7 +82,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
         //tank joins and is first player
-        Tank[] tank = repo.join(0,"10");
+        Tank[] tank = repo.join(0,"test");
         Assert.assertNotNull(tank);
         Assert.assertEquals(tank[0].getId(), 0);
 
@@ -104,49 +106,53 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoined_ReturnsAddTankEvent() {
         repo.create();
-        Tank[] tank = repo.join(0,"");
-        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 500);
-        assert (update.size() == 1);
+        Tank[] tank = repo.join(0,"test");
+        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 10000);
+        assert(update.size() == 3);
         assert (update.getFirst().getType() == "addTank");
     }
 
     @Test
     public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSizeAndContents() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join(0,"test");
         Long tankID = tank[0].getId();
         for (int i = 0; i < 10; i++) {
             repo.move(tankID, Direction.Up);
-            Thread.sleep(550);
+            Thread.sleep(2500);
             repo.move(tankID, Direction.Down);
-            Thread.sleep(550);
+            Thread.sleep(2500);
         }
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).size() == 21);
+        assert(repo.getEvents(System.currentTimeMillis() - 100000).size() == 23);
         assert (repo.getEvents(System.currentTimeMillis() - 100000).get(0).getType() == "addTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(1).getType() == "moveTank");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
         assert (repo.getEvents(System.currentTimeMillis() - 100000).get(20).getType() == "moveTank");
     }
 
     @Test
     public void testGetEvents_EventsAccrueOverMinute_ReturnsAtLeastEventsFromLastMinute() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join(0,"test");
         Long tankID = tank[0].getId();
+
+        tank[1].getParent().clearField();
+        tank[2].getParent().clearField();
+
         for (int i = 0; i < 60; i++) {
             repo.move(tankID, Direction.Up);
             Thread.sleep(500);
             repo.move(tankID, Direction.Down);
             Thread.sleep(500);
         }
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).size() >= 120);
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(1).getType() == "moveTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(120).getType() == "moveTank");
+        assertEquals(repo.getEvents(System.currentTimeMillis() - 100000).size(), 123);
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(119).getType() == "moveTank");
     }
 
     @Test
     public void testGetEvents_EventsAccrueOverThreeMinutes_ReturnsEventsFromNoMoreThanThreeMinutesAgo() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join(0,"test");
         long tankID = tank[0].getId();
 
         for (int i = 0; i < 180; i++) {

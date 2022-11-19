@@ -66,6 +66,8 @@ public class ClientActivity extends Activity {
 
     Button buttonAction;
 
+    boolean loggedIn = false;
+
     /**
      * Remote tank identifier
      */
@@ -87,6 +89,7 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
+        boardView.setGarageText(textViewGarage);
 
     }
 
@@ -201,6 +204,8 @@ public class ClientActivity extends Activity {
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+            TextView health= findViewById(R.id.HealthText);
+            health.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
             buttonRespawn.setVisibility(View.VISIBLE);
@@ -220,6 +225,7 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+            loggedIn = true;
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
@@ -320,9 +326,13 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonLogin)
     void login() {
-        Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivityForResult(intent, 1);
-        testing = false; // for some reason is not loading right now
+        if (!loggedIn) {
+            Intent intent = new Intent(this, AuthenticateActivity_.class);
+            startActivityForResult(intent, 1);
+            testing = false; // for some reason is not loading right now
+            loggedIn = true;
+            startGame();
+        }
     }
 
     /**
@@ -356,7 +366,10 @@ public class ClientActivity extends Activity {
         String tank = bundle.getString("items");
         String message = "User ID: " + userID + "\n" +
                 "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank;
+                "Garage: " + tank + "\n" +
+                "Rock: " + boardView.resources[0] + "\n" +
+                "Iron: " + boardView.resources[1] + "\n" +
+                "Clay: " + boardView.resources[2];
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
