@@ -353,9 +353,6 @@ public class InMemoryGameRepository implements GameRepository {
                             System.out.println("Resource ID does not exist");
                         }
                     }
-                    // TODO actually pick up resource and add it to the cache
-                    // pickUpResource(nextField, usedID);
-                    // OR game.addEvent(new PickUpResourceEvent());
 
                     // clear the field so the tank can move onto it
                     nextField.clearField();

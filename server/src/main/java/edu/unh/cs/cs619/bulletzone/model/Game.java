@@ -43,7 +43,6 @@ public final class Game {
 
     public Game() {
         this.id = 0;
-        //getRandomResources();
     }
 
     @JsonIgnore
