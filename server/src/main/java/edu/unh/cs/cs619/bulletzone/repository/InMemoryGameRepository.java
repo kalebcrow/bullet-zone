@@ -533,9 +533,9 @@ public class InMemoryGameRepository implements GameRepository {
             if (miner.getTypeIndex() != 1)
                 return false;
 
-            final Wall wall = new Wall();
+            final Wall wall = new Wall(1500);
             final Road road = new Road();
-            final Wall indestructibleWall = new Wall(100000);
+            final Wall indestructibleWall = new Wall();
             indestructibleWall.name = "IW";
 
 
