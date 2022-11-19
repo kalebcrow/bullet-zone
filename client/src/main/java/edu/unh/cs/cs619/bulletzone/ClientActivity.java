@@ -95,13 +95,10 @@ public class ClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tankController.passContext(this);
-        boardView.setGarageText(textViewGarage);
-
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         super.onDestroy();
     }
 
@@ -114,18 +111,24 @@ public class ClientActivity extends Activity {
             HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         }
 
+        BackgroundExecutor.cancelAll("grid_poller_task", true);
         gridPollTask.setPaused(true);
         commandInterpreter.clear();
     }
+
+
 
     /**
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        joinAsync();
-        SystemClock.sleep(500);
+        boardView.setGarageText(textViewGarage);
+        boardView.setHealthText(findViewById(R.id.HealthText));
+
         gridView.setAdapter(mGridAdapter);
         boardView.setGridAdapter(mGridAdapter);
+        joinAsync();
+        SystemClock.sleep(500);
         commandInterpreter.setPaused(false);
     }
 
@@ -150,14 +153,15 @@ public class ClientActivity extends Activity {
     }
 
     @Override
-    protected void onRestart() {
+    protected void onResume() {
         gridPollTask.setPaused(false);
         boardView.reRegister();
+        boardView.setGridAdapter(mGridAdapter);
         if (started == 1) {
             gridPollTask.doPoll();
         }
         commandInterpreter.setPaused(false);
-        super.onRestart();
+        super.onResume();
     }
 
     /**
@@ -247,7 +251,10 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonReplay1)
     protected void onButtonReplay1(){
+        commandInterpreter.pause();
+        gridPollTask.setPaused(true);
         boardView.deRegister();
+        commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);
         startActivityForResult(intent, 1);
     }
@@ -267,7 +274,6 @@ public class ClientActivity extends Activity {
     protected void onButtonReplay(){
         commandInterpreter.pause();
         gridPollTask.setPaused(true);
-        // TODO array[1] refers to the entities only (not terrain)
         HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);
