@@ -61,7 +61,7 @@ public class MoveBulletEvent extends ExecutableEvent {
 
         tile.setLocation(location);
 
-        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(jsonValue, prevlocation)));
+        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(-1, prevlocation)));
         bus.post(new TileUpdateEvent(location, tile));
     }
 
