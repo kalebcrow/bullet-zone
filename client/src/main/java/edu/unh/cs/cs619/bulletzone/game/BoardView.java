@@ -221,7 +221,9 @@ public class BoardView {
             }
         }
 
-        healthText.setText(health.toString());
+        if (healthText != null) {
+            healthText.setText(health.toString());
+        }
     }
 
 
@@ -270,7 +272,9 @@ public class BoardView {
      */
     private void updateGrid(GridUpdateEvent event) {
         this.setUsingJSON(event.gw.getGrid());
-        gridAdapter.updateList(tiles);
+        if (gridAdapter != null) {
+            gridAdapter.updateList(tiles);
+        }
         updateHealth();
     }
 

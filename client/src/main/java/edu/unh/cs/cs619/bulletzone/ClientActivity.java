@@ -24,6 +24,7 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.BackgroundExecutor;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
@@ -99,7 +100,6 @@ public class ClientActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        super.onDestroy();
     }
 
     @Override
@@ -111,6 +111,7 @@ public class ClientActivity extends Activity {
             HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         }
 
+        BackgroundExecutor.cancelAll("grid_poller_task", true);
         gridPollTask.setPaused(true);
         commandInterpreter.clear();
     }
@@ -123,6 +124,7 @@ public class ClientActivity extends Activity {
     protected void afterViewInjection() {
         boardView.setGarageText(textViewGarage);
         boardView.setHealthText(findViewById(R.id.HealthText));
+
         gridView.setAdapter(mGridAdapter);
         boardView.setGridAdapter(mGridAdapter);
         joinAsync();
@@ -151,7 +153,7 @@ public class ClientActivity extends Activity {
     }
 
     @Override
-    protected void onRestart() {
+    protected void onResume() {
         gridPollTask.setPaused(false);
         boardView.reRegister();
         boardView.setGridAdapter(mGridAdapter);
@@ -159,7 +161,7 @@ public class ClientActivity extends Activity {
             gridPollTask.doPoll();
         }
         commandInterpreter.setPaused(false);
-        super.onRestart();
+        super.onResume();
     }
 
     /**
@@ -272,7 +274,6 @@ public class ClientActivity extends Activity {
     protected void onButtonReplay(){
         commandInterpreter.pause();
         gridPollTask.setPaused(true);
-        // TODO array[1] refers to the entities only (not terrain)
         HistoryWriter historyWriter = new HistoryWriter(commandInterpreter.getEventHistory(), boardView.tileInput, this);
         commandInterpreter.clear();
         Intent intent = new Intent(this, ReplayActivity_.class);

@@ -51,6 +51,9 @@ public class TankController {
     public TankController() {
         tankID = new Long[3];
         tankOrientation = new int[3];
+        for (int i = 0; i < 3; i++) {
+            tankOrientation[i] = 0;
+        }
         INSTANCE = this;
     }
 

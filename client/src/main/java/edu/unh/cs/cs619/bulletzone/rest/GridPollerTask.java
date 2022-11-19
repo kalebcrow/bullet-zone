@@ -42,7 +42,9 @@ public class GridPollerTask {
     public void doPoll() {
         long timestamp;
         GridWrapper gw = restClient.grid();
-        onGridUpdate(restClient.grid());
+        if (!paused) {
+            onGridUpdate(restClient.grid());
+        }
         timestamp = gw.getTimeStamp();
         while (!paused) {
 

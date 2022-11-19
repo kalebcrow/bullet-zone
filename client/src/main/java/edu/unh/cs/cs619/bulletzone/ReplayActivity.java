@@ -59,13 +59,10 @@ public class ReplayActivity extends Activity {
 
     @ViewById
     protected TextView textViewGarage;
+    protected TextView health;
 
     @Bean
     BusProvider busProvider;
-
-    @NonConfigurationInstance
-    @Bean
-    GridPollerTask gridPollTask;
 
     @Bean
     BoardView boardView;
@@ -104,6 +101,7 @@ public class ReplayActivity extends Activity {
         SystemClock.sleep(500);
         HistoryReader historyReader = new HistoryReader(this);
         gridView.setAdapter(mGridAdapter);
+        setGarageTextView();
         if (historyReader.array == null) {
             CharSequence text = "No Replay";
             int duration = Toast.LENGTH_SHORT;
@@ -113,6 +111,8 @@ public class ReplayActivity extends Activity {
         } else {
             // TODO array[1] refers to the entities only (not terrain)
             boardView.setUsingJSON(historyReader.array);
+            boardView.setGarageText(findViewById(R.id.textViewGarage));
+            boardView.setHealthText(findViewById(R.id.HealthText));
             mGridAdapter.updateList(boardView.getTiles());
             historyInterpreter.setEventHistory(historyReader.history);
             running = 0;
@@ -142,7 +142,7 @@ public class ReplayActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                setGarageTextView(data);
+                setGarageTextView();
             }
         }
     }
@@ -152,16 +152,13 @@ public class ReplayActivity extends Activity {
      *
      * @param data The intent data
      */
-    private void setGarageTextView(Intent data) {
-        Bundle bundle = data.getExtras();
-        long userID = bundle.getLong("userID");
-        long bankAccountBalance = bundle.getLong("bankAccountBalance");
-        String tank = bundle.getString("items");
-        String message = "User ID: " + userID + "\n" +
-                "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank;
+    private void setGarageTextView() {
+        String message =
+                "Rock: " + 0 + "\n" +
+                        "Iron: " + 0 + "\n" +
+                        "Clay: " + 0;
+
         textViewGarage.setText(message);
-        Log.d("MESSAGE", message);
     }
 
     /**
