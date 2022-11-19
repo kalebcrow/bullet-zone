@@ -119,6 +119,7 @@ public class TankControllerTest {
     public void move_MinerMovingAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.move(tanks[1].getId(), Direction.Down);
         Thread.sleep(800);
         IMGR.move(tanks[1].getId(), Direction.Up);
@@ -130,6 +131,7 @@ public class TankControllerTest {
     public void move_MinerMovingAtInappropriateInterval_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.move(tanks[1].getId(), Direction.Down);
         Thread.sleep(700);
         IMGR.move(tanks[1].getId(), Direction.Up);
@@ -141,6 +143,7 @@ public class TankControllerTest {
     public void move_BuilderMovingAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.move(tanks[2].getId(), Direction.Down);
         Thread.sleep(1000);
         IMGR.move(tanks[2].getId(), Direction.Up);
@@ -152,6 +155,7 @@ public class TankControllerTest {
     public void move_BuilderMovingAtInappropriateInterval_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.move(tanks[2].getId(), Direction.Down);
         Thread.sleep(900);
         IMGR.move(tanks[2].getId(), Direction.Up);
@@ -163,6 +167,7 @@ public class TankControllerTest {
     public void turn_MinerTurningAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.turn(tanks[1].getId(), Direction.Left);
         Thread.sleep(800);
         IMGR.turn(tanks[1].getId(), Direction.Up);
@@ -174,6 +179,7 @@ public class TankControllerTest {
     public void turn_BuilderTurningAtInappropriateInterval_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.move(tanks[2].getId(), Direction.Down);
         Thread.sleep(250);
         IMGR.move(tanks[2].getId(), Direction.Up);
@@ -185,6 +191,7 @@ public class TankControllerTest {
     public void fire_BuilderFiringAtAppropriateInterval_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.fire(tanks[2].getId(), 1);
         Thread.sleep(1000);
         IMGR.fire(tanks[2].getId(), 1);
@@ -196,6 +203,7 @@ public class TankControllerTest {
     public void fire_MinerFiringAtInappropriateInterval_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         IMGR.fire(tanks[1].getId(), 1);
         Thread.sleep(150);
         IMGR.fire(tanks[1].getId(), 1);
@@ -207,6 +215,7 @@ public class TankControllerTest {
     public void fire_MinerFiringTooManyBullets_LeavesMaxNumberOfBullets() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         //#1
         IMGR.fire(tanks[1].getId(), 1);
         IMGR.turn(tanks[1].getId(), Direction.Right);
@@ -250,6 +259,7 @@ public class TankControllerTest {
     public void mine_MinerMiningResourceAddsIronResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain.setTerrain(new Hilly());
@@ -265,6 +275,7 @@ public class TankControllerTest {
     public void mine_MinerMiningResourceAddsClayResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain.setTerrain(new Meadow());
@@ -280,6 +291,7 @@ public class TankControllerTest {
     public void mine_MinerMiningResourceAddsRockResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain.setTerrain(new Rocky());
@@ -295,6 +307,7 @@ public class TankControllerTest {
     public void mine_MoveCancelsMineAction_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
+        Thread.sleep(1000); //Letting server catch up
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain.setTerrain(new Meadow());
@@ -417,19 +430,24 @@ public class TankControllerTest {
     public void testMoveTank_moveIntoHilly_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
-        Tank[] tank = IMGR.join(0,"");
+        Tank[] tank = IMGR.join(0,"test");
+        Thread.sleep(1000); //Letting server catch up
         Long tankId = tank[0].getId();
+        tank[0].getParent().getNeighbor(Direction.Up).clearField();
+
 
         IMGR.move(tankId,Direction.Up);
         tank[0] = IMGR.getGame().getTank(tankId);
         FieldHolder nexttile = tank[0].getParent().getNeighbor(Direction.Up);
+        tank[0].getParent().getNeighbor(Direction.Up).clearField();
+
         nexttile.setTerrain(new Hilly());
         int movetoposition = tank[0].getParent().getNeighbor(Direction.Up).getPos();
         int position = tank[0].getParent().getPos();
 
         Thread.sleep(tank[0].getAllowedMoveInterval() - 100);
         assert(IMGR.move(tankId,Direction.Up) == false);
-        Thread.sleep(100);
+        Thread.sleep(2000);
         assert(IMGR.move(tankId,Direction.Up) == true);
         tank[0] = IMGR.getGame().getTank(tankId);
         position = tank[0].getParent().getPos();
@@ -440,21 +458,24 @@ public class TankControllerTest {
     public void testMoveBuilder_moveIntoMeadow_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
-        Tank[] tank = IMGR.join(0,"");
+        Tank[] tank = IMGR.join(0,"test");
+        Thread.sleep(1000); //Letting server catch up
         Long tankId = tank[2].getId();
+        tank[2].getParent().getNeighbor(Direction.Up).clearField();
 
         IMGR.move(tankId,Direction.Up);
         tank[2] = IMGR.getGame().getTank(tankId);
         FieldHolder nexttile = tank[2].getParent().getNeighbor(Direction.Up);
+        nexttile.clearField();
         nexttile.setTerrain(new Meadow());
         int movetoposition = tank[2].getParent().getNeighbor(Direction.Up).getPos();
         int position = tank[0].getParent().getPos();
 
         Thread.sleep(tank[2].getAllowedMoveInterval() - 100);
         assert(IMGR.move(tankId,Direction.Up) == false);
-        Thread.sleep(100);
+        Thread.sleep(2000);
         assert(IMGR.move(tankId,Direction.Up) == true);
-        tank[0] = IMGR.getGame().getTank(tankId);
+        tank[2] = IMGR.getGame().getTank(tankId);
         position = tank[2].getParent().getPos();
         assert(position == movetoposition);
     }
@@ -463,8 +484,10 @@ public class TankControllerTest {
     public void testMoveMiner_moveIntoRocky_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
-        Tank[] tank = IMGR.join(0,"");
+        Tank[] tank = IMGR.join(0,"test");
+        Thread.sleep(1000); //Letting server catch up
         Long tankId = tank[1].getId();
+
 
         IMGR.move(tankId,Direction.Up);
         tank[1] = IMGR.getGame().getTank(tankId);
@@ -475,10 +498,39 @@ public class TankControllerTest {
 
         Thread.sleep(tank[1].getAllowedMoveInterval() - 100);
         assert(IMGR.move(tankId,Direction.Up) == false);
-        Thread.sleep(100);
+        Thread.sleep(2000);
         assert(IMGR.move(tankId,Direction.Up) == true);
         tank[1] = IMGR.getGame().getTank(tankId);
         position = tank[1].getParent().getPos();
+        assert(position == movetoposition);
+    }
+
+    @Test
+    public void testMoveMiner_moveIntoRoad_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join(0,"test");
+        Thread.sleep(1000); //Letting server catch up
+        Long tankId = tank[0].getId();
+        tank[0].getParent().getNeighbor(Direction.Up).clearField();
+
+
+        IMGR.move(tankId,Direction.Up);
+        tank[0] = IMGR.getGame().getTank(tankId);
+        FieldHolder nexttile = tank[0].getParent().getNeighbor(Direction.Up);
+        nexttile.clearField();
+
+        nexttile.setTerrain(new Meadow());
+        nexttile.setImprovementEntity(new Road());
+        int movetoposition = tank[0].getParent().getNeighbor(Direction.Up).getPos();
+        int position = tank[0].getParent().getPos();
+
+        Thread.sleep(tank[0].getAllowedMoveInterval() - 100);
+        assert(IMGR.move(tankId,Direction.Up) == false);
+        Thread.sleep(2000);
+        assert(IMGR.move(tankId,Direction.Up) == true);
+        tank[0] = IMGR.getGame().getTank(tankId);
+        position = tank[0].getParent().getPos();
         assert(position == movetoposition);
     }
 
