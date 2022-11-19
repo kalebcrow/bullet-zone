@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -37,7 +38,7 @@ public final class Game {
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, HashMap<String,Long>> playersIP = new ConcurrentHashMap<>();
 
-    private final ConcurrentMap<Long, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
 
     private final Object monitor = new Object();
 
@@ -45,6 +46,7 @@ public final class Game {
 
     public Game() {
         this.id = 0;
+        getRandomResources();
     }
 
     @JsonIgnore
@@ -161,12 +163,14 @@ public final class Game {
 
     private void setRandomResources() {
         log.debug("-------------------------setting resource0");
-        double prob = 0.25 * (tanks.size() / (itemsOnGrid.size() + 1));
+        double prob = 0.25 * (double)(tanks.size() / itemsOnGrid.size() + 1);
         boolean addingRandomResource = false;
         FieldResource fr;
         double row = -1;
         double col = -1;
-        if (prob >= 0.01) {
+        Random r = new Random();
+        double randomValue = r.nextDouble();
+        if (randomValue >= prob) {
             // add a random resource
             addingRandomResource = true;
             double itemType = (Math.random() * (4));
@@ -185,6 +189,7 @@ public final class Game {
                 int location = (int) (Math.random() * (256));
                 if (!holderGrid.get(location).isEntityPresent()) {
                     holderGrid.get(location).setFieldEntity(fr);
+                    itemsOnGrid.put(location, fr);
                     added = true;
                     log.debug("adding!------------------------------------------");
                 }
