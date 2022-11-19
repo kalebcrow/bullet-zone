@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
@@ -210,6 +212,7 @@ public class ClientActivity extends Activity {
             TextView health = findViewById(R.id.HealthText);
             health.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
+            textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
             buttonRespawn.setVisibility(View.VISIBLE);

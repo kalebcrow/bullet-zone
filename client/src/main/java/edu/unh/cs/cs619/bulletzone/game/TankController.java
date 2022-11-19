@@ -30,7 +30,7 @@ public class TankController {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
-    private Long tankID[];
+    private Long[] tankID;
 
     public Long getCurrentTankID() {
         return currentTankID;
@@ -193,9 +193,12 @@ public class TankController {
     @Background
     public void leaveGame(){
         System.out.println("leaveGame() called, tank ID: " + tankID.toString());
+        long[] leaveArray = new long[3];
         for (int i = 0; i < 3; i++) {
-            restClient.leave(tankID[i]);
+            leaveArray[i] = tankID[i].longValue();
         }
+        restClient.leave(leaveArray);
+
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
@@ -216,10 +219,11 @@ public class TankController {
         return currentVehicle;
     }
 
+    @Background
     public void mine(){
 
         if(currentVehicle == Vehicle.MINER){
-            restClient.mine(minerID);
+            restClient.mine(tankID[1]);
         }
         else{
             Log.d("TankController", "Error: Mine called when currentVehicle is not Miner");
@@ -227,28 +231,29 @@ public class TankController {
 
     }
 
+    @Background
     public void builderActions(int desiredAction){
 
         if(currentVehicle == Vehicle.BUILDER){
 
             //0 == dismantle
             if(desiredAction == 0){
-                restClient.dismantle(builderID);
+                restClient.dismantle(tankID[2]);
             }
             //10 == indestructible wall
             else if(desiredAction == 10){
                 //serverside, indestructible wall is 3
-                restClient.build(builderID, 3);
+                restClient.build(tankID[2], 3);
             }
             //11 == road
             else if(desiredAction == 11){
                 //serverside, road is 1
-                restClient.build(builderID, 1);
+                restClient.build(tankID[2], 1);
             }
             //12 == wall
             else if(desiredAction == 12){
                 //serverside, wall is 3
-                restClient.build(builderID, 2);
+                restClient.build(tankID[2], 2);
             }
             else{
 
@@ -265,16 +270,9 @@ public class TankController {
 
     }
 
+    @Background
     public void moveTo(int desiredLocation){
-        if(currentVehicle == Vehicle.TANK){
-            restClient.moveTo(tankID, desiredLocation);
-        }
-        else if(currentVehicle == Vehicle.MINER){
-            restClient.moveTo(minerID, desiredLocation);
-        }
-        else{
-            restClient.moveTo(builderID, desiredLocation);
-        }
+        restClient.moveTo(currentTankID, desiredLocation);
     }
 
 }
