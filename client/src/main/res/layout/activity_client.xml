@@ -12,37 +12,79 @@
     tools:context=".ClientActivity">
 
     <RelativeLayout
-        android:id="@+id/LeftSide"
+        android:id="@+id/LinearLayoutControlLeft"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="0dp">
+        android:layout_weight=".5">
 
-        <GridView
-            android:id="@+id/gridView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:background="#FFFFFF"
-            android:fadeScrollbars="false"
-            android:numColumns="16"
-            android:padding="-2dp"
-            android:horizontalSpacing="0dp"
-            android:verticalSpacing="0dp"
-            tools:listitem="@layout/field_item" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/HealthText"
-            android:layout_width="match_parent"
-            android:layout_height="377dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="0dp"
-            android:text="Health"
-            android:inputType="text|textMultiLine|textNoSuggestions"
-            android:visibility="invisible" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5">
+
+                <GridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:numColumns="16"
+                    tools:listitem="@layout/field_item"
+                    android:layout_centerInParent="true"></GridView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/moveToButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Move To Selected"
+                        android:visibility="invisible"></Button>
+
+                    <TextView
+                        android:id="@+id/moveToTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Coordinates Selected Yet"
+                        android:visibility="invisible"
+                        android:maxLines="1"
+                        android:textSize="18dp"
+                        android:textColor="#000000"
+                        android:padding="10dp">
+                    </TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/HealthText"
+                    android:layout_width="match_parent"
+                    android:layout_height="377dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:inputType="textMultiLine"
+                    android:text="Health"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
-
 
 
     <RelativeLayout
@@ -128,7 +170,7 @@
             android:layout_marginBottom="-290dp"
             android:layout_toLeftOf="@+id/buttonRight"
             android:inputType="textMultiLine"
-            android:text="@string/LogInBeforePlayingMessage" />
+            android:text="Balance: 0                   Garage Items: None" />
 
         <Button
             android:id="@+id/buttonJoin"
