@@ -443,7 +443,8 @@ public class ClientActivity extends Activity {
     void gridSelection(int position){
 
         selectedCoordinates = position;
-        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        //textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        textViewMoveTo.setText("Selected Position: " + selectedCoordinates);
         Log.d(TAG, "Grid Selection of " + position);
 
     }

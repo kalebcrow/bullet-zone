@@ -314,7 +314,7 @@ public class TankControllerTest {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j][2] + "\t");
+                System.out.print(grid2d[i][j][1] + "\t");
 
             }
             System.out.println();
@@ -322,7 +322,7 @@ public class TankControllerTest {
 
         //test command
         try {
-            IMGR.moveTo(tanks[0].getId(), 0);
+            IMGR.moveTo(tanks[1].getId(), 0);
         } catch (TankDoesNotExistException e) {
             e.printStackTrace();
         }
@@ -332,7 +332,7 @@ public class TankControllerTest {
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
-                System.out.print(grid2d[i][j][2] + "\t");
+                System.out.print(grid2d[i][j][1] + "\t");
 
             }
             System.out.println();

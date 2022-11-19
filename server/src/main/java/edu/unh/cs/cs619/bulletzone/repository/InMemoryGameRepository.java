@@ -222,6 +222,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             TankController tc = new TankController();
             if (!tc.turn(tank, direction)) {
+                System.out.println("TankController request denied!");
                 return false;
             }
 
@@ -288,6 +289,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             TankController tc = new TankController();
             if (!tc.move(tank, direction, speed)) {
+                System.out.println("TankController request denied!");
                 return false;
             }
 
@@ -720,7 +722,9 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
 
         // Find tank
-        Tank tank = game.getTanks().get(tankId);
+        Tank tank = game.getTank(tankId);
+
+        tank.getParent().getPos();
         if (tank == null) {
             //Log.i(TAG, "Cannot find user with id: " + tankId);
             //return false;
@@ -736,7 +740,9 @@ public class InMemoryGameRepository implements GameRepository {
 
                 if(grid3d[i][j][1] >= 10000000 && grid3d[i][j][1] < 20000000){
 
-                    test = grid3d[i][j][2];
+                    System.out.println(grid3d[i][j][1]);
+
+                    test = grid3d[i][j][1];
                     test = test % 10000000;
                     test = test / 10000;
 
@@ -746,6 +752,8 @@ public class InMemoryGameRepository implements GameRepository {
                         break;
 
                     }
+
+                    System.out.println(test);
 
                 }
 
@@ -757,6 +765,14 @@ public class InMemoryGameRepository implements GameRepository {
 
         }
 
+        System.out.println("tank.getParent().getPos(): " + tank.getParent().getPos());
+
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+                System.out.print(grid3d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
 
         //determine tank type: 0 = tank, 1 = miner, 2 = builder
 
@@ -805,7 +821,7 @@ public class InMemoryGameRepository implements GameRepository {
 
         //create list of Move To Commands
         ArrayList<Command> MoveToList = new ArrayList<>();
-        long placeholderDelay = 800*2; //longest possible delay for moving
+        long placeholderDelay = 2000; //longest possible delay for moving
         Direction currentDirection = tank.getDirection();
 
         //special cases: on same y or x coordinate, or both
