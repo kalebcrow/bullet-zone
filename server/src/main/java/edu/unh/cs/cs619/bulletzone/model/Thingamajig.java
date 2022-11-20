@@ -5,7 +5,11 @@ public class Thingamajig extends FieldResource {
     int pos;
 
     public Thingamajig(){
-        credits = (int) (Math.random() * (200)) + 1;; // TODO randomize 1,10000 with average 100?
+        credits = (int) (Math.random() * (200)) + 1;; // TODO randomize [1,10000] with average 100?
+    }
+
+    public Thingamajig(int credits, boolean test) {
+        this.credits = credits;
     }
 
     public Thingamajig(int pos){
