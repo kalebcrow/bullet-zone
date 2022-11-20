@@ -118,7 +118,7 @@ class GamesController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{tankId}/leave", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    HttpStatus leave(@PathVariable long[] tankId)
+    HttpStatus leave(@PathVariable long tankId)
             throws TankDoesNotExistException {
         //System.out.println("Games Controller leave() called, tank ID: "+tankId);
         gameRepository.leave(tankId);

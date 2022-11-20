@@ -90,7 +90,7 @@ public class InMemoryGameRepositoryTest {
         Assert.assertEquals(true, tank[0].getParent().isEntityPresent());
         long[] tankIds = new long[3];
         for(int i=0;i<3;i++) tankIds[i] = tank[i].getId();
-        repo.leave(tankIds);
+        repo.leave(tankIds[0]);
         Assert.assertEquals(false, tank[0].getParent().isEntityPresent());
 
         thrown.expect(TankDoesNotExistException.class);

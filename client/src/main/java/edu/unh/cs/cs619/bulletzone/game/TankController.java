@@ -196,11 +196,7 @@ public class TankController {
     @Background
     public void leaveGame(){
         System.out.println("leaveGame() called, tank ID: " + tankID.toString());
-        long[] leaveArray = new long[3];
-        for (int i = 0; i < 3; i++) {
-            leaveArray[i] = tankID[i].longValue();
-        }
-        restClient.leave(leaveArray);
+        restClient.leave(tankID[0].longValue());
 
     }
 

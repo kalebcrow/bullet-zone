@@ -584,36 +584,52 @@ public class InMemoryGameRepository implements GameRepository {
      * @throws TankDoesNotExistException throws if the specified tank does not exist
      */
     @Override
-    public void leave(long[] tankId)
+    public void leave(long tankId)
             throws TankDoesNotExistException {
         synchronized (this.monitor) {
-            for (int i = 0; i < 3; i++){
-                if (!this.game.getTanks().containsKey(tankId[i])) {
-                    throw new TankDoesNotExistException(tankId[i]);
-                }
 
-            System.out.println("leave() called, tank ID: " + tankId[i]);
+            HashMap<String, Long> map = game.getTanks(game.getTank(tankId).getIp());
 
-                Tank tank = game.getTanks().get(tankId[i]);
+            Tank miner = game.getTank(map.get("miner"));
+            Tank builder = game.getTank(map.get("builder"));
+            Tank tank = game.getTank(map.get("tank"));
 
-                if (i == 1 && tank.getUserID() != -1) {
-                    DataRepository data = new DataRepository();
-                    GameUserRepository users = new GameUserRepository();
-                    GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                    if (gu != null) {
-                        String username = gu.getUsername();
-                        double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
-                        data.modifyAccountBalance(username, amount);
-                    }
-                }
 
-                FieldHolder parent = tank.getParent();
-                parent.clearField();
-                if(tank.getLife() > 0) {
-                    game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
-                }
-                game.removeTank(tankId[i]);
+            System.out.println("leave() called, tank ID: " + tank.getId());
+            System.out.println("leave() called, tank ID: " + miner.getId());
+            System.out.println("leave() called, tank ID: " + builder.getId());
+
+            DataRepository data = new DataRepository();
+            GameUserRepository users = new GameUserRepository();
+            GameUser gu = users.getUser(Math.toIntExact(miner.getUserID()));
+
+            if (gu != null) {
+                System.out.println("=================================fuck");
+                String username = gu.getUsername();
+                double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
+                data.modifyAccountBalance(username, amount);
             }
+
+            FieldHolder parent = tank.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                game.addEvent(new DestroyTankEvent(tank.getId(), parent.getTerrain().toString()));
+            }
+            game.removeTank(tank.getId());
+
+            parent = miner.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                game.addEvent(new DestroyTankEvent(miner.getId(), parent.getTerrain().toString()));
+            }
+            game.removeTank(miner.getId());
+
+            parent = builder.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                game.addEvent(new DestroyTankEvent(builder.getId(), parent.getTerrain().toString()));
+            }
+            game.removeTank(builder.getId());
         }
     }
 
