@@ -386,6 +386,9 @@ public class InMemoryGameRepository implements GameRepository {
             data.modifyAccountBalance(tank.getUsername(), amount);
             eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));
             System.out.println("AMOUNT balance: " + data.getUserAccountBalance(tank.getUsername()));
+            miner.subtractBundleOfResources(0, miner.getResourcesByResource(0));
+            miner.subtractBundleOfResources(1, miner.getResourcesByResource(1));
+            miner.subtractBundleOfResources(2, miner.getResourcesByResource(2));
             FieldHolder parent = tank.getParent();
             parent.clearField();
             if(tank.getLife() > 0) {
