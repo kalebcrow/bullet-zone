@@ -115,6 +115,10 @@ public class InMemoryGameRepository implements GameRepository {
             if (game == null) {
                 if(ip == "test") this.testCreate();
                 else this.create();
+
+                // since its creating the game also start spawning resources
+                log.debug("creating test and starting resources up--------------------------------");
+                getRandomResources();
             }
 
             Tank[] tanks = new Tank[3];
@@ -204,10 +208,6 @@ public class InMemoryGameRepository implements GameRepository {
         synchronized (this.monitor) {
             if (game == null) {
                 this.create();
-
-                // since its creating the game also start spawning resources
-                log.debug("creating test and starting resources up--------------------------------");
-                getRandomResources();
             }
         }
         return game.getGrid3D();
@@ -419,7 +419,7 @@ public class InMemoryGameRepository implements GameRepository {
      */
     private boolean isResource(FieldHolder nextField) {
         if (nextField.isEntityPresent()) {
-            FieldResource fr = (FieldResource) nextField.getEntity();
+            FieldEntity fr = nextField.getEntity();
             log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
                     fr.getIntValue() == 503 || fr.getIntValue() == 7;
@@ -1151,6 +1151,9 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    /**
+     * Gets random resources every 1 sec
+     */
     private void getRandomResources() {
         // making it wait a second before starting so it doesn't crash
         timer.schedule(new TimerTask() {
@@ -1163,6 +1166,9 @@ public class InMemoryGameRepository implements GameRepository {
         }, 1000, 1000);
     }
 
+    /**
+     * Sets the random resources every one second based on probability
+     */
     private void setRandomResources() {
         int numPlayers = game.getPlayersIP().size();
         ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
@@ -1191,9 +1197,8 @@ public class InMemoryGameRepository implements GameRepository {
                     int location = (int) (Math.random() * (256));
                     if (!holderGrid.get(location).isEntityPresent()) {
                         holderGrid.get(location).setFieldEntity(fr);
-                        itemsOnGrid.put(location, fr);
-                        log.debug("adding new thingy---------------------------------");
-                        game.addEvent(new AddResourceEvent(location, fr.toString()));
+                        itemsOnGrid.put(location + 1, fr);
+                        game.addEvent(new AddResourceEvent(location + 1, fr.toString()));
                         added = true;
                     }
                 }
