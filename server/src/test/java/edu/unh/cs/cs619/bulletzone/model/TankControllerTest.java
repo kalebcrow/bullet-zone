@@ -323,7 +323,7 @@ public class TankControllerTest {
     }
 
     @Test
-    public void moveToTest(){
+    public void moveTo_TankStartsInRandomLocation_NavigatesTo3LocationsCorrectly(){
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0,ip);
 
