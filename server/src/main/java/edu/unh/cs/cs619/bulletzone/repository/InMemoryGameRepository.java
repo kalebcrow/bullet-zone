@@ -1186,7 +1186,7 @@ public class InMemoryGameRepository implements GameRepository {
      * Sets the random resources every one second based on probability
      */
     private void setRandomResources() {
-        int numPlayers = game.getPlayersIP().size();
+        double numPlayers = (double) game.getPlayersIP().size();
         ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
         synchronized (holderGrid) {
             double prob = 0.25 * (double) (numPlayers / (itemsOnGrid.size() + 1));
