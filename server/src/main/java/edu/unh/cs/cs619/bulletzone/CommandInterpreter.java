@@ -28,8 +28,13 @@ public class CommandInterpreter {
             //prevent vehicle from hitting something and taking damage
             if(cmd.getConcreteCommandType() == "Move"){
                 if(cmd.tank.getParent().getNeighbor(cmd.direction).isEntityPresent() == true){
-                    System.out.println("entity detected");
-                    return false;
+                    if(cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 7 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 501 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 502 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 503){
+                        System.out.println("entity detected");
+                        return false;
+                    }
                 }
 
             }
