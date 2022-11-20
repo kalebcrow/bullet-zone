@@ -29,6 +29,8 @@ public class MoveCommand extends Command {
             e.printStackTrace();
         }
 
+        System.out.println("Move Command: Result = " + returnVariable);
+
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {

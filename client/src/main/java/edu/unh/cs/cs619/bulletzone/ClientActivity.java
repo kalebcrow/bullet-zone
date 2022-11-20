@@ -122,7 +122,7 @@ public class ClientActivity extends Activity {
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        boardView.setGarageText(textViewGarage);
+        boardView.setGarageText(findViewById(R.id.ResourcesText));
         boardView.setHealthText(findViewById(R.id.HealthText));
 
         gridView.setAdapter(mGridAdapter);
@@ -215,7 +215,10 @@ public class ClientActivity extends Activity {
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             TextView health = findViewById(R.id.HealthText);
+            TextView textViewResources = findViewById(R.id.ResourcesText);
+            boardView.setGarageText(textViewResources);
             health.setVisibility(View.VISIBLE);
+            textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);
@@ -386,10 +389,7 @@ public class ClientActivity extends Activity {
         String tank = bundle.getString("items");
         String message = "User ID: " + userID + "\n" +
                 "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank + "\n" +
-                "Rock: " + boardView.resources[0] + "\n" +
-                "Iron: " + boardView.resources[1] + "\n" +
-                "Clay: " + boardView.resources[2];
+                "Garage: " + tank + "\n";
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
@@ -454,7 +454,8 @@ public class ClientActivity extends Activity {
     void gridSelection(int position){
 
         selectedCoordinates = position;
-        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        //textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        textViewMoveTo.setText("Selected Position: " + selectedCoordinates);
         Log.d(TAG, "Grid Selection of " + position);
 
     }

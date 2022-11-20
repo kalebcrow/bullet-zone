@@ -18,9 +18,11 @@ import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.ExecutableEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
@@ -134,14 +136,20 @@ public class HistoryInterpreter extends Thread {
             case "destroyBullet":
                 event = new DestroyBulletEvent(currEvent);
                 break;
-            case "addObstacleEvent":
+            case "build":
                 event = new AddObstacleEvent(currEvent);
                 break;
             case "damageWallEvent":
                 event = new DamageWallEvent(currEvent);
                 break;
-            case "damageTankEvent":
+            case "damage":
                 event = new DamageTankEvent(currEvent);
+                break;
+            case "mine":
+                event = new MineEvent(currEvent);
+                break;
+            case "dismantle":
+                event = new DismantleEvent(currEvent);
                 break;
             default:
                 event = new ExecutableEvent(currEvent);
