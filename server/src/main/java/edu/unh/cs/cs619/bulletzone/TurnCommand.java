@@ -29,6 +29,8 @@ public class TurnCommand extends Command {
             e.printStackTrace();
         }
 
+        System.out.println("Turn Command: Result = " + returnVariable);
+
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
