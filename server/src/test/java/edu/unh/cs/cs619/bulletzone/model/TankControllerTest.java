@@ -190,7 +190,7 @@ public class TankControllerTest {
         Thread.sleep(250);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -322,6 +322,36 @@ public class TankControllerTest {
         IMGR.move(tanks[1].getId(), Direction.Up);
         Thread.sleep(2000);
         assertEquals(val, tanks[1].getResourcesByResource(0));
+    }
+
+    @Test
+    public void move_MovePicksUpClay_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(0, ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain = currTerrain.getNeighbor(Direction.Up);
+        currTerrain.setFieldEntity(new Clay());
+        Integer val = 1;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.move(tanks[1].getId(), Direction.Up);
+        Thread.sleep(2000);
+        assertEquals(val, tanks[1].getResourcesByResource(1));
+    }
+
+    @Test
+    public void move_MovePicksUpIron_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(0, ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain = currTerrain.getNeighbor(Direction.Up);
+        currTerrain.setFieldEntity(new Iron());
+        Integer val = 1;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.move(tanks[1].getId(), Direction.Up);
+        Thread.sleep(2000);
+        assertEquals(val, tanks[1].getResourcesByResource(1));
     }
 
     @Test
