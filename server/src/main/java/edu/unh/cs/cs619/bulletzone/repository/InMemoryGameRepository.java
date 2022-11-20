@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
@@ -21,26 +23,34 @@ import edu.unh.cs.cs619.bulletzone.Command;
 import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.MoveCommand;
 import edu.unh.cs.cs619.bulletzone.TurnCommand;
+import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
+import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
+import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
+import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.FieldResource;
 import edu.unh.cs.cs619.bulletzone.model.FieldTerrain;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
+import edu.unh.cs.cs619.bulletzone.model.Iron;
 import edu.unh.cs.cs619.bulletzone.model.Road;
+import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyBulletEvent;
@@ -58,6 +68,7 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+
 
 @Component
 public class InMemoryGameRepository implements GameRepository {
@@ -90,8 +101,13 @@ public class InMemoryGameRepository implements GameRepository {
     private Game game = null;
     private int bulletDamage[]={30,5,10};
     private int trackActiveBullets[]={0,0,0,0};
+    private DataRepository data = new DataRepository();
+
+    private ConcurrentMap<Integer, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryGameRepository.class);
+
+    GameUserRepository users = new GameUserRepository();
 
 
     /**
@@ -100,14 +116,16 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank[] join(long userID, String ip) {
+    public Tank[] join(String username, String ip) {
         synchronized (this.monitor) {
 
             if (game == null) {
                 if(ip == "test") this.testCreate();
                 else this.create();
+                FieldResource.setItemsOnGrid(itemsOnGrid);
+                // since its creating the game also start spawning resources
+                getRandomResources();
             }
-
             Tank[] tanks = new Tank[3];
 
             if(game.getTanks(ip) == null) {
@@ -115,9 +133,9 @@ public class InMemoryGameRepository implements GameRepository {
                 Long minerID = this.idGenerator.getAndIncrement();
                 Long builderID = this.idGenerator.getAndIncrement();
 
-                tanks[0] = new Tank(userID, tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(userID, minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(userID, builderID, Direction.Up, ip, 2);
+                tanks[0] = new Tank(username, tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(username, minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(username, builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
@@ -180,6 +198,14 @@ public class InMemoryGameRepository implements GameRepository {
                 tanks[1] = game.getTank(map.get("miner"));
                 tanks[2] = game.getTank(map.get("builder"));
             }
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tanks[0].getUsername()), tanks[0].getId()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
             return tanks;
         }
@@ -188,7 +214,7 @@ public class InMemoryGameRepository implements GameRepository {
 
     /**
      * Returns games current board
-     * @return returns the current games grid in a 2d array
+     * @return returns the current games grid in a 3d array
      */
     @Override
     public int[][][] getGrid() {
@@ -197,7 +223,7 @@ public class InMemoryGameRepository implements GameRepository {
                 this.create();
             }
         }
-        return game.getGrid2D();
+        return game.getGrid3D();
     }
 
     /**
@@ -213,7 +239,6 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean turn(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             checkNotNull(direction);
 
             // Find user
@@ -222,8 +247,12 @@ public class InMemoryGameRepository implements GameRepository {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
                 throw new TankDoesNotExistException(tankId);
             }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
+            }
 
             if (!tc.turn(tank, direction)) {
+                System.out.println("TankController request denied!");
                 return false;
             }
 
@@ -253,11 +282,13 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean move(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
+            }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
             }
 
             FieldHolder parent = tank.getParent();
@@ -273,6 +304,23 @@ public class InMemoryGameRepository implements GameRepository {
     }
 
     /**
+     * check if the next field has a resource on it
+     *
+     * @param nextField the next field
+     * @return if resource available
+     */
+    private boolean isResource(FieldHolder nextField) {
+        if (nextField.isEntityPresent()) {
+            FieldEntity fr = nextField.getEntity();
+            log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
+            return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
+                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+
+        }
+        return false;
+    }
+
+    /**
      * Allows for firing of a bullet from the tank.
      * @param tankId tank's id for firing
      * @param bulletType bullet type that is fired
@@ -284,11 +332,13 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean fire(long tankId, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
+            }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
             }
 
             if (!tc.fire(tank, bulletType)) return false;
@@ -316,34 +366,46 @@ public class InMemoryGameRepository implements GameRepository {
      * @throws TankDoesNotExistException throws if the specified tank does not exist
      */
     @Override
-    public void leave(long[] tankId)
+    public void leave(long tankId)
             throws TankDoesNotExistException {
         synchronized (this.monitor) {
-            for (int i = 0; i < 3; i++){
-                if (!this.game.getTanks().containsKey(tankId[i])) {
-                    throw new TankDoesNotExistException(tankId[i]);
-                }
 
-            System.out.println("leave() called, tank ID: " + tankId[i]);
+            HashMap<String, Long> map = game.getTanks(game.getTank(tankId).getIp());
 
-                Tank tank = game.getTanks().get(tankId[i]);
+            Tank miner = game.getTank(map.get("miner"));
+            Tank builder = game.getTank(map.get("builder"));
+            Tank tank = game.getTank(map.get("tank"));
 
-                if (i == 1 && tank.getUserID() != -1) {
-                    DataRepository data = new DataRepository();
-                    GameUserRepository users = new GameUserRepository();
-                    GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                    String username = gu.getUsername();
-                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
-                    data.modifyAccountBalance(username, amount);
-                }
 
-                FieldHolder parent = tank.getParent();
-                parent.clearField();
-                if(tank.getLife() > 0) {
-                    eventManager.addEvent(new DestroyTankEvent(tank.getId()));
-                }
-                game.removeTank(tankId[i]);
+            System.out.println("leave() called, tank ID: " + tank.getId());
+            System.out.println("leave() called, tank ID: " + miner.getId());
+            System.out.println("leave() called, tank ID: " + builder.getId());
+
+            double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
+            System.out.println("AMOUNT: " + amount);
+            data.modifyAccountBalance(tank.getUsername(), amount);
+            eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));
+            System.out.println("AMOUNT balance: " + data.getUserAccountBalance(tank.getUsername()));
+            FieldHolder parent = tank.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                eventManager.addEvent(new DestroyTankEvent(tank.getId()));
             }
+            game.removeTank(tank.getId());
+
+            parent = miner.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                eventManager.addEvent(new DestroyTankEvent(miner.getId()));
+            }
+            game.removeTank(miner.getId());
+
+            parent = builder.getParent();
+            parent.clearField();
+            if(tank.getLife() > 0) {
+                eventManager.addEvent(new DestroyTankEvent(builder.getId()));
+            }
+            game.removeTank(builder.getId());
         }
     }
 
@@ -515,7 +577,7 @@ public class InMemoryGameRepository implements GameRepository {
             FieldEntity structure = behind.getImprovement();
             if(structure.toString() == "R") {
                 miner.addBundleOfResources(2, 3);
-                behind.clearField();
+                behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(),1));
                 return true;
             }
@@ -561,7 +623,9 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean moveTo(long tankId, int desiredLocation) throws TankDoesNotExistException {
 
         // Find tank
-        Tank tank = game.getTanks().get(tankId);
+        Tank tank = game.getTank(tankId);
+
+        tank.getParent().getPos();
         if (tank == null) {
             //Log.i(TAG, "Cannot find user with id: " + tankId);
             //return false;
@@ -569,7 +633,7 @@ public class InMemoryGameRepository implements GameRepository {
         }
 
         //find the current location of the tank
-        int[][][] grid3d = game.getGrid2D();
+        int[][][] grid3d = game.getGrid3D();
         int currentLocation = -1;
         int test = -1;
         for(int i = 0; i < 16; i++){
@@ -577,7 +641,9 @@ public class InMemoryGameRepository implements GameRepository {
 
                 if(grid3d[i][j][1] >= 10000000 && grid3d[i][j][1] < 20000000){
 
-                    test = grid3d[i][j][2];
+                    System.out.println(grid3d[i][j][1]);
+
+                    test = grid3d[i][j][1];
                     test = test % 10000000;
                     test = test / 10000;
 
@@ -587,6 +653,8 @@ public class InMemoryGameRepository implements GameRepository {
                         break;
 
                     }
+
+                    System.out.println(test);
 
                 }
 
@@ -598,6 +666,14 @@ public class InMemoryGameRepository implements GameRepository {
 
         }
 
+        System.out.println("tank.getParent().getPos(): " + tank.getParent().getPos());
+
+        for(int i = 0; i < 16; i++){
+            for(int j = 0; j < 16; j++){
+                System.out.print(grid3d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
 
         //determine tank type: 0 = tank, 1 = miner, 2 = builder
 
@@ -646,7 +722,7 @@ public class InMemoryGameRepository implements GameRepository {
 
         //create list of Move To Commands
         ArrayList<Command> MoveToList = new ArrayList<>();
-        long placeholderDelay = 800*2; //longest possible delay for moving
+        long placeholderDelay = 3000; //longest possible delay for moving
         Direction currentDirection = tank.getDirection();
 
         //special cases: on same y or x coordinate, or both
@@ -886,6 +962,62 @@ public class InMemoryGameRepository implements GameRepository {
                 }
             }, 20, 1000);
             return true;
+        }
+    }
+
+    /**
+     * Gets random resources every 1 sec
+     */
+    private void getRandomResources() {
+        // making it wait a second before starting so it doesn't crash
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                // do something
+                setRandomResources();
+            }
+        }, 1000, 1000);
+    }
+
+    /**
+     * Sets the random resources every one second based on probability
+     */
+    private void setRandomResources() {
+        double numPlayers = (double) game.getPlayersIP().size();
+        ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
+        synchronized (holderGrid) {
+            double prob = 0.25 * (double) (numPlayers / (itemsOnGrid.size() + 1));
+            boolean addingRandomResource = false;
+            FieldResource fr;
+            Random r = new Random();
+            double randomValue = r.nextDouble(); // TODO this will be every second
+            if (randomValue <= prob) {
+                // add a random resource
+                addingRandomResource = true;
+                double itemType = (Math.random() * (4));
+                if (itemType >= 0 && itemType < 1) {
+                    fr = new Clay();
+                } else if (itemType >= 1 && itemType < 2) {
+                    fr = new Iron();
+                } else if (itemType >= 2 && itemType < 3) {
+                    fr = new Rock();
+                } else {
+                    fr = new Thingamajig();
+                }
+
+                boolean added = false;
+                while (!added) {
+                    int location = (int) (Math.random() * (256));
+                    if (!holderGrid.get(location).isEntityPresent()) {
+                        holderGrid.get(location).setFieldEntity(fr);
+                        itemsOnGrid.put(location + 1, fr);
+                        eventManager.addEvent(new AddResourceEvent(location + 1, fr.toString()));
+                        added = true;
+                    }
+                }
+                added = false;
+            }
         }
     }
 }

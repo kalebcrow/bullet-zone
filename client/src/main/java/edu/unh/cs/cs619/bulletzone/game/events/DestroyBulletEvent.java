@@ -25,10 +25,16 @@ public class DestroyBulletEvent extends ExecutableEvent {
             return;
         }
 
-        bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(jsonValue, tile.getLocation())));
+        bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(-1, tile.getLocation())));
         BulletList.getBulletList().removeBullet(ID);
     }
 
+    /**
+     * Converts the json value to the string value
+     *
+     * @param terrain terrain in string form
+     * @return terrain in json form
+     */
     private Integer getJSONValueFromString(String terrain) {
         // using given son values
         if (terrain.equals("H")) {

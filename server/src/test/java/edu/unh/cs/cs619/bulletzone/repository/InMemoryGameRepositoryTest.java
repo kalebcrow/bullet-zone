@@ -1,5 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Assert;
@@ -21,6 +22,7 @@ import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
@@ -39,10 +41,10 @@ public class InMemoryGameRepositoryTest {
 
     @Test
     public void testJoin() throws Exception {
-        Tank[] tank = repo.join(0,"");
-        Tank[] tank2 = repo.join(0,"10");
+        Tank[] tank = repo.join("i","");
+        Tank[] tank2 = repo.join("i","10");
         Assert.assertEquals(tank[0].getId(), 0);
-        Assert.assertEquals(tank2[0].getId(), 1);
+        Assert.assertEquals(tank2[0].getId(), 3);
         Assert.assertNotNull(tank);
         Assert.assertTrue(tank[0].getId() >= 0);
         Assert.assertNotNull(tank[0].getDirection());
@@ -80,7 +82,7 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testLeave() throws Exception {
         //tank joins and is first player
-        Tank[] tank = repo.join(0,"10");
+        Tank[] tank = repo.join("i","test");
         Assert.assertNotNull(tank);
         Assert.assertEquals(tank[0].getId(), 0);
 
@@ -88,7 +90,7 @@ public class InMemoryGameRepositoryTest {
         Assert.assertEquals(true, tank[0].getParent().isEntityPresent());
         long[] tankIds = new long[3];
         for(int i=0;i<3;i++) tankIds[i] = tank[i].getId();
-        repo.leave(tankIds);
+        repo.leave(tankIds[0]);
         Assert.assertEquals(false, tank[0].getParent().isEntityPresent());
 
         thrown.expect(TankDoesNotExistException.class);
@@ -104,49 +106,53 @@ public class InMemoryGameRepositoryTest {
     @Test
     public void testGetEvents_tankJoined_ReturnsAddTankEvent() {
         repo.create();
-        Tank[] tank = repo.join(0,"");
-        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 500);
-        assert (update.size() == 1);
+        Tank[] tank = repo.join("i","test");
+        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 10000);
+        assert(update.size() == 3);
         assert (update.getFirst().getType() == "addTank");
     }
 
     @Test
     public void testGetEvents_tankJoinedMoved_ReturnsListOfAppropriateSizeAndContents() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","test");
         Long tankID = tank[0].getId();
         for (int i = 0; i < 10; i++) {
             repo.move(tankID, Direction.Up);
-            Thread.sleep(550);
+            Thread.sleep(2500);
             repo.move(tankID, Direction.Down);
-            Thread.sleep(550);
+            Thread.sleep(2500);
         }
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).size() == 21);
+        assert(repo.getEvents(System.currentTimeMillis() - 100000).size() == 23);
         assert (repo.getEvents(System.currentTimeMillis() - 100000).get(0).getType() == "addTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(1).getType() == "moveTank");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
         assert (repo.getEvents(System.currentTimeMillis() - 100000).get(20).getType() == "moveTank");
     }
 
     @Test
     public void testGetEvents_EventsAccrueOverMinute_ReturnsAtLeastEventsFromLastMinute() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","test");
         Long tankID = tank[0].getId();
+
+        tank[1].getParent().clearField();
+        tank[2].getParent().clearField();
+
         for (int i = 0; i < 60; i++) {
             repo.move(tankID, Direction.Up);
             Thread.sleep(500);
             repo.move(tankID, Direction.Down);
             Thread.sleep(500);
         }
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).size() >= 120);
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(1).getType() == "moveTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(120).getType() == "moveTank");
+        assertEquals(repo.getEvents(System.currentTimeMillis() - 100000).size(), 123);
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(119).getType() == "moveTank");
     }
 
     @Test
     public void testGetEvents_EventsAccrueOverThreeMinutes_ReturnsEventsFromNoMoreThanThreeMinutesAgo() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","test");
         long tankID = tank[0].getId();
 
         for (int i = 0; i < 180; i++) {
@@ -157,203 +163,6 @@ public class InMemoryGameRepositoryTest {
         }
         repo.getEvents(System.currentTimeMillis());
         assert (repo.getEvents(System.currentTimeMillis() - 180000).size() <= 360);
-    }
-
-    @Test
-    public void testBuildFunction_tankJoinedAndBuildRoad_createdRoad() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,1);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getImprovement();
-        assert(Objects.equals(ent.toString(), "R"));
-    }
-
-    @Test
-    public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
-        assert(Objects.equals(ent.toString(), "W"));
-    }
-
-    @Test
-    public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,3);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
-        assert(Objects.equals(ent.toString(), "IW"));
-    }
-
-    @Test
-    public void testBuildFunction_tankJoinedWithNoResources_wallNotCreated() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        assert(!repo.build(tankId, 3));
-    }
-
-    @Test(expected = NoSuchElementException.class)
-    public void testDestroyFunction_tankJoinedAndDestroyWall_removedWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
-        assert(Objects.equals(ent.toString(), "W"));
-        assert(repo.dismantle(tankId));
-        ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity(); //exception thrown here
-    }
-
-    @Test
-    public void testBuild_movementWhileBuilding_returnsFalse() throws BuildingDoesNotExistException, TankDoesNotExistException, IllegalTransitionException, LimitExceededException, InterruptedException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        Long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        Thread.sleep(100);
-        assert(!repo.move(tankId, Direction.Down));
-    }
-
-    @Test
-    public void testBuild_fireWhileBuilding_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        Long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        assert(repo.fire(tankId, 1));
-    }
-
-    @Test
-    public void testMoveBuild_moveIntoCreatedRoad_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        Long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,1);
-        assert(repo.move(tankId, Direction.Down));
-    }
-
-    @Test
-    public void testMoveBuild_moveIntoCreatedWall_returnsFalse() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        Long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        assert(!repo.move(tankId, Direction.Down));
-    }
-
-    @Test
-    public void testMoveDismantle_moveIntoDismantledWall_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        repo.build(tankId,2);
-        FieldEntity ent = tank[2].getParent().getNeighbor(Direction.Down).getEntity();
-        assert(Objects.equals(ent.toString(), "W"));
-        assert(repo.dismantle(tankId));
-        assert(repo.move(tankId,Direction.Down));
-    }
-
-    @Test
-    public void testDismantle_dismantleEmptySpace_returnsFalse() throws TankDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        assert(!repo.dismantle(tankId));
-    }
-    @Test
-    public void testMoveBuild_moveWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        new Thread(() -> {
-            try {
-                repo.build(tankId,3);
-            } catch (TankDoesNotExistException e) {
-                e.printStackTrace();
-            } catch (BuildingDoesNotExistException e) {
-                e.printStackTrace();
-            }
-        }).start();
-        new Thread(() -> {
-            try {
-                Thread.sleep(100);
-                assert(!repo.move(tankId,Direction.Up));
-            } catch (TankDoesNotExistException e) {
-                e.printStackTrace();
-            } catch (IllegalTransitionException e) {
-                e.printStackTrace();
-            } catch (LimitExceededException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    @Test
-    public void testFireBuild_fireWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
-        repo.create();
-        Tank[] tank = repo.join(0,"");
-        long tankId = tank[2].getId();
-        tank[1].addBundleOfResources(0,10);
-        tank[1].addBundleOfResources(1,10);
-        tank[1].addBundleOfResources(2,10);
-        new Thread(() -> {
-            try {
-                repo.build(tankId,3);
-            } catch (TankDoesNotExistException e) {
-                e.printStackTrace();
-            } catch (BuildingDoesNotExistException e) {
-                e.printStackTrace();
-            }
-        }).start();
-        new Thread(() -> {
-            try {
-                Thread.sleep(100);
-                assert(repo.fire(tankId,1));
-            } catch (TankDoesNotExistException e) {
-                e.printStackTrace();
-            } catch (LimitExceededException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 }
 

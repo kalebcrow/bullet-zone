@@ -25,7 +25,6 @@ public class MoveTankEvent extends ExecutableEvent {
             return;
         }
 
-
         Integer location = tile.getLocation();
         Integer prevlocation = location;
 
@@ -45,9 +44,15 @@ public class MoveTankEvent extends ExecutableEvent {
 
         tileUpdateEvent = new TileUpdateEvent(location, tile);
         bus.post(tileUpdateEvent);
-        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(5, location)));
+        bus.post(new TileUpdateEvent(prevlocation, new GroundTile(-1, location)));
     }
 
+    /**
+     * Converts the json value to the string value
+     *
+     * @param terrain terrain in string form
+     * @return terrain in json form
+     */
     private Integer getJSONValueFromString(String terrain) {
         // using given json values
         if (terrain.equals("H")) {

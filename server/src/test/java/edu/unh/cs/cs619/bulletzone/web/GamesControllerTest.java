@@ -66,11 +66,11 @@ public class GamesControllerTest {
         request.setRemoteAddr("100.0.0.0");
         repo = new InMemoryGameRepository();
         gamesController = new GamesController(repo);
-        ResponseEntity<LongArrayWrapper> l = gamesController.join(0, request);
+        ResponseEntity<LongArrayWrapper> l = gamesController.join("i", request);
         //Leave game
-        gamesController.leave(new long[]{0,1,2});
+        gamesController.leave(0);
         //test that tank does not exist
-        gamesController.leave(new long[]{0,1,2});
+        gamesController.leave(0);
         //mockMvc.perform(delete("/{id}/leave",)).andExpect(status().isOk());
     }
 

@@ -12,6 +12,8 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
+import android.util.Log;
+
 /**
  * Created by simon on 10/3/14.
  */
@@ -36,6 +38,9 @@ public class GridPollerTask {
     @RestService
     BulletZoneRestClient restClient;
 
+    GridWrapper gw;
+    long timestamp;
+
     @Background(id = "grid_poller_task")
     // TODO: disable trace
     // @Trace(tag="CustomTag", level=Log.WARN)
@@ -47,7 +52,6 @@ public class GridPollerTask {
         }
         timestamp = gw.getTimeStamp();
         while (!paused) {
-
             EventWrapper hw = restClient.event(timestamp);
             timestamp = hw.getTimeStamp();
             onCommandHistoryUpdate(hw);

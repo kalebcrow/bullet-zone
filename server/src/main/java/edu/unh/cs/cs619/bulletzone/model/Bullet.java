@@ -104,18 +104,21 @@ public class Bullet extends FieldEntity {
 
                     if (nextField.isEntityPresent()) {
                         // Something is there, hit it
-                        nextField.getEntity().hit(damage);
                         if(fireIndicator){
                             eventManager.addEvent(new DestroyBulletEvent(tankId, bulletId));
                             parent.clearField();
                         }
                         tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
+                        if(nextField.getEntity().getParent() == null) nextField.getEntity().setParent(nextField);
+                        nextField.getEntity().hit(damage);
                         cancel();
                     } else {
                         if(!fireIndicator){
+                            System.out.println("++++++++++++++");
                             eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction)));
                             fireIndicator = true;
                             } else {
+                            System.out.println("------------------");
                             eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction)));
                             parent.clearField();
                         }

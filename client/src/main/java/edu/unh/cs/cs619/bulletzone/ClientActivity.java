@@ -26,6 +26,8 @@ import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.api.BackgroundExecutor;
 
+import java.util.Objects;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
@@ -82,7 +84,7 @@ public class ClientActivity extends Activity {
     /**
      * User identifier
      */
-    private long userID = -1;
+    private String username = "";
     // TODO make work
     boolean testing = true;
 
@@ -122,7 +124,7 @@ public class ClientActivity extends Activity {
      * afterViewInjection: Sets up REST client and links gridview to gridAdapter
      */
     protected void afterViewInjection() {
-        boardView.setGarageText(textViewGarage);
+        boardView.setGarageText(findViewById(R.id.ResourcesText));
         boardView.setHealthText(findViewById(R.id.HealthText));
 
         gridView.setAdapter(mGridAdapter);
@@ -146,9 +148,9 @@ public class ClientActivity extends Activity {
      */
     @Background
     void joinAsync() {
-        tankController.joinGame(userID);
+        tankController.joinGame(username);
         gridPollTask.setPaused(false);
-        gridPollTask.doPoll();
+        //gridPollTask.doPoll();
         commandInterpreter.setPaused(false);
     }
 
@@ -196,13 +198,14 @@ public class ClientActivity extends Activity {
     /**
      * startGame: Initializes view when join game is selected
      */
-    @Click(R.id.buttonJoin)
     void startGame() {
+        //login();
         // this should only work if the user if logged in
-        if (userID > 0 || testing) {
+        if (!Objects.equals(username, "") || testing) {
             if (testing) {
                 // set the garage anyway
-                textViewGarage.setText("Using user id: " + userID);
+                textViewGarage.setText("Using user id: " + username);
+                boardView.setUsername(username);
             }
             afterViewInjection();
             Button buttonFire = findViewById(R.id.buttonFire);
@@ -210,12 +213,16 @@ public class ClientActivity extends Activity {
             Button buttonUp = findViewById(R.id.buttonUp);
             Button buttonDown = findViewById(R.id.buttonDown);
             Button buttonRight = findViewById(R.id.buttonRight);
-            Button buttonJoin = findViewById(R.id.buttonJoin);
+            //Button buttonJoin = findViewById(R.id.buttonJoin);
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             TextView health = findViewById(R.id.HealthText);
+            TextView textViewResources = findViewById(R.id.ResourcesText);
+            boardView.setGarageText(textViewResources);
+            boardView.setUserText(textViewGarage);
             health.setVisibility(View.VISIBLE);
+            textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);
@@ -227,7 +234,7 @@ public class ClientActivity extends Activity {
             buttonDown.setVisibility(View.VISIBLE);
             buttonRight.setVisibility(View.VISIBLE);
             buttonAction.setVisibility(View.VISIBLE);
-            buttonJoin.setVisibility(View.INVISIBLE);
+            //buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
@@ -343,11 +350,14 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonLogin)
     void login() {
         if (!loggedIn) {
+            gridPollTask.setPaused(true);
+            commandInterpreter.setPaused(false);
+            BackgroundExecutor.cancelAll("PollServer", true);
             Intent intent = new Intent(this, AuthenticateActivity_.class);
             startActivityForResult(intent, 1);
             testing = false; // for some reason is not loading right now
             loggedIn = true;
-            startGame();
+            //startGame();
         }
     }
 
@@ -366,8 +376,10 @@ public class ClientActivity extends Activity {
                 // set the text view with user info
                 // also set the user id so you know if logged in or not
                 Bundle bundle = data.getExtras();
-                userID = bundle.getLong("userID");
+                username = bundle.getString("userID");
+                boardView.setUsername(username);
                 setGarageTextView(bundle);
+                startGame();
             }
         }
     }
@@ -380,12 +392,8 @@ public class ClientActivity extends Activity {
     private void setGarageTextView(Bundle bundle) {
         long bankAccountBalance = bundle.getLong("bankAccountBalance");
         String tank = bundle.getString("items");
-        String message = "User ID: " + userID + "\n" +
-                "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank + "\n" +
-                "Rock: " + boardView.resources[0] + "\n" +
-                "Iron: " + boardView.resources[1] + "\n" +
-                "Clay: " + boardView.resources[2];
+        String message = "User ID: " + username + "\n" +
+                "Balance: " + bankAccountBalance + "\n";
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }
@@ -450,7 +458,8 @@ public class ClientActivity extends Activity {
     void gridSelection(int position){
 
         selectedCoordinates = position;
-        textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        //textViewMoveTo.setText("Selected Position: [" + position/16 + ", " + position%16 + "]");
+        textViewMoveTo.setText("Selected Position: " + selectedCoordinates);
         Log.d(TAG, "Grid Selection of " + position);
 
     }

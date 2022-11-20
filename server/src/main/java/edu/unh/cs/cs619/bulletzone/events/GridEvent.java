@@ -17,6 +17,7 @@ public class GridEvent implements Serializable {
     protected int pos = -1;
     protected int[] resources = new int[]{0, 0, 0};
     protected String terrain = "";
+    protected String resource = "";
 
     public int getBuildType() {
         return buildType;
@@ -28,6 +29,13 @@ public class GridEvent implements Serializable {
 
     protected int buildType = -1;
 
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
 
     public String getTerrain() {
         return terrain;

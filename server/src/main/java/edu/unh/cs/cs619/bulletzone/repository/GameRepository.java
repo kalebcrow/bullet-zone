@@ -14,7 +14,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public interface GameRepository {
 
-    Tank[] join(long userID, String ip);
+    Tank[] join(String username, String ip);
 
     int[][][] getGrid();
 
@@ -32,7 +32,7 @@ public interface GameRepository {
     boolean mine(long tankId)
             throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType;
 
-    public void leave(long[] tankId)
+    public void leave(long tankId)
             throws TankDoesNotExistException;
 
     boolean build(long tankId, int type)

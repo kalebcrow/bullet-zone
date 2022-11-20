@@ -16,13 +16,25 @@ public class CommandInterpreter {
 
     public boolean executeSequence(){
 
+        System.out.println("Command Interpreter: Number of commands = " + sequence.size());
+
+        for(Command cmd: sequence){
+            System.out.println(cmd.getConcreteCommandType());
+        }
+
         boolean returnBoolean = true;
         for(Command cmd : sequence){
 
             //prevent vehicle from hitting something and taking damage
             if(cmd.getConcreteCommandType() == "Move"){
                 if(cmd.tank.getParent().getNeighbor(cmd.direction).isEntityPresent() == true){
-                    return false;
+                    if(cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 7 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 501 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 502 &&
+                            cmd.tank.getParent().getNeighbor(cmd.direction).getEntity().getIntValue() != 503){
+                        System.out.println("entity detected");
+                        return false;
+                    }
                 }
 
             }

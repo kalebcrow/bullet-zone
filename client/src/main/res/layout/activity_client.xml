@@ -40,6 +40,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/moveToLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".57">
@@ -73,14 +74,25 @@
                 <TextView
                     android:id="@+id/HealthText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:text="Health"
                     android:visibility="invisible" />
 
+                <TextView
+                    android:id="@+id/ResourcesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:paddingBottom="10dp"
+                    android:layout_below="@id/HealthText"
+                    android:text="Rock: 0\nIron: 0\nClay: 0\n"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -172,20 +184,10 @@
             android:text="Balance: 0                   Garage Items: None" />
 
         <Button
-            android:id="@+id/buttonJoin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/layoutActionFire"
-            android:layout_alignEnd="@+id/textViewGarage"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="109dp"
-            android:text="Join Game" />
-
-        <Button
             android:id="@+id/buttonReplay1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonJoin"
+
             android:layout_alignEnd="@+id/textViewGarage"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="109dp"
