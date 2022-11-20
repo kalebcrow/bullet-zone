@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import java.util.HashMap;
 
@@ -15,6 +17,7 @@ import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class TankControllerTest {
@@ -307,7 +310,7 @@ public class TankControllerTest {
     }
 
     @Test
-    public void move_MovePicksUpResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+    public void move_MovePicksUpRock_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);
         Tank miner = tanks[1];
@@ -319,6 +322,52 @@ public class TankControllerTest {
         IMGR.move(tanks[1].getId(), Direction.Up);
         Thread.sleep(2000);
         assertEquals(val, tanks[1].getResourcesByResource(0));
+    }
+
+    @Test
+    public void move_MovePicksUpThingamajig_DoesNotAddToTankBalance() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(0, ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain = currTerrain.getNeighbor(Direction.Up);
+        currTerrain.setFieldEntity(new Thingamajig());
+        Integer val = 1;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.move(tanks[1].getId(), Direction.Up);
+        Thread.sleep(2000);
+        assertNotEquals(val, tanks[1].getResourcesByResource(0));
+    }
+
+    @Test
+    public void move_MovePicksUpThingamajig_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(0, ip);
+        Tank tank = tanks[0];
+        FieldHolder currTerrain = tank.getParent();
+        currTerrain = currTerrain.getNeighbor(Direction.Up);
+
+        // expect 10 credits added
+        currTerrain.setFieldEntity(new Thingamajig(10, true));
+        IMGR.move(tanks[1].getId(), Direction.Up);
+        Thread.sleep(2000);
+
+        double actualBalance = data.getUserAccountBalance(username);
+        double expectedBalance = 1010.0;
+
+        // set balance back to 1000 by subtracting 10
+        // if this ever fails then the thingamajig test will always fail because modify balance isn't working there either
+        if (actualBalance == expectedBalance) {
+            // actually fix the balance if the test passed
+            double sub10 = 10.0 - 20.0; // this is hard coded bc '-10' did not act like a negative number
+            data.modifyAccountBalance(username, sub10);
+        }
+
+        assertEquals(expectedBalance, actualBalance, 0);
     }
 
     @Test

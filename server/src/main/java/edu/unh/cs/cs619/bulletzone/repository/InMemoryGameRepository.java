@@ -117,7 +117,6 @@ public class InMemoryGameRepository implements GameRepository {
                 else this.create();
 
                 // since its creating the game also start spawning resources
-                log.debug("creating test and starting resources up--------------------------------");
                 getRandomResources();
             }
 
