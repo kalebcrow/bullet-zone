@@ -226,7 +226,6 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean turn(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             checkNotNull(direction);
 
             // Find user
@@ -234,6 +233,9 @@ public class InMemoryGameRepository implements GameRepository {
             if (tank == null) {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
                 throw new TankDoesNotExistException(tankId);
+            }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
             }
 
             TankController tc = new TankController();
@@ -268,13 +270,15 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean move(long tankId, Direction direction)
             throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
                 //return false;
                 throw new TankDoesNotExistException(tankId);
+            }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
             }
 
             FieldHolder parent = tank.getParent();
@@ -442,13 +446,15 @@ public class InMemoryGameRepository implements GameRepository {
     public boolean fire(long tankId, int bulletType)
             throws TankDoesNotExistException, LimitExceededException {
         synchronized (this.monitor) {
-            mine = false;
             // Find tank
             Tank tank = game.getTanks().get(tankId);
             if (tank == null) {
                 //Log.i(TAG, "Cannot find user with id: " + tankId);
                 //return false;
                 throw new TankDoesNotExistException(tankId);
+            }
+            if (tank.getTypeIndex() == 1) {
+                mine = false;
             }
 
 
