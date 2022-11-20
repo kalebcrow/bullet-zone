@@ -48,4 +48,16 @@ public class EventManagerTest {
         assertEquals(update.get(15).getType(),"moveTank");
         assertEquals(update.getFirst().getType(), "moveTank");
     }
+
+    @Test
+    public void getEvents_GetsCertainOrderOfEvents_ReturnsSameOrder(){
+        eventManager.addEvent(new AddTankEvent(0,0, id));
+        eventManager.addEvent(new MoveTankEvent(id, Direction.toByte(Direction.Up)));
+        eventManager.addEvent(new TurnEvent(id, Direction.toByte(Direction.Left)));
+        LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis()-10000);
+        assertEquals(update.size(), 3);
+        assertEquals(update.get(0).getType(),"addTank");
+        assertEquals(update.get(1).getType(),"moveTank");
+        assertEquals(update.get(2).getType(),"turn");
+    }
 }

@@ -7,6 +7,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import edu.unh.cs.cs619.bulletzone.model.Game;
+
 public class EventManager {
     // singleton EventManager
     private static EventManager _instance;
@@ -24,15 +26,19 @@ public class EventManager {
 
     // event history
     private LinkedList<GridEvent> events = new LinkedList<>();
+
     public void addEvent(GridEvent gridEvent){ events.addFirst(gridEvent); }
+
     public LinkedList<GridEvent> getEvents(Long time){
+
         LinkedList<GridEvent> update = new LinkedList<>();
-        ListIterator<GridEvent> it = events.listIterator(0);
-        GridEvent item;
-        while(it.hasNext()){
-            item = it.next();
-            if(item.getTime() < time) break;
-            update.addFirst(item);
+        GridEvent gridEvent;
+
+        // check that the list has the next node
+        for (int i = 0; i < events.size(); i++) {
+            gridEvent = events.get(i);
+            if(gridEvent.getTime() <= time) break; // break if event's time is less recent than time given
+            update.addFirst(gridEvent); // otherwise put it at the front of the list
         }
         return update;
     }

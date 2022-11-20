@@ -75,10 +75,10 @@ public class Tank extends FieldEntity {
 
     @Override
     public void hit(int damage) {
-        life = life - damage;
+        life -= damage;
         System.out.println("Tank life: " + id + " : " + life);
 		//Log.d(TAG, "TankId: " + id + " hit -> life: " + life);
-        eventManager.addEvent(new DamageEvent(Math.toIntExact(id), life));
+        eventManager.addEvent(new DamageEvent(Math.toIntExact(id), life + 1));
         if (life <= 0 ){
             eventManager.addEvent(new DestroyTankEvent(id));
             parent.clearField();
@@ -102,6 +102,7 @@ public class Tank extends FieldEntity {
             if (ent.toString().equals("IW")){ // you can't "hit" indestructible wall so nothing happens
                 return false;
             }
+
             // hit the whatever is there
             ent.hit((int)Math.ceil(life * giveDamageModifier()));
             // do appropriate damage to tank

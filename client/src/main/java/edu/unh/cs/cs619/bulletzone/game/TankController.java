@@ -190,7 +190,7 @@ public class TankController {
 
     @Background
     public void fire(){
-        restClient.fire(currentTankID);
+        restClient.fire(currentTankID, (int) (currentTankID % 3));
     }
 
     @Background

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
+import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -16,6 +17,7 @@ public class TankControllerTest {
     private TankController tc;
     private InMemoryGameRepository IMGR;
     private final String ip = "test";
+    private EventManager eventManager = EventManager.getInstance();
 
 
     @Test
@@ -120,7 +122,7 @@ public class TankControllerTest {
         Thread.sleep(800);
         IMGR.move(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(5, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
@@ -131,7 +133,7 @@ public class TankControllerTest {
         Thread.sleep(700);
         IMGR.move(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(4, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
@@ -142,7 +144,7 @@ public class TankControllerTest {
         Thread.sleep(1000);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(5, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
@@ -153,7 +155,7 @@ public class TankControllerTest {
         Thread.sleep(900);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(4, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
@@ -164,7 +166,7 @@ public class TankControllerTest {
         Thread.sleep(800);
         IMGR.turn(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(5, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
@@ -175,7 +177,7 @@ public class TankControllerTest {
         Thread.sleep(250);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(4, eventManager.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test

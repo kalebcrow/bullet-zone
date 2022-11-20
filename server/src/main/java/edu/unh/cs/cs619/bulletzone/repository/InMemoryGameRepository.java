@@ -298,13 +298,11 @@ public class InMemoryGameRepository implements GameRepository {
             FieldHolder parent = tank.getParent();
             tank.setNumberOfBullets(tank.getNumberOfBullets() + 1);
             int bulletId = tank.getNumberOfBullets()-1;
-            trackActiveBullets[bulletId] = 1;
 
             // Create a new bullet to fire
             final Bullet bullet = new Bullet(tankId, direction, bulletDamage[bulletType]);
             // Set the same parent for the bullet.
             // This should be only a one way reference.
-            bullet.setParent(parent);
             bullet.setBulletId(bulletId);
             bullet.travel(tank);
 
@@ -495,7 +493,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(0,2);
                 miner.addBundleOfResources(2,1);
                 behind.clearField();
-                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),2));
                 return true;
             }
             else if(structure.toString() == "IW")
@@ -504,7 +502,7 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2,3);
                 miner.addBundleOfResources(1,3);
                 behind.clearField();
-                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),3));
                 return true;
             }
             else
@@ -518,7 +516,7 @@ public class InMemoryGameRepository implements GameRepository {
             if(structure.toString() == "R") {
                 miner.addBundleOfResources(2, 3);
                 behind.clearField();
-                eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos()));
+                eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(),1));
                 return true;
             }
             else
@@ -859,7 +857,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding clay to stash");
-                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
@@ -867,7 +865,7 @@ public class InMemoryGameRepository implements GameRepository {
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
-                                game.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {

@@ -9,6 +9,7 @@ public class Wall extends FieldEntity {
     private EventManager eventManager = EventManager.getInstance();
     public Wall(){
         this.destructValue = 1000;
+        this.name = "IW";
     }
 
     public Wall(int destructValue, int pos){
