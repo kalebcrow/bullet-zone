@@ -35,6 +35,14 @@ public class DataRepository {
         bzdata = new BulletZoneData(url, username, password);
     }
 
+    public DataRepository(boolean test) {
+        String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs61902dev";
+        String username = "baryte";
+        String password = "kle#tOwy5p";
+
+        bzdata = new BulletZoneData(url, username, password);
+    }
+
     /**
      * Stub for a method that would create a user or validate the user. [You don't have
      * to do it this way--feel free to make other methods if you like!]
