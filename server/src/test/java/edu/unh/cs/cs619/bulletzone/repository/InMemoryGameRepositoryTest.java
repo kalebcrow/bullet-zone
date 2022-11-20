@@ -108,8 +108,14 @@ public class InMemoryGameRepositoryTest {
         repo.create();
         Tank[] tank = repo.join("i","test");
         LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 10000);
-        assert(update.size() == 3);
-        assert (update.getFirst().getType() == "addTank");
+        assert (update.size() >= 3);
+        int count  = 0;
+        for(GridEvent event: update){
+            if(event.getType() == "addTank"){
+                count++;
+            }
+        }
+        assert (count == 3);
     }
 
     @Test
@@ -123,10 +129,23 @@ public class InMemoryGameRepositoryTest {
             repo.move(tankID, Direction.Down);
             Thread.sleep(2500);
         }
-        assert(repo.getEvents(System.currentTimeMillis() - 100000).size() == 23);
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(0).getType() == "addTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(20).getType() == "moveTank");
+        assert(repo.getEvents(System.currentTimeMillis() - 100000).size() >= 23);
+
+        int joinCount = 0;
+        int moveCount = 0;
+        LinkedList<GridEvent> update = repo.getEvents(System.currentTimeMillis() - 55000);
+        for(GridEvent event: update){
+            if(event.getType() == "addTank"){
+                joinCount++;
+            }
+            if(event.getType() == "moveTank"){
+                moveCount++;
+            }
+        }
+
+        assert (moveCount >= 20);
+        assert (joinCount >= 3);
+
     }
 
     @Test
@@ -148,9 +167,7 @@ public class InMemoryGameRepositoryTest {
             repo.turn(tankID, Direction.Up);
             Thread.sleep(1000);
         }
-        assertEquals(repo.getEvents(System.currentTimeMillis() - 100000).size(), 60+3);
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "turn");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(62).getType() == "turn");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).size() >= 63);
     }
 
     @Test
