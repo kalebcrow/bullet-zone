@@ -18,6 +18,7 @@
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />
     <option name="OPTION_SCOPE" value="public" />
+    <option name="OTHER_OPTIONS" value="-encoding UTF-8 -charset UTF-8" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
