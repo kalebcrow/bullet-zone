@@ -403,7 +403,7 @@ public class InMemoryGameRepository implements GameRepository {
                         newTank.setParent(null);
                     }
                 } else {
-                    tank.hit((int)Math.floor(ent.getIntValue() / tank.getDamageModifier()));
+                    tank.hit((int)Math.floor((ent.getIntValue() - 1000) / tank.getDamageModifier()));
                     game.addEvent(new DamageEvent(Math.toIntExact(tank.getId()), tank.getLife()));
                     if (tank.getLife() <= 0 ){
                         String terrain = tank.getParent().getTerrain().toString();
