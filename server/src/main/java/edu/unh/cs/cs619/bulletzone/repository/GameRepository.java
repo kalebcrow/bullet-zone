@@ -14,7 +14,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 
 public interface GameRepository {
 
-    Tank[] join(long userID, String ip);
+    Tank[] join(String username, String ip);
 
     int[][][] getGrid();
 

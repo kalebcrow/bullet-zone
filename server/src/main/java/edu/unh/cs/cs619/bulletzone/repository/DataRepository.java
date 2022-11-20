@@ -7,6 +7,7 @@ import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItem;
 import edu.unh.cs.cs619.bulletzone.datalayer.item.GameItemContainer;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
+import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,13 +27,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Component
 public class DataRepository {
     private BulletZoneData bzdata;
+    GameUserRepository users;
 
     DataRepository() {
         String url = "jdbc:mysql://stman1.cs.unh.edu:3306/cs61902dev";
         String username = "baryte";
         String password = "kle#tOwy5p";
-
         bzdata = new BulletZoneData(url, username, password);
+        users = new GameUserRepository();
     }
 
     /**
@@ -82,8 +84,10 @@ public class DataRepository {
     }
 
     public boolean modifyAccountBalance(String username, double amount) {
+        System.out.println("Fuck you bitch");
         GameUser user = bzdata.users.getUser(username);
         if (user != null) {
+            System.out.println("please fuck");
             BankAccount account = user.getOwnedAccounts().iterator().next();
             bzdata.accounts.modifyBalance(account, amount);
             return true;

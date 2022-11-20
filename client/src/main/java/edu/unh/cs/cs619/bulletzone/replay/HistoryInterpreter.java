@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.BalenceEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
@@ -150,6 +151,9 @@ public class HistoryInterpreter extends Thread {
                 break;
             case "dismantle":
                 event = new DismantleEvent(currEvent);
+                break;
+            case "balance":
+                event = new BalenceEvent(currEvent);
                 break;
             default:
                 event = new ExecutableEvent(currEvent);

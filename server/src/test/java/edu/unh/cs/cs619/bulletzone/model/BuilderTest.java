@@ -42,7 +42,7 @@ public class BuilderTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildRoad_createdRoad() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -55,7 +55,7 @@ public class BuilderTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildWall_createdWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -68,7 +68,7 @@ public class BuilderTest {
     @Test
     public void testBuildFunction_tankJoinedAndBuildIndesWall_createdIndesWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -81,7 +81,7 @@ public class BuilderTest {
     @Test
     public void testBuildFunction_tankJoinedWithNoResources_wallNotCreated() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         assert(!repo.build(tankId, 3));
     }
@@ -89,7 +89,7 @@ public class BuilderTest {
     @Test(expected = NoSuchElementException.class)
     public void testDestroyFunction_tankJoinedAndDestroyWall_removedWall() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException, InterruptedException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -104,7 +104,7 @@ public class BuilderTest {
     @Test
     public void testMoveBuild_moveIntoCreatedRoad_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -116,7 +116,7 @@ public class BuilderTest {
     @Test
     public void testMoveBuild_moveIntoCreatedWall_returnsFalse() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -128,7 +128,7 @@ public class BuilderTest {
     @Test
     public void testMoveDismantle_moveIntoDismantledWall_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -143,14 +143,14 @@ public class BuilderTest {
     @Test
     public void testDismantle_dismantleEmptySpace_returnsFalse() throws TankDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         assert(!repo.dismantle(tankId));
     }
     @Test
     public void testMoveBuild_moveWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
@@ -183,7 +183,7 @@ public class BuilderTest {
     @Test
     public void testFireBuild_fireWhileBuilding_returnsFalse() throws TankDoesNotExistException, IllegalTransitionException, LimitExceededException, BuildingDoesNotExistException {
         repo.create();
-        Tank[] tank = repo.join(0,"");
+        Tank[] tank = repo.join("i","");
         long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);

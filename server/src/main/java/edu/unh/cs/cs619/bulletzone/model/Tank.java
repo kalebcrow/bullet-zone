@@ -39,11 +39,11 @@ public class Tank extends FieldEntity {
     private Direction direction;
 
     private int typeIndex;
-    private long userID;
+    private String username;
 
-    public Tank(long userID, long id, Direction direction, String ip, int typeIndex) {
+    public Tank(String username, long id, Direction direction, String ip, int typeIndex) {
         this.id = id;
-        this.userID = userID;
+        this.username = username;
         this.direction = direction;
         this.ip = ip;
         this.typeIndex = typeIndex;
@@ -64,7 +64,7 @@ public class Tank extends FieldEntity {
 
     @Override
     public FieldEntity copy() {
-        return new Tank(userID, id, direction, ip, typeIndex);
+        return new Tank(username, id, direction, ip, typeIndex);
     }
 
     @Override
@@ -117,8 +117,8 @@ public class Tank extends FieldEntity {
     }
 
     @JsonIgnore
-    public long getUserID() {
-        return userID;
+    public String getUsername() {
+        return username;
     }
 
     @Override

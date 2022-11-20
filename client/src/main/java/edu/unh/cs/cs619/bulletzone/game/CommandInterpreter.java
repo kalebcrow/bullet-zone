@@ -16,6 +16,7 @@ import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.BalenceEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
@@ -159,6 +160,9 @@ public class CommandInterpreter {
                  break;
              case "addResource":
                  event = new AddResourceEvent(currEvent);
+                 break;
+             case "balance":
+                 event = new BalenceEvent(currEvent);
                  break;
              default:
                  event = new ExecutableEvent(currEvent);

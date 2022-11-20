@@ -29,6 +29,7 @@ import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
+import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -97,10 +98,13 @@ public class InMemoryGameRepository implements GameRepository {
     private Game game = null;
     private int bulletDamage[]={10,30,50};
     private int trackActiveBullets[]={0,0,0,0};
+    private DataRepository data = new DataRepository();
 
     private final ConcurrentMap<Integer, FieldResource> itemsOnGrid = new ConcurrentHashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryGameRepository.class);
+
+    GameUserRepository users = new GameUserRepository();
 
 
     /**
@@ -109,7 +113,7 @@ public class InMemoryGameRepository implements GameRepository {
      * @return A new player tank
      */
     @Override
-    public Tank[] join(long userID, String ip) {
+    public Tank[] join(String username, String ip) {
         synchronized (this.monitor) {
 
             if (game == null) {
@@ -120,7 +124,6 @@ public class InMemoryGameRepository implements GameRepository {
                 log.debug("creating test and starting resources up--------------------------------");
                 getRandomResources();
             }
-
             Tank[] tanks = new Tank[3];
 
             if(game.getTanks(ip) == null) {
@@ -128,9 +131,9 @@ public class InMemoryGameRepository implements GameRepository {
                 Long minerID = this.idGenerator.getAndIncrement();
                 Long builderID = this.idGenerator.getAndIncrement();
 
-                tanks[0] = new Tank(userID, tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(userID, minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(userID, builderID, Direction.Up, ip, 2);
+                tanks[0] = new Tank(username, tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(username, minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(username, builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
@@ -193,6 +196,14 @@ public class InMemoryGameRepository implements GameRepository {
                 tanks[1] = game.getTank(map.get("miner"));
                 tanks[2] = game.getTank(map.get("builder"));
             }
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    game.addEvent(new balanceEvent(data.getUserAccountBalance(tanks[0].getUsername()), tanks[0].getId()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
             return tanks;
         }
@@ -346,15 +357,10 @@ public class InMemoryGameRepository implements GameRepository {
                             System.out.println("Finished item pickup process, adding clay to stash");
                             game.addEvent(new MineEvent(tankId, miner.getAllResources()));
                         } else if (fr.getIntValue() == 7) {
-                            DataRepository data = new DataRepository();
-                            GameUserRepository users = new GameUserRepository();
-                            GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                            if (gu != null) {
-                                String username = gu.getUsername();
-                                Thingamajig tb = (Thingamajig) fr;
-                                double amount = tb.getCredits();
-                                data.modifyAccountBalance(username, amount);
-                            }
+                            Thingamajig tb = (Thingamajig) fr;
+                            double amount = tb.getCredits();
+                            data.modifyAccountBalance(tank.getUsername(), amount);
+                            game.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));
                         } else {
                             System.out.println("Resource ID does not exist");
                         }
@@ -599,17 +605,11 @@ public class InMemoryGameRepository implements GameRepository {
             System.out.println("leave() called, tank ID: " + miner.getId());
             System.out.println("leave() called, tank ID: " + builder.getId());
 
-            DataRepository data = new DataRepository();
-            GameUserRepository users = new GameUserRepository();
-            GameUser gu = users.getUser(Math.toIntExact(miner.getUserID()));
-
-            if (gu != null) {
-                System.out.println("=================================fuck");
-                String username = gu.getUsername();
-                double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
-                data.modifyAccountBalance(username, amount);
-            }
-
+            double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
+            System.out.println("AMOUNT: " + amount);
+            data.modifyAccountBalance(tank.getUsername(), amount);
+            game.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));
+            System.out.println("AMOUNT balance: " + data.getUserAccountBalance(tank.getUsername()));
             FieldHolder parent = tank.getParent();
             parent.clearField();
             if(tank.getLife() > 0) {
