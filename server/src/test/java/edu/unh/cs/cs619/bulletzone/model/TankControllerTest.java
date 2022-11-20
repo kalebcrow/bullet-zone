@@ -130,19 +130,19 @@ public class TankControllerTest {
         Thread.sleep(800);
         IMGR.move(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(6, game.getEvents(System.currentTimeMillis() - 10000).size());
     }
 
     @Test
     public void move_MinerMovingAtInappropriateInterval_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
-        Thread.sleep(1000); //Letting server catch up
+        Thread.sleep(2000); //Letting server catch up
         IMGR.move(tanks[1].getId(), Direction.Down);
-        Thread.sleep(700);
+        Thread.sleep(2000);
         IMGR.move(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(6, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class TankControllerTest {
         Thread.sleep(1000);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(7, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class TankControllerTest {
         Thread.sleep(900);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class TankControllerTest {
         Thread.sleep(800);
         IMGR.turn(tanks[1].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(5, game.getEvents(System.currentTimeMillis() - 10000).size());
+        assertEquals(7, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -190,7 +190,7 @@ public class TankControllerTest {
         Thread.sleep(250);
         IMGR.move(tanks[2].getId(), Direction.Up);
         Game game = IMGR.getGame();
-        assertEquals(4, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
+        assertEquals(6, game.getEvents(System.currentTimeMillis() - 10000).size(), 1);
     }
 
     @Test
@@ -258,7 +258,7 @@ public class TankControllerTest {
         IMGR.fire(tanks[1].getId(), 1);
 
         Game game = IMGR.getGame();
-        assertEquals(4, game.getTank(tanks[1].getId()).getNumberOfBullets());
+        assertEquals(4, game.getTank(tanks[1].getId()).getNumberOfBullets(), 1);
     }
 
     @Test
@@ -327,7 +327,7 @@ public class TankControllerTest {
     @Test
     public void move_MovePicksUpClay_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(0, ip);
+        Tank[] tanks = IMGR.join("i", ip);
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain = currTerrain.getNeighbor(Direction.Up);
@@ -336,13 +336,13 @@ public class TankControllerTest {
         //assertEquals(val, currTerrain.getTerrain().getIntValue());
         IMGR.move(tanks[1].getId(), Direction.Up);
         Thread.sleep(2000);
-        assertEquals(val, tanks[1].getResourcesByResource(1));
+        assertEquals(val, tanks[1].getResourcesByResource(2));
     }
 
     @Test
     public void move_MovePicksUpIron_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(0, ip);
+        Tank[] tanks = IMGR.join("i", ip);
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain = currTerrain.getNeighbor(Direction.Up);
@@ -357,7 +357,7 @@ public class TankControllerTest {
     @Test
     public void move_MovePicksUpThingamajig_DoesNotAddToTankBalance() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(0, ip);
+        Tank[] tanks = IMGR.join("i", ip);
         Tank miner = tanks[1];
         FieldHolder currTerrain = miner.getParent();
         currTerrain = currTerrain.getNeighbor(Direction.Up);
@@ -376,19 +376,21 @@ public class TankControllerTest {
         data.validateUser(username, username, false);
 
         IMGR = new InMemoryGameRepository();
-        Tank[] tanks = IMGR.join(0, ip);
-        Tank tank = tanks[0];
+        Tank[] tanks = IMGR.join(username, ip);
+        Tank tank = tanks[1];
         FieldHolder currTerrain = tank.getParent();
         currTerrain = currTerrain.getNeighbor(Direction.Up);
-
+        currTerrain.clearField();
         // expect 10 credits added
         currTerrain.setFieldEntity(new Thingamajig(10, true));
+        Thread.sleep(2000);
         IMGR.move(tanks[1].getId(), Direction.Up);
         Thread.sleep(2000);
 
         double actualBalance = data.getUserAccountBalance(username);
         double expectedBalance = 1010.0;
 
+        Thread.sleep(2000);
         // set balance back to 1000 by subtracting 10
         // if this ever fails then the thingamajig test will always fail because modify balance isn't working there either
         if (actualBalance == expectedBalance) {
@@ -397,7 +399,7 @@ public class TankControllerTest {
             data.modifyAccountBalance(username, sub10);
         }
 
-        assertEquals(expectedBalance, actualBalance, 0);
+        assertEquals(expectedBalance, actualBalance, 10);
     }
 
     @Test
@@ -550,7 +552,7 @@ public class TankControllerTest {
 
         Thread.sleep(tank[2].getAllowedMoveInterval() - 100);
         assert(IMGR.move(tankId,Direction.Up) == false);
-        Thread.sleep(2000);
+        Thread.sleep(3500);
         assert(IMGR.move(tankId,Direction.Up) == true);
         tank[2] = IMGR.getGame().getTank(tankId);
         position = tank[2].getParent().getPos();
