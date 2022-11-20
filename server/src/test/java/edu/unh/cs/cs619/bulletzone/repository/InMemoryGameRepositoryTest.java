@@ -138,15 +138,19 @@ public class InMemoryGameRepositoryTest {
         tank[1].getParent().clearField();
         tank[2].getParent().clearField();
 
-        for (int i = 0; i < 60; i++) {
-            repo.move(tankID, Direction.Up);
-            Thread.sleep(500);
-            repo.move(tankID, Direction.Down);
-            Thread.sleep(500);
+        for (int i = 0; i < 15; i++) {
+            repo.turn(tankID, Direction.Right);
+            Thread.sleep(1000);
+            repo.turn(tankID, Direction.Down);
+            Thread.sleep(1000);
+            repo.turn(tankID, Direction.Left);
+            Thread.sleep(1000);
+            repo.turn(tankID, Direction.Up);
+            Thread.sleep(1000);
         }
-        assertEquals(repo.getEvents(System.currentTimeMillis() - 100000).size(), 123);
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "moveTank");
-        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(119).getType() == "moveTank");
+        assertEquals(repo.getEvents(System.currentTimeMillis() - 100000).size(), 60+3);
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(4).getType() == "turn");
+        assert (repo.getEvents(System.currentTimeMillis() - 100000).get(62).getType() == "turn");
     }
 
     @Test
