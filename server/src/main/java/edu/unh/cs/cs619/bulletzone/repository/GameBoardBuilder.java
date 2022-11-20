@@ -5,13 +5,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Hilly;
+import edu.unh.cs.cs619.bulletzone.model.Iron;
 import edu.unh.cs.cs619.bulletzone.model.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Rocky;
+import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 
 public class GameBoardBuilder {
@@ -98,17 +102,10 @@ public class GameBoardBuilder {
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
     };
 
-
-
-
-
-    //private String[][]
-
     GameBoardBuilder(Game game)
     {
         this.game = game;
     }
-
 
     /**
      * Creates a new board from specified game returns if no current game
@@ -127,13 +124,11 @@ public class GameBoardBuilder {
             }
             createFieldHolderGrid(game);
 
-            // Test // TODO Move to more appropriate place (and if desired, integrate map loader)
             createInitialGrid(game);
     }
 
     private void createInitialGrid(Game game) {
-        // add each level of the square - terrain --> improvements --> vehicle
-        // for now just doing terrain
+        // add each level of the square - terrain --> improvements/tanks --> bundles
         int count = 0;
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
@@ -151,10 +146,24 @@ public class GameBoardBuilder {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
                 }
 
+                // second layer would be roads [2]
+                // third layer is walls + vehicles + resources [1]
+
                 count++;
             }
         }
 
+        /*
+                else if (improvementGrid[i][j].equals("CB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Clay()); // temp
+                } else if (improvementGrid[i][j].equals("IB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Iron()); // temp
+                } else if (improvementGrid[i][j].equals("RB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Rock()); // temp
+                } else if (improvementGrid[i][j].equals("TB")) {
+                    game.getHolderGrid().get(count).setFieldEntity(new Thingamajig()); // temp
+                }
+                */
 
         /*
         game.getHolderGrid().get(6).setFieldEntity(new Hilly());

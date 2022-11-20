@@ -27,6 +27,12 @@ public class DestroyTankEvent extends ExecutableEvent{
         TankList.getTankList().remove(ID);
     }
 
+    /**
+     * Converts the json value to the string value
+     *
+     * @param terrain terrain in string form
+     * @return terrain in json form
+     */
     private Integer getJSONValueFromString(String terrain) {
         // using given son values
         if (terrain.equals("H")) {

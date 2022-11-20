@@ -13,9 +13,11 @@ public class FieldHolder {
 
     private final Map<Direction, FieldHolder> neighbors = new HashMap<Direction, FieldHolder>();
 
-    // should hold a terrain and also an item
-    private Optional<FieldEntity> entityHolder = Optional.empty();
+    // should hold a terrain and also an item and a road
+    private Optional<FieldEntity> entityHolder = Optional.empty(); // holds vehicles, walls, and resources
     private Optional<FieldTerrain> terrainHolder = Optional.empty();
+    private Optional<FieldResource> resourceHolder = Optional.empty(); // TODO create a FieldRoad, i dont know the json value so leaving it
+
     private Optional<FieldEntity> improvementHolder = Optional.empty();
     private int pos;
 
@@ -39,6 +41,10 @@ public class FieldHolder {
         return entityHolder.isPresent();
     }
 
+    public boolean isRoadPresent() {
+        return resourceHolder.isPresent();
+    }
+
     public FieldTerrain getTerrain() {
         return terrainHolder.get();
     }
@@ -46,6 +52,16 @@ public class FieldHolder {
     public void setFieldTerrain(FieldTerrain terrain) {
         // set current entity
         terrainHolder = Optional.of(checkNotNull(terrain,
+                "FieldTerrain cannot be null."));
+    }
+
+    public FieldResource getResource() {
+        return resourceHolder.get();
+    }
+
+    public void setFieldRoad(FieldResource road) {
+        // set current road tile
+        resourceHolder = Optional.of(checkNotNull(road,
                 "FieldTerrain cannot be null."));
     }
 

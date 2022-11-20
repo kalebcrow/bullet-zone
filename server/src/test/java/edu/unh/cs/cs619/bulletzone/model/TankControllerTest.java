@@ -307,6 +307,21 @@ public class TankControllerTest {
     }
 
     @Test
+    public void move_MovePicksUpResource_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
+        IMGR = new InMemoryGameRepository();
+        Tank[] tanks = IMGR.join(0, ip);
+        Tank miner = tanks[1];
+        FieldHolder currTerrain = miner.getParent();
+        currTerrain = currTerrain.getNeighbor(Direction.Up);
+        currTerrain.setFieldEntity(new Rock());
+        Integer val = 1;
+        //assertEquals(val, currTerrain.getTerrain().getIntValue());
+        IMGR.move(tanks[1].getId(), Direction.Up);
+        Thread.sleep(2000);
+        assertEquals(val, tanks[1].getResourcesByResource(0));
+    }
+
+    @Test
     public void mine_MoveCancelsMineAction_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException, InvalidResourceTileType {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join(0, ip);

@@ -14,10 +14,12 @@ import java.util.LinkedList;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.events.AddObstacleEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyBulletEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.DismantleEvent;
@@ -151,6 +153,12 @@ public class CommandInterpreter {
                  break;
              case "dismantle":
                  event = new DismantleEvent(currEvent);
+                 break;
+             case "destroyResource":
+                 event = new DestroyResourceEvent(currEvent);
+                 break;
+             case "addResource":
+                 event = new AddResourceEvent(currEvent);
                  break;
              default:
                  event = new ExecutableEvent(currEvent);

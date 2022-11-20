@@ -109,7 +109,6 @@ public class ReplayActivity extends Activity {
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
         } else {
-            // TODO array[1] refers to the entities only (not terrain)
             boardView.setUsingJSON(historyReader.array);
             boardView.setGarageText(findViewById(R.id.textViewGarage));
             boardView.setHealthText(findViewById(R.id.HealthText));
