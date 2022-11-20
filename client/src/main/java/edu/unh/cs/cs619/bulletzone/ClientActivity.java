@@ -26,6 +26,8 @@ import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.api.BackgroundExecutor;
 
+import java.util.Objects;
+
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
@@ -82,7 +84,7 @@ public class ClientActivity extends Activity {
     /**
      * User identifier
      */
-    private long userID = -1;
+    private String username = "";
     // TODO make work
     boolean testing = true;
 
@@ -146,7 +148,7 @@ public class ClientActivity extends Activity {
      */
     @Background
     void joinAsync() {
-        tankController.joinGame(userID);
+        tankController.joinGame(username);
         gridPollTask.setPaused(false);
         //gridPollTask.doPoll();
         commandInterpreter.setPaused(false);
@@ -199,10 +201,11 @@ public class ClientActivity extends Activity {
     void startGame() {
         //login();
         // this should only work if the user if logged in
-        if (userID > 0 || testing) {
+        if (!Objects.equals(username, "") || testing) {
             if (testing) {
                 // set the garage anyway
-                textViewGarage.setText("Using user id: " + userID);
+                textViewGarage.setText("Using user id: " + username);
+                boardView.setUsername(username);
             }
             afterViewInjection();
             Button buttonFire = findViewById(R.id.buttonFire);
@@ -217,6 +220,7 @@ public class ClientActivity extends Activity {
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
+            boardView.setUserText(textViewGarage);
             health.setVisibility(View.VISIBLE);
             textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
@@ -372,7 +376,8 @@ public class ClientActivity extends Activity {
                 // set the text view with user info
                 // also set the user id so you know if logged in or not
                 Bundle bundle = data.getExtras();
-                userID = bundle.getLong("userID");
+                username = bundle.getString("userID");
+                boardView.setUsername(username);
                 setGarageTextView(bundle);
                 startGame();
             }
@@ -387,9 +392,8 @@ public class ClientActivity extends Activity {
     private void setGarageTextView(Bundle bundle) {
         long bankAccountBalance = bundle.getLong("bankAccountBalance");
         String tank = bundle.getString("items");
-        String message = "User ID: " + userID + "\n" +
-                "Balance: " + bankAccountBalance + "\n" +
-                "Garage: " + tank + "\n";
+        String message = "User ID: " + username + "\n" +
+                "Balance: " + bankAccountBalance + "\n";
         textViewGarage.setText(message);
         Log.d("MESSAGE", message);
     }

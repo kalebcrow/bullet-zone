@@ -44,7 +44,8 @@ public class GameUserRepository implements EntityRepository {
      * @param userID    ID of the user to get
      * @return  GameUser corresponding to passed ID
      */
-    public GameUser getUser(int userID) { return userMap.get(userID); }
+    public GameUser getUser(int userID) {
+        return userMap.get(userID); }
 
     public GameUser getUser(String username) { return usernameToUserMap.get(username); }
 

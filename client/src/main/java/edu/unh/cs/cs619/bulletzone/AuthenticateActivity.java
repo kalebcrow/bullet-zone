@@ -31,7 +31,7 @@ public class AuthenticateActivity extends AppCompatActivity {
     @Bean
     AuthenticationController controller;
 
-    long userID;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,9 @@ public class AuthenticateActivity extends AppCompatActivity {
         } else { //register successful
             setStatus("Registration successful.");
             // player should log in automatically after registering
-            userID = controller.login(username, password);
-            if (userID < 0) {
+            userID = username;
+            long userID2 = controller.login(username, password);
+            if (userID2 < 0) {
                 setStatus("Registration unsuccessful--inconsistency with server.");
             }
 
@@ -86,8 +87,9 @@ public class AuthenticateActivity extends AppCompatActivity {
         String username = username_editText.getText().toString();
         String password = password_editText.getText().toString();
 
-        userID = controller.login(username, password);
-        if (userID < 0) {
+        userID = username;
+        long userID2 = controller.login(username, password);
+        if (userID2 < 0) {
             setStatus("Invalid username and/or password.\nPlease try again.");
         } else { //register successful
             setStatus("Login successful.");
@@ -110,7 +112,7 @@ public class AuthenticateActivity extends AppCompatActivity {
         // send user info back to client activity using bundle
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putLong("userID", userID);
+        bundle.putString("userID", userID);
         bundle.putLong("bankAccountBalance", bankAccountBalance);
         bundle.putString("items", tank);
         intent.putExtras(bundle);

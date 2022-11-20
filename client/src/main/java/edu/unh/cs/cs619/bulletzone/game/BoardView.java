@@ -12,6 +12,7 @@ import org.androidannotations.annotations.EBean;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.rest.BalenceUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
@@ -46,6 +47,17 @@ public class BoardView {
     public int[] resources; //rock iron clay
     public boolean paused;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String username;
+
+
     public TextView getGarageText() {
         return garageText;
     }
@@ -65,6 +77,16 @@ public class BoardView {
     }
 
     public TextView healthText;
+
+    public TextView getUserText() {
+        return userText;
+    }
+
+    public void setUserText(TextView userText) {
+        this.userText = userText;
+    }
+
+    public TextView userText;
 
     /**
      *
@@ -97,10 +119,7 @@ public class BoardView {
 
     @AfterInject
     public void setBusProvider(){
-        busProvider.getEventBus().register(tileEventHandler);
-        busProvider.getEventBus().register(gridEventHandler);
-        busProvider.getEventBus().register(resourceEventHandler);
-        busProvider.getEventBus().register(roadEventHandler);
+        this.reRegister();
     }
 
     /**
@@ -250,6 +269,27 @@ public class BoardView {
     };
 
     /**
+     * Subscribes to update
+     */
+    private Object balanceEventHandler = new Object()
+    {
+        @Subscribe
+        public void onUpdateBalence(BalenceUpdate event) {
+            updateBalence(event);
+        }
+    };
+
+    private void updateBalence(BalenceUpdate event) {
+        String message = "User ID: " + username + "\n" +
+                "Balance: " + event.balence + "\n";
+
+        if (userText != null) {
+            userText.setText(message);
+        }
+    }
+
+
+    /**
      *
      * @param event update specific OBSTACLE/VEHICLE tile
      */
@@ -283,6 +323,7 @@ public class BoardView {
         busProvider.getEventBus().unregister(gridEventHandler);
         busProvider.getEventBus().unregister(resourceEventHandler);
         busProvider.getEventBus().unregister(roadEventHandler);
+        busProvider.getEventBus().unregister(balanceEventHandler);
 
     }
 
@@ -294,6 +335,7 @@ public class BoardView {
         busProvider.getEventBus().register(gridEventHandler);
         busProvider.getEventBus().register(resourceEventHandler);
         busProvider.getEventBus().register(roadEventHandler);
+        busProvider.getEventBus().register(balanceEventHandler);
 
     }
 }
