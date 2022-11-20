@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import com.squareup.otto.Bus;
 
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.RoadTile;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
@@ -34,6 +35,8 @@ public class AddObstacleEvent extends ExecutableEvent {
             buildType = 1000;
             bus.post(new TileUpdateEvent(location, new ObstacleTile(buildType, location)));
         }
-        bus.post(new ResourceEvent(new IntArayWrapper(this.resources)));
+        if (TankController.getTankController().containsTankID(ID.longValue())) {
+            bus.post(new ResourceEvent(new IntArayWrapper(this.resources)));
+        }
     }
 }

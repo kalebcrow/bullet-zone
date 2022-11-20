@@ -498,9 +498,11 @@ public class InMemoryGameRepository implements GameRepository {
                     DataRepository data = new DataRepository();
                     GameUserRepository users = new GameUserRepository();
                     GameUser gu = users.getUser(Math.toIntExact(tank.getUserID()));
-                    String username = gu.getUsername();
-                    double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
-                    data.modifyAccountBalance(username, amount);
+                    if (gu != null) {
+                        String username = gu.getUsername();
+                        double amount = (tank.getResourcesByResource(0) * 25) + (tank.getResourcesByResource(1) * 78) + (tank.getResourcesByResource(2) * 16);
+                        data.modifyAccountBalance(username, amount);
+                    }
                 }
 
                 FieldHolder parent = tank.getParent();

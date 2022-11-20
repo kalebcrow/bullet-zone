@@ -28,7 +28,7 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 //Please fix when we submit
 //@Rest(rootUrl = "http://10.21.138.125:8080/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
-@Rest(rootUrl = "http://10.21.151.100:8080/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
 //@Rest(rootUrl = "localhost:8080",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}

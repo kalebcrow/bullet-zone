@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.game.events;
 
 import com.squareup.otto.Bus;
 
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
@@ -23,6 +24,9 @@ public class DismantleEvent extends ExecutableEvent {
         } else {
             bus.post(new TileUpdateEvent(location, new GroundTile(-1, location)));
         }
-        bus.post(new ResourceEvent(new IntArayWrapper(this.resources)));
+
+        if (TankController.getTankController().containsTankID(ID.longValue())) {
+            bus.post(new ResourceEvent(new IntArayWrapper(this.resources)));
+        }
     }
 }

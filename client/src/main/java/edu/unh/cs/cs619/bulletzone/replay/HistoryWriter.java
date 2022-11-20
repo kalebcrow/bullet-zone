@@ -25,6 +25,35 @@ public class HistoryWriter {
         this.WriteHistory();
     }
 
+    public HistoryWriter(LinkedList<GridEvent> history, int[][][] array) {
+        this.array = array;
+        this.history = history;
+    }
+
+    public void WriteArray(OutputStreamWriter file) {
+        Gson gson = new Gson();
+        try {
+            file.write(gson.toJson(array));
+            file.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    public void WriteHistory(OutputStreamWriter file) {
+        Gson gson = new Gson();
+        try {
+            file.write(gson.toJson(history));
+            file.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+
+
     public void WriteHistory() {
         Gson gson = new Gson();
         try {
