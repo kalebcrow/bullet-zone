@@ -201,7 +201,7 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateRoad(RoadUpdateEvent event) {
-        tiles[event.location][1] = event.movedTile; // entities are now stored in [1]
+        tiles[event.location][2] = event.movedTile; // entities are now stored in [1]
         gridAdapter.updateList(tiles);
     }
 
