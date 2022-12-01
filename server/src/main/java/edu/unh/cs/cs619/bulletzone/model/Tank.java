@@ -133,7 +133,7 @@ public class Tank extends FieldEntity {
                         miner.addBundleOfResources(2, 1);
                         System.out.println("Finished item pickup process, adding clay to stash");
                         eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
-                    } else if (fr.getIntValue() == 3) {
+                    } else if (fr.getIntValue() == 504) {
                         miner.addBundleOfResources(3, 1);
                         System.out.println("Finished item pickup process, adding wood to stash");
                         eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
@@ -263,7 +263,7 @@ public class Tank extends FieldEntity {
         if (nextField.isEntityPresent()) {
             FieldEntity fr = nextField.getEntity();
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 3 ||
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504 ||
                     fr.getIntValue() == 7;
 
         }

@@ -61,6 +61,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
+import edu.unh.cs.cs619.bulletzone.model.Wood;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -314,7 +315,7 @@ public class InMemoryGameRepository implements GameRepository {
             FieldEntity fr = nextField.getEntity();
             log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504;
 
         }
         return false;
