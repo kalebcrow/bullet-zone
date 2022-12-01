@@ -70,11 +70,11 @@ public class TankController {
         FieldHolder nextField = tank.getParent().getNeighbor(direction);
         double speed = 0;
         // adding a check for field type (water, forest, meadow, hilly, or rocky) for speed purposes
-        if (nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() == 1) {
-            // water (only applies to miners = 1)
+        if (nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() == 2) {
+            // water (only applies to builders = 2)
             speed = tank.getAllowedMoveInterval() * 2;
-        } else if (nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() == 2) {
-            // forest (only applies to builders = 2)
+        } else if (nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() == 1) {
+            // forest (only applies to miners = 1)
             speed = tank.getAllowedMoveInterval() * 1.5;
         } else if (nextField.getTerrain().toString().equals("R")) {
             // rocky

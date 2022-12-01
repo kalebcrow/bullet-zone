@@ -941,7 +941,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
-                                    System.out.println("Failed to add clay resource rock to stash");
+                                    System.out.println("Failed to add rock resource type to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
@@ -949,10 +949,18 @@ public class InMemoryGameRepository implements GameRepository {
                                 break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {
-                                    System.out.println("Failed to add clay resource iron to stash");
+                                    System.out.println("Failed to add iron resource type to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding iron to stash");
+                                eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                break;
+                            case 3:
+                                if (!miner.addBundleOfResources(3, 1)) {
+                                    System.out.println("Failed to add wood resource type to stash");
+                                    cancel();
+                                }
+                                System.out.println("Finished mining process, adding wood to stash");
                                 eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             default:
