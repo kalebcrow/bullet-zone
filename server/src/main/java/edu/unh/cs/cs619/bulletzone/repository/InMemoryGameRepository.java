@@ -998,13 +998,15 @@ public class InMemoryGameRepository implements GameRepository {
             if (randomValue <= prob) {
                 // add a random resource
                 addingRandomResource = true;
-                double itemType = (Math.random() * (4));
+                double itemType = (Math.random() * (5));
                 if (itemType >= 0 && itemType < 1) {
                     fr = new Clay();
                 } else if (itemType >= 1 && itemType < 2) {
                     fr = new Iron();
                 } else if (itemType >= 2 && itemType < 3) {
                     fr = new Rock();
+                } else if (itemType >= 3 && itemType < 4) {
+                    fr = new Wood();
                 } else {
                     fr = new Thingamajig();
                 }
