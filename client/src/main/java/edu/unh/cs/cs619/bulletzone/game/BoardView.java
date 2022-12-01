@@ -114,7 +114,7 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
-        resources = new int[3];
+        resources = new int[4];
         tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
     }
 
@@ -317,7 +317,8 @@ public class BoardView {
         String message =
                 "Rock: " + this.resources[0] + "\n" +
                 "Iron: " + this.resources[1] + "\n" +
-                "Clay: " + this.resources[2];
+                "Clay: " + this.resources[2] + "\n" +
+                "Wood: " + this.resources[3];
 
         if (garageText != null) {
             garageText.setText(message);
@@ -342,6 +343,7 @@ public class BoardView {
         busProvider.getEventBus().unregister(resourceEventHandler);
         busProvider.getEventBus().unregister(roadEventHandler);
         busProvider.getEventBus().unregister(balanceEventHandler);
+        busProvider.getEventBus().unregister(terrainEventHandler);
 
     }
 
@@ -354,6 +356,7 @@ public class BoardView {
         busProvider.getEventBus().register(resourceEventHandler);
         busProvider.getEventBus().register(roadEventHandler);
         busProvider.getEventBus().register(balanceEventHandler);
+        busProvider.getEventBus().register(terrainEventHandler);
 
     }
 }
