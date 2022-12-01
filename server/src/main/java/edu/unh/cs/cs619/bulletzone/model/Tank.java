@@ -104,7 +104,10 @@ public class Tank extends FieldEntity {
         } else { // if it's not then you have to "hit" whatever is there
             isCompleted = false;
             FieldEntity ent = nextField.getEntity();
-            if (ent.toString().equals("IW")){ // you can't "hit" indestructible wall so nothing happens
+            if (ent.toString().equals("IW") || (typeIndex != 1 && ent.toString().equals("F"))
+                || (typeIndex != 2 && ent.toString().equals("W"))){
+                // you can't "hit" indestructible wall OR deso nothing happens
+                // and a tank/builder on a forest or tank/miner on a water is not allowed
                 return false;
             }
             if (isResource(nextField)) {
