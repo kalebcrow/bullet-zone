@@ -2,14 +2,10 @@ package edu.unh.cs.cs619.bulletzone.events;
 
 
 import java.io.Serializable;
-import java.util.Optional;
-
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 
 
 public class GridEvent implements Serializable {
-    // this is a class
+
     protected Long time;
     protected String type;
     protected Integer ID = -1;

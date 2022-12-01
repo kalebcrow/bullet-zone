@@ -2,7 +2,6 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import static org.junit.Assert.assertNull;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,19 +10,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 @RunWith(MockitoJUnitRunner.class)

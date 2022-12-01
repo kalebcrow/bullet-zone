@@ -1,18 +1,17 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities;
 
-import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.toByte;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyBulletEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
-import jdk.internal.org.jline.utils.Log;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
 
 public class Bullet extends FieldEntity {
 

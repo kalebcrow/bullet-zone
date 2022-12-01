@@ -2,22 +2,30 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
-import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import java.util.HashMap;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Clay;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Iron;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Rock;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Road;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.TankController;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Hilly;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Rocky;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
@@ -31,7 +39,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsSideways_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank("i", 0, Direction.Up, ip, 0);
+        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertTrue(tc.turn(tank, Direction.Left));
@@ -39,7 +47,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsForwardsOrBackwards_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new Tank("i", 0, Direction.Up, ip, 0);
+        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertFalse(tc.turn(tank, Direction.Up));
@@ -98,7 +106,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_SuccessfullyFires_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank("i", 0, Direction.Up, ip, 0);
+        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(0);
@@ -107,7 +115,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_DoesNotFireMoreThanTwoBulletsAtATime_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new Tank("i", 0, Direction.Up, ip, 0);
+        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(2);

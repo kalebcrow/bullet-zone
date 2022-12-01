@@ -1,15 +1,13 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import static org.graalvm.compiler.replacements.Log.print;
 
-import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
-import jdk.internal.org.jline.utils.Log;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 
 
 public class TankController {

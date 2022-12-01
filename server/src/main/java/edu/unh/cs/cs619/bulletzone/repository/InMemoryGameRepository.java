@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,9 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccount;
-import edu.unh.cs.cs619.bulletzone.datalayer.account.BankAccountRepository;
-import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
 import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.Command;
 import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
@@ -25,49 +21,42 @@ import edu.unh.cs.cs619.bulletzone.MoveCommand;
 import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
-import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
-import edu.unh.cs.cs619.bulletzone.model.Bullet;
-import edu.unh.cs.cs619.bulletzone.model.Clay;
-import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Bullet;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Clay;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.FieldResource;
-import edu.unh.cs.cs619.bulletzone.model.FieldTerrain;
-import edu.unh.cs.cs619.bulletzone.model.Game;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.FieldResource;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.FieldTerrain;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.Iron;
-import edu.unh.cs.cs619.bulletzone.model.Road;
-import edu.unh.cs.cs619.bulletzone.model.Rock;
-import edu.unh.cs.cs619.bulletzone.model.Tank;
-import edu.unh.cs.cs619.bulletzone.model.TankController;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Iron;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Road;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Rock;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
-import edu.unh.cs.cs619.bulletzone.model.Wall;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Wall;
 import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyWallEvent;
-import edu.unh.cs.cs619.bulletzone.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
-import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
-import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
-import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
-import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
-import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
-import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.Down;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.Left;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.Right;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.Up;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.toByte;
 
 
 @Component
@@ -133,15 +122,15 @@ public class InMemoryGameRepository implements GameRepository {
                 Long minerID = this.idGenerator.getAndIncrement();
                 Long builderID = this.idGenerator.getAndIncrement();
 
-                tanks[0] = new Tank(username, tankId, Direction.Up, ip, 0);
-                tanks[1] = new Tank(username, minerID, Direction.Up, ip, 1);
-                tanks[2] = new Tank(username, builderID, Direction.Up, ip, 2);
+                tanks[0] = new BaseTank(username, tankId, Direction.Up, ip, 0);
+                tanks[1] = new BaseTank(username, minerID, Direction.Up, ip, 1);
+                tanks[2] = new BaseTank(username, builderID, Direction.Up, ip, 2);
 
                 game.addTank(ip, tanks[0], "tank");
                 game.addTank(ip, tanks[1], "miner");
                 game.addTank(ip, tanks[2], "builder");
 
-                if(ip == ""){
+                if(ip == "test"){
                     FieldHolder place = game.getHolderGrid().get(16);
                     place.setFieldEntity(tanks[0]);
                     tanks[0].setParent(place);
@@ -423,7 +412,7 @@ public class InMemoryGameRepository implements GameRepository {
         3 - Indestructible Wall
          */
             Tank builder = game.getTanks().get(tankId);
-            Tank miner = new Tank();
+            Tank miner = new BaseTank();
             HashMap<String, Long> tanks = game.getTanks(builder.getIp());
             assert tanks != null;
             if (tanks.containsKey("miner"))
@@ -529,7 +518,7 @@ public class InMemoryGameRepository implements GameRepository {
             throw new TankDoesNotExistException(tankId);
         }
 
-        Tank miner = new Tank();
+        Tank miner = new BaseTank();
         HashMap<String, Long> tanks = game.getTanks(builder.getIp());
         assert tanks != null;
         if (tanks.containsKey("miner"))

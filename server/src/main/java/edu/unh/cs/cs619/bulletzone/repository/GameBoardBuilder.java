@@ -1,22 +1,15 @@
 package edu.unh.cs.cs619.bulletzone.repository;
 
-import java.util.Timer;
-import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.unh.cs.cs619.bulletzone.model.Clay;
-import edu.unh.cs.cs619.bulletzone.model.Direction;
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Game;
-import edu.unh.cs.cs619.bulletzone.model.Hilly;
-import edu.unh.cs.cs619.bulletzone.model.Iron;
-import edu.unh.cs.cs619.bulletzone.model.Meadow;
-import edu.unh.cs.cs619.bulletzone.model.Rock;
-import edu.unh.cs.cs619.bulletzone.model.Rocky;
-import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
-import edu.unh.cs.cs619.bulletzone.model.Wall;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Hilly;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Rocky;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Wall;
 
 public class GameBoardBuilder {
 

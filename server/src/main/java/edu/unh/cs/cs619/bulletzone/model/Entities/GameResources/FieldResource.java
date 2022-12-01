@@ -1,10 +1,11 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
+import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
 
 public abstract class FieldResource extends FieldEntity {
     //protected static final EventBus eventBus = new EventBus();

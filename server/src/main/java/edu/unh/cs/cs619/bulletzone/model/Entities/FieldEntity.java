@@ -1,13 +1,17 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities;
 
-public abstract class FieldTerrain extends FieldEntity {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+
+public abstract class FieldEntity {
     //protected static final EventBus eventBus = new EventBus();
     protected FieldHolder parent;
 
     /**
-     * Serializes the current {@link FieldTerrain} instance.
+     * Serializes the current {@link FieldEntity} instance.
      *
-     * @return Integer representation of the current {@link FieldTerrain}
+     * @return Integer representation of the current {@link FieldEntity}
      */
     public abstract int getIntValue();
 
@@ -19,10 +23,12 @@ public abstract class FieldTerrain extends FieldEntity {
         this.parent = parent;
     }
 
-    public abstract FieldTerrain copy();
+    public abstract FieldEntity copy();
 
     public void hit(int damage) {
     }
+
+    public int getLife(){return 0;}
 
     /*public static final void registerEventBusListener(Object listener) {
         checkNotNull(listener);

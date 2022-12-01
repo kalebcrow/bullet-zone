@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
 
 public class Clay extends FieldResource {
     int credits = 16;

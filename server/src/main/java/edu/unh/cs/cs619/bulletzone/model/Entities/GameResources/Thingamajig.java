@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
 
 public class Thingamajig extends FieldResource {
     int credits;

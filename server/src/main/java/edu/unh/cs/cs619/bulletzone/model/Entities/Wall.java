@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities;
 
 import edu.unh.cs.cs619.bulletzone.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;

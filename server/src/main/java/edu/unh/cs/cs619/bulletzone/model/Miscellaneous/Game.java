@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,14 +11,14 @@ import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.Timer;
 
-import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.FieldTerrain;
 
 public final class Game {
     private static final Logger log = LoggerFactory.getLogger(Game.class);

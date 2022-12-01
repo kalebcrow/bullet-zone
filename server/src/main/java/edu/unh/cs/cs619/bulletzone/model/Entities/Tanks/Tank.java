@@ -1,6 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model;
+package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
 
-import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.toByte;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,71 +12,46 @@ import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
+import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.FieldResource;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 
 
-public class Tank extends FieldEntity {
+public abstract class Tank extends FieldEntity {
 
     // typeIndex 0 for tank, 1 for miner, 2 for builder
 
     private static final String TAG = "Tank";
     private static Game game;
-    private final long id;
-    private final String ip;
     private EventManager eventManager = EventManager.getInstance();
     private DataRepository data = new DataRepository();
 
     public boolean allowMovement = true;
-    private long lastMoveTime;
-    private final int[] allowedMoveIntervals = {500,800,1000};
-    private final int[] allowedTurnIntervals = {500,800,300};
-    private final double[] takesDamage = {.1, .05, .1};
-    private final double[] givesDamage = {.1, .1, .05};
+    private long lastFireTime = 0;
+    private long lastMoveTime = 0;
+    private int numberOfBullets = 0;
 
-    private long lastFireTime;
-    private final int[] allowedFireIntervals = {1500,200,1000};
-
-    private int numberOfBullets;
-    private final int[] allowedNumbersOfBullets = {2,4,6};
-
-    private final int[] healths = {100,300,80};
-    private int life;
-
-    private int[] resources;
+    protected int life;
+    protected Direction direction;
+    protected int typeIndex;
+    protected String username;
+    protected String ip;
+    protected long id;
+    protected int[] resources;
     //rock = index 0
     //iron = index 1
     //clay = index 2
 
-    private Direction direction;
-
-    private int typeIndex;
-    private String username;
-
-    public Tank(String username, long id, Direction direction, String ip, int typeIndex) {
-        this.id = id;
-        this.username = username;
-        this.direction = direction;
-        this.ip = ip;
-        this.typeIndex = typeIndex;
-        this.life = healths[typeIndex];
-        if (typeIndex == 1) {
-            resources = new int[]{0,0,0};
-        }
-        this.lastMoveTime = 0;
-        this.lastFireTime = 0;
-        this.numberOfBullets = 0;
-    }
-
-    public Tank(){
-        ip = null;
-        id = 0;
-        typeIndex = -1;
-    }
+    private final double[] takesDamage = {.1, .05, .1};
+    private final double[] givesDamage = {.1, .1, .05};
+    private final int[] healths = {100,300,80};
 
     @Override
-    public FieldEntity copy() {
-        return new Tank(username, id, direction, ip, typeIndex);
-    }
+    abstract public FieldEntity copy();
 
     @Override
     public void hit(int damage) {
@@ -110,7 +85,7 @@ public class Tank extends FieldEntity {
             if (isResource(nextField)) {
                 //Grab Miner
                 isCompleted = true;
-                Tank miner = new Tank();
+                Tank miner = new BaseTank();
                 HashMap<String, Long> tanks = game.getTanks(getIp());
                 assert tanks != null;
                 if (tanks.containsKey("miner"))
@@ -160,15 +135,13 @@ public class Tank extends FieldEntity {
     public void setLastMoveTime(long lastMoveTime) {
         this.lastMoveTime = lastMoveTime;
     }
-    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
-    public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
+    public abstract long getAllowedMoveInterval();
+    public abstract long getAllowedTurnInterval();
 
 
-    public long getLastFireTime() {
-        return lastFireTime;
-    }
+    public long getLastFireTime() { return lastFireTime; }
     public void setLastFireTime(long lastFireTime) { this.lastFireTime = lastFireTime; }
-    public long getAllowedFireInterval() { return allowedFireIntervals[typeIndex]; }
+    public abstract long getAllowedFireInterval();
 
     public int getNumberOfBullets() {
         return numberOfBullets;
@@ -176,7 +149,7 @@ public class Tank extends FieldEntity {
     public void setNumberOfBullets(int numberOfBullets) {
         this.numberOfBullets = numberOfBullets;
     }
-    public int getAllowedNumberOfBullets() { return allowedNumbersOfBullets[typeIndex]; }
+    public abstract int getAllowedNumberOfBullets();
 
     public Direction getDirection() {
         return direction;
@@ -184,6 +157,8 @@ public class Tank extends FieldEntity {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
+    public abstract Tank strip();
 
     @JsonIgnore
     public long getId() {
