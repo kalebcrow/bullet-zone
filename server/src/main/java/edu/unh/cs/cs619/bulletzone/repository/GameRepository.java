@@ -44,6 +44,9 @@ public interface GameRepository {
     boolean moveTo(long tankId, int desiredLocation)
         throws TankDoesNotExistException;
 
+    void test(long tankId)
+        throws TankDoesNotExistException;
+
     Game getGame()
             throws GameDoesNotExistException;
 }

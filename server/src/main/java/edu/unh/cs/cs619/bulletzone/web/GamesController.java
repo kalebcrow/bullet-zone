@@ -185,4 +185,12 @@ class GamesController {
         );
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/test", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    HttpStatus test(@PathVariable long tankId)
+            throws TankDoesNotExistException{
+        gameRepository.test(tankId);
+        return HttpStatus.OK;
+    }
+
 }

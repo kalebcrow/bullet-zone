@@ -1034,4 +1034,19 @@ public class InMemoryGameRepository implements GameRepository {
             }
         }
     }
+
+    @Override
+    public void test(long tankId) throws TankDoesNotExistException {
+        Tank miner = game.getTanks().get(tankId);
+        if (miner == null) {
+            throw new TankDoesNotExistException(tankId);
+        }
+        miner.addBundleOfResources(0, 10);
+        miner.addBundleOfResources(1, 10);
+        miner.addBundleOfResources(2, 10);
+        miner.addBundleOfResources(3, 10);
+        data.modifyAccountBalance(miner.getUsername(), 1000);
+        eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
+        eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()), tankId));
+    }
 }
