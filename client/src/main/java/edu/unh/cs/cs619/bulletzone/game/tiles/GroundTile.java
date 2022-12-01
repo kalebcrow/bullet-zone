@@ -100,23 +100,31 @@ public class GroundTile {
         String c = String.valueOf(column);
 
         // using given json values
-        if (JsonValue == 2) {
+        if (JsonValue == 3) {
+            this.resourceID = R.drawable.forest;
+        } else if (JsonValue == 2) {
             this.resourceID = R.drawable.hilly;
         } else if (JsonValue == 1) {
             this.resourceID = R.drawable.rocky;
         } else if (JsonValue == 0) {
             this.resourceID = R.drawable.meadow;
+        } else if (JsonValue == 50) {
+            this.resourceID = R.drawable.water;
         }
     }
 
     public int getTerrain() {
         // using given json values
-        if (terrainJsonValue == 2) {
+        if (terrainJsonValue == 3) {
+            return R.drawable.forest;
+        } else if (terrainJsonValue == 2) {
             return R.drawable.hilly;
         } else if (terrainJsonValue == 1) {
             return R.drawable.rocky;
         } else if (terrainJsonValue == 0) {
             return R.drawable.meadow;
+        } else if (terrainJsonValue == 50) {
+            return R.drawable.water;
         }
         // not a terrain basically
         return R.drawable.blank;

@@ -46,7 +46,8 @@ public class TileFactory {
         //if (JsonValue >= 4000 && JsonValue <  1000000) {
         //    return new BlankTile(JsonValue, location);
         //} else
-        if (JsonValue == 0 || JsonValue == 1 || JsonValue == 2) {
+        if (JsonValue == 0 || JsonValue == 1 || JsonValue == 2
+                || JsonValue == 3 || JsonValue == 50) {
             return new GroundTile(JsonValue, location);
         } else if (JsonValue == 501 || JsonValue == 502 || JsonValue == 503 || JsonValue == 7){
             return new ResourceTile(JsonValue, location);

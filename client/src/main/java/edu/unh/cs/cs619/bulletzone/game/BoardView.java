@@ -153,7 +153,8 @@ public class BoardView {
      * @param cell cell
      */
     public void setCell(int index, GroundTile cell) {
-        if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2) {
+        if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2
+                || cell.jsonValue == 3 || cell.jsonValue == 50) {
             tiles[index][0] = cell; // set terrain
         } else {
             tiles[index][1] = cell; // set entity
