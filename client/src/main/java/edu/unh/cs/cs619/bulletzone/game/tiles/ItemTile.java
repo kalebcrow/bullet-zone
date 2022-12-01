@@ -11,15 +11,12 @@ public class ItemTile extends GroundTile {
      * @param location location of the tile
      */
     public ItemTile(Integer JsonValue, Integer location) {
-        if (JsonValue == 501) {
-            resourceID = R.drawable.clay;
-        } else if (JsonValue == 502) {
-            resourceID = R.drawable.rock;
-        } else if (JsonValue == 503) {
-            resourceID = R.drawable.iron;
-        } else if (JsonValue == 7) {
-            resourceID = R.drawable.thingamajig;
+        if (JsonValue == 3111) {
+            resourceID = R.drawable.gravity_assist;
+        } else if (JsonValue == 3121) {
+            resourceID = R.drawable.fusion_reactor;
         }
+
         this.location = location;
         orientation = 0;
         health = 0;

@@ -16,6 +16,7 @@ import edu.unh.cs.cs619.bulletzone.rest.BalenceUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TerrainUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -244,6 +245,22 @@ public class BoardView {
         if (healthText != null) {
             healthText.setText(health.toString());
         }
+    }
+
+    /**
+     * Subscribes to update
+     */
+    private Object terrainEventHandler = new Object()
+    {
+        @Subscribe
+        public void onTerrainUpdate(TerrainUpdateEvent event) {
+            updateTerrain(event);
+        }
+    };
+
+    private void updateTerrain(TerrainUpdateEvent event) {
+        tiles[event.location][0] = event.movedTile;
+        gridAdapter.updateList(tiles);
     }
 
 
