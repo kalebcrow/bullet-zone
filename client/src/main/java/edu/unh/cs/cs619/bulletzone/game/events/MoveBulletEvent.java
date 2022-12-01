@@ -45,19 +45,6 @@ public class MoveBulletEvent extends ExecutableEvent {
         bus.post(new TileUpdateEvent(location, tile));
     }
 
-    private Integer getJSONValueFromString(String terrain) {
-        // using given son values
-        if (terrain.equals("H")) {
-            return 2;
-        } else if (terrain.equals("R")) {
-            return 1;
-        } else if (terrain.equals("M")) {
-            return 0;
-        } else {
-            return -1; // something is wrong
-        }
-    }
-
     private Integer goingUp(Integer location) {
         if (location <= 15) {
             location = 240 + location;

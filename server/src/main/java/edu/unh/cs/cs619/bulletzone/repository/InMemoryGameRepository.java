@@ -61,6 +61,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
+import jdk.internal.org.jline.utils.Log;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -287,6 +288,8 @@ public class InMemoryGameRepository implements GameRepository {
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
             }
+            log.debug("--------------------------------------terrain: " + tank.getParent().getTerrain().toString() + ", index: " + tank.getTypeIndex());
+
             if (tank.getTypeIndex() == 1) {
                 mine = false;
             }

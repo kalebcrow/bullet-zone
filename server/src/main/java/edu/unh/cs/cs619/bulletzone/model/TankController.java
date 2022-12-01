@@ -90,7 +90,7 @@ public class TankController {
         if(nextField.isImprovementPresent()) {
             if (nextField.getImprovement().toString() == "R") {
                 speed = speed/2;
-            } else if (nextField.getImprovement().toString() == "D") {
+            } else if (nextField.getImprovement().toString() == "Decking") {
                 speed = 0; // treats the block like a meadow square
             }
         }

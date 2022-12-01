@@ -4,6 +4,9 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
@@ -13,10 +16,10 @@ import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
+import jdk.internal.org.jline.utils.Log;
 
 
 public class Tank extends FieldEntity {
-
     // typeIndex 0 for tank, 1 for miner, 2 for builder
 
     private static final String TAG = "Tank";
@@ -96,6 +99,11 @@ public class Tank extends FieldEntity {
         FieldHolder nextField = parent.getNeighbor(direction);
         // check if next field is empty and go there if it is
         if (!nextField.isEntityPresent()) {
+            // and a tank/builder on a forest or tank/miner on a water is not allowed
+            if  ((typeIndex != 2 && nextField.getTerrain().toString().equals("F"))
+                    || (typeIndex != 1 && nextField.getTerrain().toString().equals("W"))) {
+                return false;
+            }
             nextField.setFieldEntity(parent.getEntity());
             parent.clearField();
             setParent(nextField);
@@ -104,10 +112,8 @@ public class Tank extends FieldEntity {
         } else { // if it's not then you have to "hit" whatever is there
             isCompleted = false;
             FieldEntity ent = nextField.getEntity();
-            if (ent.toString().equals("IW") || (typeIndex != 1 && ent.toString().equals("F"))
-                || (typeIndex != 2 && ent.toString().equals("W"))){
+            if (ent.toString().equals("IW")){
                 // you can't "hit" indestructible wall OR deso nothing happens
-                // and a tank/builder on a forest or tank/miner on a water is not allowed
                 return false;
             }
             if (isResource(nextField)) {
