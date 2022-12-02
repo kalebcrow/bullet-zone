@@ -106,6 +106,7 @@ public class Bullet extends FieldEntity {
                         // Something is there, hit it
                         if(fireIndicator){
                             eventManager.addEvent(new DestroyBulletEvent(tankId, bulletId));
+                            tank.setRestrictions();
                             parent.clearField();
                         }
                         tank.setNumberOfBullets(tank.getNumberOfBullets()-1);

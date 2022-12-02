@@ -265,7 +265,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             tank.setDirection(direction);
             eventManager.addEvent(new TurnEvent(tankId, toByte(direction)));
-
+            tank.setRestrictions();
             return true; // TODO check
         }
     }
@@ -356,6 +356,7 @@ public class InMemoryGameRepository implements GameRepository {
             // This should be only a one way reference.
             bullet.setBulletId(bulletId);
             bullet.travel(tank);
+            tank.setRestrictions();
 
             return true;
         }

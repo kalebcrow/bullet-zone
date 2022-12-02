@@ -11,6 +11,7 @@ import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 
@@ -92,6 +93,38 @@ public class Tank extends FieldEntity {
         }
     }
 
+    //Make it so dock doesn't count as a disable
+    public void setRestrictions() {
+        int[] restrictions = new int[]{1,1,1,1,1};
+        switch(getTypeIndex()) {
+            case 0: //tank
+                if (isWaterOrForest(getParent().getNeighbor(Direction.Up))) {
+                    restrictions[0] = 0;
+                } else if (isWaterOrForest(getParent().getNeighbor(Direction.Down))) {
+                    restrictions[1] = 0;
+                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+            case 1: //miner
+                if (getParent().getNeighbor(Direction.Up).toString().equals("W")) {
+                    restrictions[0] = 0;
+                } else if (getParent().getNeighbor(Direction.Down).toString().equals("W")) {
+                    restrictions[1] = 0;
+                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+            case 2: //build
+                if (getParent().getNeighbor(Direction.Up).toString().equals("F")) {
+                    restrictions[0] = 0;
+                } else if (getParent().getNeighbor(Direction.Down).toString().equals("F")) {
+                    restrictions[1] = 0;
+                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+        }
+        eventManager.addEvent(new RestrictionsEvent(getId(), restrictions));
+    }
+
     public boolean moveTank(Direction direction){
         boolean isCompleted;
         FieldHolder nextField = parent.getNeighbor(direction);
@@ -159,6 +192,9 @@ public class Tank extends FieldEntity {
                 hit((int) Math.floor(ent.getLife() * getDamageModifier()));
             }
             }
+        if (isCompleted) {
+            setRestrictions();
+        }
         return isCompleted;
         }
 
@@ -268,6 +304,11 @@ public class Tank extends FieldEntity {
 
         }
         return false;
+    }
+
+    private boolean isWaterOrForest(FieldHolder nextField) {
+        FieldTerrain fr = nextField.getTerrain();
+        return fr.toString().equals("W") || fr.toString().equals("F");
     }
 
     public static void setGame(Game g){game = g;}
