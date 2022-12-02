@@ -170,12 +170,22 @@
             android:layout_alignParentTop="true"
             android:text="Login" />
 
+        <Button
+            android:id="@+id/buttonTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonLogin"
+            android:layout_alignRight="@id/buttonUp"
+            android:text="Test"
+            android:visibility="invisible"
+            ></Button>
+
         <TextView
             android:id="@+id/textViewGarage"
             android:layout_width="138dp"
             android:layout_height="290dp"
             android:layout_alignLeft="@+id/buttonUp"
-            android:layout_alignBottom="@id/buttonLogin"
+            android:layout_alignBottom="@id/buttonTest"
             android:layout_marginLeft="-24dp"
             android:layout_marginRight="-25dp"
             android:layout_marginBottom="-290dp"
