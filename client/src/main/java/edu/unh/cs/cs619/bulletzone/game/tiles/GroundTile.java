@@ -110,6 +110,8 @@ public class GroundTile {
             this.resourceID = R.drawable.meadow;
         } else if (JsonValue == 50) {
             this.resourceID = R.drawable.water;
+        } else if (JsonValue == 4) {
+            this.resourceID = R.drawable.decking;
         }
     }
 
@@ -125,6 +127,8 @@ public class GroundTile {
             return R.drawable.meadow;
         } else if (terrainJsonValue == 50) {
             return R.drawable.water;
+        } else if (terrainJsonValue == 4) {
+            return R.drawable.decking;
         }
         // not a terrain basically
         return R.drawable.blank;
