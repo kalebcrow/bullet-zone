@@ -217,6 +217,7 @@ public class ClientActivity extends Activity {
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+            Button testButton = findViewById(R.id.buttonTest);
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
@@ -234,6 +235,7 @@ public class ClientActivity extends Activity {
             buttonDown.setVisibility(View.VISIBLE);
             buttonRight.setVisibility(View.VISIBLE);
             buttonAction.setVisibility(View.VISIBLE);
+            testButton.setVisibility(View.VISIBLE);
             //buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
@@ -466,17 +468,17 @@ public class ClientActivity extends Activity {
 
     @Click(R.id.moveToButton)
     void moveToLocation(){
-
         if(selectedCoordinates == -1){
             Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
         }
         else{
-
             tankController.moveTo(selectedCoordinates);
-
         }
-
     }
 
+    @Click(R.id.buttonTest)
+    void requestTestResources(){
+        tankController.requestTestResources();
+    }
 
 }
