@@ -46,6 +46,7 @@ public class Tank extends FieldEntity {
     //rock = index 0
     //iron = index 1
     //clay = index 2
+    //wood = index 3
 
     private Direction direction;
 
@@ -60,7 +61,7 @@ public class Tank extends FieldEntity {
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
         if (typeIndex == 1) {
-            resources = new int[]{0,0,0};
+            resources = new int[]{0,0,0,0};
         }
         this.lastMoveTime = 0;
         this.lastFireTime = 0;
@@ -104,7 +105,10 @@ public class Tank extends FieldEntity {
         } else { // if it's not then you have to "hit" whatever is there
             isCompleted = false;
             FieldEntity ent = nextField.getEntity();
-            if (ent.toString().equals("IW")){ // you can't "hit" indestructible wall so nothing happens
+            if (ent.toString().equals("IW") || (typeIndex != 1 && ent.toString().equals("F"))
+                || (typeIndex != 2 && ent.toString().equals("W"))){
+                // you can't "hit" indestructible wall OR deso nothing happens
+                // and a tank/builder on a forest or tank/miner on a water is not allowed
                 return false;
             }
             if (isResource(nextField)) {
@@ -128,6 +132,10 @@ public class Tank extends FieldEntity {
                     } else if (fr.getIntValue() == 501) { //clay
                         miner.addBundleOfResources(2, 1);
                         System.out.println("Finished item pickup process, adding clay to stash");
+                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
+                    } else if (fr.getIntValue() == 504) {
+                        miner.addBundleOfResources(3, 1);
+                        System.out.println("Finished item pickup process, adding wood to stash");
                         eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
                     } else if (fr.getIntValue() == 7) {
                         Thingamajig tb = (Thingamajig) fr;
@@ -219,7 +227,7 @@ public class Tank extends FieldEntity {
     public int getTypeIndex(){return typeIndex;}
 
     public boolean addBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         resources[resourceType]+= amount;
@@ -227,7 +235,7 @@ public class Tank extends FieldEntity {
     }
 
     public boolean subtractBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         if (resources[resourceType] < amount) {
@@ -257,7 +265,8 @@ public class Tank extends FieldEntity {
         if (nextField.isEntityPresent()) {
             FieldEntity fr = nextField.getEntity();
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504 ||
+                    fr.getIntValue() == 7;
 
         }
         return false;

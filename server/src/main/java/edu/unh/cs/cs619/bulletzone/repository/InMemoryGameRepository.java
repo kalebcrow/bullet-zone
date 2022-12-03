@@ -63,6 +63,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
+import edu.unh.cs.cs619.bulletzone.model.Wood;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -318,7 +319,7 @@ public class InMemoryGameRepository implements GameRepository {
             FieldEntity fr = nextField.getEntity();
             log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504;
 
         }
         return false;
@@ -1109,13 +1110,15 @@ public class InMemoryGameRepository implements GameRepository {
             if (randomValue <= prob) {
                 // add a random resource
                 addingRandomResource = true;
-                double itemType = (Math.random() * (4));
+                double itemType = (Math.random() * (5));
                 if (itemType >= 0 && itemType < 1) {
                     fr = new Clay();
                 } else if (itemType >= 1 && itemType < 2) {
                     fr = new Iron();
                 } else if (itemType >= 2 && itemType < 3) {
                     fr = new Rock();
+                } else if (itemType >= 3 && itemType < 4) {
+                    fr = new Wood();
                 } else {
                     fr = new Thingamajig();
                 }

@@ -9,6 +9,7 @@ import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Forest;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Hilly;
 import edu.unh.cs.cs619.bulletzone.model.Iron;
@@ -17,6 +18,7 @@ import edu.unh.cs.cs619.bulletzone.model.Rock;
 import edu.unh.cs.cs619.bulletzone.model.Rocky;
 import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
+import edu.unh.cs.cs619.bulletzone.model.Water;
 
 public class GameBoardBuilder {
 
@@ -40,8 +42,8 @@ public class GameBoardBuilder {
             {"H", "M", "M", "M", "M", "M", "M", "M", "M", "H", "M", "H", "M", "H", "H", "H"}, // 10
             {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "M", "M", "M", "M", "H"}, // 11
             {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "R", "M", "M", "H", "H"}, // 12
-            {"H", "H", "H", "H", "M", "M", "M", "M", "M", "R", "R", "M", "M", "M", "M", "M"}, // 13
-            {"H", "H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M"}, // 14
+            {"F", "H", "H", "H", "M", "M", "M", "M", "M", "R", "R", "M", "M", "M", "M", "M"}, // 13
+            {"W", "H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M"}, // 14
             {"H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "M", "M"}, // 15
     };
 
@@ -138,6 +140,10 @@ public class GameBoardBuilder {
                     game.getHolderGrid().get(count).setFieldTerrain(new Hilly());
                 } else if (terrainGrid[i][j].equals("R")) {
                     game.getHolderGrid().get(count).setFieldTerrain(new Rocky());
+                } else if (terrainGrid[i][j].equals("F")) {
+                    game.getHolderGrid().get(count).setFieldTerrain(new Forest());
+                } else if (terrainGrid[i][j].equals("W")) {
+                    game.getHolderGrid().get(count).setFieldTerrain(new Water());
                 }
 
                 if (improvementGrid[i][j].equals("I")) {
@@ -146,7 +152,7 @@ public class GameBoardBuilder {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
                 }
 
-                // second layer would be roads [2]
+                // second layer would be roads and now decking [2]
                 // third layer is walls + vehicles + resources [1]
 
                 count++;

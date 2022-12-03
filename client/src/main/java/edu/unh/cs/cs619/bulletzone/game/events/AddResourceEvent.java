@@ -36,6 +36,8 @@ public class AddResourceEvent extends ExecutableEvent {
             return 503;
         } else if (resource.equals("TB")){
             return 7;
+        } else if (resource.equals("WB")) {
+            return 504;
         } else {
             return -1;  // something is wrong
         }
