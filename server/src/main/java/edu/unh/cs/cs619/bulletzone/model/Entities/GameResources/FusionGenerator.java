@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
 
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.FusionGeneratorTank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 
 public class FusionGenerator extends FieldResource{
@@ -28,5 +30,11 @@ public class FusionGenerator extends FieldResource{
         if(parent.getNeighbor(Direction.Down).isEntityPresent()){
             parent.getNeighbor(Direction.Down).getEntity().hit(50);
         }
+    }
+
+    @Override
+    public boolean gather(Tank tank) {
+        tank = new FusionGeneratorTank(tank);
+        return true;
     }
 }

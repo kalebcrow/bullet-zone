@@ -2,6 +2,7 @@ package edu.unh.cs.cs619.bulletzone.model.Entities;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
 
 public abstract class FieldEntity {
@@ -26,6 +27,10 @@ public abstract class FieldEntity {
     public abstract FieldEntity copy();
 
     public void hit(int damage) {
+    }
+
+    public boolean gather(Tank tank){
+        return false;
     }
 
     public int getLife(){return 0;}

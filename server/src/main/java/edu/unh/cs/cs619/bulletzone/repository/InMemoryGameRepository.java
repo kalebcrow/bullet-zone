@@ -115,6 +115,7 @@ public class InMemoryGameRepository implements GameRepository {
                     getRandomResources();
                 }
                 FieldResource.setItemsOnGrid(itemsOnGrid);
+                FieldResource.setGame(game);
                 // since its creating the game also start spawning resources
             }
             return game.join(username,ip);
@@ -209,7 +210,7 @@ public class InMemoryGameRepository implements GameRepository {
                 return false;
             }
 
-            return tank.moveTank(direction);
+            return tank.advance(direction);
         }
     }
 
@@ -891,5 +892,10 @@ public class InMemoryGameRepository implements GameRepository {
                 added = false;
             }
         }
+    }
+
+    public void insertResource(FieldResource fr, int pos){
+        ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
+        holderGrid.get(pos).setFieldEntity(fr);
     }
 }

@@ -1,7 +1,10 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.GravAssist;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -18,13 +21,19 @@ public class PowerUpTests {
 
 
     @Test
-    public void GravityAssistedTank_PowerUpApplied_MakesTankTwiceAsFast() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+    public void GravityAssistedTank_PowerUpApplied_MakesTankTwiceAsFast() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         repo = new InMemoryGameRepository();
         tanks = repo.join(username,ip);
         long id = tanks[0].getId();
+        repo.insertResource(new GravAssist(), 18);
         repo.turn(id, Direction.Right);
-        Thread.sleep();
+        Thread.sleep(500);
+        repo.move(id, Direction.Right);
+        Thread.sleep(500);
         repo.move(id,Direction.Right);
+        Thread.sleep(250);
+        repo.move(id,Direction.Right);
+        assertEquals( 7, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
     @Test
