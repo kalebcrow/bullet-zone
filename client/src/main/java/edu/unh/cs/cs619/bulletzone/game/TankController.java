@@ -274,4 +274,9 @@ public class TankController {
         restClient.moveTo(currentTankID, desiredLocation);
     }
 
+    @Background
+    public void requestTestResources(){
+        restClient.test(tankID[1]);
+    }
+
 }

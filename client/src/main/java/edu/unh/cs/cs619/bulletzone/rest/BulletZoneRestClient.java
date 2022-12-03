@@ -92,5 +92,7 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     @Put("/{tankId}/build/{buildingType}")
     BooleanWrapper build(@Path long tankId, @Path int buildingType);
 
+    @Put("/{tankID}/test")
+    BooleanWrapper test(@Path long tankID);
 
 }
