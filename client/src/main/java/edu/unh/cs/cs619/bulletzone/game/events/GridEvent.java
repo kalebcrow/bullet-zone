@@ -12,8 +12,17 @@ public class GridEvent implements Serializable {
     protected int pos = -1;
     protected String terrain = "";
     protected String resource = "";
+    protected int[] restrictions = new int[]{0, 0, 0, 0, 0};
     protected int buildType = -1;
     protected int[] resources = new int[]{0, 0, 0};
+
+    public int[] getRestrictions() {
+        return restrictions;
+    }
+
+    public void setRestrictions(int[] restrictions) {
+        this.restrictions = restrictions;
+    }
 
     public int getBuildType() {
         return buildType;
