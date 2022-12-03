@@ -98,25 +98,25 @@ public class Tank extends FieldEntity {
         int[] restrictions = new int[]{1,1,1,1,1};
         switch(getTypeIndex()) {
             case 0: //tank
-                if (isWaterOrForest(getParent().getNeighbor(Direction.Up))) {
+                if (isWaterOrForest(getParent().getNeighbor(getDirection()))) {
                     restrictions[0] = 0;
-                } else if (isWaterOrForest(getParent().getNeighbor(Direction.Down))) {
+                } else if (isWaterOrForest(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))))) {
                     restrictions[1] = 0;
                 } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
             case 1: //miner
-                if (getParent().getNeighbor(Direction.Up).toString().equals("W")) {
+                if (getParent().getNeighbor(getDirection()).toString().equals("W")) {
                     restrictions[0] = 0;
-                } else if (getParent().getNeighbor(Direction.Down).toString().equals("W")) {
+                } else if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("W")) {
                     restrictions[1] = 0;
                 } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
             case 2: //build
-                if (getParent().getNeighbor(Direction.Up).toString().equals("F")) {
+                if (getParent().getNeighbor(getDirection()).toString().equals("F")) {
                     restrictions[0] = 0;
-                } else if (getParent().getNeighbor(Direction.Down).toString().equals("F")) {
+                } else if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("F")) {
                     restrictions[1] = 0;
                 } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;

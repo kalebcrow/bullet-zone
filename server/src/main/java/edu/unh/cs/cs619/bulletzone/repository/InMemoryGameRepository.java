@@ -383,7 +383,7 @@ public class InMemoryGameRepository implements GameRepository {
             System.out.println("leave() called, tank ID: " + miner.getId());
             System.out.println("leave() called, tank ID: " + builder.getId());
 
-            double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
+            double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16) + (miner.getResourcesByResource(3) * 7);
             System.out.println("AMOUNT: " + amount);
             data.modifyAccountBalance(tank.getUsername(), amount);
             eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));
