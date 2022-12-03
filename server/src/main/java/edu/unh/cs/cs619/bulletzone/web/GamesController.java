@@ -185,4 +185,14 @@ class GamesController {
         );
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/rebuild", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<BooleanWrapper> rebuild(@PathVariable long tankId)
+            throws TankDoesNotExistException, LimitExceededException, InvalidResourceTileType {
+        return new ResponseEntity<BooleanWrapper>(
+                new BooleanWrapper(gameRepository.rebuildTank(tankId)),
+                HttpStatus.OK
+        );
+    }
+
 }

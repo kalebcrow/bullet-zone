@@ -86,6 +86,9 @@ public interface BulletZoneRestClient extends RestClientErrorHandling {
     @Put("/{tankId}/dismantle")
     BooleanWrapper dismantle(@Path long tankId);
 
+    @Put("/{tankId]/rebuild")
+    BooleanWrapper rebuild(@Path long tankId);
+
     @Put("/{tankId}/build/{buildingType}")
     BooleanWrapper build(@Path long tankId, @Path int buildingType);
 
