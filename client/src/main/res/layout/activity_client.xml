@@ -85,10 +85,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:paddingBottom="10dp"
                     android:layout_below="@id/HealthText"
-                    android:text="Rock: 0\nIron: 0\nClay: 0\n"
+                    android:text="Rock: 0\nIron: 0\nClay: 0\nWood: 0\n"
                     android:visibility="invisible" />
 
             </RelativeLayout>
