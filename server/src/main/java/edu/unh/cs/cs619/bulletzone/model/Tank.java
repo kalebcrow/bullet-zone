@@ -261,6 +261,8 @@ public class Tank extends FieldEntity {
         return life;
     }
 
+    public void setLife(int life) {this.life = life;}
+
     public String getIp(){
         return ip;
     }

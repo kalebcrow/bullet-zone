@@ -35,6 +35,9 @@ public interface GameRepository {
     public void leave(long tankId)
             throws TankDoesNotExistException;
 
+    boolean rebuildTank(long tankId)
+            throws TankDoesNotExistException;
+
     boolean build(long tankId, int type)
             throws TankDoesNotExistException, BuildingDoesNotExistException;
 
@@ -42,6 +45,9 @@ public interface GameRepository {
             throws TankDoesNotExistException;
 
     boolean moveTo(long tankId, int desiredLocation)
+        throws TankDoesNotExistException;
+
+    void test(long tankId)
         throws TankDoesNotExistException;
 
     Game getGame()
