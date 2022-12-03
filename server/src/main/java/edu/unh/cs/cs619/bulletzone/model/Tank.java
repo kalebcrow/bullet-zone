@@ -100,25 +100,31 @@ public class Tank extends FieldEntity {
             case 0: //tank
                 if (isWaterOrForest(getParent().getNeighbor(getDirection()))) {
                     restrictions[0] = 0;
-                } else if (isWaterOrForest(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))))) {
+                }
+                if (isWaterOrForest(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))))) {
                     restrictions[1] = 0;
-                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
             case 1: //miner
                 if (getParent().getNeighbor(getDirection()).toString().equals("W")) {
                     restrictions[0] = 0;
-                } else if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("W")) {
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("W")) {
                     restrictions[1] = 0;
-                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
             case 2: //build
                 if (getParent().getNeighbor(getDirection()).toString().equals("F")) {
                     restrictions[0] = 0;
-                } else if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("F")) {
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("F")) {
                     restrictions[1] = 0;
-                } else if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
         }
