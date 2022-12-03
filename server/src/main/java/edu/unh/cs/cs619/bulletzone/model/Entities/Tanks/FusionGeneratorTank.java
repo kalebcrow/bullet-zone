@@ -2,7 +2,7 @@ package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
 
 public class FusionGeneratorTank extends ImprovedTank{
 
-    FusionGeneratorTank(Tank tank){
+    public FusionGeneratorTank(Tank tank){
         this.subject = tank;
     }
 

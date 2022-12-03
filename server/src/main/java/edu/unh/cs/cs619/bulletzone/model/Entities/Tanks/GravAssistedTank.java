@@ -2,7 +2,7 @@ package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
 
 public class GravAssistedTank extends ImprovedTank{
 
-    GravAssistedTank(Tank tank){
+    public GravAssistedTank(Tank tank){
         this.subject = tank;
     }
 

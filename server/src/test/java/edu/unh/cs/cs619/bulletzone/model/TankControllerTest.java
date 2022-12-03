@@ -234,7 +234,7 @@ public class TankControllerTest {
     public void fire_MinerFiringTooManyBullets_LeavesMaxNumberOfBullets() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
-        Thread.sleep(1000); //Letting server catch up
+        //Thread.sleep(1000); //Letting server catch up
         //#1
         IMGR.fire(tanks[1].getId(), 1);
         IMGR.turn(tanks[1].getId(), Direction.Right);
