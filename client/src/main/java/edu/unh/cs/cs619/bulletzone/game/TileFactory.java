@@ -7,6 +7,7 @@ import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ItemTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.PortalTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.RoadTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
@@ -54,7 +55,9 @@ public class TileFactory {
             return new ResourceTile(JsonValue, location);
         } else if (JsonValue == 3111 || JsonValue == 3121) {
             return  new ItemTile(JsonValue, location);
-        } else if (JsonValue >= 1000 && JsonValue <= 3000) {
+        } else if (JsonValue >= 2000 && JsonValue <= 2004) {
+            return new PortalTile(JsonValue, location);
+        } if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);
         } else if (JsonValue >= 2000000 && JsonValue < 3000000) {
             return new BulletTile(JsonValue, location);
