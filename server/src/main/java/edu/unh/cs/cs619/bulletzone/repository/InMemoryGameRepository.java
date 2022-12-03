@@ -33,8 +33,10 @@ import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
+import edu.unh.cs.cs619.bulletzone.model.Deck;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Factory;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
@@ -69,6 +71,8 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+
+import com.sun.org.apache.xpath.internal.objects.XString;
 
 
 @Component
@@ -422,6 +426,8 @@ public class InMemoryGameRepository implements GameRepository {
         1 - Road
         2 - Wall
         3 - Indestructible Wall
+        4 - Decking
+        5 - Factory
          */
             Tank builder = game.getTanks().get(tankId);
             Tank miner = new Tank();
@@ -505,6 +511,36 @@ public class InMemoryGameRepository implements GameRepository {
 
                             return true;
                         }
+                    case 4:
+                        //iron,wood
+                        if (miner.getResourcesByResource(1) >= 1 && miner.getResourcesByResource(3) >= 5) {
+                            builder.allowMovement = false;
+                            Thread.sleep(6000);
+                            miner.subtractBundleOfResources(1, 1);
+                            miner.subtractBundleOfResources(3, 5);
+                            behind.setFieldEntity(new Deck(builder.getIp()));
+                            builder.allowMovement = true;
+                            eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),4, behind.getPos()));
+
+                            return true;
+                        }
+                    case 5:
+                        //rock,iron,wood
+                        if (miner.getResourcesByResource(0) >= 2 && miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 4) {
+                            builder.allowMovement = false;
+                            Thread.sleep(9000);
+                            miner.subtractBundleOfResources(0, 2);
+                            miner.subtractBundleOfResources(1, 3);
+                            miner.subtractBundleOfResources(3, 4);
+                            Factory f = new Factory(builder.getIp());
+                            behind.setFieldEntity(f);
+                            game.getFactories().put(builder.getIp(),f);
+
+                            builder.allowMovement = true;
+                            eventManager.addEvent(new BuildEvent(tankId, miner.getAllResources(), 5, behind.getPos()));
+
+                            return true;
+                        }
                         return false;
                     default:
                         throw new BuildingDoesNotExistException();
@@ -513,10 +549,85 @@ public class InMemoryGameRepository implements GameRepository {
                 Thread.currentThread().interrupt();
             }
 
-            //game.addEvent(new BuildwallEvent);
         }
         return false;
 
+    }
+
+    @Override
+    public boolean rebuildTank(long tankId) throws TankDoesNotExistException
+    {
+        Tank rebuild = game.getTank(tankId);
+
+        if(rebuild.getLife() >= 0)
+        {
+            return false;
+        }
+
+        Factory f = game.getFactory(rebuild.getIp());
+
+        if(f == null)
+        {
+            return false;
+        }
+
+
+        HashMap<String,Long> tanks = game.getTanks(game.getTank(tankId).getIp());
+        if(tanks == null)
+        {
+            return false;
+        }
+
+        Tank builder = game.getTank(tanks.get("builder"));
+        Tank tank = game.getTank(tanks.get("tank"));
+        Tank miner = game.getTank(tanks.get("miner"));
+
+        double balance = data.getUserAccountBalance(tank.getUsername());
+
+
+        /*
+        Tank (3 iron, 1 wood, 400 credits)
+        Miner (6 iron, 2 wood, 600 credits)
+        Builder (1 rock, 2 iron, 2 wood, 400 credits)
+         */
+        switch (rebuild.getTypeIndex()) {
+            case 0:
+                //tank
+                if (miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 1 && balance >= 400) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(tank);
+                    tank.setLife(10);
+                    miner.subtractBundleOfResources(1, 3);
+                    miner.subtractBundleOfResources(3, 1);
+                    data.modifyAccountBalance(tank.getUsername(),-400);
+                    return true;
+                }
+                return false;
+            case 1:
+                //miner
+                if (miner.getResourcesByResource(1) >= 6 && miner.getResourcesByResource(3) >= 2 && balance >= 600) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(miner);
+                    miner.setLife(10);
+                    miner.subtractBundleOfResources(1, 6);
+                    miner.subtractBundleOfResources(3, 2);
+                    data.modifyAccountBalance(miner.getUsername(),-600);
+                    return true;
+                }
+                return false;
+            case 2:
+                //builder
+                if (miner.getResourcesByResource(0) >= 1 && miner.getResourcesByResource(1) >= 2 && miner.getResourcesByResource(3) >= 2 && balance >= 400) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(builder);
+                    builder.setLife(10);
+                    miner.subtractBundleOfResources(0, 1);
+                    miner.subtractBundleOfResources(1, 2);
+                    miner.subtractBundleOfResources(3, 2);
+                    data.modifyAccountBalance(builder.getUsername(),-400);
+                    return true;
+                }
+                return false;
+        }
+
+        return false;
     }
 
     @Override
