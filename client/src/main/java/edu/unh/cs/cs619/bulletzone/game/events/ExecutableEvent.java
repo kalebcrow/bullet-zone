@@ -151,6 +151,29 @@ public class ExecutableEvent {
     }
 
     /**
+     * Converts the json value to the string value
+     *
+     * @param terrain terrain in string form
+     * @return terrain in json form
+     */
+    public Integer getJSONValueFromString(String terrain) {
+        // using given json values
+        if (terrain.equals("W")) {
+            return 50;
+        } else if (terrain.equals("F")) {
+            return 3;
+        } else if (terrain.equals("H")) {
+            return 2;
+        } else if (terrain.equals("R")) {
+            return 1;
+        } else if (terrain.equals("M")) {
+            return 0;
+        } else {
+            return -1; // something is wrong
+        }
+    }
+
+    /**
      *
      * @param bus Bus to send events on
      */

@@ -292,6 +292,8 @@ public class InMemoryGameRepository implements GameRepository {
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
             }
+            log.debug("--------------------------------------terrain: " + tank.getParent().getTerrain().toString() + ", index: " + tank.getTypeIndex());
+
             if (tank.getTypeIndex() == 1) {
                 mine = false;
             }
@@ -718,8 +720,11 @@ public class InMemoryGameRepository implements GameRepository {
         }
         synchronized (this.monitor) {
             this.game = new Game();
-            GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
-            boardBuilder.create();
+            GameBoardDirector gbd = new GameBoardDirector();
+            ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);
+            gbd.ConstructGameBoard(gbb);
+            //GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
+            //boardBuilder.create();
         }
     }
 
@@ -729,8 +734,12 @@ public class InMemoryGameRepository implements GameRepository {
         }
         synchronized (this.monitor){
             this.game = new Game();
-            GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
-            boardBuilder.testCreate();
+            GameBoardDirector gbd = new GameBoardDirector();
+            ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);
+            gbd.ConstructGameBoard(gbb);
+
+            //GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
+            //boardBuilder.testCreate();
         }
     }
 

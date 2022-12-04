@@ -69,8 +69,15 @@ public class TankController {
 
         FieldHolder nextField = tank.getParent().getNeighbor(direction);
 
-        if(nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() != 1)
+        if(nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() != 2)
         {
+            if(!nextField.getImprovement().toString().equals("D"))
+            {
+                return false;
+            }
+        }
+
+        if(nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() != 1) {
             return false;
         }
 
@@ -96,7 +103,7 @@ public class TankController {
         if(nextField.isImprovementPresent()) {
             if (nextField.getImprovement().toString() == "R") {
                 speed = speed/2;
-            } else if (nextField.getImprovement().toString() == "D") {
+            } else if (nextField.getImprovement().toString() == "Decking") {
                 speed = 0; // treats the block like a meadow square
             }
         }

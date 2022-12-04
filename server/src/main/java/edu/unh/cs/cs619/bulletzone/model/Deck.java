@@ -4,7 +4,7 @@ import edu.unh.cs.cs619.bulletzone.events.EventManager;
 
 public class Deck extends FieldEntity {
     int destructValue, pos;
-    public String name = "F";
+    public String name = "D";
     public String ip;
     private EventManager eventManager = EventManager.getInstance();
     public Deck(){
