@@ -76,6 +76,11 @@ public class TankController {
                 return false;
             }
         }
+
+        if(nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() != 1) {
+            return false;
+        }
+
         double speed = 0;
         // adding a check for field type (water, forest, meadow, hilly, or rocky) for speed purposes
         if (nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() == 2) {
