@@ -69,8 +69,12 @@ public class TankController {
 
         FieldHolder nextField = tank.getParent().getNeighbor(direction);
 
-        if(nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() != 1)
+        if(nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() != 2)
         {
+            return false;
+        }
+
+        if(nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() != 1) {
             return false;
         }
 
