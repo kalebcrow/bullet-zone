@@ -16,6 +16,7 @@ import edu.unh.cs.cs619.bulletzone.rest.BalenceUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TerrainUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -113,7 +114,7 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
-        resources = new int[3];
+        resources = new int[4];
         tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
     }
 
@@ -246,6 +247,22 @@ public class BoardView {
         }
     }
 
+    /**
+     * Subscribes to update
+     */
+    private Object terrainEventHandler = new Object()
+    {
+        @Subscribe
+        public void onTerrainUpdate(TerrainUpdateEvent event) {
+            updateTerrain(event);
+        }
+    };
+
+    private void updateTerrain(TerrainUpdateEvent event) {
+        tiles[event.location][0] = event.movedTile;
+        gridAdapter.updateList(tiles);
+    }
+
 
     /**
      * Subscribes to update
@@ -300,7 +317,8 @@ public class BoardView {
         String message =
                 "Rock: " + this.resources[0] + "\n" +
                 "Iron: " + this.resources[1] + "\n" +
-                "Clay: " + this.resources[2];
+                "Clay: " + this.resources[2] + "\n" +
+                "Wood: " + this.resources[3];
 
         if (garageText != null) {
             garageText.setText(message);
@@ -325,6 +343,7 @@ public class BoardView {
         busProvider.getEventBus().unregister(resourceEventHandler);
         busProvider.getEventBus().unregister(roadEventHandler);
         busProvider.getEventBus().unregister(balanceEventHandler);
+        busProvider.getEventBus().unregister(terrainEventHandler);
 
     }
 
@@ -337,6 +356,7 @@ public class BoardView {
         busProvider.getEventBus().register(resourceEventHandler);
         busProvider.getEventBus().register(roadEventHandler);
         busProvider.getEventBus().register(balanceEventHandler);
+        busProvider.getEventBus().register(terrainEventHandler);
 
     }
 }

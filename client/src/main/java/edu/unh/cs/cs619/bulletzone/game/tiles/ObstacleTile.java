@@ -24,6 +24,8 @@ public class ObstacleTile extends GroundTile {
             this.resourceID = R.drawable.ironwall;
         } else if (JsonValue < 2000 && JsonValue > 1000) {
             this.resourceID = R.drawable.stonewall;
+        } else if (JsonValue == 4000) {
+            this.resourceID = R.drawable.factory;
         }
 
 

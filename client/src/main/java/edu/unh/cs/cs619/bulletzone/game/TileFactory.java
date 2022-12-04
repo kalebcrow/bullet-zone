@@ -5,7 +5,9 @@ import android.util.Log;
 
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.ItemTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ObstacleTile;
+import edu.unh.cs.cs619.bulletzone.game.tiles.PortalTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.RoadTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
@@ -47,12 +49,16 @@ public class TileFactory {
         //    return new BlankTile(JsonValue, location);
         //} else
         if (JsonValue == 0 || JsonValue == 1 || JsonValue == 2
-                || JsonValue == 3 || JsonValue == 50) {
+                || JsonValue == 3 || JsonValue == 50 || JsonValue == 4) {
             return new GroundTile(JsonValue, location);
         } else if (JsonValue == 501 || JsonValue == 502 || JsonValue == 503
                 || JsonValue == 504 || JsonValue == 7){
             return new ResourceTile(JsonValue, location);
-        } else if (JsonValue >= 1000 && JsonValue <= 3000) {
+        } else if (JsonValue == 3111 || JsonValue == 3121) {
+            return  new ItemTile(JsonValue, location);
+        } else if (JsonValue >= 2000 && JsonValue <= 2004) {
+            return new PortalTile(JsonValue, location);
+        } if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);
         } else if (JsonValue >= 2000000 && JsonValue < 3000000) {
             return new BulletTile(JsonValue, location);

@@ -49,6 +49,7 @@ public class Tank extends FieldEntity {
     //rock = index 0
     //iron = index 1
     //clay = index 2
+    //wood = index 3
 
     private Direction direction;
 
@@ -63,7 +64,7 @@ public class Tank extends FieldEntity {
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
         if (typeIndex == 1) {
-            resources = new int[]{0,0,0};
+            resources = new int[]{0,0,0,0};
         }
         this.lastMoveTime = 0;
         this.lastFireTime = 0;
@@ -132,6 +133,10 @@ public class Tank extends FieldEntity {
                     } else if (fr.getIntValue() == 501) { //clay
                         miner.addBundleOfResources(2, 1);
                         System.out.println("Finished item pickup process, adding clay to stash");
+                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
+                    } else if (fr.getIntValue() == 504) {
+                        miner.addBundleOfResources(3, 1);
+                        System.out.println("Finished item pickup process, adding wood to stash");
                         eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
                     } else if (fr.getIntValue() == 7) {
                         Thingamajig tb = (Thingamajig) fr;
@@ -215,13 +220,15 @@ public class Tank extends FieldEntity {
         return life;
     }
 
+    public void setLife(int life) {this.life = life;}
+
     public String getIp(){
         return ip;
     }
     public int getTypeIndex(){return typeIndex;}
 
     public boolean addBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         resources[resourceType]+= amount;
@@ -229,7 +236,7 @@ public class Tank extends FieldEntity {
     }
 
     public boolean subtractBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         if (resources[resourceType] < amount) {
@@ -259,7 +266,8 @@ public class Tank extends FieldEntity {
         if (nextField.isEntityPresent()) {
             FieldEntity fr = nextField.getEntity();
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504 ||
+                    fr.getIntValue() == 7;
 
         }
         return false;

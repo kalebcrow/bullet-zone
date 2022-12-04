@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-    <runningDeviceTargetSelectedWithDropDown>
+    <targetSelectedWithDropDown>
       <Target>
-        <type value="RUNNING_DEVICE_TARGET" />
+        <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\keith\.android\avd\Copy_of_Galaxy_Tab_A8_API_33.avd" />
+            <value value="C:\Users\PON\.android\avd\Working_Nexus_7_API_23.avd" />
           </Key>
         </deviceKey>
       </Target>
-<<<<<<< HEAD
-    </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-11-19T23:28:54.908325700Z" />
-=======
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-11-17T06:19:01.539500200Z" />
->>>>>>> 80bdfbd14b34a19c46fb2b8df6a9308e13907627
+    <timeTargetWasSelectedWithDropDown value="2022-12-01T22:56:23.753452800Z" />
   </component>
 </project>
