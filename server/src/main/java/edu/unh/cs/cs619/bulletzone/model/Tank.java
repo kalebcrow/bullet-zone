@@ -99,11 +99,6 @@ public class Tank extends FieldEntity {
         FieldHolder nextField = parent.getNeighbor(direction);
         // check if next field is empty and go there if it is
         if (!nextField.isEntityPresent()) {
-            // and a tank/builder on a forest or tank/miner on a water is not allowed
-            if  ((typeIndex != 2 && nextField.getTerrain().toString().equals("F"))
-                    || (typeIndex != 1 && nextField.getTerrain().toString().equals("W"))) {
-                return false;
-            }
             nextField.setFieldEntity(parent.getEntity());
             parent.clearField();
             setParent(nextField);

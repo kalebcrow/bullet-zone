@@ -49,7 +49,8 @@ public class TileFactory {
         if (JsonValue == 0 || JsonValue == 1 || JsonValue == 2
                 || JsonValue == 3 || JsonValue == 50) {
             return new GroundTile(JsonValue, location);
-        } else if (JsonValue == 501 || JsonValue == 502 || JsonValue == 503 || JsonValue == 7){
+        } else if (JsonValue == 501 || JsonValue == 502 || JsonValue == 503
+                || JsonValue == 504 || JsonValue == 7){
             return new ResourceTile(JsonValue, location);
         } else if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);
