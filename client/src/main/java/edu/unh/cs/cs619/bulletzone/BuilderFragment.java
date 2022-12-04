@@ -45,7 +45,7 @@ public class BuilderFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.builder_fragment, container, false);
 
         mBuilderSpinner = (Spinner) rootView.findViewById(R.id.builderSpinner);
-        String[] buildOptions = {"Indestructible Wall", "Road", "Wall"};
+        String[] buildOptions = {"Indestructible Wall", "Road", "Wall", "Decking", "Factory"};
         ArrayAdapter aa = new ArrayAdapter(context, android.R.layout.simple_spinner_item, buildOptions);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBuilderSpinner.setAdapter(aa);
@@ -95,6 +95,16 @@ public class BuilderFragment extends DialogFragment {
                         noEdits++;
                         Log.d(TAG, "BuilderSpinner: Wall Selected");
                         returnedAction = 12;
+                        break;
+                    case 3:
+                        noEdits++;
+                        Log.d(TAG, "BuilderSpinner: Decking Selected");
+                        returnedAction = 13;
+                        break;
+                    case 4:
+                        noEdits++;
+                        Log.d(TAG, "BuilderSpinner: Factory Selected");
+                        returnedAction = 14;
                         break;
                 }
 
