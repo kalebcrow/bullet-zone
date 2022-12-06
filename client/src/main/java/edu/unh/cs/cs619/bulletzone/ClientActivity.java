@@ -216,6 +216,10 @@ public class ClientActivity extends Activity {
             mBoardSpinner.setAdapter(bb);
 
             afterViewInjection();
+            Button buttonTurnLeft = findViewById(R.id.buttonTurnLeft);
+            Button buttonTurnRight = findViewById(R.id.buttonTurnRight);
+            buttonTurnRight.setVisibility(View.VISIBLE);
+            buttonTurnLeft.setVisibility(View.VISIBLE);
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
             Button buttonUp = findViewById(R.id.buttonUp);
@@ -491,6 +495,16 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonTest)
     void requestTestResources(){
         tankController.requestTestResources();
+    }
+
+    @Click(R.id.buttonTurnLeft)
+    void turnLeft(){
+        tankController.turnLeft();
+    }
+
+    @Click(R.id.buttonTurnRight)
+    void turnRight(){
+        tankController.turnRight();
     }
 
 }
