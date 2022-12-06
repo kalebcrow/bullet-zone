@@ -167,7 +167,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[0]);
                             tanks[0].setParent(fieldElement);
                             break;
@@ -178,7 +178,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[1]);
                             tanks[1].setParent(fieldElement);
                             break;
@@ -189,7 +189,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[2]);
                             tanks[2].setParent(fieldElement);
                             break;
@@ -520,7 +520,7 @@ public class InMemoryGameRepository implements GameRepository {
                             Thread.sleep(6000);
                             miner.subtractBundleOfResources(1, 1);
                             miner.subtractBundleOfResources(3, 5);
-                            behind.setFieldEntity(new Deck(builder.getIp()));
+                            behind.setImprovementEntity(new Deck(builder.getIp()));
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),4, behind.getPos()));
 
@@ -536,8 +536,8 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(3, 4);
                             Factory f = new Factory(builder.getIp());
                             behind.setFieldEntity(f);
+                            f.setParent(behind);
                             game.getFactories().put(builder.getIp(),f);
-
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId, miner.getAllResources(), 5, behind.getPos()));
 
