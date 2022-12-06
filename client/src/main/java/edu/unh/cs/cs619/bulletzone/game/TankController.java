@@ -254,6 +254,14 @@ public class TankController {
                 //serverside, wall is 3
                 restClient.build(tankID[2], 2);
             }
+            else if(desiredAction == 13){
+                //decking
+                restClient.build(tankID[2], 4);
+            }
+            else if(desiredAction == 14){
+                //factory
+                restClient.build(tankID[2], 5);
+            }
             else{
 
                 Log.d("TankController", "Error: Invalid value received in builderAction");
@@ -272,6 +280,11 @@ public class TankController {
     @Background
     public void moveTo(int desiredLocation){
         restClient.moveTo(currentTankID, desiredLocation);
+    }
+
+    @Background
+    public void requestTestResources(){
+        restClient.test(tankID[1]);
     }
 
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -30,11 +31,15 @@ public final class Game {
     private final long id;
     private final ArrayList<FieldHolder> holderGrid = new ArrayList<>();
 
+    private final ArrayList<FieldHolder> topHolderGrid = new ArrayList<>();
+    private final ArrayList<FieldHolder> bottomHolderGrid = new ArrayList<>();
+
     // Event History for the clients
     private LinkedList<GridEvent> eventHistory = new LinkedList<>();
 
 
     private final ConcurrentMap<Long, Tank> tanks = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String,Factory> factories = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, HashMap<String,Long>> playersIP = new ConcurrentHashMap<>();
 
     private final Object monitor = new Object();
@@ -71,6 +76,10 @@ public final class Game {
     public Tank getTank(Long tankId) {
         return tanks.get(tankId);
     }
+
+    public Factory getFactory(String ip){return factories.get(ip);}
+
+    public ConcurrentMap<String,Factory> getFactories(){return factories;}
 
     public ConcurrentMap<Long, Tank> getTanks() {
         return tanks;
