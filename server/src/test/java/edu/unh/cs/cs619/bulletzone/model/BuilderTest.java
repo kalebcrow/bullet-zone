@@ -24,7 +24,9 @@ import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
+import edu.unh.cs.cs619.bulletzone.web.GamesControllerTest;
 
 @RunWith(MockitoJUnitRunner.class)
 
@@ -226,8 +228,19 @@ public class BuilderTest {
     @Test
     public void testFactory_respawnFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
-        repo.getGame();
-        Tank[] tank = repo.join("i","");
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+        Tank[] tank = repo.join(username, "");
+
+        double actualBalance = data.getUserAccountBalance(username);
+
+        System.out.println(actualBalance);
+
+        data.modifyAccountBalance(username,200000);
+
+        actualBalance = data.getUserAccountBalance(username);
+
         Long tankId = tank[2].getId();
         tank[1].addBundleOfResources(0,10);
         tank[1].addBundleOfResources(1,10);
