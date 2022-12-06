@@ -287,4 +287,35 @@ public class TankController {
         restClient.test(tankID[1]);
     }
 
+    @Background
+    public void turnLeft(){
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        int value =  - tankOrientation[othervalue];
+
+        int left = tankOrientation[othervalue] + 6;
+        left = left % 8;
+        restClient.turn(currentTankID, (byte) left);
+    }
+
+    @Background
+    public void turnRight(){
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        int value =  - tankOrientation[othervalue];
+
+        int right = tankOrientation[othervalue] + 2;
+        right = right % 8;
+        restClient.turn(currentTankID, (byte) right);
+    }
 }

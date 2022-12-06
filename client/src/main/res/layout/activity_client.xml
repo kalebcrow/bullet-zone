@@ -118,7 +118,25 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <Button
+            android:id="@+id/buttonTurnLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonLeft"
+            android:layout_alignLeft="@+id/buttonLeft"
+            android:layout_alignRight="@+id/buttonLeft"
+            android:text="TurnLeft"
+            android:visibility="invisible" />
 
+        <Button
+            android:id="@+id/buttonTurnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonRight"
+            android:layout_alignLeft="@+id/buttonRight"
+            android:layout_alignRight="@+id/buttonRight"
+            android:text="TurnRight"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonDown"
