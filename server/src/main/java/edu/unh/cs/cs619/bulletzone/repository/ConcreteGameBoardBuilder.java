@@ -22,22 +22,22 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
     private Game game = null;
 
     private String[][] terrainGrid = {
-            {"M", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M", "M", "M", "M"}, // 0
-            {"M", "M", "M", "R", "R", "R", "R", "R", "M", "M", "M", "M", "M", "M", "M", "M"}, // 1
-            {"M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 2
-            {"M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 3
-            {"M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "H", "H", "M", "M", "M", "M"}, // 4
-            {"M", "M", "M", "R", "R", "M", "M", "M", "M", "M", "H", "H", "M", "M", "M", "H"}, // 5
-            {"R", "R", "R", "R", "R", "M", "M", "M", "M", "M", "H", "H", "M", "M", "M", "H"}, // 6
-            {"M", "R", "R", "R", "M", "M", "M", "H", "H", "H", "H", "H", "M", "H", "M", "H"}, // 7
-            {"M", "R", "R", "R", "R", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H"}, // 8
-            {"M", "M", "M", "R", "M", "M", "M", "M", "M", "H", "H", "H", "M", "H", "H", "H"}, // 9
-            {"H", "M", "M", "M", "M", "M", "M", "M", "M", "H", "M", "H", "M", "H", "H", "H"}, // 10
-            {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "M", "M", "M", "M", "H"}, // 11
-            {"H", "H", "M", "M", "M", "M", "M", "M", "M", "H", "M", "R", "M", "M", "H", "H"}, // 12
-            {"F", "H", "H", "H", "M", "M", "M", "M", "M", "R", "R", "M", "M", "M", "M", "M"}, // 13
-            {"W", "H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "M"}, // 14
-            {"H", "H", "H", "M", "M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "M", "M"}, // 15
+            {"M", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "F", "F", "F", "F"}, // 0
+            {"M", "M", "W", "W", "R", "R", "R", "R", "M", "M", "M", "M", "M", "F", "F", "F"}, // 1
+            {"M", "M", "W", "W", "R", "R", "R", "M", "M", "M", "H", "H", "M", "M", "F", "F"}, // 2
+            {"M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "H", "H", "M", "M", "F", "M"}, // 3
+            {"M", "M", "M", "R", "R", "R", "M", "F", "M", "M", "H", "H", "M", "M", "M", "M"}, // 4
+            {"M", "M", "M", "R", "R", "M", "M", "F", "F", "M", "H", "H", "M", "M", "M", "H"}, // 5
+            {"R", "R", "R", "R", "R", "M", "F", "F", "F", "M", "H", "H", "M", "M", "M", "H"}, // 6
+            {"M", "R", "R", "R", "M", "M", "M", "M", "F", "H", "H", "H", "M", "H", "M", "H"}, // 7
+            {"M", "R", "F", "R", "R", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H"}, // 8
+            {"M", "M", "F", "F", "M", "M", "M", "M", "M", "H", "H", "H", "M", "H", "H", "H"}, // 9
+            {"H", "M", "F", "F", "M", "M", "W", "W", "W", "H", "M", "H", "M", "H", "H", "H"}, // 10
+            {"H", "H", "M", "M", "M", "M", "W", "W", "W", "H", "M", "M", "M", "M", "M", "H"}, // 11
+            {"H", "H", "M", "M", "M", "M", "W", "W", "W", "H", "M", "R", "M", "M", "H", "H"}, // 12
+            {"W", "H", "H", "H", "M", "M", "M", "M", "W", "R", "R", "M", "M", "M", "M", "M"}, // 13
+            {"W", "W", "H", "H", "M", "M", "M", "M", "R", "R", "R", "M", "M", "M", "M", "W"}, // 14
+            {"W", "W", "H", "M", "M", "M", "M", "R", "R", "R", "R", "M", "M", "M", "M", "W"}, // 15
     };
 
     private String[][] improvementGrid = {
@@ -114,12 +114,31 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
     }
 
     public void create() {
-            if(game == null) {
-                return;
-            }
-            createFieldHolderGrid(game);
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
 
-            createInitialGrid(game);
+        createInitialGrid(game);
+    }
+
+    @Override
+    public void createMiddle() {
+    }
+
+    @Override
+    public void createTop() {
+        createInitialGrid(game);
+    }
+
+    @Override
+    public void createBottom() {
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
+
+        createInitialGrid(game);
     }
 
     public void createInitialGrid(Game game) {

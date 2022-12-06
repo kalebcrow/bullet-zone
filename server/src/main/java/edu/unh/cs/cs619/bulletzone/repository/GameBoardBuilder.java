@@ -26,10 +26,15 @@ public interface GameBoardBuilder {
 
     void create();
 
+    void createMiddle();
+
+    void createTop();
+
+    void createBottom();
+
     public void createInitialGrid(Game game);
 
     void testCreateInitialGrid(Game game);
 
     void createFieldHolderGrid(Game game);
-
 }
