@@ -301,6 +301,7 @@ public class TankController {
         int left = tankOrientation[othervalue] + 6;
         left = left % 8;
         restClient.turn(currentTankID, (byte) left);
+        tankOrientation[othervalue] = left;
     }
 
     @Background
@@ -317,5 +318,6 @@ public class TankController {
         int right = tankOrientation[othervalue] + 2;
         right = right % 8;
         restClient.turn(currentTankID, (byte) right);
+        tankOrientation[othervalue] = right;
     }
 }
