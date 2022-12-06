@@ -114,12 +114,32 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
     }
 
     public void create() {
-            if(game == null) {
-                return;
-            }
-            createFieldHolderGrid(game);
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
 
-            createInitialGrid(game);
+        createInitialGrid(game);
+    }
+
+    @Override
+    public void createMiddle() {
+
+    }
+
+    @Override
+    public void createTop() {
+        createInitialGrid(game);
+    }
+
+    @Override
+    public void createBottom() {
+        if(game == null) {
+            return;
+        }
+        createFieldHolderGrid(game);
+
+        createInitialGrid(game);
     }
 
     public void createInitialGrid(Game game) {
