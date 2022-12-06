@@ -536,8 +536,8 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(3, 4);
                             Factory f = new Factory(builder.getIp());
                             behind.setFieldEntity(f);
+                            f.setParent(behind);
                             game.getFactories().put(builder.getIp(),f);
-
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId, miner.getAllResources(), 5, behind.getPos()));
 
