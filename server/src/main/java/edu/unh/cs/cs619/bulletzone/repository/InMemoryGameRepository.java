@@ -64,6 +64,7 @@ import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.model.Wood;
+import jdk.jfr.Event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -520,7 +521,7 @@ public class InMemoryGameRepository implements GameRepository {
                             Thread.sleep(6000);
                             miner.subtractBundleOfResources(1, 1);
                             miner.subtractBundleOfResources(3, 5);
-                            behind.setFieldEntity(new Deck(builder.getIp()));
+                            behind.setImprovementEntity(new Deck(builder.getIp()));
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),4, behind.getPos()));
 
@@ -583,6 +584,7 @@ public class InMemoryGameRepository implements GameRepository {
         Tank builder = game.getTank(tanks.get("builder"));
         Tank tank = game.getTank(tanks.get("tank"));
         Tank miner = game.getTank(tanks.get("miner"));
+        int pos = f.getParent().getPos();
 
         double balance = data.getUserAccountBalance(tank.getUsername());
 
@@ -601,6 +603,7 @@ public class InMemoryGameRepository implements GameRepository {
                     miner.subtractBundleOfResources(1, 3);
                     miner.subtractBundleOfResources(3, 1);
                     data.modifyAccountBalance(tank.getUsername(),-400);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
@@ -612,6 +615,7 @@ public class InMemoryGameRepository implements GameRepository {
                     miner.subtractBundleOfResources(1, 6);
                     miner.subtractBundleOfResources(3, 2);
                     data.modifyAccountBalance(miner.getUsername(),-600);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
@@ -624,6 +628,7 @@ public class InMemoryGameRepository implements GameRepository {
                     miner.subtractBundleOfResources(1, 2);
                     miner.subtractBundleOfResources(3, 2);
                     data.modifyAccountBalance(builder.getUsername(),-400);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
@@ -684,6 +689,15 @@ public class InMemoryGameRepository implements GameRepository {
                 eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),3));
                 return true;
             }
+            else if(structure.toString() == "F")
+            {
+                miner.addBundleOfResources(0,2);
+                miner.addBundleOfResources(1,3);
+                miner.addBundleOfResources(3,4);
+                behind.clearField();
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),5));
+                return true;
+            }
             else
             {
                 return false;
@@ -696,6 +710,14 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2, 3);
                 behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(),1));
+                return true;
+            }
+            else if(structure.toString() == "D")
+            {
+                miner.addBundleOfResources(1,1);
+                miner.addBundleOfResources(3,5);
+                behind.clearImprovement();
+                eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 4));
                 return true;
             }
             else
