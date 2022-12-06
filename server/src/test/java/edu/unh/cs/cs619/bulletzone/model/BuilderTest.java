@@ -210,4 +210,43 @@ public class BuilderTest {
             }
         }).start();
     }
+
+    @Test
+    public void testBuild_buildFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+    }
+
+    @Test
+    public void testFactory_respawnFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        repo.getGame();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+        tank[1].hit(2000);
+        assert(repo.rebuildTank(tank[1].getId()));
+    }
+
+    @Test
+    public void testBuild_moveIntoCreatedWall_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        repo.build(tankId,2);
+        assert(!repo.move(tankId, Direction.Down));
+    }
 }
