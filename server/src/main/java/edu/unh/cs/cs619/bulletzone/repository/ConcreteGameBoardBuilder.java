@@ -124,7 +124,6 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
 
     @Override
     public void createMiddle() {
-
     }
 
     @Override

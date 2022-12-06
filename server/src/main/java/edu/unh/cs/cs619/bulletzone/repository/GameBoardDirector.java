@@ -18,7 +18,7 @@ public class GameBoardDirector {
     }
 
     public void ConstructGameBoard(GameBoardBuilder builder) {
-        builder.createMiddle();
+        builder.create();//Middle();
     }
 
     public void ConstructTopGameBoard(GameBoardBuilder builder) {
