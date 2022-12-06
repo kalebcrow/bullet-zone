@@ -49,6 +49,8 @@ public class ClientActivity extends Activity {
 
     public int started = 0;
 
+    private Spinner mBoardSpinner;
+
     @ViewById
     protected TextView textViewGarage;
 
@@ -207,7 +209,17 @@ public class ClientActivity extends Activity {
                 textViewGarage.setText("Using user id: " + username);
                 boardView.setUsername(username);
             }
+            mBoardSpinner = findViewById(R.id.boardSpinner);
+            String[] boards = {"1", "2", "3"};
+            ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+            bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mBoardSpinner.setAdapter(bb);
+
             afterViewInjection();
+            Button buttonTurnLeft = findViewById(R.id.buttonTurnLeft);
+            Button buttonTurnRight = findViewById(R.id.buttonTurnRight);
+            buttonTurnRight.setVisibility(View.VISIBLE);
+            buttonTurnLeft.setVisibility(View.VISIBLE);
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
             Button buttonUp = findViewById(R.id.buttonUp);
@@ -248,6 +260,10 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+
+
+
+
             loggedIn = true;
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
@@ -479,6 +495,16 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonTest)
     void requestTestResources(){
         tankController.requestTestResources();
+    }
+
+    @Click(R.id.buttonTurnLeft)
+    void turnLeft(){
+        tankController.turnLeft();
+    }
+
+    @Click(R.id.buttonTurnRight)
+    void turnRight(){
+        tankController.turnRight();
     }
 
 }

@@ -31,6 +31,9 @@ public final class Game {
     private final long id;
     private final ArrayList<FieldHolder> holderGrid = new ArrayList<>();
 
+    private final ArrayList<FieldHolder> topHolderGrid = new ArrayList<>();
+    private final ArrayList<FieldHolder> bottomHolderGrid = new ArrayList<>();
+
     // Event History for the clients
     private LinkedList<GridEvent> eventHistory = new LinkedList<>();
 
