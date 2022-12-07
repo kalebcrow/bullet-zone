@@ -203,4 +203,12 @@ class GamesController {
         return HttpStatus.OK;
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/destroy", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    HttpStatus destroy(@PathVariable long tankId)
+            throws TankDoesNotExistException, GameDoesNotExistException {
+        gameRepository.getGame().getTank(tankId).hit(1000);
+        return HttpStatus.OK;
+    }
+
 }
