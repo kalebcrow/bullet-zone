@@ -584,7 +584,7 @@ public class InMemoryGameRepository implements GameRepository {
         Tank builder = game.getTank(tanks.get("builder"));
         Tank tank = game.getTank(tanks.get("tank"));
         Tank miner = game.getTank(tanks.get("miner"));
-        int pos = f.getParent().getPos();
+        int pos = f.getParent().getNeighbor(Direction.Up).getPos();
 
         double balance = data.getUserAccountBalance(tank.getUsername());
 
@@ -598,8 +598,9 @@ public class InMemoryGameRepository implements GameRepository {
             case 0:
                 //tank
                 if (miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 1 && balance >= 400) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(tank);
-                    tank.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(100);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(1, 3);
                     miner.subtractBundleOfResources(3, 1);
                     data.modifyAccountBalance(tank.getUsername(),-400);
@@ -610,8 +611,9 @@ public class InMemoryGameRepository implements GameRepository {
             case 1:
                 //miner
                 if (miner.getResourcesByResource(1) >= 6 && miner.getResourcesByResource(3) >= 2 && balance >= 600) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(miner);
-                    miner.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(300);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(1, 6);
                     miner.subtractBundleOfResources(3, 2);
                     data.modifyAccountBalance(miner.getUsername(),-600);
@@ -622,8 +624,9 @@ public class InMemoryGameRepository implements GameRepository {
             case 2:
                 //builder
                 if (miner.getResourcesByResource(0) >= 1 && miner.getResourcesByResource(1) >= 2 && miner.getResourcesByResource(3) >= 2 && balance >= 400) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(builder);
-                    builder.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(80);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(0, 1);
                     miner.subtractBundleOfResources(1, 2);
                     miner.subtractBundleOfResources(3, 2);
