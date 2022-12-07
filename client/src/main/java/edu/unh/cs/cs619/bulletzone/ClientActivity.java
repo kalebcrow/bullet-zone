@@ -230,6 +230,7 @@ public class ClientActivity extends Activity {
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             Button testButton = findViewById(R.id.buttonTest);
+            Button buttonDestroyTank = findViewById(R.id.buttonDestroyTank);
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
@@ -253,6 +254,7 @@ public class ClientActivity extends Activity {
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
             moveToButton.setVisibility(View.VISIBLE);
+            buttonDestroyTank.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -260,9 +262,6 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
-
-
-
 
             loggedIn = true;
         } else {
@@ -505,6 +504,11 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonTurnRight)
     void turnRight(){
         tankController.turnRight();
+    }
+
+    @Click(R.id.buttonDestroyTank)
+    void destroyTank(){
+        tankController.destroyTank();
     }
 
 }
