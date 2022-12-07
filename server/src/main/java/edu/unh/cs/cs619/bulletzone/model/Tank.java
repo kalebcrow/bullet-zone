@@ -4,15 +4,20 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
+import jdk.internal.org.jline.utils.Log;
 
 
 public class Tank extends FieldEntity {
-
     // typeIndex 0 for tank, 1 for miner, 2 for builder
 
     private static final String TAG = "Tank";
@@ -36,6 +41,7 @@ public class Tank extends FieldEntity {
     //rock = index 0
     //iron = index 1
     //clay = index 2
+    //wood = index 3
 
     private final double[] takesDamage = {.1, .05, .1};
     private final double[] givesDamage = {.1, .1, .05};
@@ -49,7 +55,7 @@ public class Tank extends FieldEntity {
         this.typeIndex = typeIndex;
         this.life = healths[typeIndex];
         if (typeIndex == 1) {
-            resources = new int[]{0,0,0};
+            resources = new int[]{0,0,0,0};
         }
     }
 
@@ -147,13 +153,15 @@ public class Tank extends FieldEntity {
         return life;
     }
 
+    public void setLife(int life) {this.life = life;}
+
     public String getIp(){
         return ip;
     }
     public int getTypeIndex(){return typeIndex;}
 
     public boolean addBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         resources[resourceType]+= amount;
@@ -161,7 +169,7 @@ public class Tank extends FieldEntity {
     }
 
     public boolean subtractBundleOfResources(int resourceType, int amount) {
-        if (resourceType < 0 || resourceType >= 3) {
+        if (resourceType < 0 || resourceType >= 4) {
             return false;
         }
         if (resources[resourceType] < amount) {

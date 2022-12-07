@@ -49,6 +49,8 @@ public class ClientActivity extends Activity {
 
     public int started = 0;
 
+    private Spinner mBoardSpinner;
+
     @ViewById
     protected TextView textViewGarage;
 
@@ -207,7 +209,17 @@ public class ClientActivity extends Activity {
                 textViewGarage.setText("Using user id: " + username);
                 boardView.setUsername(username);
             }
+            mBoardSpinner = findViewById(R.id.boardSpinner);
+            String[] boards = {"1", "2", "3"};
+            ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+            bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mBoardSpinner.setAdapter(bb);
+
             afterViewInjection();
+            Button buttonTurnLeft = findViewById(R.id.buttonTurnLeft);
+            Button buttonTurnRight = findViewById(R.id.buttonTurnRight);
+            buttonTurnRight.setVisibility(View.VISIBLE);
+            buttonTurnLeft.setVisibility(View.VISIBLE);
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
             Button buttonUp = findViewById(R.id.buttonUp);
@@ -217,6 +229,7 @@ public class ClientActivity extends Activity {
             Button buttonRespawn = findViewById(R.id.buttonRespawn);
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
+            Button testButton = findViewById(R.id.buttonTest);
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
@@ -234,6 +247,7 @@ public class ClientActivity extends Activity {
             buttonDown.setVisibility(View.VISIBLE);
             buttonRight.setVisibility(View.VISIBLE);
             buttonAction.setVisibility(View.VISIBLE);
+            testButton.setVisibility(View.VISIBLE);
             //buttonJoin.setVisibility(View.INVISIBLE);
             buttonReplay.setVisibility(View.VISIBLE);
             buttonReplay1.setVisibility(View.INVISIBLE);
@@ -246,6 +260,10 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+
+
+
+
             loggedIn = true;
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
@@ -271,7 +289,7 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
-        afterViewInjection();
+        tankController.respawn();
     }
 
     /**
@@ -466,17 +484,27 @@ public class ClientActivity extends Activity {
 
     @Click(R.id.moveToButton)
     void moveToLocation(){
-
         if(selectedCoordinates == -1){
             Toast.makeText(this, "Please Select a Grid Location First!", Toast.LENGTH_LONG).show();
         }
         else{
-
             tankController.moveTo(selectedCoordinates);
-
         }
-
     }
 
+    @Click(R.id.buttonTest)
+    void requestTestResources(){
+        tankController.requestTestResources();
+    }
+
+    @Click(R.id.buttonTurnLeft)
+    void turnLeft(){
+        tankController.turnLeft();
+    }
+
+    @Click(R.id.buttonTurnRight)
+    void turnRight(){
+        tankController.turnRight();
+    }
 
 }

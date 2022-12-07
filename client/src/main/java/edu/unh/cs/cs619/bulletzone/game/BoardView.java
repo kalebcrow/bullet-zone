@@ -16,6 +16,7 @@ import edu.unh.cs.cs619.bulletzone.rest.BalenceUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.GridUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
 import edu.unh.cs.cs619.bulletzone.rest.RoadUpdateEvent;
+import edu.unh.cs.cs619.bulletzone.rest.TerrainUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 
@@ -113,7 +114,7 @@ public class BoardView {
      */
     public BoardView() {
         tileFactory = TileFactory.getFactory();
-        resources = new int[3];
+        resources = new int[4];
         tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
     }
 
@@ -153,7 +154,8 @@ public class BoardView {
      * @param cell cell
      */
     public void setCell(int index, GroundTile cell) {
-        if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2) {
+        if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2
+                || cell.jsonValue == 3 || cell.jsonValue == 50) {
             tiles[index][0] = cell; // set terrain
         } else {
             tiles[index][1] = cell; // set entity
@@ -245,6 +247,22 @@ public class BoardView {
         }
     }
 
+    /**
+     * Subscribes to update
+     */
+    private Object terrainEventHandler = new Object()
+    {
+        @Subscribe
+        public void onTerrainUpdate(TerrainUpdateEvent event) {
+            updateTerrain(event);
+        }
+    };
+
+    private void updateTerrain(TerrainUpdateEvent event) {
+        tiles[event.location][0] = event.movedTile;
+        gridAdapter.updateList(tiles);
+    }
+
 
     /**
      * Subscribes to update
@@ -294,12 +312,12 @@ public class BoardView {
      * @param event update specific OBSTACLE/VEHICLE tile
      */
     private void updateResource( ResourceEvent event) {
-        Log.d("Yeah", "Value: " + event.resources[0] + " " + event.resources[1] + " " + event.resources[2]);
         resources = event.resources;
         String message =
                 "Rock: " + this.resources[0] + "\n" +
                 "Iron: " + this.resources[1] + "\n" +
-                "Clay: " + this.resources[2];
+                "Clay: " + this.resources[2] + "\n" +
+                "Wood: " + this.resources[3];
 
         if (garageText != null) {
             garageText.setText(message);
@@ -324,6 +342,7 @@ public class BoardView {
         busProvider.getEventBus().unregister(resourceEventHandler);
         busProvider.getEventBus().unregister(roadEventHandler);
         busProvider.getEventBus().unregister(balanceEventHandler);
+        busProvider.getEventBus().unregister(terrainEventHandler);
 
     }
 
@@ -336,6 +355,7 @@ public class BoardView {
         busProvider.getEventBus().register(resourceEventHandler);
         busProvider.getEventBus().register(roadEventHandler);
         busProvider.getEventBus().register(balanceEventHandler);
+        busProvider.getEventBus().register(terrainEventHandler);
 
     }
 }

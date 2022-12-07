@@ -65,9 +65,28 @@ public class TankController {
         }
 
         FieldHolder nextField = tank.getParent().getNeighbor(direction);
+
+        if(nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() != 2)
+        {
+            if(!nextField.getImprovement().toString().equals("D"))
+            {
+                return false;
+            }
+        }
+
+        if(nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() != 1) {
+            return false;
+        }
+
         double speed = 0;
-        // adding a check for field type (blank, hilly, or rocky) for speed purposes
-        if (nextField.getTerrain().toString().equals("R")) {
+        // adding a check for field type (water, forest, meadow, hilly, or rocky) for speed purposes
+        if (nextField.getTerrain().toString().equals("W") && tank.getTypeIndex() == 2) {
+            // water (only applies to builders = 2)
+            speed = tank.getAllowedMoveInterval() * 2;
+        } else if (nextField.getTerrain().toString().equals("F") && tank.getTypeIndex() == 1) {
+            // forest (only applies to miners = 1)
+            speed = tank.getAllowedMoveInterval() * 1.5;
+        } else if (nextField.getTerrain().toString().equals("R")) {
             // rocky
             speed = tank.getAllowedMoveInterval() * 2;
         } else if (nextField.getTerrain().toString().equals("H")) {
@@ -77,11 +96,12 @@ public class TankController {
             // meadow
             speed = 0;
         }
-        if(nextField.isImprovementPresent())
-        {
-            if(nextField.getImprovement().toString() == "R")
-            {
+
+        if(nextField.isImprovementPresent()) {
+            if (nextField.getImprovement().toString() == "R") {
                 speed = speed/2;
+            } else if (nextField.getImprovement().toString() == "Decking") {
+                speed = 0; // treats the block like a meadow square
             }
         }
 

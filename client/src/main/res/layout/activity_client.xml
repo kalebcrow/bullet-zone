@@ -45,10 +45,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".57">
 
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/boardSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:animateLayoutChanges="false"
+                        android:visibility="visible">
+                    </Spinner>
+
 
                     <Button
                         android:id="@+id/moveToButton"
@@ -56,6 +69,7 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="Move To Selected"
+                        android:textSize="8dp"
                         android:visibility="invisible"></Button>
 
                     <TextView
@@ -66,7 +80,7 @@
                         android:padding="10dp"
                         android:text="No Coordinates Selected Yet"
                         android:textColor="#000000"
-                        android:textSize="18dp"
+                        android:textSize="15dp"
                         android:visibility="invisible"></TextView>
 
                 </LinearLayout>
@@ -85,10 +99,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:paddingBottom="10dp"
                     android:layout_below="@id/HealthText"
-                    android:text="Rock: 0\nIron: 0\nClay: 0\n"
+                    android:text="Rock: 0\nIron: 0\nClay: 0\nWood: 0\n"
                     android:visibility="invisible" />
 
             </RelativeLayout>
@@ -104,7 +118,25 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <Button
+            android:id="@+id/buttonTurnLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonLeft"
+            android:layout_alignLeft="@+id/buttonLeft"
+            android:layout_alignRight="@+id/buttonLeft"
+            android:text="TurnLeft"
+            android:visibility="invisible" />
 
+        <Button
+            android:id="@+id/buttonTurnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonRight"
+            android:layout_alignLeft="@+id/buttonRight"
+            android:layout_alignRight="@+id/buttonRight"
+            android:text="TurnRight"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonDown"
@@ -170,12 +202,22 @@
             android:layout_alignParentTop="true"
             android:text="Login" />
 
+        <Button
+            android:id="@+id/buttonTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonLogin"
+            android:layout_alignRight="@id/buttonUp"
+            android:text="Test"
+            android:visibility="invisible"
+            ></Button>
+
         <TextView
             android:id="@+id/textViewGarage"
             android:layout_width="138dp"
             android:layout_height="290dp"
             android:layout_alignLeft="@+id/buttonUp"
-            android:layout_alignBottom="@id/buttonLogin"
+            android:layout_alignBottom="@id/buttonTest"
             android:layout_marginLeft="-24dp"
             android:layout_marginRight="-25dp"
             android:layout_marginBottom="-290dp"

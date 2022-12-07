@@ -26,9 +26,11 @@ import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
+import edu.unh.cs.cs619.bulletzone.model.Deck;
 import edu.unh.cs.cs619.bulletzone.model.GravAssist;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.model.Factory;
 import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
@@ -47,6 +49,7 @@ import edu.unh.cs.cs619.bulletzone.model.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
+import edu.unh.cs.cs619.bulletzone.model.Wood;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -54,6 +57,8 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.Left;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Right;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Up;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
+
+import com.sun.org.apache.xpath.internal.objects.XString;
 
 
 @Component
@@ -110,13 +115,94 @@ public class InMemoryGameRepository implements GameRepository {
                 else{
                     this.create();
                     getRandomResources();
-                    insertResource(new GravAssist(), 255);
                 }
                 FieldResource.setItemsOnGrid(itemsOnGrid);
                 FieldResource.setGame(game);
                 // since its creating the game also start spawning resources
             }
             return game.join(username,ip);
+            Tank[] tanks = new Tank[3];
+
+            if(game.getTanks(ip) == null) {
+                Long tankId = this.idGenerator.getAndIncrement();
+                Long minerID = this.idGenerator.getAndIncrement();
+                Long builderID = this.idGenerator.getAndIncrement();
+
+                tanks[0] = new Tank(username, tankId, Direction.Up, ip, 0);
+                tanks[1] = new Tank(username, minerID, Direction.Up, ip, 1);
+                tanks[2] = new Tank(username, builderID, Direction.Up, ip, 2);
+
+                game.addTank(ip, tanks[0], "tank");
+                game.addTank(ip, tanks[1], "miner");
+                game.addTank(ip, tanks[2], "builder");
+
+                if(ip == ""){
+                    FieldHolder place = game.getHolderGrid().get(16);
+                    place.setFieldEntity(tanks[0]);
+                    tanks[0].setParent(place);
+                    place = game.getHolderGrid().get(33);
+                    place.setFieldEntity(tanks[1]);
+                    tanks[1].setParent(place);
+                    place = game.getHolderGrid().get(251);
+                    place.setFieldEntity(tanks[2]);
+                    tanks[2].setParent(place);
+                } else {
+
+                    Random random = new Random();
+                    int x;
+                    int y;
+
+                    // This may run for forever.. If there is no free space. XXX
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
+                            fieldElement.setFieldEntity(tanks[0]);
+                            tanks[0].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    eventManager.addEvent(new AddTankEvent(x, y, tankId));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
+                            fieldElement.setFieldEntity(tanks[1]);
+                            tanks[1].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    eventManager.addEvent(new AddTankEvent(x, y, minerID));
+                    for (; ; ) {
+                        x = random.nextInt(FIELD_DIM);
+                        y = random.nextInt(FIELD_DIM);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
+                            fieldElement.setFieldEntity(tanks[2]);
+                            tanks[2].setParent(fieldElement);
+                            break;
+                        }
+                    }
+                    eventManager.addEvent(new AddTankEvent(x, y, builderID));
+                }
+            } else {
+                HashMap<String,Long> map = game.getTanks(ip);
+                tanks[0] = game.getTank(map.get("tank"));
+                tanks[1] = game.getTank(map.get("miner"));
+                tanks[2] = game.getTank(map.get("builder"));
+            }
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tanks[0].getUsername()), tanks[0].getId()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            return tanks;
         }
     }
 
@@ -222,7 +308,7 @@ public class InMemoryGameRepository implements GameRepository {
             FieldEntity fr = nextField.getEntity();
             log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504;
 
         }
         return false;
@@ -288,6 +374,8 @@ public class InMemoryGameRepository implements GameRepository {
         1 - Road
         2 - Wall
         3 - Indestructible Wall
+        4 - Decking
+        5 - Factory
          */
             Tank builder = game.getTanks().get(tankId);
             Tank miner = new Tank();
@@ -371,6 +459,36 @@ public class InMemoryGameRepository implements GameRepository {
 
                             return true;
                         }
+                    case 4:
+                        //iron,wood
+                        if (miner.getResourcesByResource(1) >= 1 && miner.getResourcesByResource(3) >= 5) {
+                            builder.allowMovement = false;
+                            Thread.sleep(6000);
+                            miner.subtractBundleOfResources(1, 1);
+                            miner.subtractBundleOfResources(3, 5);
+                            behind.setImprovementEntity(new Deck(builder.getIp()));
+                            builder.allowMovement = true;
+                            eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),4, behind.getPos()));
+
+                            return true;
+                        }
+                    case 5:
+                        //rock,iron,wood
+                        if (miner.getResourcesByResource(0) >= 2 && miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 4) {
+                            builder.allowMovement = false;
+                            Thread.sleep(9000);
+                            miner.subtractBundleOfResources(0, 2);
+                            miner.subtractBundleOfResources(1, 3);
+                            miner.subtractBundleOfResources(3, 4);
+                            Factory f = new Factory(builder.getIp());
+                            behind.setFieldEntity(f);
+                            f.setParent(behind);
+                            game.getFactories().put(builder.getIp(),f);
+                            builder.allowMovement = true;
+                            eventManager.addEvent(new BuildEvent(tankId, miner.getAllResources(), 5, behind.getPos()));
+
+                            return true;
+                        }
                         return false;
                     default:
                         throw new BuildingDoesNotExistException();
@@ -383,6 +501,82 @@ public class InMemoryGameRepository implements GameRepository {
         }
         return false;
 
+    }
+
+    @Override
+    public boolean rebuildTank(long tankId) throws TankDoesNotExistException
+    {
+        Tank rebuild = game.getTank(tankId);
+
+        if(rebuild.getLife() >= 0)
+        {
+            return false;
+        }
+
+        Factory f = game.getFactory(rebuild.getIp());
+
+        if(f == null)
+        {
+            return false;
+        }
+
+
+        HashMap<String,Long> tanks = game.getTanks(game.getTank(tankId).getIp());
+        if(tanks == null)
+        {
+            return false;
+        }
+
+        Tank builder = game.getTank(tanks.get("builder"));
+        Tank tank = game.getTank(tanks.get("tank"));
+        Tank miner = game.getTank(tanks.get("miner"));
+
+        double balance = data.getUserAccountBalance(tank.getUsername());
+
+
+        /*
+        Tank (3 iron, 1 wood, 400 credits)
+        Miner (6 iron, 2 wood, 600 credits)
+        Builder (1 rock, 2 iron, 2 wood, 400 credits)
+         */
+        switch (rebuild.getTypeIndex()) {
+            case 0:
+                //tank
+                if (miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 1 && balance >= 400) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(tank);
+                    tank.setLife(10);
+                    miner.subtractBundleOfResources(1, 3);
+                    miner.subtractBundleOfResources(3, 1);
+                    data.modifyAccountBalance(tank.getUsername(),-400);
+                    return true;
+                }
+                return false;
+            case 1:
+                //miner
+                if (miner.getResourcesByResource(1) >= 6 && miner.getResourcesByResource(3) >= 2 && balance >= 600) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(miner);
+                    miner.setLife(10);
+                    miner.subtractBundleOfResources(1, 6);
+                    miner.subtractBundleOfResources(3, 2);
+                    data.modifyAccountBalance(miner.getUsername(),-600);
+                    return true;
+                }
+                return false;
+            case 2:
+                //builder
+                if (miner.getResourcesByResource(0) >= 1 && miner.getResourcesByResource(1) >= 2 && miner.getResourcesByResource(3) >= 2 && balance >= 400) {
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(builder);
+                    builder.setLife(10);
+                    miner.subtractBundleOfResources(0, 1);
+                    miner.subtractBundleOfResources(1, 2);
+                    miner.subtractBundleOfResources(3, 2);
+                    data.modifyAccountBalance(builder.getUsername(),-400);
+                    return true;
+                }
+                return false;
+        }
+
+        return false;
     }
 
     @Override
@@ -472,8 +666,11 @@ public class InMemoryGameRepository implements GameRepository {
         }
         synchronized (this.monitor) {
             this.game = new Game();
-            GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
-            boardBuilder.create();
+            GameBoardDirector gbd = new GameBoardDirector();
+            ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);
+            gbd.ConstructGameBoard(gbb);
+            //GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
+            //boardBuilder.create();
         }
     }
 
@@ -483,8 +680,12 @@ public class InMemoryGameRepository implements GameRepository {
         }
         synchronized (this.monitor){
             this.game = new Game();
-            GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
-            boardBuilder.testCreate();
+            GameBoardDirector gbd = new GameBoardDirector();
+            ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);
+            gbd.ConstructGameBoard(gbb);
+
+            //GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
+            //boardBuilder.testCreate();
         }
     }
 
@@ -807,7 +1008,7 @@ public class InMemoryGameRepository implements GameRepository {
                                 break;
                             case 1:
                                 if (!miner.addBundleOfResources(0, 1)) {
-                                    System.out.println("Failed to add clay resource rock to stash");
+                                    System.out.println("Failed to add rock resource type to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding rock to stash");
@@ -815,10 +1016,18 @@ public class InMemoryGameRepository implements GameRepository {
                                 break;
                             case 2:
                                 if (!miner.addBundleOfResources(1, 1)) {
-                                    System.out.println("Failed to add clay resource iron to stash");
+                                    System.out.println("Failed to add iron resource type to stash");
                                     cancel();
                                 }
                                 System.out.println("Finished mining process, adding iron to stash");
+                                eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
+                                break;
+                            case 3:
+                                if (!miner.addBundleOfResources(3, 1)) {
+                                    System.out.println("Failed to add wood resource type to stash");
+                                    cancel();
+                                }
+                                System.out.println("Finished mining process, adding wood to stash");
                                 eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
                                 break;
                             default:
@@ -865,13 +1074,15 @@ public class InMemoryGameRepository implements GameRepository {
             if (randomValue <= prob) {
                 // add a random resource
                 addingRandomResource = true;
-                double itemType = (Math.random() * (4));
+                double itemType = (Math.random() * (5));
                 if (itemType >= 0 && itemType < 1) {
                     fr = new Clay();
                 } else if (itemType >= 1 && itemType < 2) {
                     fr = new Iron();
                 } else if (itemType >= 2 && itemType < 3) {
                     fr = new Rock();
+                } else if (itemType >= 3 && itemType < 4) {
+                    fr = new Wood();
                 } else {
                     fr = new Thingamajig();
                 }
@@ -894,5 +1105,20 @@ public class InMemoryGameRepository implements GameRepository {
     public void insertResource(FieldResource fr, int pos){
         ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
         holderGrid.get(pos).setFieldEntity(fr);
+    }
+
+    @Override
+    public void test(long tankId) throws TankDoesNotExistException {
+        Tank miner = game.getTanks().get(tankId);
+        if (miner == null) {
+            throw new TankDoesNotExistException(tankId);
+        }
+        miner.addBundleOfResources(0, 10);
+        miner.addBundleOfResources(1, 10);
+        miner.addBundleOfResources(2, 10);
+        miner.addBundleOfResources(3, 10);
+        data.modifyAccountBalance(miner.getUsername(), 1000);
+        eventManager.addEvent(new MineEvent(tankId, miner.getAllResources()));
+        eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()), tankId));
     }
 }
