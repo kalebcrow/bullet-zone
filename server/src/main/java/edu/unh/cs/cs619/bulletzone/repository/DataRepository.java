@@ -92,10 +92,8 @@ public class DataRepository {
     }
 
     public boolean modifyAccountBalance(String username, double amount) {
-        System.out.println("Fuck you bitch");
         GameUser user = bzdata.users.getUser(username);
         if (user != null) {
-            System.out.println("please fuck");
             BankAccount account = user.getOwnedAccounts().iterator().next();
             bzdata.accounts.modifyBalance(account, amount);
             return true;
