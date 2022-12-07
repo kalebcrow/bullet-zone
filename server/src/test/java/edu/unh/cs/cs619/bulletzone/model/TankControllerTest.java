@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import java.util.HashMap;
 
@@ -13,18 +12,6 @@ import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Clay;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Iron;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Rock;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Road;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.TankController;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Hilly;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Meadow;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Rocky;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 

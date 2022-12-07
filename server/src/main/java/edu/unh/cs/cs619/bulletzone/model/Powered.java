@@ -1,6 +1,8 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
+package edu.unh.cs.cs619.bulletzone.model;
 
-public abstract class Powered extends PowerUp{
+import edu.unh.cs.cs619.bulletzone.model.PowerUp;
+
+public abstract class Powered extends PowerUp {
 
     protected PowerUp subject;
 

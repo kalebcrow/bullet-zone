@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,9 +19,6 @@ import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.FieldTerrain;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 

@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import java.util.Optional;
 
@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.FieldResource;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.FieldTerrain;
 
 public class FieldHolder {
 

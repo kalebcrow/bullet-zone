@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
+package edu.unh.cs.cs619.bulletzone.model;
 
 public enum Direction {
     Up, Down, Left, Right;

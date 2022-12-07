@@ -1,7 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 
 public class Clay extends FieldResource {
     int credits = 16;

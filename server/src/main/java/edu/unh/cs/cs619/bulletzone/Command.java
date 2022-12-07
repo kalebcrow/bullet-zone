@@ -1,7 +1,7 @@
 package edu.unh.cs.cs619.bulletzone;
 
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class Command {

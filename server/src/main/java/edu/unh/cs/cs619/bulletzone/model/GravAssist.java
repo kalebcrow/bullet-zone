@@ -1,9 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
+package edu.unh.cs.cs619.bulletzone.model;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.GravityAssisted;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
-
-public class GravAssist extends FieldResource{
+public class GravAssist extends FieldResource {
     @Override
     public int getIntValue() {
         return 3111;

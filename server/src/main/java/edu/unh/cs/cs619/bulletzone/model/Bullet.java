@@ -1,6 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities;
+package edu.unh.cs.cs619.bulletzone.model;
 
-import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.toByte;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,9 +9,6 @@ import edu.unh.cs.cs619.bulletzone.events.DestroyBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
 
 public class Bullet extends FieldEntity {
 

@@ -1,6 +1,8 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
+package edu.unh.cs.cs619.bulletzone.model;
 
-public class GravityAssisted extends Powered{
+import edu.unh.cs.cs619.bulletzone.model.Powered;
+
+public class GravityAssisted extends Powered {
 
 
     @Override

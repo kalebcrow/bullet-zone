@@ -1,10 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
+package edu.unh.cs.cs619.bulletzone.model;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.FusionGenerated;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-
-public class FusionGenerator extends FieldResource{
+public class FusionGenerator extends FieldResource {
     @Override
     public int getIntValue() {
         return 3121;

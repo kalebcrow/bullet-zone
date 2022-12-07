@@ -1,7 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 
 public class Thingamajig extends FieldResource {

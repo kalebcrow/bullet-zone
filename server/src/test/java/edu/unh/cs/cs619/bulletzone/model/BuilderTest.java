@@ -13,13 +13,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 @RunWith(MockitoJUnitRunner.class)

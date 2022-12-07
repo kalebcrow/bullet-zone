@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
+import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.Tank;
 
 public class EventManagerTest {
 

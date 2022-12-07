@@ -3,13 +3,13 @@ package edu.unh.cs.cs619.bulletzone.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Hilly;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Meadow;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.Rocky;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Wall;
+import edu.unh.cs.cs619.bulletzone.model.Direction;
+import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
+import edu.unh.cs.cs619.bulletzone.model.Game;
+import edu.unh.cs.cs619.bulletzone.model.Hilly;
+import edu.unh.cs.cs619.bulletzone.model.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Rocky;
+import edu.unh.cs.cs619.bulletzone.model.Wall;
 
 public class GameBoardBuilder {
 

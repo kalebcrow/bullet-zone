@@ -1,6 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
+package edu.unh.cs.cs619.bulletzone.model;
 
-public class UnPowered extends PowerUp{
+public class UnPowered extends PowerUp {
 
     private int[] allowedMoveIntervals;
     private int[] allowedTurnIntervals;

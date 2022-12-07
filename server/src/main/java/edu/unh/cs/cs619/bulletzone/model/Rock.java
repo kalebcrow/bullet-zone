@@ -1,35 +1,33 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 
-public class Iron extends FieldResource {
-    int credits = 78;
+public class Rock extends FieldResource {
+    int credits = 25;
     int pos;
 
-    public Iron(){
+    public Rock(){
 
     }
 
-    public Iron(int pos){
+    public Rock(int pos){
         this.pos = pos;
     }
 
     @Override
     public int getIntValue() {
-        return 503;
+        return 502;
     }
 
     @Override
     public FieldResource copy() {
-        return new Iron();
+        return new Rock();
     }
 
     @Override
     public boolean gather(Tank tank) {
-        // this is awful :(
         Tank miner = game.getTank(game.getTanks(tank.getIp()).get("miner"));
-        miner.addBundleOfResources(1,1);
+        miner.addBundleOfResources(0,1);
         System.out.println("Finished item pickup process, adding iron to stash");
         eventManager.addEvent(new MineEvent(tank.getId(), miner.getAllResources()));
         return true;
@@ -37,7 +35,7 @@ public class Iron extends FieldResource {
 
     @Override
     public String toString() {
-        return "IB";
+        return "RB";
     }
 
     public int getPos(){

@@ -1,7 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Terrain;
-
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
+package edu.unh.cs.cs619.bulletzone.model;
 
 public abstract class FieldTerrain extends FieldEntity {
     //protected static final EventBus eventBus = new EventBus();

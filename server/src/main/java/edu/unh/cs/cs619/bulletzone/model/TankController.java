@@ -1,4 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -7,7 +7,6 @@ import static org.graalvm.compiler.replacements.Log.print;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 
 
 public class TankController {

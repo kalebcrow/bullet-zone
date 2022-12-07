@@ -1,23 +1,13 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Tanks;
+package edu.unh.cs.cs619.bulletzone.model;
 
-import static edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction.toByte;
+import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.HashMap;
 
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
-import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Game;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.FieldResource;
-import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 
 

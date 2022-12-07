@@ -1,9 +1,6 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities;
+package edu.unh.cs.cs619.bulletzone.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
-import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.FieldHolder;
 
 public abstract class FieldEntity {
     //protected static final EventBus eventBus = new EventBus();

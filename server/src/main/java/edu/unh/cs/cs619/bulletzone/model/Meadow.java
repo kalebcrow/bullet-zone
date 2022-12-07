@@ -1,28 +1,31 @@
-package edu.unh.cs.cs619.bulletzone.model.Entities.Terrain;
+package edu.unh.cs.cs619.bulletzone.model;
 
-public class Rocky extends FieldTerrain {
-    double speed = 1;
+public class Meadow extends FieldTerrain {
+    double speed = 0;
     int pos;
 
-    public Rocky(){}
 
-    public Rocky(int pos){
+    public Meadow(){
+
+    }
+
+    public Meadow(int pos){
         this.pos = pos;
     }
 
     @Override
     public int getIntValue() {
-        return 1;
+        return 0;
     }
 
     @Override
     public FieldTerrain copy() {
-        return new Rocky();
+        return new Meadow();
     }
 
     @Override
     public String toString() {
-        return "R";
+        return "M";
     }
 
     public int getPos(){

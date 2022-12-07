@@ -1,7 +1,4 @@
-package edu.unh.cs.cs619.bulletzone.model.Miscellaneous;
-
-import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Wall;
+package edu.unh.cs.cs619.bulletzone.model;
 
 public class Road extends FieldEntity {
     int pos;
