@@ -289,7 +289,7 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
-        afterViewInjection();
+        tankController.respawn();
     }
 
     /**
