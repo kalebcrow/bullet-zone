@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.squareup.otto.Bus;
 
+import edu.unh.cs.cs619.bulletzone.game.tiles.ItemTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.ResourceTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.ResourceEvent;
@@ -20,7 +21,12 @@ public class AddResourceEvent extends ExecutableEvent {
         int jsonVal = convert(resource);
         Log.d("Yeah dog", resource);
 
-        bus.post(new TileUpdateEvent(pos, new ResourceTile(jsonVal, pos)));
+        if(jsonVal > 3000){
+            bus.post(new TileUpdateEvent(pos, new ItemTile(jsonVal, pos)));
+        }else{
+            bus.post(new TileUpdateEvent(pos, new ResourceTile(jsonVal, pos)));
+        }
+
     }
 
     private int convert(String resource) {
@@ -35,6 +41,10 @@ public class AddResourceEvent extends ExecutableEvent {
                 return 504;
             case "RB":
                 return 502;
+            case "FG":
+                return 3121;
+            case "GA":
+                return 3111;
         }
         return -1;
     }

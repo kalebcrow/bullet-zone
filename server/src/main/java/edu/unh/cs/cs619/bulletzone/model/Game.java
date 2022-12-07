@@ -267,7 +267,7 @@ public final class Game {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = holderGrid.get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
+                    if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                         fieldElement.setFieldEntity(playerTanks[0]);
                         playerTanks[0].setParent(fieldElement);
                         break;
@@ -278,7 +278,7 @@ public final class Game {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = holderGrid.get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
+                    if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                         fieldElement.setFieldEntity(playerTanks[1]);
                         playerTanks[1].setParent(fieldElement);
                         break;
@@ -289,7 +289,7 @@ public final class Game {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);
                     FieldHolder fieldElement = holderGrid.get(x * FIELD_DIM + y);
-                    if (!fieldElement.isEntityPresent()) {
+                    if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                         fieldElement.setFieldEntity(playerTanks[2]);
                         playerTanks[2].setParent(fieldElement);
                         break;

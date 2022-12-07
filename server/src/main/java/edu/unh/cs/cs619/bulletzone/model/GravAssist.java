@@ -1,6 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 public class GravAssist extends FieldResource {
+
+    @Override
+    public String toString(){
+        return "GA";
+    }
+
     @Override
     public int getIntValue() {
         return 3111;

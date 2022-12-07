@@ -1,6 +1,12 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 public class FusionGenerator extends FieldResource {
+
+    @Override
+    public String toString(){
+        return "FG";
+    }
+
     @Override
     public int getIntValue() {
         return 3121;
