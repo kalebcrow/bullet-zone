@@ -91,6 +91,14 @@
                     android:text="Rock: 0\nIron: 0\nClay: 0\nWood: 0\n"
                     android:visibility="invisible" />
 
+                <Button
+                    android:id="@+id/buttonChangeBoard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ResourcesText"
+                    android:text="Change board"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
 
         </LinearLayout>

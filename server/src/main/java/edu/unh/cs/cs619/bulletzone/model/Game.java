@@ -28,11 +28,10 @@ public final class Game {
      * Field dimensions
      */
     private static final int FIELD_DIM = 16;
+    private static final int FIELD_DIM_COL = FIELD_DIM;
+    private static final int FIELD_DIM_ROW = FIELD_DIM * 3;
     private final long id;
     private final ArrayList<FieldHolder> holderGrid = new ArrayList<>();
-
-    private final ArrayList<FieldHolder> topHolderGrid = new ArrayList<>();
-    private final ArrayList<FieldHolder> bottomHolderGrid = new ArrayList<>();
 
     // Event History for the clients
     private LinkedList<GridEvent> eventHistory = new LinkedList<>();
@@ -128,17 +127,17 @@ public final class Game {
     }
 
     public int[][][] getGrid3D() {
-        // start randomly spawning resources
-        //getRandomResources(); // TODO add randomly spawning resources
 
-        int[][][] grid = new int[FIELD_DIM][FIELD_DIM][3];
+        int[][][] grid = new int[FIELD_DIM_ROW][FIELD_DIM_COL][3];
 
         synchronized (holderGrid) {
-            // get the grid // SARA
+            // get the grid
             FieldHolder holder;
-            for (int i = 0; i < FIELD_DIM; i++) {
-                for (int j = 0; j < FIELD_DIM; j++) {
-                    holder = holderGrid.get(i * FIELD_DIM + j);
+            // row
+            for (int i = 0; i < FIELD_DIM_ROW; i++) {
+                // col
+                for (int j = 0; j < FIELD_DIM_COL; j++) {
+                    holder = holderGrid.get(i * FIELD_DIM_COL + j);
                     // set entity if there is one
                     grid[i][j][1] = -1; // make it blank if theres no entity
                     if (holder.isEntityPresent()) {
@@ -158,7 +157,6 @@ public final class Game {
                 }
             }
         }
-
         return grid;
     }
 

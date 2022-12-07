@@ -123,7 +123,6 @@ public class InMemoryGameRepository implements GameRepository {
     @Override
     public Tank[] join(String username, String ip) {
         synchronized (this.monitor) {
-
             if (game == null) {
                 if(ip == "test") this.testCreate();
                 else this.create();
@@ -718,6 +717,7 @@ public class InMemoryGameRepository implements GameRepository {
             return;
         }
         synchronized (this.monitor) {
+            log.debug("-----------------------------------------making new board");
             this.game = new Game();
             GameBoardDirector gbd = new GameBoardDirector();
             ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);

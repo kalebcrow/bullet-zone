@@ -35,6 +35,7 @@ import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
+import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -87,6 +88,8 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
+
+    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -172,27 +175,29 @@ public class ClientActivity extends Activity {
      */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
-        final int viewId = view.getId();
-        byte direction = 0;
+        if (gridnum == tankController.getBoardTankOn()) {
+            final int viewId = view.getId();
+            byte direction = 0;
 
-        switch (viewId) {
-            case R.id.buttonUp:
-                direction = 0;
-                break;
-            case R.id.buttonDown:
-                direction = 4;
-                break;
-            case R.id.buttonLeft:
-                direction = 6;
-                break;
-            case R.id.buttonRight:
-                direction = 2;
-                break;
-            default:
-                Log.e(TAG, "Unknown movement button id: " + viewId);
-                break;
+            switch (viewId) {
+                case R.id.buttonUp:
+                    direction = 0;
+                    break;
+                case R.id.buttonDown:
+                    direction = 4;
+                    break;
+                case R.id.buttonLeft:
+                    direction = 6;
+                    break;
+                case R.id.buttonRight:
+                    direction = 2;
+                    break;
+                default:
+                    Log.e(TAG, "Unknown movement button id: " + viewId);
+                    break;
+            }
+            tankController.move(direction);
         }
-        tankController.move(direction);
     }
 
     /**
@@ -228,6 +233,7 @@ public class ClientActivity extends Activity {
             textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
+            Button buttonChangeBoard = findViewById(R.id.buttonChangeBoard);
             buttonRespawn.setVisibility(View.VISIBLE);
             buttonLeft.setVisibility(View.VISIBLE);
             buttonFire.setVisibility(View.VISIBLE);
@@ -241,6 +247,7 @@ public class ClientActivity extends Activity {
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
             moveToButton.setVisibility(View.VISIBLE);
+            buttonChangeBoard.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -253,6 +260,24 @@ public class ClientActivity extends Activity {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
 
+    }
+
+    /**
+     * onButtonChangeBoard: Changes to a board SARA
+     */
+    @Click(R.id.buttonChangeBoard)
+    protected void onButtonChangeBoard(){
+        // i need this to reload the game board with a different board
+        // to do this i need functionality on the server that would call making a different board
+        // i first will try just replacing it with thetest board
+
+        // try calling poller gridupdate event to update the board with a different grid
+        gridnum++;
+        if (gridnum >= 3) {
+            gridnum = 0;
+        }
+
+        gridPollTask.changeBoard(gridnum);
     }
 
     /**
