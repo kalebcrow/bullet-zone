@@ -326,4 +326,9 @@ public class TankController {
         restClient.rebuild(currentTankID);
     }
 
+    @Background
+    public void destroyTank(){
+        restClient.destroy(getCurrentTankID());
+    }
+
 }
