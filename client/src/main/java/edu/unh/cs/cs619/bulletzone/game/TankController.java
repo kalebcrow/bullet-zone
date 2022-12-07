@@ -320,4 +320,10 @@ public class TankController {
         restClient.turn(currentTankID, (byte) right);
         tankOrientation[othervalue] = right;
     }
+
+    @Background
+    public void respawn() {
+        restClient.rebuild(currentTankID);
+    }
+
 }
