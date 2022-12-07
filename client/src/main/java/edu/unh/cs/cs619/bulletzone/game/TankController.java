@@ -14,6 +14,7 @@ import java.util.Objects;
 import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
+import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class TankController {
@@ -44,6 +45,8 @@ public class TankController {
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
+
+    private ButtonState[] buttonStates;
 
     /**
      * TankController
@@ -287,4 +290,32 @@ public class TankController {
         restClient.test(tankID[1]);
     }
 
+    public void buttonStateSetup(ButtonState[] buttonStates){
+
+        this.buttonStates = buttonStates;
+
+    }
+
+    public void buttonStateHandler(int[] restrictions){
+
+        if(getTankOrientation() == 0 || getTankOrientation() == 4){
+            buttonStates[0].Handle(restrictions);
+            buttonStates[2].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set left and right to always true
+            buttonStates[1].setEnabled();
+            buttonStates[3].setEnabled();
+        }
+        else{
+            buttonStates[1].Handle(restrictions);
+            buttonStates[3].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set up and down to always true
+            buttonStates[0].setEnabled();
+            buttonStates[2].setEnabled();
+        }
+
+    }
 }

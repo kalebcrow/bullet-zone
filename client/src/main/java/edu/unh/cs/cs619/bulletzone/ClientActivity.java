@@ -26,6 +26,7 @@ import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.api.BackgroundExecutor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
@@ -34,7 +35,13 @@ import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
+import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.DownButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.FireButtonState;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
+import edu.unh.cs.cs619.bulletzone.ui.LeftButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.RightButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.UpButtonState;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -249,6 +256,22 @@ public class ClientActivity extends Activity {
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
             loggedIn = true;
+
+            ButtonState[] buttonStates = new ButtonState[5];
+            UpButtonState upButtonState = new UpButtonState(buttonUp);
+            RightButtonState rightButtonState = new RightButtonState(buttonRight);
+            DownButtonState downButtonState = new DownButtonState(buttonDown);
+            LeftButtonState leftButtonState = new LeftButtonState(buttonLeft);
+            FireButtonState fireButtonState = new FireButtonState(buttonFire);
+
+            buttonStates[0] = upButtonState;
+            buttonStates[1] = rightButtonState;
+            buttonStates[2] = downButtonState;
+            buttonStates[3] = leftButtonState;
+            buttonStates[4] = fireButtonState;
+
+            TankController.getTankController().buttonStateSetup(buttonStates);
+
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
