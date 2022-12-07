@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsSideways_ReturnsTrue() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
+        tank = new Tank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertTrue(tc.turn(tank, Direction.Left));
@@ -47,7 +46,7 @@ public class TankControllerTest {
 
     @Test
     public void turn_TurnsForwardsOrBackwards_ReturnsFalse() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
-        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
+        tank = new Tank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         assertFalse(tc.turn(tank, Direction.Up));
@@ -106,7 +105,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_SuccessfullyFires_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
+        tank = new Tank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(0);
@@ -115,7 +114,7 @@ public class TankControllerTest {
 
     @Test
     public void fire_DoesNotFireMoreThanTwoBulletsAtATime_ReturnsTrue() throws LimitExceededException, TankDoesNotExistException {
-        tank = new BaseTank("i", 0, Direction.Up, ip, 0);
+        tank = new Tank("i", 0, Direction.Up, ip, 0);
         tank.setLastMoveTime(System.currentTimeMillis());
         tc = new TankController();
         tank.setNumberOfBullets(2);

@@ -1,6 +1,6 @@
 package edu.unh.cs.cs619.bulletzone.model.Entities.GameResources;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.FusionGeneratorTank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.FusionGenerated;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 
@@ -34,7 +34,7 @@ public class FusionGenerator extends FieldResource{
 
     @Override
     public boolean gather(Tank tank) {
-        tank = new FusionGeneratorTank(tank);
+        tank.enhance(new FusionGenerated());
         return true;
     }
 }

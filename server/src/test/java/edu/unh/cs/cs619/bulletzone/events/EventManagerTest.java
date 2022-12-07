@@ -5,14 +5,13 @@ import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
 import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 
 public class EventManagerTest {
 
     private EventManager eventManager = EventManager.getInstance();
-    private Tank tank = new BaseTank();
+    private Tank tank = new Tank();
     private Long id = tank.getId();
 
     @Test

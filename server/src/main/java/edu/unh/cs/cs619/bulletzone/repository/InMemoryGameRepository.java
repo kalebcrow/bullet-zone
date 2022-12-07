@@ -24,10 +24,9 @@ import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
-import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Clay;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
+import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.GravAssist;
 import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
@@ -46,8 +45,6 @@ import edu.unh.cs.cs619.bulletzone.model.Miscellaneous.TankController;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Wall;
-import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 
@@ -113,6 +110,7 @@ public class InMemoryGameRepository implements GameRepository {
                 else{
                     this.create();
                     getRandomResources();
+                    insertResource(new GravAssist(), 255);
                 }
                 FieldResource.setItemsOnGrid(itemsOnGrid);
                 FieldResource.setGame(game);
@@ -205,7 +203,6 @@ public class InMemoryGameRepository implements GameRepository {
             FieldHolder parent = tank.getParent();
             FieldHolder nextField = parent.getNeighbor(direction);
             checkNotNull(parent.getNeighbor(direction), "Neighbor is not available");
-
             if (!tc.move(tank, direction)) {
                 return false;
             }
@@ -293,7 +290,7 @@ public class InMemoryGameRepository implements GameRepository {
         3 - Indestructible Wall
          */
             Tank builder = game.getTanks().get(tankId);
-            Tank miner = new BaseTank();
+            Tank miner = new Tank();
             HashMap<String, Long> tanks = game.getTanks(builder.getIp());
             assert tanks != null;
             if (tanks.containsKey("miner"))
@@ -399,7 +396,7 @@ public class InMemoryGameRepository implements GameRepository {
             throw new TankDoesNotExistException(tankId);
         }
 
-        Tank miner = new BaseTank();
+        Tank miner = new Tank();
         HashMap<String, Long> tanks = game.getTanks(builder.getIp());
         assert tanks != null;
         if (tanks.containsKey("miner"))

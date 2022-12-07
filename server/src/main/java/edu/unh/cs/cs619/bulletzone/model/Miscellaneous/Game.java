@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -14,16 +13,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.Timer;
 import java.util.concurrent.atomic.AtomicLong;
 
 import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
-import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Entities.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.BaseTank;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Tanks.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Entities.Terrain.FieldTerrain;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
@@ -63,12 +59,23 @@ public final class Game {
         return holderGrid;
     }
 
-    public void addTank(String ip, Tank tank, String key) {
+    public void addTank(Tank tank) {
         synchronized (tanks) {
-            tanks.put(tank.getId(), tank);
-            if(!playersIP.containsKey(ip)){
-                playersIP.put(ip, new HashMap<>());
+            String ip = tank.getIp();
+            int typeIndex = tank.getTypeIndex();
+            String key;
+            switch(typeIndex){
+                case 1:
+                    key = "miner";
+                    break;
+                case 2:
+                    key = "builder";
+                    break;
+                default:
+                    key = "tank";
             }
+            tanks.put(tank.getId(), tank);
+            if(!playersIP.containsKey(ip)) playersIP.put(ip,new HashMap<>());
             HashMap<String, Long> map = playersIP.get(ip);
             map.put(key, tank.getId());
             playersIP.put(ip, map);
@@ -116,8 +123,9 @@ public final class Game {
         return null;
     }
 
-    public void removeTank(long tankId){
+    public void removeTank(Tank tank){
         synchronized (tanks) {
+            long tankId = tank.getId();
             Tank t = tanks.remove(tankId);
             if (t != null) {
                 playersIP.remove(t.getIp());
@@ -212,28 +220,34 @@ public final class Game {
         Tank[] playerTanks = new Tank[3];
 
         if(!playersIP.containsKey(ip)) {
-            Long tankId = this.idGenerator.getAndIncrement();
+            Long tankID = this.idGenerator.getAndIncrement();
             Long minerID = this.idGenerator.getAndIncrement();
             Long builderID = this.idGenerator.getAndIncrement();
 
-            playerTanks[0] = new BaseTank(username, tankId, Direction.Up, ip, 0);
-            playerTanks[1] = new BaseTank(username, minerID, Direction.Up, ip, 1);
-            playerTanks[2] = new BaseTank(username, builderID, Direction.Up, ip, 2);
+            playerTanks[0] = new Tank(username, tankID, Direction.Up, ip, 0);
+            playerTanks[1] = new Tank(username, minerID, Direction.Up, ip, 1);
+            playerTanks[2] = new Tank(username, builderID, Direction.Up, ip, 2);
 
-            addTank(ip, playerTanks[0], "tank");
-            addTank(ip, playerTanks[1], "miner");
-            addTank(ip, playerTanks[2], "builder");
+            addTank(playerTanks[0]);
+            addTank(playerTanks[1]);
+            addTank(playerTanks[2]);
 
             if(ip == "test"){
-                FieldHolder place = holderGrid.get(16);
+                int tankSpawnLocation = 16;
+                int minerSpawnLocation = 33;
+                int builderSpawnLocation = 251;
+                FieldHolder place = holderGrid.get(tankSpawnLocation);
                 place.setFieldEntity(playerTanks[0]);
                 playerTanks[0].setParent(place);
-                place = holderGrid.get(33);
+                place = holderGrid.get(minerSpawnLocation);
                 place.setFieldEntity(playerTanks[1]);
                 playerTanks[1].setParent(place);
-                place = holderGrid.get(251);
+                place = holderGrid.get(builderSpawnLocation);
                 place.setFieldEntity(playerTanks[2]);
                 playerTanks[2].setParent(place);
+                eventManager.addEvent(new AddTankEvent(tankSpawnLocation/16, tankSpawnLocation%16, tankID));
+                eventManager.addEvent(new AddTankEvent(minerSpawnLocation/16, minerSpawnLocation%16, minerID));
+                eventManager.addEvent(new AddTankEvent(builderSpawnLocation/16, builderSpawnLocation%16, builderID));
             } else {
 
                 Random random = new Random();
@@ -251,7 +265,7 @@ public final class Game {
                         break;
                     }
                 }
-                eventManager.addEvent(new AddTankEvent(x, y, tankId));
+                eventManager.addEvent(new AddTankEvent(x, y, tankID));
                 for (; ; ) {
                     x = random.nextInt(FIELD_DIM);
                     y = random.nextInt(FIELD_DIM);

@@ -19,7 +19,7 @@ public class Wall extends FieldEntity {
 
     @Override
     public void hit(int damage){
-        if (destructValue < 1000 && destructValue < 2000 ){
+        if (destructValue > 1000 && destructValue < 2000 ){
             destructValue -= damage;
             if(destructValue <= 1000){
                 eventManager.addEvent(new DestroyWallEvent(pos));

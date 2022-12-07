@@ -21,7 +21,7 @@ import edu.unh.cs.cs619.bulletzone.model.Entities.GameResources.Thingamajig;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 
 
-public abstract class Tank extends FieldEntity {
+public class Tank extends FieldEntity {
 
     // typeIndex 0 for tank, 1 for miner, 2 for builder
 
@@ -31,17 +31,18 @@ public abstract class Tank extends FieldEntity {
     private DataRepository data = new DataRepository();
 
     public boolean allowMovement = true;
-    private long lastFireTime = 0;
-    private long lastMoveTime = 0;
+    private long lastFireTime = System.currentTimeMillis();
+    private long lastMoveTime = System.currentTimeMillis();
     private int numberOfBullets = 0;
 
-    protected int life;
-    protected Direction direction;
-    protected int typeIndex;
-    protected String username;
-    protected String ip;
-    protected long id;
-    protected int[] resources;
+    private int life;
+    private Direction direction;
+    private int typeIndex;
+    private String username;
+    private String ip;
+    private long id;
+    private PowerUp powerUp = new UnPowered(typeIndex);
+    private int[] resources;
     //rock = index 0
     //iron = index 1
     //clay = index 2
@@ -50,8 +51,26 @@ public abstract class Tank extends FieldEntity {
     private final double[] givesDamage = {.1, .1, .05};
     private final int[] healths = {100,300,80};
 
+    public Tank(String username, long id, Direction direction, String ip, int typeIndex) {
+        this.id = id;
+        this.username = username;
+        this.direction = direction;
+        this.ip = ip;
+        this.typeIndex = typeIndex;
+        this.life = healths[typeIndex];
+        if (typeIndex == 1) {
+            resources = new int[]{0,0,0};
+        }
+    }
+
+    public Tank(){
+        ip = null;
+        id = 0;
+        typeIndex = 0;
+    }
+
     @Override
-    abstract public FieldEntity copy();
+    public FieldEntity copy(){ return new Tank(username,id, direction, ip, typeIndex); }
 
     @Override
     public void hit(int damage) {
@@ -66,6 +85,11 @@ public abstract class Tank extends FieldEntity {
         }
     }
 
+    public void enhance(Powered power){
+        power.setSubject(powerUp);
+        powerUp = power;
+    }
+
     public boolean advance(Direction direction){
 
         FieldHolder nextField = parent.getNeighbor(direction);
@@ -73,7 +97,7 @@ public abstract class Tank extends FieldEntity {
         FieldEntity ent = null;
         if(present) ent = nextField.getEntity();
 
-        if (!present || present && ent.gather(this)) {
+        if (!present || ent.gather(this)) {
             nextField.setFieldEntity(this);
             parent.clearField();
             setParent(nextField);
@@ -88,36 +112,24 @@ public abstract class Tank extends FieldEntity {
             }
         }
 
-    public long getLastMoveTime() {
-        return lastMoveTime;
-    }
-    public void setLastMoveTime(long lastMoveTime) {
-        this.lastMoveTime = lastMoveTime;
-    }
-    public abstract long getAllowedMoveInterval();
-    public abstract long getAllowedTurnInterval();
+    public long getAllowedMoveInterval(){ return powerUp.getAllowedMoveInterval(); }
+    public long getAllowedTurnInterval(){ return powerUp.getAllowedTurnInterval(); }
+    public long getAllowedFireInterval(){ return powerUp.getAllowedFireInterval(); }
+    public int getAllowedNumberOfBullets(){ return powerUp.getAllowedNumberOfBullets(); }
 
+    public long getLastMoveTime() { return lastMoveTime; }
+    public void setLastMoveTime(long lastMoveTime) { this.lastMoveTime = lastMoveTime; }
 
     public long getLastFireTime() { return lastFireTime; }
     public void setLastFireTime(long lastFireTime) { this.lastFireTime = lastFireTime; }
-    public abstract long getAllowedFireInterval();
 
-    public int getNumberOfBullets() {
-        return numberOfBullets;
-    }
-    public void setNumberOfBullets(int numberOfBullets) {
-        this.numberOfBullets = numberOfBullets;
-    }
-    public abstract int getAllowedNumberOfBullets();
+    public int getNumberOfBullets() { return numberOfBullets; }
+    public void setNumberOfBullets(int numberOfBullets) { this.numberOfBullets = numberOfBullets; }
 
-    public Direction getDirection() {
-        return direction;
-    }
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
+    public Direction getDirection() { return direction; }
+    public void setDirection(Direction direction) { this.direction = direction; }
 
-    public abstract Tank strip();
+    public void strip(){}
 
     @JsonIgnore
     public long getId() {
@@ -183,16 +195,6 @@ public abstract class Tank extends FieldEntity {
 
     public double giveDamageModifier() {
         return givesDamage[typeIndex];
-    }
-
-    private boolean isResource(FieldHolder nextField) {
-        if (nextField.isEntityPresent()) {
-            FieldEntity fr = nextField.getEntity();
-            return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
-                    fr.getIntValue() == 503 || fr.getIntValue() == 7;
-
-        }
-        return false;
     }
 
     public static void setGame(Game g){game = g;}
