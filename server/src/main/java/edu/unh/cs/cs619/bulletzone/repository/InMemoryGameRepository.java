@@ -292,7 +292,6 @@ public class InMemoryGameRepository implements GameRepository {
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
             }
-            log.debug("--------------------------------------terrain: " + tank.getParent().getTerrain().toString() + ", index: " + tank.getTypeIndex());
 
             if (tank.getTypeIndex() == 1) {
                 mine = false;
@@ -319,7 +318,6 @@ public class InMemoryGameRepository implements GameRepository {
     private boolean isResource(FieldHolder nextField) {
         if (nextField.isEntityPresent()) {
             FieldEntity fr = nextField.getEntity();
-            log.debug("-----------------tried to MOVE onto a resource entity with int value: " + fr.getIntValue());
             return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
                     fr.getIntValue() == 503 || fr.getIntValue() == 504;
 
@@ -742,13 +740,10 @@ public class InMemoryGameRepository implements GameRepository {
             return;
         }
         synchronized (this.monitor) {
-            log.debug("-----------------------------------------making new board");
             this.game = new Game();
             GameBoardDirector gbd = new GameBoardDirector();
             ConcreteGameBoardBuilder gbb = new ConcreteGameBoardBuilder(game);
             gbd.ConstructGameBoard(gbb);
-            //GameBoardBuilder boardBuilder = new GameBoardBuilder(game);
-            //boardBuilder.create();
         }
     }
 
