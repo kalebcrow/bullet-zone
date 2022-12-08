@@ -45,10 +45,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".57">
 
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/boardSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:animateLayoutChanges="false"
+                        android:visibility="visible">
+                    </Spinner>
+
 
                     <Button
                         android:id="@+id/moveToButton"
@@ -56,6 +69,7 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="Move To Selected"
+                        android:textSize="8dp"
                         android:visibility="invisible"></Button>
 
                     <TextView
@@ -66,7 +80,7 @@
                         android:padding="10dp"
                         android:text="No Coordinates Selected Yet"
                         android:textColor="#000000"
-                        android:textSize="18dp"
+                        android:textSize="15dp"
                         android:visibility="invisible"></TextView>
 
                 </LinearLayout>
@@ -91,14 +105,6 @@
                     android:text="Rock: 0\nIron: 0\nClay: 0\nWood: 0\n"
                     android:visibility="invisible" />
 
-                <Button
-                    android:id="@+id/buttonChangeBoard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ResourcesText"
-                    android:text="Change board"
-                    android:visibility="invisible" />
-
             </RelativeLayout>
 
         </LinearLayout>
@@ -112,7 +118,25 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <Button
+            android:id="@+id/buttonTurnLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonLeft"
+            android:layout_alignLeft="@+id/buttonLeft"
+            android:layout_alignRight="@+id/buttonLeft"
+            android:text="TurnLeft"
+            android:visibility="invisible" />
 
+        <Button
+            android:id="@+id/buttonTurnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonRight"
+            android:layout_alignLeft="@+id/buttonRight"
+            android:layout_alignRight="@+id/buttonRight"
+            android:text="TurnRight"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonDown"
@@ -210,6 +234,16 @@
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="109dp"
             android:text="Replay" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Destroy Current Tank"
+            android:id="@+id/buttonDestroyTank"
+            android:textSize="8dp"
+            android:layout_alignLeft="@id/buttonLeave"
+            android:layout_below="@id/buttonLeave"
+            android:visibility="invisible"></Button>
 
         <Button
             android:id="@+id/buttonRespawn"

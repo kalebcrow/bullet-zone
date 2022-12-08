@@ -50,6 +50,8 @@ public class ClientActivity extends Activity {
 
     public int started = 0;
 
+    private Spinner mBoardSpinner;
+
     @ViewById
     protected TextView textViewGarage;
 
@@ -175,6 +177,7 @@ public class ClientActivity extends Activity {
      */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
+        // let tank move if it is on the same board that is showing
         if (gridnum == tankController.getBoardTankOn()) {
             final int viewId = view.getId();
             byte direction = 0;
@@ -204,7 +207,6 @@ public class ClientActivity extends Activity {
      * startGame: Initializes view when join game is selected
      */
     void startGame() {
-        //login();
         // this should only work if the user if logged in
         if (!Objects.equals(username, "") || testing) {
             if (testing) {
@@ -212,7 +214,17 @@ public class ClientActivity extends Activity {
                 textViewGarage.setText("Using user id: " + username);
                 boardView.setUsername(username);
             }
+            mBoardSpinner = findViewById(R.id.boardSpinner);
+            String[] boards = {"1", "2", "3"};
+            ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+            bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mBoardSpinner.setAdapter(bb);
+
             afterViewInjection();
+            Button buttonTurnLeft = findViewById(R.id.buttonTurnLeft);
+            Button buttonTurnRight = findViewById(R.id.buttonTurnRight);
+            buttonTurnRight.setVisibility(View.VISIBLE);
+            buttonTurnLeft.setVisibility(View.VISIBLE);
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
             Button buttonUp = findViewById(R.id.buttonUp);
@@ -223,6 +235,7 @@ public class ClientActivity extends Activity {
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             Button testButton = findViewById(R.id.buttonTest);
+            Button buttonDestroyTank = findViewById(R.id.buttonDestroyTank);
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
@@ -233,7 +246,6 @@ public class ClientActivity extends Activity {
             textViewMoveTo = findViewById(R.id.moveToTextView);
             Button moveToButton = (Button) findViewById(R.id.moveToButton);
             Spinner vehicleSpinner = (Spinner) findViewById(R.id.vehicle_spinner);
-            Button buttonChangeBoard = findViewById(R.id.buttonChangeBoard);
             buttonRespawn.setVisibility(View.VISIBLE);
             buttonLeft.setVisibility(View.VISIBLE);
             buttonFire.setVisibility(View.VISIBLE);
@@ -247,7 +259,7 @@ public class ClientActivity extends Activity {
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
             moveToButton.setVisibility(View.VISIBLE);
-            buttonChangeBoard.setVisibility(View.VISIBLE);
+            buttonDestroyTank.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -255,6 +267,7 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+
             loggedIn = true;
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
@@ -263,20 +276,11 @@ public class ClientActivity extends Activity {
     }
 
     /**
-     * onButtonChangeBoard: Changes to a board SARA
+     * changeBoard: Changes to a selected board
      */
-    @Click(R.id.buttonChangeBoard)
-    protected void onButtonChangeBoard(){
-        // i need this to reload the game board with a different board
-        // to do this i need functionality on the server that would call making a different board
-        // i first will try just replacing it with thetest board
-
-        // try calling poller gridupdate event to update the board with a different grid
-        gridnum++;
-        if (gridnum >= 3) {
-            gridnum = 0;
-        }
-
+    @ItemSelect(R.id.boardSpinner)
+    void changeBoard(boolean selected, int position){
+        gridnum = position;
         gridPollTask.changeBoard(gridnum);
     }
 
@@ -298,7 +302,7 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
-        afterViewInjection();
+        tankController.respawn();
     }
 
     /**
@@ -504,6 +508,21 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonTest)
     void requestTestResources(){
         tankController.requestTestResources();
+    }
+
+    @Click(R.id.buttonTurnLeft)
+    void turnLeft(){
+        tankController.turnLeft();
+    }
+
+    @Click(R.id.buttonTurnRight)
+    void turnRight(){
+        tankController.turnRight();
+    }
+
+    @Click(R.id.buttonDestroyTank)
+    void destroyTank(){
+        tankController.destroyTank();
     }
 
 }

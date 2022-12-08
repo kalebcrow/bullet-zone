@@ -64,6 +64,7 @@ import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.model.Wood;
+import jdk.jfr.Event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static edu.unh.cs.cs619.bulletzone.model.Direction.Down;
@@ -166,7 +167,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[0]);
                             tanks[0].setParent(fieldElement);
                             break;
@@ -177,7 +178,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[1]);
                             tanks[1].setParent(fieldElement);
                             break;
@@ -188,7 +189,7 @@ public class InMemoryGameRepository implements GameRepository {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
                         FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
-                        if (!fieldElement.isEntityPresent()) {
+                        if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[2]);
                             tanks[2].setParent(fieldElement);
                             break;
@@ -519,7 +520,7 @@ public class InMemoryGameRepository implements GameRepository {
                             Thread.sleep(6000);
                             miner.subtractBundleOfResources(1, 1);
                             miner.subtractBundleOfResources(3, 5);
-                            behind.setFieldEntity(new Deck(builder.getIp()));
+                            behind.setImprovementEntity(new Deck(builder.getIp()));
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId,miner.getAllResources(),4, behind.getPos()));
 
@@ -535,8 +536,8 @@ public class InMemoryGameRepository implements GameRepository {
                             miner.subtractBundleOfResources(3, 4);
                             Factory f = new Factory(builder.getIp());
                             behind.setFieldEntity(f);
+                            f.setParent(behind);
                             game.getFactories().put(builder.getIp(),f);
-
                             builder.allowMovement = true;
                             eventManager.addEvent(new BuildEvent(tankId, miner.getAllResources(), 5, behind.getPos()));
 
@@ -582,6 +583,7 @@ public class InMemoryGameRepository implements GameRepository {
         Tank builder = game.getTank(tanks.get("builder"));
         Tank tank = game.getTank(tanks.get("tank"));
         Tank miner = game.getTank(tanks.get("miner"));
+        int pos = f.getParent().getNeighbor(Direction.Up).getPos();
 
         double balance = data.getUserAccountBalance(tank.getUsername());
 
@@ -595,34 +597,40 @@ public class InMemoryGameRepository implements GameRepository {
             case 0:
                 //tank
                 if (miner.getResourcesByResource(1) >= 3 && miner.getResourcesByResource(3) >= 1 && balance >= 400) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(tank);
-                    tank.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(100);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(1, 3);
                     miner.subtractBundleOfResources(3, 1);
                     data.modifyAccountBalance(tank.getUsername(),-400);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
             case 1:
                 //miner
                 if (miner.getResourcesByResource(1) >= 6 && miner.getResourcesByResource(3) >= 2 && balance >= 600) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(miner);
-                    miner.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(300);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(1, 6);
                     miner.subtractBundleOfResources(3, 2);
                     data.modifyAccountBalance(miner.getUsername(),-600);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
             case 2:
                 //builder
                 if (miner.getResourcesByResource(0) >= 1 && miner.getResourcesByResource(1) >= 2 && miner.getResourcesByResource(3) >= 2 && balance >= 400) {
-                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(builder);
-                    builder.setLife(10);
+                    f.getParent().getNeighbor(Direction.Up).setFieldEntity(rebuild);
+                    rebuild.setLife(80);
+                    rebuild.setParent(f.getParent().getNeighbor(Direction.Up));
                     miner.subtractBundleOfResources(0, 1);
                     miner.subtractBundleOfResources(1, 2);
                     miner.subtractBundleOfResources(3, 2);
                     data.modifyAccountBalance(builder.getUsername(),-400);
+                    eventManager.addEvent(new AddTankEvent(pos/16, pos%16, rebuild.getId()));
                     return true;
                 }
                 return false;
@@ -683,6 +691,15 @@ public class InMemoryGameRepository implements GameRepository {
                 eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),3));
                 return true;
             }
+            else if(structure.toString() == "F")
+            {
+                miner.addBundleOfResources(0,2);
+                miner.addBundleOfResources(1,3);
+                miner.addBundleOfResources(3,4);
+                behind.clearField();
+                eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),5));
+                return true;
+            }
             else
             {
                 return false;
@@ -695,6 +712,14 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(2, 3);
                 behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(),1));
+                return true;
+            }
+            else if(structure.toString() == "D")
+            {
+                miner.addBundleOfResources(1,1);
+                miner.addBundleOfResources(3,5);
+                behind.clearImprovement();
+                eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 4));
                 return true;
             }
             else

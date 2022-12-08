@@ -24,7 +24,9 @@ import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 import edu.unh.cs.cs619.bulletzone.model.Tank;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
 import edu.unh.cs.cs619.bulletzone.events.GridEvent;
+import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
+import edu.unh.cs.cs619.bulletzone.web.GamesControllerTest;
 
 @RunWith(MockitoJUnitRunner.class)
 
@@ -210,4 +212,122 @@ public class BuilderTest {
             }
         }).start();
     }
+
+    @Test
+    public void testBuild_buildFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+    }
+
+    @Test
+    public void testFactory_respawnFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+        Tank[] tank = repo.join(username, "");
+
+        double actualBalance = data.getUserAccountBalance(username);
+
+        System.out.println(actualBalance);
+
+        data.modifyAccountBalance(username,200000);
+
+        actualBalance = data.getUserAccountBalance(username);
+
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+        tank[1].hit(2000);
+        assert(repo.rebuildTank(tank[1].getId()));
+    }
+
+    @Test
+    public void testFactory_respawnTankFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+        Tank[] tank = repo.join(username, "");
+
+        double actualBalance = data.getUserAccountBalance(username);
+
+        System.out.println(actualBalance);
+
+        data.modifyAccountBalance(username,200000);
+
+        actualBalance = data.getUserAccountBalance(username);
+
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+        tank[0].hit(2000);
+        assert(repo.rebuildTank(tank[0].getId()));
+    }
+
+    @Test
+    public void testFactory_respawnBuilderFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+        Tank[] tank = repo.join(username, "");
+
+        double actualBalance = data.getUserAccountBalance(username);
+
+        System.out.println(actualBalance);
+
+        data.modifyAccountBalance(username,200000);
+
+        actualBalance = data.getUserAccountBalance(username);
+
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+        tank[2].hit(2000);
+        assert(repo.rebuildTank(tank[2].getId()));
+    }
+
+    @Test
+    public void testDismantle_dismantleFactory_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,5));
+        assert(repo.dismantle(tankId));
+    }
+
+    @Test
+    public void testDismantle_dismantleDecking_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","");
+        Long tankId = tank[2].getId();
+        tank[1].addBundleOfResources(0,10);
+        tank[1].addBundleOfResources(1,10);
+        tank[1].addBundleOfResources(2,10);
+        tank[1].addBundleOfResources(3,10);
+        assert(repo.build(tankId,4));
+        assert(repo.dismantle(tankId));
+    }
+
+
 }
