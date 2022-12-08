@@ -20,6 +20,7 @@ import edu.unh.cs.cs619.bulletzone.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.MoveCommand;
 import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
+import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
