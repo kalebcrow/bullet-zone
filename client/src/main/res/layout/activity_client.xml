@@ -245,6 +245,7 @@
             android:layout_below="@id/buttonLeave"
             android:visibility="invisible"></Button>
 
+
         <Button
             android:id="@+id/buttonRespawn"
             android:layout_width="wrap_content"
@@ -291,6 +292,16 @@
                 android:visibility="invisible" />
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eject"
+            android:id="@+id/buttonEject"
+            android:layout_alignLeft="@id/buttonRespawn"
+            android:layout_below="@id/layoutActionFire"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

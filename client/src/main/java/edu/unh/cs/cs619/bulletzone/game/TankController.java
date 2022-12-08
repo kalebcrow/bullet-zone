@@ -331,4 +331,8 @@ public class TankController {
         restClient.destroy(getCurrentTankID());
     }
 
+    @Background
+    public void eject() {
+        restClient.powerDown(getCurrentTankID());
+    }
 }
