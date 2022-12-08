@@ -15,6 +15,10 @@ public class ItemTile extends GroundTile {
             resourceID = R.drawable.gravity_assist;
         } else if (JsonValue == 3121) {
             resourceID = R.drawable.fusion_reactor;
+        } else if (JsonValue == 3122) {
+            resourceID = R.drawable.shield;
+        } else if (JsonValue == 3123) {
+            resourceID = R.drawable.repair;
         }
 
         this.location = location;

@@ -45,6 +45,10 @@ public class AddResourceEvent extends ExecutableEvent {
                 return 3121;
             case "GA":
                 return 3111;
+            case "DS":
+                return 3122;
+            case "RK":
+                return 3123;
         }
         return -1;
     }
