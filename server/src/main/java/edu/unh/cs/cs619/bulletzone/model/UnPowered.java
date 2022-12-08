@@ -14,6 +14,7 @@ public class UnPowered extends PowerUp {
         this.allowedFireIntervals = new int[]{1500,200,1000};
         this.allowedNumberOfBullets = new int[]{2,4,6};
         this.typeIndex = typeIndex;
+        this.fieldElement = null;
     }
 
     @Override

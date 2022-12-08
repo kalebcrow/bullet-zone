@@ -127,6 +127,17 @@ public class Tank extends FieldEntity {
 
     public void strip(){
         powerUp = powerUp.powerDown();
+        if(powerUp != null) {
+            if (!parent.getNeighbor(Direction.Up).isEntityPresent()) {
+                parent.getNeighbor(Direction.Up).setFieldEntity(powerUp.getFieldElement());
+            } else if (!parent.getNeighbor(Direction.Down).isEntityPresent()) {
+                parent.getNeighbor(Direction.Down).setFieldEntity(powerUp.getFieldElement());
+            } else if (!parent.getNeighbor(Direction.Left).isEntityPresent()) {
+                parent.getNeighbor(Direction.Left).setFieldEntity(powerUp.getFieldElement());
+            } else if (!parent.getNeighbor(Direction.Right).isEntityPresent()) {
+                parent.getNeighbor(Direction.Right).setFieldEntity(powerUp.getFieldElement());
+            }
+        }
     }
 
     @JsonIgnore
