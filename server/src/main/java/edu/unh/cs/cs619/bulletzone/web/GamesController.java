@@ -210,4 +210,12 @@ class GamesController {
         return HttpStatus.OK;
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/powerDown", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    HttpStatus powerDown(@PathVariable long tankId)
+            throws TankDoesNotExistException, GameDoesNotExistException {
+        gameRepository.powerDown(tankId);
+        return HttpStatus.OK;
+    }
+
 }

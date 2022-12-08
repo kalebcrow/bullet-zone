@@ -125,7 +125,9 @@ public class Tank extends FieldEntity {
     public Direction getDirection() { return direction; }
     public void setDirection(Direction direction) { this.direction = direction; }
 
-    public void strip(){}
+    public void strip(){
+        powerUp = powerUp.powerDown();
+    }
 
     @JsonIgnore
     public long getId() {

@@ -990,6 +990,10 @@ public class InMemoryGameRepository implements GameRepository {
         }
     }
 
+    public void powerDown(long tankId){
+        game.getTank(tankId).strip();
+    }
+
     /**
      * Gets random resources every 1 sec
      */
