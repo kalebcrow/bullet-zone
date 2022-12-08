@@ -260,28 +260,12 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             int k = 0;
             // SARA fix so can have correct neighbors for bottom row
             for (int i = 0; i < FIELD_DIM_ROW; i++) {
-                // col
-                //if (i != 0 && (i + 1) % 16 == 0) {
-                //    k += 256;
-                //}
                 for (int j = 0; j < FIELD_DIM_COL; j++) {
-                    int val = k + (i * FIELD_DIM_COL + j);
-                    //int val2 = val + 1;
-                    //int val3 = val + 16;
-
-                    int val2 = k + (i * FIELD_DIM_COL
-                            + ((j + 1) % FIELD_DIM_ROW));
-                    int val3 = k + (((i + 1) % FIELD_DIM_ROW)
+                    int val = (i * FIELD_DIM_COL + j);
+                    int val2 = (i * FIELD_DIM_COL
+                            + ((j + 1) % FIELD_DIM_COL));
+                    int val3 = k + (((i + 1) % FIELD_DIM_COL)
                             * FIELD_DIM_COL + j);
-
-
-                    // places where the boards overlap
-                    // can hardcode portal neighbors here
-                    //if ((i + 1) % 16 == 0) {
-                        //int tempval = (val + 1) - 16; // this should get to 0 / 16 / 32
-                        //val2 = val + 1;
-                    //    val3 = val - 240; //tempval + 16;
-                    //}
 
                     targetHolder = game.getHolderGrid().get(val);//i * FIELD_DIM_COL + j);
                     rightHolder = game.getHolderGrid().get(val2);//i * FIELD_DIM_COL
@@ -300,6 +284,10 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
                     log.debug("left: " + targetHolder.getNeighbor(Direction.Left));
                     log.debug("up: " + targetHolder.getNeighbor(Direction.Up));
                     log.debug("bottom: " + targetHolder.getNeighbor(Direction.Down));
+                }
+                // update this number to get the bottom of each grid to hold the top of each grid, instead of one big grid
+                if (i != 0 && (i + 1) % 16 == 0) {
+                    k += 256;
                 }
             }
         }
