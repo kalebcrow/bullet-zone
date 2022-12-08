@@ -199,13 +199,11 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
                 }
 
                 // SARA improvements on grid
-                /*
                 if (improvementGrid[i][j].equals("I")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
                 }
-                 */
 
                 // second layer would be roads and now decking [2]
                 // third layer is walls + vehicles + resources [1]
@@ -258,32 +256,20 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             // Build connections
             // row
             int k = 0;
-            // SARA fix so can have correct neighbors for bottom row
             for (int i = 0; i < FIELD_DIM_ROW; i++) {
+                // col
                 for (int j = 0; j < FIELD_DIM_COL; j++) {
-                    int val = (i * FIELD_DIM_COL + j);
-                    int val2 = (i * FIELD_DIM_COL
+                    targetHolder = game.getHolderGrid().get(i * FIELD_DIM_COL + j);
+                    rightHolder = game.getHolderGrid().get(i * FIELD_DIM_COL
                             + ((j + 1) % FIELD_DIM_COL));
-                    int val3 = k + (((i + 1) % FIELD_DIM_COL)
-                            * FIELD_DIM_COL + j);
-
-                    targetHolder = game.getHolderGrid().get(val);//i * FIELD_DIM_COL + j);
-                    rightHolder = game.getHolderGrid().get(val2);//i * FIELD_DIM_COL
-                            //+ ((j + 1) % FIELD_DIM_COL));
-                    downHolder = game.getHolderGrid().get(val3);//((i + 1) % FIELD_DIM_COL)
-                            //* FIELD_DIM_COL + j);
+                    downHolder = game.getHolderGrid().get(k + (((i + 1) % FIELD_DIM_COL)
+                            * FIELD_DIM_COL + j));
 
                     targetHolder.addNeighbor(Direction.Right, rightHolder);
                     rightHolder.addNeighbor(Direction.Left, targetHolder);
 
                     targetHolder.addNeighbor(Direction.Down, downHolder);
                     downHolder.addNeighbor(Direction.Up, targetHolder);
-
-                    log.debug(k + ": (" + i + ", " + j + "): " + val + ", " + val2 + ", " + val3);
-                    log.debug("right: " + targetHolder.getNeighbor(Direction.Right));
-                    log.debug("left: " + targetHolder.getNeighbor(Direction.Left));
-                    log.debug("up: " + targetHolder.getNeighbor(Direction.Up));
-                    log.debug("bottom: " + targetHolder.getNeighbor(Direction.Down));
                 }
                 // update this number to get the bottom of each grid to hold the top of each grid, instead of one big grid
                 if (i != 0 && (i + 1) % 16 == 0) {
@@ -292,45 +278,4 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             }
         }
     }
-
-
-    /**
-     * Creates a 16*16 grid.
-     * @param game specified game to create board for
-     */
-    /*
-    public void createFieldHolderGrid(Game game) {
-        synchronized (this.monitor) {
-            game.getHolderGrid().clear();
-            for (int i = 0; i < FIELD_DIM * FIELD_DIM; i++) {
-                game.getHolderGrid().add(new FieldHolder(i));
-            }
-
-            FieldHolder targetHolder;
-            FieldHolder rightHolder;
-            FieldHolder downHolder;
-
-            // Build connections
-            // row
-            for (int i = 0; i < FIELD_DIM; i++) {
-                // col
-                for (int j = 0; j < FIELD_DIM; j++) {
-                    targetHolder = game.getHolderGrid().get(i * FIELD_DIM + j);
-                    rightHolder = game.getHolderGrid().get(i * FIELD_DIM
-                            + ((j + 1) % FIELD_DIM));
-                    downHolder = game.getHolderGrid().get(((i + 1) % FIELD_DIM)
-                            * FIELD_DIM + j);
-
-                    targetHolder.addNeighbor(Direction.Right, rightHolder);
-                    rightHolder.addNeighbor(Direction.Left, targetHolder);
-
-                    targetHolder.addNeighbor(Direction.Down, downHolder);
-                    downHolder.addNeighbor(Direction.Up, targetHolder);
-                }
-            }
-        }
-    }
-
-     */
-
 }
