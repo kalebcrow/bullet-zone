@@ -236,6 +236,7 @@ public class ClientActivity extends Activity {
             boardView.setGarageText(textViewResources);
             boardView.setUserText(textViewGarage);
             health.setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonEject).setVisibility(View.VISIBLE);
             textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             textViewMoveTo = findViewById(R.id.moveToTextView);
@@ -509,6 +510,11 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonDestroyTank)
     void destroyTank(){
         tankController.destroyTank();
+    }
+
+    @Click(R.id.buttonEject)
+    void eject(){
+        tankController.eject();
     }
 
 }
