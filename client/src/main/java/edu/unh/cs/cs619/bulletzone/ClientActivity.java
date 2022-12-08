@@ -35,6 +35,7 @@ import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
+import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -89,6 +90,8 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
+
+    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -174,34 +177,36 @@ public class ClientActivity extends Activity {
      */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
-        final int viewId = view.getId();
-        byte direction = 0;
+        // let tank move if it is on the same board that is showing
+        if (gridnum == tankController.getBoardTankOn()) {
+            final int viewId = view.getId();
+            byte direction = 0;
 
-        switch (viewId) {
-            case R.id.buttonUp:
-                direction = 0;
-                break;
-            case R.id.buttonDown:
-                direction = 4;
-                break;
-            case R.id.buttonLeft:
-                direction = 6;
-                break;
-            case R.id.buttonRight:
-                direction = 2;
-                break;
-            default:
-                Log.e(TAG, "Unknown movement button id: " + viewId);
-                break;
+            switch (viewId) {
+                case R.id.buttonUp:
+                    direction = 0;
+                    break;
+                case R.id.buttonDown:
+                    direction = 4;
+                    break;
+                case R.id.buttonLeft:
+                    direction = 6;
+                    break;
+                case R.id.buttonRight:
+                    direction = 2;
+                    break;
+                default:
+                    Log.e(TAG, "Unknown movement button id: " + viewId);
+                    break;
+            }
+            tankController.move(direction);
         }
-        tankController.move(direction);
     }
 
     /**
      * startGame: Initializes view when join game is selected
      */
     void startGame() {
-        //login();
         // this should only work if the user if logged in
         if (!Objects.equals(username, "") || testing) {
             if (testing) {
@@ -268,6 +273,15 @@ public class ClientActivity extends Activity {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
 
+    }
+
+    /**
+     * changeBoard: Changes to a selected board
+     */
+    @ItemSelect(R.id.boardSpinner)
+    void changeBoard(boolean selected, int position){
+        gridnum = position;
+        gridPollTask.changeBoard(gridnum);
     }
 
     /**

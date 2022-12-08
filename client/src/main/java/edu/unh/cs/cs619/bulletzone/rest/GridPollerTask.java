@@ -14,6 +14,8 @@ import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
 import android.util.Log;
 
+import java.util.Arrays;
+
 /**
  * Created by simon on 10/3/14.
  */
@@ -58,6 +60,31 @@ public class GridPollerTask {
             // poll server every 500ms
             SystemClock.sleep(500);
         }
+    }
+
+    /**
+     * Change the board to the requested board
+     *
+     * @param numBoard the number board requested
+     */
+    @Background(id = "grid_poller_change_board")
+    public void changeBoard(int numBoard) {
+        // get updated grid
+        GridWrapper newGW = restClient.grid();
+        int[][][] g = newGW.getGrid();
+
+        // update the grid to show the different indices of it
+        int[][][] newg = new int[16][16][3];
+        if (numBoard == 0) {
+            newg = Arrays.copyOfRange(g, 0, 16);
+        } else if (numBoard == 1) {
+            newg = Arrays.copyOfRange(g, 16, 32);
+        } else if (numBoard == 2) {
+            newg = Arrays.copyOfRange(g, 32, 48);
+        }
+
+        newGW.setGrid(newg);
+        onGridUpdate(newGW);
     }
 
     @UiThread

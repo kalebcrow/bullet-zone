@@ -45,6 +45,8 @@ public class TankController {
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
 
+    private int[] boardTankOn = { 0, 0, 0 };
+
     /**
      * TankController
      */
@@ -122,7 +124,23 @@ public class TankController {
         return  false;
     }
 
+    public int getBoardTankOn() {
+        int othervalue = 0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
 
+        return boardTankOn[othervalue];
+    }
+
+    /**
+     *
+     */
+    public void setBoardTankOn(int board, int tankmodulo) {
+        this.boardTankOn[tankmodulo] = board;
+    }
 
     public int getTankOrientation() {
         int othervalue =0;
@@ -158,7 +176,7 @@ public class TankController {
      */
     @Background
     public void move(byte direction) {
-        int othervalue =0;
+        int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
             othervalue = 2;
         } else if (currentVehicle == Vehicle.MINER) {
