@@ -178,7 +178,8 @@ public class ClientActivity extends Activity {
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
         // let tank move if it is on the same board that is showing
-        if (gridnum == tankController.getBoardTankOn()) {
+        Log.d("moving", "girdnum: " + gridnum + ", and tankon: " + tankController.getBoardTankOn());
+        //if (gridnum == tankController.getBoardTankOn()) {
             final int viewId = view.getId();
             byte direction = 0;
 
@@ -199,8 +200,8 @@ public class ClientActivity extends Activity {
                     Log.e(TAG, "Unknown movement button id: " + viewId);
                     break;
             }
-            tankController.move(direction);
-        }
+            tankController.move(gridnum, direction);
+        //}
     }
 
     /**
@@ -280,6 +281,8 @@ public class ClientActivity extends Activity {
      */
     @ItemSelect(R.id.boardSpinner)
     void changeBoard(boolean selected, int position){
+        // once portals get implemented, something will have to change the board the tank is on
+        // tankController.setBoardTankOn(gridnum);
         gridnum = position;
         gridPollTask.changeBoard(gridnum);
     }
@@ -467,18 +470,21 @@ public class ClientActivity extends Activity {
                 buttonAction.setText("ACTION");
                 buttonAction.setClickable(false);
                 buttonAction.setAlpha(.5f);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 1:
                 tankController.setCurrentVehicle(TankController.Vehicle.MINER);
                 buttonAction.setText("MINE");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 2:
                 tankController.setCurrentVehicle(TankController.Vehicle.BUILDER);
                 buttonAction.setText("BUILDER MENU");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
         }
 

@@ -124,6 +124,16 @@ public class TankController {
         return  false;
     }
 
+    public int getCurrentVehicleNum() {
+        int othervalue = 0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+        return othervalue;
+    }
+
     public int getBoardTankOn() {
         int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
@@ -138,8 +148,8 @@ public class TankController {
     /**
      *
      */
-    public void setBoardTankOn(int board, int tankmodulo) {
-        this.boardTankOn[tankmodulo] = board;
+    public void setBoardTankOn(int board) {
+        this.boardTankOn[getCurrentVehicleNum()] = board;
     }
 
     public int getTankOrientation() {
@@ -175,13 +185,18 @@ public class TankController {
      * @param direction direction
      */
     @Background
-    public void move(byte direction) {
+    public void move(int gridnum, byte direction) {
         int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
             othervalue = 2;
         } else if (currentVehicle == Vehicle.MINER) {
             othervalue = 1;
         }
+        if (getBoardTankOn() != gridnum) {
+            // don't move the tank if its on a different grid
+            return;
+        }
+
 
         int value = direction - tankOrientation[othervalue];
 
