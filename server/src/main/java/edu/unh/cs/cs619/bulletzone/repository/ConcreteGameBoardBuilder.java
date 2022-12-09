@@ -87,7 +87,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P1", " ", " ", " ", " "}, // 6
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
+            {" ", " ", " ", " ", "P4", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", "P3", " ", " ", " "}, // 9
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
@@ -120,7 +120,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P4", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
@@ -228,12 +228,16 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
                 } else if (improvementGrid[i][j].equals("D")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
                 } else if (improvementGrid[i][j].equals("P1")){
+                    p1.setParent(game.getHolderGrid().get(count));
                     game.getHolderGrid().get(count).setImprovementEntity(p1);
                 } else if (improvementGrid[i][j].equals("P2")){
+                    p2.setParent(game.getHolderGrid().get(count));
                     game.getHolderGrid().get(count).setImprovementEntity(p2);
                 } else if (improvementGrid[i][j].equals("P3")){
+                    p3.setParent(game.getHolderGrid().get(count));
                     game.getHolderGrid().get(count).setImprovementEntity(p3);
                 } else if (improvementGrid[i][j].equals("P4")){
+                    p4.setParent(game.getHolderGrid().get(count));
                     game.getHolderGrid().get(count).setImprovementEntity(p4);
                 }
 

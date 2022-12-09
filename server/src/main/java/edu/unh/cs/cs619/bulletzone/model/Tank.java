@@ -106,15 +106,15 @@ public class Tank extends FieldEntity {
                 if(nextField.getImprovement().toString() == "P")
                 {
                     Portal p = (Portal)nextField.getImprovement();
-                    if(p.direction == this.getDirection())
+                    if(p.direction == direction)
                     {
-                        nextField = p.exit.parent.getNeighbor(p.exit.direction);
+                        nextField = p.exit.getParent().getNeighbor(p.exit.direction);
                     }
                     nextField.setFieldEntity(parent.getEntity());
                     parent.clearField();
                     setParent(nextField);
                     this.direction = p.exit.direction;
-                    eventManager.addEvent(new PortalEvent(id, toByte(direction), parent.getPos()));
+                    eventManager.addEvent(new PortalEvent(id, toByte(direction), parent.getPos()+1));
                     isCompleted = true;
                 }
                 else
