@@ -11,6 +11,8 @@ public class FireButtonState extends ButtonState{
     @Override
     public void Handle(int[] argument) {
 
+        System.out.println("Fire button!");
+
         if(argument[2] == 1){
             savedButton.setEnabled(true);
         }

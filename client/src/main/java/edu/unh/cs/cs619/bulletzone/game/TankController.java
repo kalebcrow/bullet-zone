@@ -204,7 +204,7 @@ public class TankController {
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
-        Log.d("TankController", "Tank Changed to: " + currentVehicle);
+        //Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
         if (currentVehicle == Vehicle.BUILDER) {
             currentTankID = tankID[2];
@@ -297,6 +297,9 @@ public class TankController {
     }
 
     public void buttonStateHandler(int[] restrictions){
+
+        System.out.println("Orientation: " + getTankOrientation());
+        System.out.println("Restrictions: " + restrictions[0] + restrictions[1] + restrictions[2]);
 
         if(getTankOrientation() == 0 || getTankOrientation() == 4){
             buttonStates[0].Handle(restrictions);

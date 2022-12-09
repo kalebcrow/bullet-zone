@@ -107,7 +107,7 @@ public class TankTile extends GroundTile {
 
     private Integer findHealth(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
-        Log.d("Tank Health", "Json Value " + number);
+        //Log.d("Tank Health", "Json Value " + number);
         char[] digits1 = number.toCharArray();
         int offset = 4;
         return Integer.parseInt(String.copyValueOf(digits1, offset, 3));
