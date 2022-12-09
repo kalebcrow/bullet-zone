@@ -12,6 +12,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
@@ -44,6 +45,7 @@ public class TankController {
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
+    String username;
 
     private int[] boardTankOn = { 0, 0, 0 };
 
@@ -213,6 +215,7 @@ public class TankController {
     @Background
     public void joinGame(String username){
         try {
+            this.username = username;
             tankID = restClient.join(username).getResult();
             currentTankID = tankID[0];
         } catch (Exception e) {
@@ -356,6 +359,12 @@ public class TankController {
 
     @Background
     public void respawn() {
+        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID[0]));
+        TankTile tile1 = TankList.getTankList().getLocation(Math.toIntExact(tankID[2]));
+        TankTile tile2 = TankList.getTankList().getLocation(Math.toIntExact(tankID[1]));
+        if (tile == null && tile1 == null && tile2 == null) {
+            joinGame(username);
+        }
         restClient.rebuild(currentTankID);
     }
 
