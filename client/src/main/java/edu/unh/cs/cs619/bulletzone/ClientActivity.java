@@ -35,6 +35,7 @@ import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
+import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -89,6 +90,8 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
+
+    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -174,6 +177,7 @@ public class ClientActivity extends Activity {
      */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
+        // let tank move if it is on the same board that is showing
         final int viewId = view.getId();
         byte direction = 0;
 
@@ -194,14 +198,13 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        tankController.move(direction);
+        tankController.move(gridnum, direction);
     }
 
     /**
      * startGame: Initializes view when join game is selected
      */
     void startGame() {
-        //login();
         // this should only work if the user if logged in
         if (!Objects.equals(username, "") || testing) {
             if (testing) {
@@ -269,6 +272,17 @@ public class ClientActivity extends Activity {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
 
+    }
+
+    /**
+     * changeBoard: Changes to a selected board
+     */
+    @ItemSelect(R.id.boardSpinner)
+    void changeBoard(boolean selected, int position){
+        // once portals get implemented, something will have to change the board the tank is on
+        // tankController.setBoardTankOn(gridnum);
+        gridnum = position;
+        gridPollTask.changeBoard(gridnum);
     }
 
     /**
@@ -454,18 +468,21 @@ public class ClientActivity extends Activity {
                 buttonAction.setText("ACTION");
                 buttonAction.setClickable(false);
                 buttonAction.setAlpha(.5f);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 1:
                 tankController.setCurrentVehicle(TankController.Vehicle.MINER);
                 buttonAction.setText("MINE");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 2:
                 tankController.setCurrentVehicle(TankController.Vehicle.BUILDER);
                 buttonAction.setText("BUILDER MENU");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
         }
 

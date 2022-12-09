@@ -24,5 +24,10 @@
         <item>Miner</item>
         <item>Builder</item>
     </string-array>
+    <string-array name="boards_array">
+        <item>Top</item>
+        <item>Middle</item>
+        <item>Bottom</item>
+    </string-array>
 
 </resources>
