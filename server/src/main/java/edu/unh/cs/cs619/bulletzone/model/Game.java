@@ -146,7 +146,14 @@ public final class Game {
                     // check for improvements
                     if(holder.isImprovementPresent())
                     {
-                        grid[i][j][2] = 30000001;
+                        if(holder.getImprovement().toString() == "P")
+                        {
+                            grid[i][j][2] = holder.getImprovement().getIntValue();
+                        }
+                        else
+                        {
+                            grid[i][j][2] = 30000001;
+                        }
                     }
                     else
                     {
