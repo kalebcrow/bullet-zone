@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
@@ -126,18 +127,22 @@ public class Tank extends FieldEntity {
     public void setDirection(Direction direction) { this.direction = direction; }
 
     public void strip(){
-        powerUp = powerUp.powerDown();
         if(powerUp != null) {
             if (!parent.getNeighbor(Direction.Up).isEntityPresent()) {
                 parent.getNeighbor(Direction.Up).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Up).getPos(),powerUp.toString()));
             } else if (!parent.getNeighbor(Direction.Down).isEntityPresent()) {
                 parent.getNeighbor(Direction.Down).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Down).getPos(),powerUp.toString()));
             } else if (!parent.getNeighbor(Direction.Left).isEntityPresent()) {
                 parent.getNeighbor(Direction.Left).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Left).getPos(),powerUp.toString()));
             } else if (!parent.getNeighbor(Direction.Right).isEntityPresent()) {
                 parent.getNeighbor(Direction.Right).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Right).getPos(),powerUp.toString()));
             }
         }
+        powerUp = powerUp.powerDown();
     }
 
     @JsonIgnore

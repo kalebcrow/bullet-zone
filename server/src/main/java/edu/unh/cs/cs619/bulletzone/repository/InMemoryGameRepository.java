@@ -22,6 +22,7 @@ import edu.unh.cs.cs619.bulletzone.TurnCommand;
 import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.AddTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.BuildEvent;
+import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
@@ -540,6 +541,8 @@ public class InMemoryGameRepository implements GameRepository {
         Direction behindtank = Direction.fromByte((byte) ((d+4)%8));
         FieldHolder behind = parent.getNeighbor(behindtank);
 
+
+
         if(behind.isEntityPresent())
         {
             FieldEntity structure = behind.getEntity();
@@ -589,6 +592,30 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(3,5);
                 behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 4));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if(behind.isRoadPresent()) // [HUH]<(0_0<)
+        {
+            FieldResource resource = behind.getResource();
+            if(resource.toString() == "FG")
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 400);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
+            else if(resource.toString() == "GA")
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 300);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
                 return true;
             }
             else
