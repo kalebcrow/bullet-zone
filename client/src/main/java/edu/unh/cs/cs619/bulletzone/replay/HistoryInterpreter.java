@@ -28,6 +28,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 
@@ -94,6 +95,7 @@ public class HistoryInterpreter extends Thread {
                     }
                 }
                 GridEvent currEvent = eventHistory.get(i);
+                Log.d("Events Time", String.valueOf(currEvent.getTime()));
                 long timeDiff = currEvent.getTime() - prevEvent.getTime();
                 try {
                     Thread.sleep(timeDiff/speed);
@@ -103,6 +105,8 @@ public class HistoryInterpreter extends Thread {
                 interpret(currEvent);
                 prevEvent = currEvent;
             }
+        } else {
+            Log.d("no Events my guy", "");
         }
     }
 
@@ -162,6 +166,9 @@ public class HistoryInterpreter extends Thread {
                 break;
             case "balance":
                 event = new BalenceEvent(currEvent);
+                break;
+            case "portal":
+                event = new PortalEvent(currEvent);
                 break;
             default:
                 event = new ExecutableEvent(currEvent);

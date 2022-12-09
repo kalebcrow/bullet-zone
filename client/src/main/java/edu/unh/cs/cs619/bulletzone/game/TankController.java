@@ -12,7 +12,9 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
+import edu.unh.cs.cs619.bulletzone.rest.BoardUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -29,6 +31,9 @@ public class TankController {
 
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
+
+    @Bean
+    BusProvider busProvider;
 
     private Long[] tankID;
 
@@ -117,7 +122,7 @@ public class TankController {
 
     public boolean containsTankID(Long tankID) {
         for (int i = 0; i < 3; i++) {
-            if (Objects.equals(this.tankID[i], tankID)) {
+            if (this.tankID[i].equals(tankID)) {
                 return true;
             }
         }
@@ -185,16 +190,12 @@ public class TankController {
      * @param direction direction
      */
     @Background
-    public void move(int gridnum, byte direction) {
+    public void move(byte direction) {
         int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
             othervalue = 2;
         } else if (currentVehicle == Vehicle.MINER) {
             othervalue = 1;
-        }
-        if (getBoardTankOn() != gridnum) {
-            // don't move the tank if its on a different grid
-            return;
         }
 
 
@@ -234,7 +235,6 @@ public class TankController {
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
-        Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
         if (currentVehicle == Vehicle.BUILDER) {
             currentTankID = tankID[2];
@@ -243,6 +243,8 @@ public class TankController {
         } else {
             currentTankID = tankID[0];
         }
+
+        busProvider.getEventBus().post(new BoardUpdate(TankList.getTankList().getLocation(Math.toIntExact(currentTankID)).location/256));
 
 
     }

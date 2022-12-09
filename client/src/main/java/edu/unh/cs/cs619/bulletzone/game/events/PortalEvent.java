@@ -5,10 +5,13 @@ import android.util.Log;
 import com.squareup.otto.Bus;
 
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.tiles.BulletTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
+import edu.unh.cs.cs619.bulletzone.rest.BalenceUpdate;
+import edu.unh.cs.cs619.bulletzone.rest.BoardUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
 public class PortalEvent extends ExecutableEvent {
@@ -28,9 +31,14 @@ public class PortalEvent extends ExecutableEvent {
         }
 
         if (tile != null) {
+            if (TankController.getTankController().containsTankID(Long.valueOf(ID))) {
+                bus.post(new BoardUpdate( pos/256));
+            }
             Integer prevlocation = tile.getLocation();
             tile.setLocation(pos);
             tile.setOrientation((int) direction);
+            Log.d("Location", "Prev " + prevlocation + " Next " + pos );
+
 
             tileUpdateEvent = new TileUpdateEvent(pos, tile);
             bus.post(tileUpdateEvent);

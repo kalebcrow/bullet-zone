@@ -45,10 +45,10 @@ public class TankControllerTest {
         //forward and backwards
         //Note testingUnit assumes tank faces up initially
         //Move up
-        testingUnit.move(0, (byte) 0);
+        testingUnit.move((byte) 0);
         verify(restClient).move(value, (byte) 0);
         //Move Down
-        testingUnit.move(0, (byte) 4);
+        testingUnit.move((byte) 4);
         verify(restClient).move(value, (byte) 4);
     }
 
@@ -60,10 +60,10 @@ public class TankControllerTest {
 
         //Note testingUnit assumes tank faces up initially
         //Turn right
-        testingUnit.move(0, (byte) 2);
+        testingUnit.move((byte) 2);
         verify(restClient).turn(value, (byte) 2);
         //Turn down
-        testingUnit.move(0, (byte) 4);
+        testingUnit.move((byte) 4);
         verify(restClient).turn(value, (byte) 4);
     }
 
