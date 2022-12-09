@@ -30,7 +30,7 @@ public class BoardView {
      *
      * @return the tiles
      */
-    public GroundTile[][] getTiles() {
+    public GroundTile[][][] getTiles() {
         return tiles;
     }
 
@@ -38,11 +38,11 @@ public class BoardView {
      *
      * @param tiles tiles
      */
-    public void setTiles(GroundTile[][] tiles) {
+    public void setTiles(GroundTile[][][] tiles) {
         this.tiles = tiles;
     }
 
-    public GroundTile[][] tiles;
+    public GroundTile[][][] tiles;
     public int[][][] tileInput;
     public TileFactory tileFactory;
     public int[] resources; //rock iron clay
@@ -115,7 +115,7 @@ public class BoardView {
     public BoardView() {
         tileFactory = TileFactory.getFactory();
         resources = new int[4];
-        tiles = new GroundTile[256][3]; // represents [terrain][entity][road]
+        tiles = new GroundTile[256][3][3]; // represents [terrain][entity][road]
     }
 
     @AfterInject
@@ -129,7 +129,7 @@ public class BoardView {
      * @return get build
      */
     public GroundTile getTile(int index) {
-        return tiles[index][1]; // defaults to two because only used to test entities?
+        return tiles[index][1][0]; // defaults to two because only used to test entities?
     }
 
     /**
@@ -156,9 +156,9 @@ public class BoardView {
     public void setCell(int index, GroundTile cell) {
         if (cell.jsonValue == 0 || cell.jsonValue == 1 || cell.jsonValue == 2
                 || cell.jsonValue == 3 || cell.jsonValue == 50) {
-            tiles[index][0] = cell; // set terrain
+            tiles[index][0][0] = cell; // set terrain
         } else {
-            tiles[index][1] = cell; // set entity
+            tiles[index][1][0] = cell; // set entity
         }
     }
 
@@ -177,11 +177,11 @@ public class BoardView {
     public void setUsingJSON(int[][][] arr) {
         this.tileInput = arr;
         int value = 0;
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 48; i++) {
             for (int ii = 0; ii < 16; ii++) {
-                this.tiles[value][0] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
-                this.tiles[value][1] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
-                this.tiles[value][2] = this.tileFactory.makeTile((Integer) arr[i][ii][2], value); // road
+                this.tiles[value%256][0][i / 16] = this.tileFactory.makeTile(arr[i][ii][0], value); // terrain
+                this.tiles[value%256][1][i / 16] = this.tileFactory.makeTile(arr[i][ii][1], value); // entity
+                this.tiles[value%256][2][i/16] = this.tileFactory.makeTile((Integer) arr[i][ii][2], value); // road
                 value++;
             }
         }
