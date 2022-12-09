@@ -4,9 +4,6 @@ import edu.unh.cs.cs619.bulletzone.model.Powered;
 
 public class FusionGenerated extends Powered {
 
-    public FusionGenerated(){
-        fieldElement = new FusionGenerator();
-    }
 
     @Override
     public long getAllowedMoveInterval() {

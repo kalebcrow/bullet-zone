@@ -127,7 +127,7 @@ public class Tank extends FieldEntity {
     public void setDirection(Direction direction) { this.direction = direction; }
 
     public void strip(){
-        if(powerUp != null) {
+        if(powerUp.getFieldElement() != null) {
             if (!parent.getNeighbor(Direction.Up).isEntityPresent()) {
                 parent.getNeighbor(Direction.Up).setFieldEntity(powerUp.getFieldElement());
                 eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Up).getPos(),powerUp.toString()));
