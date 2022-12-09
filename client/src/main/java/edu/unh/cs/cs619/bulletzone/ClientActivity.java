@@ -178,30 +178,27 @@ public class ClientActivity extends Activity {
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
         // let tank move if it is on the same board that is showing
-        Log.d("moving", "girdnum: " + gridnum + ", and tankon: " + tankController.getBoardTankOn());
-        //if (gridnum == tankController.getBoardTankOn()) {
-            final int viewId = view.getId();
-            byte direction = 0;
+        final int viewId = view.getId();
+        byte direction = 0;
 
-            switch (viewId) {
-                case R.id.buttonUp:
-                    direction = 0;
-                    break;
-                case R.id.buttonDown:
-                    direction = 4;
-                    break;
-                case R.id.buttonLeft:
-                    direction = 6;
-                    break;
-                case R.id.buttonRight:
-                    direction = 2;
-                    break;
-                default:
-                    Log.e(TAG, "Unknown movement button id: " + viewId);
-                    break;
-            }
-            tankController.move(gridnum, direction);
-        //}
+        switch (viewId) {
+            case R.id.buttonUp:
+                direction = 0;
+                break;
+            case R.id.buttonDown:
+                direction = 4;
+                break;
+            case R.id.buttonLeft:
+                direction = 6;
+                break;
+            case R.id.buttonRight:
+                direction = 2;
+                break;
+            default:
+                Log.e(TAG, "Unknown movement button id: " + viewId);
+                break;
+        }
+        tankController.move(gridnum, direction);
     }
 
     /**
