@@ -166,7 +166,7 @@ public class InMemoryGameRepository implements GameRepository {
                     for (; ; ) {
                         x = random.nextInt(FIELD_DIM);
                         y = random.nextInt(FIELD_DIM);
-                        FieldHolder fieldElement = game.getHolderGrid().get(x * FIELD_DIM + y);
+                        FieldHolder fieldElement = game.getHolderGrid().get(x * (FIELD_DIM) + y);
                         if (!fieldElement.isEntityPresent() && !fieldElement.getTerrain().toString().equals("W") && !fieldElement.getTerrain().toString().equals("F")) {
                             fieldElement.setFieldEntity(tanks[0]);
                             tanks[0].setParent(fieldElement);
