@@ -9,6 +9,7 @@ import edu.unh.cs.cs619.bulletzone.model.Forest;
 import edu.unh.cs.cs619.bulletzone.model.Game;
 import edu.unh.cs.cs619.bulletzone.model.Hilly;
 import edu.unh.cs.cs619.bulletzone.model.Meadow;
+import edu.unh.cs.cs619.bulletzone.model.Portal;
 import edu.unh.cs.cs619.bulletzone.model.Rocky;
 import edu.unh.cs.cs619.bulletzone.model.Wall;
 import edu.unh.cs.cs619.bulletzone.model.Water;
@@ -85,8 +86,25 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P1", " ", " ", " ", " "}, // 6
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", "P3", " ", " ", " "}, // 9
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", "D", "D", "D", "D", " "}, // 12
+            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 13
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 14
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
+
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", " ", " "}, // 1
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
+            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P2", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
@@ -102,24 +120,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 11
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", "D", "D", "D", "D", " "}, // 12
-            {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 13
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 14
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 15
-
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", " ", " "}, // 1
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 6
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P4", " ", " ", " ", " "}, // 6
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 9
@@ -196,6 +197,14 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
 
     public void createInitialGrid(Game game) {
         // add each level of the square - terrain --> improvements/tanks --> bundles
+        Portal p1 = new Portal(Direction.Up);
+        Portal p2 = new Portal(Direction.Down);
+        Portal p3 = new Portal(Direction.Left);
+        Portal p4 = new Portal(Direction.Right);
+        p1.setExit(p2);
+        p2.setExit(p1);
+        p3.setExit(p4);
+        p4.setExit(p3);
         int count = 0;
         // row
         for (int i = 0; i < FIELD_DIM_ROW; i++) {
@@ -218,6 +227,14 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
+                } else if (improvementGrid[i][j].equals("P1")){
+                    game.getHolderGrid().get(count).setImprovementEntity(p1);
+                } else if (improvementGrid[i][j].equals("P2")){
+                    game.getHolderGrid().get(count).setImprovementEntity(p2);
+                } else if (improvementGrid[i][j].equals("P3")){
+                    game.getHolderGrid().get(count).setImprovementEntity(p3);
+                } else if (improvementGrid[i][j].equals("P4")){
+                    game.getHolderGrid().get(count).setImprovementEntity(p4);
                 }
 
                 // second layer would be roads and now decking [2]

@@ -100,11 +100,38 @@ public class Tank extends FieldEntity {
         FieldHolder nextField = parent.getNeighbor(direction);
         // check if next field is empty and go there if it is
         if (!nextField.isEntityPresent()) {
-            nextField.setFieldEntity(parent.getEntity());
-            parent.clearField();
-            setParent(nextField);
-            eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
-            isCompleted = true;
+            if(nextField.isImprovementPresent())
+            {
+                if(nextField.getImprovement().toString() == "P")
+                {
+                    Portal p = (Portal)nextField.getImprovement();
+                    if(p.direction == this.getDirection())
+                    {
+                        nextField = p.exit.parent.getNeighbor(p.exit.direction);
+                    }
+                    nextField.setFieldEntity(parent.getEntity());
+                    parent.clearField();
+                    setParent(nextField);
+                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                    isCompleted = true;
+                }
+                else
+                {
+                    nextField.setFieldEntity(parent.getEntity());
+                    parent.clearField();
+                    setParent(nextField);
+                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                    isCompleted = true;
+                }
+            }
+            else
+            {
+                nextField.setFieldEntity(parent.getEntity());
+                parent.clearField();
+                setParent(nextField);
+                eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                isCompleted = true;
+            }
         } else { // if it's not then you have to "hit" whatever is there
             isCompleted = false;
             FieldEntity ent = nextField.getEntity();
