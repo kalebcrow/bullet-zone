@@ -39,6 +39,7 @@ public class FieldHolder {
         return entityHolder.isPresent();
     }
 
+
     public boolean isRoadPresent() {
         return resourceHolder.isPresent();
     }
@@ -99,5 +100,7 @@ public class FieldHolder {
     public void clearImprovement() {
         improvementHolder = Optional.empty();
     }
+
+    public void clearResource() { resourceHolder = Optional.empty();}
 
 }
