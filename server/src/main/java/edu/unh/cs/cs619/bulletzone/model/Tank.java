@@ -14,6 +14,7 @@ import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import jdk.internal.org.jline.utils.Log;
@@ -112,7 +113,8 @@ public class Tank extends FieldEntity {
                     nextField.setFieldEntity(parent.getEntity());
                     parent.clearField();
                     setParent(nextField);
-                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                    this.direction = p.exit.direction;
+                    eventManager.addEvent(new PortalEvent(id, toByte(direction), parent.getPos()));
                     isCompleted = true;
                 }
                 else
