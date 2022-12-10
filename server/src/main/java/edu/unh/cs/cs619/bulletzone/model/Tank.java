@@ -13,6 +13,7 @@ import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
+import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
@@ -136,17 +137,20 @@ public class Tank extends FieldEntity {
         powerUp = power;
     }
 
-    public boolean advance(Direction direction){
+    public boolean advance(Direction direction) {
         boolean isCompleted;
         FieldHolder nextField = parent.getNeighbor(direction);
+        boolean present = nextField.isEntityPresent();
+        FieldEntity ent = null;
+        if (present) ent = nextField.getEntity();
+
         // check if next field is empty and go there if it is
-        if (!nextField.isEntityPresent()) {
-            if(nextField.isImprovementPresent())
-            {
-                if(nextField.getImprovement().toString() == "P")
-                {
-                    Portal p = (Portal)nextField.getImprovement();
-                    if(p.direction == direction) {
+        if (!present || ent.gather(this)) {
+
+            if (nextField.isImprovementPresent()) {
+                if (nextField.getImprovement().toString() == "P") {
+                    Portal p = (Portal) nextField.getImprovement();
+                    if (p.direction == direction) {
                         nextField = p.exit.getParent().getNeighbor(p.exit.direction);
                         nextField.setFieldEntity(parent.getEntity());
                         parent.clearField();
@@ -159,105 +163,42 @@ public class Tank extends FieldEntity {
                         this.direction = Direction.fromByte(Ydirection);
                         eventManager.addEvent(new PortalEvent(id, Ydirection, parent.getPos() + 1));
                         isCompleted = true;
-                    }
-                    else
-                    {
+                    } else {
                         nextField.setFieldEntity(parent.getEntity());
                         parent.clearField();
                         setParent(nextField);
                         eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
                         isCompleted = true;
                     }
-                }
-                else
-                {
+                } else {
                     nextField.setFieldEntity(parent.getEntity());
                     parent.clearField();
                     setParent(nextField);
                     eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
                     isCompleted = true;
                 }
-            }
-            else
-            {
+            } else {
                 nextField.setFieldEntity(parent.getEntity());
                 parent.clearField();
                 setParent(nextField);
                 eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
                 isCompleted = true;
             }
-        } else { // if it's not then you have to "hit" whatever is there
-            isCompleted = false;
-            FieldEntity ent = nextField.getEntity();
-            if (ent.toString().equals("IW")){
-                // you can't "hit" indestructible wall OR deso nothing happens
-                return false;
-            }
-            if (isResource(nextField)) {
-                //Grab Miner
-                isCompleted = true;
-                Tank miner = new Tank();
-                HashMap<String, Long> tanks = game.getTanks(getIp());
-                assert tanks != null;
-                if (tanks.containsKey("miner"))
-                    miner = game.getTank(tanks.get("miner"));
-                if (miner.getTypeIndex() == 1) { //Incase this is not the miner
-                    FieldResource fr = (FieldResource) nextField.getEntity();
-                    if (fr.getIntValue() == 503) { //iron
-                        miner.addBundleOfResources(1, 1);
-                        System.out.println("Finished item pickup process, adding iron to stash");
-                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
-                    } else if (fr.getIntValue() == 502) { //rock
-                        miner.addBundleOfResources(0, 1);
-                        System.out.println("Finished item pickup process, adding rock to stash");
-                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
-                    } else if (fr.getIntValue() == 501) { //clay
-                        miner.addBundleOfResources(2, 1);
-                        System.out.println("Finished item pickup process, adding clay to stash");
-                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
-                    } else if (fr.getIntValue() == 504) {
-                        miner.addBundleOfResources(3, 1);
-                        System.out.println("Finished item pickup process, adding wood to stash");
-                        eventManager.addEvent(new MineEvent(id, miner.getAllResources()));
-                    } else if (fr.getIntValue() == 7) {
-                        Thingamajig tb = (Thingamajig) fr;
-                        double amount = tb.getCredits();
-                        data.modifyAccountBalance(getUsername(), amount);
-                        eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(getUsername()), id));
-                    } else {
-                        System.out.println("Resource ID does not exist");
-                    }
 
-                }
-                nextField.setFieldEntity(parent.getEntity());
-                parent.clearField();
-                setParent(nextField);
-                eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
-            }
-            else {
-        boolean present = nextField.isEntityPresent();
-        FieldEntity ent = null;
-        if(present) ent = nextField.getEntity();
-
-        if (!present || ent.gather(this)) {
-            nextField.setFieldEntity(this);
-            parent.clearField();
-            setParent(nextField);
-            eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
-            isCompleted = true;
         } else {
-                // hit the whatever is there
-                ent.hit((int) Math.ceil(life * giveDamageModifier()));
-                // do appropriate damage to tank
-                hit((int) Math.floor(ent.getLife() * getDamageModifier()));
-                isCompleted = false;
-            }
+            // hit the whatever is there
+            ent.hit((int) Math.ceil(life * giveDamageModifier()));
+            // do appropriate damage to tank
+            hit((int) Math.floor(ent.getLife() * getDamageModifier()));
+            isCompleted = false;
+        }
         if (isCompleted) {
             setRestrictions();
             System.out.println("Restrictions added");
         }
         return isCompleted;
-        }
+
+    }
 
     public long getAllowedMoveInterval(){ return powerUp.getAllowedMoveInterval(); }
     public long getAllowedTurnInterval(){ return powerUp.getAllowedTurnInterval(); }
