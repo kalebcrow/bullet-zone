@@ -31,6 +31,7 @@ import edu.unh.cs.cs619.bulletzone.game.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveBulletEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.RestrictionEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
 import edu.unh.cs.cs619.bulletzone.rest.HistoryUpdateEvent;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
@@ -167,6 +168,9 @@ public class CommandInterpreter {
                  break;
              case "restriction":
                  event = new RestrictionEvent(currEvent);
+                 break;
+             case "portal":
+                 event =  new PortalEvent(currEvent);
                  break;
              default:
                  event = new ExecutableEvent(currEvent);

@@ -21,27 +21,7 @@ public class FireEvent extends ExecutableEvent {
      * runs the command updating the board
      */
     public void execute(Bus bus) {
-        TankTile tile = TankList.getTankList().getLocation(ID/10);
-
-        if (tile == null) {
-            return;
-        }
-
-        Integer orientation = tile.getOrientation();
-
-        Integer location = tile.getLocation();
-
-        if (orientation == 0) {
-            location = goingUp(location);
-        } else if (orientation == 2) {
-            location = goingRight(location);
-        } else if (orientation == 4) {
-            location = goingDown(location);
-        } else if (orientation == 6) {
-            location = goingLeft(location);
-        }
-
-        tileUpdateEvent = new TileUpdateEvent(location, new BulletTile(ID, location, true));
+        tileUpdateEvent = new TileUpdateEvent(this.pos + 1, new BulletTile(ID, this.pos + 1, true));
         bus.post(tileUpdateEvent);
     }
 

@@ -56,7 +56,6 @@ public class TankTile extends GroundTile {
         if (friendly) {
             TankController.getTankController().setTankOrientation(orientation, ID % 3);
         }
-
         TankList.getTankList().addTank(ID, this);
     }
 

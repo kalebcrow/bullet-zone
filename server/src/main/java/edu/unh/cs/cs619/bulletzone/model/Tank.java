@@ -13,7 +13,9 @@ import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
+import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
@@ -135,32 +137,68 @@ public class Tank extends FieldEntity {
         powerUp = power;
     }
 
-    public boolean advance(Direction direction){
+    public boolean advance(Direction direction) {
         boolean isCompleted;
         FieldHolder nextField = parent.getNeighbor(direction);
         boolean present = nextField.isEntityPresent();
         FieldEntity ent = null;
-        if(present) ent = nextField.getEntity();
+        if (present) ent = nextField.getEntity();
 
+        // check if next field is empty and go there if it is
         if (!present || ent.gather(this)) {
-            nextField.setFieldEntity(this);
-            parent.clearField();
-            setParent(nextField);
-            eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
-            isCompleted = true;
-        } else {
-                // hit the whatever is there
-                ent.hit((int) Math.ceil(life * giveDamageModifier()));
-                // do appropriate damage to tank
-                hit((int) Math.floor(ent.getLife() * getDamageModifier()));
-                isCompleted = false;
+
+            if (nextField.isImprovementPresent()) {
+                if (nextField.getImprovement().toString() == "P") {
+                    Portal p = (Portal) nextField.getImprovement();
+                    if (p.direction == direction) {
+                        nextField = p.exit.getParent().getNeighbor(p.exit.direction);
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        byte Ndirection = (byte) (Direction.toByte(p.exit.direction) - Direction.toByte(p.direction));
+                        byte Ydirection = (byte) ((Direction.toByte(this.direction) + Ndirection) % 8);
+                        if (Ydirection < 0) {
+                            Ydirection = (byte) (Ydirection + 8);
+                        }
+                        this.direction = Direction.fromByte(Ydirection);
+                        eventManager.addEvent(new PortalEvent(id, Ydirection, parent.getPos() + 1));
+                        isCompleted = true;
+                    } else {
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                        isCompleted = true;
+                    }
+                } else {
+                    nextField.setFieldEntity(parent.getEntity());
+                    parent.clearField();
+                    setParent(nextField);
+                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                    isCompleted = true;
+                }
+            } else {
+                nextField.setFieldEntity(parent.getEntity());
+                parent.clearField();
+                setParent(nextField);
+                eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                isCompleted = true;
             }
+
+        } else {
+            // hit the whatever is there
+            ent.hit((int) Math.ceil(life * giveDamageModifier()));
+            // do appropriate damage to tank
+            hit((int) Math.floor(ent.getLife() * getDamageModifier()));
+            isCompleted = false;
+        }
         if (isCompleted) {
             setRestrictions();
             System.out.println("Restrictions added");
         }
         return isCompleted;
-        }
+
+    }
 
     public long getAllowedMoveInterval(){ return powerUp.getAllowedMoveInterval(); }
     public long getAllowedTurnInterval(){ return powerUp.getAllowedTurnInterval(); }
