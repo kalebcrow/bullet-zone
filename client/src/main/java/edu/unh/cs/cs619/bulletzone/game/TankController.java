@@ -45,7 +45,7 @@ public class TankController {
         this.currentTankID = tankID[index];
     }
 
-    private Long currentTankID;
+    private Long currentTankID = 0L;
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
