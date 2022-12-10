@@ -244,7 +244,9 @@ public class TankController {
             currentTankID = tankID[0];
         }
 
-        busProvider.getEventBus().post(new BoardUpdate(TankList.getTankList().getLocation(Math.toIntExact(currentTankID)).location/256));
+        if (TankList.getTankList().getLocation(Math.toIntExact(currentTankID)) != null) {
+            busProvider.getEventBus().post(new BoardUpdate(TankList.getTankList().getLocation(Math.toIntExact(currentTankID)).location/256));
+        }
 
 
     }
