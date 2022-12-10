@@ -2,10 +2,6 @@ package edu.unh.cs.cs619.bulletzone.events;
 
 
 import java.io.Serializable;
-import java.util.Optional;
-
-import edu.unh.cs.cs619.bulletzone.model.FieldEntity;
-import edu.unh.cs.cs619.bulletzone.model.FieldHolder;
 
 
 public class GridEvent implements Serializable {

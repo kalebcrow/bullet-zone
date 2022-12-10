@@ -12,6 +12,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
 import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
@@ -45,6 +46,9 @@ public class TankController {
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
+    String username;
+
+    private int[] boardTankOn = { 0, 0, 0 };
 
     private ButtonState[] buttonStates;
 
@@ -125,7 +129,33 @@ public class TankController {
         return  false;
     }
 
+    public int getCurrentVehicleNum() {
+        int othervalue = 0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+        return othervalue;
+    }
 
+    public int getBoardTankOn() {
+        int othervalue = 0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        return boardTankOn[othervalue];
+    }
+
+    /**
+     *
+     */
+    public void setBoardTankOn(int board) {
+        this.boardTankOn[getCurrentVehicleNum()] = board;
+    }
 
     public int getTankOrientation() {
         int othervalue =0;
@@ -160,13 +190,18 @@ public class TankController {
      * @param direction direction
      */
     @Background
-    public void move(byte direction) {
-        int othervalue =0;
+    public void move(int gridnum, byte direction) {
+        int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
             othervalue = 2;
         } else if (currentVehicle == Vehicle.MINER) {
             othervalue = 1;
         }
+        if (getBoardTankOn() != gridnum) {
+            // don't move the tank if its on a different grid
+            return;
+        }
+
 
         int value = direction - tankOrientation[othervalue];
 
@@ -183,6 +218,7 @@ public class TankController {
     @Background
     public void joinGame(String username){
         try {
+            this.username = username;
             tankID = restClient.join(username).getResult();
             currentTankID = tankID[0];
         } catch (Exception e) {
@@ -204,7 +240,7 @@ public class TankController {
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
-        //Log.d("TankController", "Tank Changed to: " + currentVehicle);
+        Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
         if (currentVehicle == Vehicle.BUILDER) {
             currentTankID = tankID[2];
@@ -290,6 +326,60 @@ public class TankController {
         restClient.test(tankID[1]);
     }
 
+    @Background
+    public void turnLeft(){
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        int value =  - tankOrientation[othervalue];
+
+        int left = tankOrientation[othervalue] + 6;
+        left = left % 8;
+        restClient.turn(currentTankID, (byte) left);
+        tankOrientation[othervalue] = left;
+    }
+
+    @Background
+    public void turnRight(){
+        int othervalue =0;
+        if (currentVehicle == Vehicle.BUILDER) {
+            othervalue = 2;
+        } else if (currentVehicle == Vehicle.MINER) {
+            othervalue = 1;
+        }
+
+        int value =  - tankOrientation[othervalue];
+
+        int right = tankOrientation[othervalue] + 2;
+        right = right % 8;
+        restClient.turn(currentTankID, (byte) right);
+        tankOrientation[othervalue] = right;
+    }
+
+    @Background
+    public void respawn() {
+        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID[0]));
+        TankTile tile1 = TankList.getTankList().getLocation(Math.toIntExact(tankID[2]));
+        TankTile tile2 = TankList.getTankList().getLocation(Math.toIntExact(tankID[1]));
+        if (tile == null && tile1 == null && tile2 == null) {
+            joinGame(username);
+        }
+        restClient.rebuild(currentTankID);
+    }
+
+    @Background
+    public void destroyTank(){
+        restClient.destroy(getCurrentTankID());
+    }
+
+    @Background
+    public void eject() {
+        restClient.powerDown(getCurrentTankID());
+    }
     public void buttonStateSetup(ButtonState[] buttonStates){
 
         this.buttonStates = buttonStates;

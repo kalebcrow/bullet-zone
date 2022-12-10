@@ -42,6 +42,7 @@ import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
 import edu.unh.cs.cs619.bulletzone.ui.LeftButtonState;
 import edu.unh.cs.cs619.bulletzone.ui.RightButtonState;
 import edu.unh.cs.cs619.bulletzone.ui.UpButtonState;
+import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
 public class ClientActivity extends Activity {
@@ -55,6 +56,8 @@ public class ClientActivity extends Activity {
     protected GridView gridView;
 
     public int started = 0;
+
+    private Spinner mBoardSpinner;
 
     @ViewById
     protected TextView textViewGarage;
@@ -94,6 +97,8 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
+
+    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -179,6 +184,7 @@ public class ClientActivity extends Activity {
      */
     @Click({R.id.buttonUp, R.id.buttonDown, R.id.buttonLeft, R.id.buttonRight})
     protected void onButtonMove(View view) {
+        // let tank move if it is on the same board that is showing
         final int viewId = view.getId();
         byte direction = 0;
 
@@ -199,14 +205,13 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        tankController.move(direction);
+        tankController.move(gridnum, direction);
     }
 
     /**
      * startGame: Initializes view when join game is selected
      */
     void startGame() {
-        //login();
         // this should only work if the user if logged in
         if (!Objects.equals(username, "") || testing) {
             if (testing) {
@@ -214,7 +219,17 @@ public class ClientActivity extends Activity {
                 textViewGarage.setText("Using user id: " + username);
                 boardView.setUsername(username);
             }
+            mBoardSpinner = findViewById(R.id.boardSpinner);
+            String[] boards = {"1", "2", "3"};
+            ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+            bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mBoardSpinner.setAdapter(bb);
+
             afterViewInjection();
+            Button buttonTurnLeft = findViewById(R.id.buttonTurnLeft);
+            Button buttonTurnRight = findViewById(R.id.buttonTurnRight);
+            buttonTurnRight.setVisibility(View.VISIBLE);
+            buttonTurnLeft.setVisibility(View.VISIBLE);
             Button buttonFire = findViewById(R.id.buttonFire);
             Button buttonLeft = findViewById(R.id.buttonLeft);
             Button buttonUp = findViewById(R.id.buttonUp);
@@ -225,11 +240,13 @@ public class ClientActivity extends Activity {
             Button buttonReplay = findViewById(R.id.buttonReplay);
             Button buttonReplay1 = findViewById(R.id.buttonReplay1);
             Button testButton = findViewById(R.id.buttonTest);
+            Button buttonDestroyTank = findViewById(R.id.buttonDestroyTank);
             TextView health = findViewById(R.id.HealthText);
             TextView textViewResources = findViewById(R.id.ResourcesText);
             boardView.setGarageText(textViewResources);
             boardView.setUserText(textViewGarage);
             health.setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonEject).setVisibility(View.VISIBLE);
             textViewResources.setVisibility(View.VISIBLE);
             buttonAction = findViewById(R.id.buttonAction);
             textViewMoveTo = findViewById(R.id.moveToTextView);
@@ -248,6 +265,7 @@ public class ClientActivity extends Activity {
             buttonReplay1.setVisibility(View.INVISIBLE);
             textViewMoveTo.setVisibility(View.VISIBLE);
             moveToButton.setVisibility(View.VISIBLE);
+            buttonDestroyTank.setVisibility(View.VISIBLE);
             started = 1;
 
             vehicleSpinner.setVisibility(View.VISIBLE);
@@ -255,6 +273,7 @@ public class ClientActivity extends Activity {
             ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, vehicles);
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             vehicleSpinner.setAdapter(aa);
+
             loggedIn = true;
 
             ButtonState[] buttonStates = new ButtonState[5];
@@ -279,6 +298,17 @@ public class ClientActivity extends Activity {
     }
 
     /**
+     * changeBoard: Changes to a selected board
+     */
+    @ItemSelect(R.id.boardSpinner)
+    void changeBoard(boolean selected, int position){
+        // once portals get implemented, something will have to change the board the tank is on
+        // tankController.setBoardTankOn(gridnum);
+        gridnum = position;
+        gridPollTask.changeBoard(gridnum);
+    }
+
+    /**
      * onButtonRespawn: Resets client on the death of user
      */
     @Click(R.id.buttonReplay1)
@@ -296,7 +326,7 @@ public class ClientActivity extends Activity {
      */
     @Click(R.id.buttonRespawn)
     protected void onButtonRespawn(){
-        afterViewInjection();
+        tankController.respawn();
     }
 
     /**
@@ -461,18 +491,21 @@ public class ClientActivity extends Activity {
                 buttonAction.setText("ACTION");
                 buttonAction.setClickable(false);
                 buttonAction.setAlpha(.5f);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 1:
                 tankController.setCurrentVehicle(TankController.Vehicle.MINER);
                 buttonAction.setText("MINE");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
             case 2:
                 tankController.setCurrentVehicle(TankController.Vehicle.BUILDER);
                 buttonAction.setText("BUILDER MENU");
                 buttonAction.setClickable(true);
                 buttonAction.setAlpha(1);
+                mBoardSpinner.setSelection(tankController.getBoardTankOn());
                 break;
         }
 
@@ -502,6 +535,26 @@ public class ClientActivity extends Activity {
     @Click(R.id.buttonTest)
     void requestTestResources(){
         tankController.requestTestResources();
+    }
+
+    @Click(R.id.buttonTurnLeft)
+    void turnLeft(){
+        tankController.turnLeft();
+    }
+
+    @Click(R.id.buttonTurnRight)
+    void turnRight(){
+        tankController.turnRight();
+    }
+
+    @Click(R.id.buttonDestroyTank)
+    void destroyTank(){
+        tankController.destroyTank();
+    }
+
+    @Click(R.id.buttonEject)
+    void eject(){
+        tankController.eject();
     }
 
 }

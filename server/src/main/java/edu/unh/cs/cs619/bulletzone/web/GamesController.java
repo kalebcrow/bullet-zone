@@ -30,7 +30,6 @@ import edu.unh.cs.cs619.bulletzone.util.BooleanWrapper;
 import edu.unh.cs.cs619.bulletzone.util.EventWrapper;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 import edu.unh.cs.cs619.bulletzone.util.LongArrayWrapper;
-import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 
 @RestController
 @RequestMapping(value = "/games")
@@ -200,6 +199,22 @@ class GamesController {
     HttpStatus test(@PathVariable long tankId)
             throws TankDoesNotExistException{
         gameRepository.test(tankId);
+        return HttpStatus.OK;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/destroy", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    HttpStatus destroy(@PathVariable long tankId)
+            throws TankDoesNotExistException, GameDoesNotExistException {
+        gameRepository.getGame().getTank(tankId).hit(1000);
+        return HttpStatus.OK;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{tankId}/powerDown", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    HttpStatus powerDown(@PathVariable long tankId)
+            throws TankDoesNotExistException, GameDoesNotExistException {
+        gameRepository.powerDown(tankId);
         return HttpStatus.OK;
     }
 

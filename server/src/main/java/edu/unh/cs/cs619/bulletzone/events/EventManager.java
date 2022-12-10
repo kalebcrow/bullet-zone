@@ -7,8 +7,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import edu.unh.cs.cs619.bulletzone.model.Game;
-
 public class EventManager {
     // singleton EventManager
     private static EventManager _instance;

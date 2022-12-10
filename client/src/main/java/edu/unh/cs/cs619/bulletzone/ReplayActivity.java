@@ -10,8 +10,10 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,8 @@ public class ReplayActivity extends Activity {
     @ViewById
     protected GridView gridView;
 
+    private Spinner mBoardSpinner;
+
     @ViewById
     protected TextView textViewGarage;
     protected TextView health;
@@ -101,7 +105,15 @@ public class ReplayActivity extends Activity {
         SystemClock.sleep(500);
         HistoryReader historyReader = new HistoryReader(this);
         gridView.setAdapter(mGridAdapter);
+
+        mBoardSpinner = findViewById(R.id.boardSpinner);
+
+        String[] boards = {"1", "2", "3"};
+        ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBoardSpinner.setAdapter(bb);
         setGarageTextView();
+
         if (historyReader.array == null) {
             CharSequence text = "No Replay";
             int duration = Toast.LENGTH_SHORT;

@@ -7,8 +7,6 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.swing.text.html.Option;
-
 public class FieldHolder {
 
     private final Map<Direction, FieldHolder> neighbors = new HashMap<Direction, FieldHolder>();
@@ -40,6 +38,7 @@ public class FieldHolder {
     public boolean isEntityPresent() {
         return entityHolder.isPresent();
     }
+
 
     public boolean isRoadPresent() {
         return resourceHolder.isPresent();
@@ -101,5 +100,7 @@ public class FieldHolder {
     public void clearImprovement() {
         improvementHolder = Optional.empty();
     }
+
+    public void clearResource() { resourceHolder = Optional.empty();}
 
 }

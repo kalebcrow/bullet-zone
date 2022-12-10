@@ -5,14 +5,10 @@ import static edu.unh.cs.cs619.bulletzone.model.Direction.toByte;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyBulletEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
-import edu.unh.cs.cs619.bulletzone.events.DestroyWallEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
-import jdk.internal.org.jline.utils.Log;
 
 public class Bullet extends FieldEntity {
 
@@ -102,7 +98,7 @@ public class Bullet extends FieldEntity {
                     System.out.println("Active Bullet: "+tank.getNumberOfBullets()+"---- Bullet ID: "+getIntValue());
                     FieldHolder nextField = parent.getNeighbor(direction);
 
-                    if (nextField.isEntityPresent()) {
+                    if (nextField.getTerrain().toString().equals("F") || nextField.isEntityPresent()) {
                         // Something is there, hit it
                         if(fireIndicator){
                             eventManager.addEvent(new DestroyBulletEvent(tankId, bulletId));
