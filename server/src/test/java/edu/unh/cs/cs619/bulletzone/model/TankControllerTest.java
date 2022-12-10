@@ -197,9 +197,9 @@ public class TankControllerTest {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
         Thread.sleep(1000); //Letting server catch up
-        IMGR.fire(tanks[2].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Thread.sleep(1000);
-        IMGR.fire(tanks[2].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
         assertEquals(2, game.getTank(tanks[2].getId()).getNumberOfBullets());
     }
@@ -209,9 +209,9 @@ public class TankControllerTest {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
         Thread.sleep(1000); //Letting server catch up
-        IMGR.fire(tanks[1].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Thread.sleep(150);
-        IMGR.fire(tanks[1].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
         assertEquals(1, game.getTank(tanks[1].getId()).getNumberOfBullets());
     }
@@ -387,7 +387,7 @@ public class TankControllerTest {
         Thread.sleep(2000);
 
         double actualBalance = data.getUserAccountBalance(username);
-        double expectedBalance = 1010.0;
+        double expectedBalance = 2937840.0;
 
         Thread.sleep(2000);
         // set balance back to 1000 by subtracting 10
