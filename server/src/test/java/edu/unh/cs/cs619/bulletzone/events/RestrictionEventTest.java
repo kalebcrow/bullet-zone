@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 
+import edu.unh.cs.cs619.bulletzone.model.Deck;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
@@ -653,6 +654,142 @@ public class RestrictionEventTest {
         assertEquals(1, testEvent.getRestrictions()[0]);
         assertEquals(1, testEvent.getRestrictions()[1]);
         assertEquals(0, testEvent.getRestrictions()[2]);
+
+    }
+
+    @Test
+    public void testRestrictions_TankWaterWithDecking_AbleToMoveOnDecking() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+
+        EventManager eventManager = EventManager.getInstance();
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        tc = new TankController();
+        Tank[] tank = IMGR.join("i", ip);
+        Thread.sleep(1000); //Letting server catch up
+        Long tankId = tank[0].getId();
+
+
+        int[][][] grid2d = IMGR.getGrid();
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                System.out.print(grid2d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
+
+        tank[0].getParent().getNeighbor(Direction.Left).setFieldTerrain(new Water());
+        tank[0].getParent().getNeighbor(Direction.Right).setFieldTerrain(new Water());
+
+        tank[0].getParent().getNeighbor(Direction.Right).clearImprovement();
+        tank[0].getParent().getNeighbor(Direction.Left).clearImprovement();
+
+        tank[0].getParent().getNeighbor(Direction.Right).setImprovementEntity(new Deck());
+
+        IMGR.turn(tank[0].getId(), Direction.Left);
+
+        System.out.println("\n\n\n");
+
+        grid2d = IMGR.getGrid();
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                System.out.print(grid2d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
+
+        Thread.sleep(1000); //Letting server catch up
+
+        LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis() - 2000);
+
+        GridEvent testEvent = new GridEvent();
+
+        for (GridEvent e : update) {
+
+            if (e.getType() == "restriction") {
+
+                System.out.println("Found it");
+                System.out.println("Restrictions: " + e.getRestrictions()[0] + e.getRestrictions()[1] + e.getRestrictions()[2]);
+                testEvent = e;
+                break;
+
+            }
+
+        }
+
+
+        assertEquals(0, testEvent.getRestrictions()[0]);
+        assertEquals(1, testEvent.getRestrictions()[1]);
+        assertEquals(1, testEvent.getRestrictions()[2]);
+
+
+
+    }
+
+    @Test
+    public void testRestrictions_MinerWaterWithDecking_AbleToMoveOnDecking() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+
+        EventManager eventManager = EventManager.getInstance();
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        tc = new TankController();
+        Tank[] tank = IMGR.join("i", ip);
+        Thread.sleep(1000); //Letting server catch up
+        Long tankId = tank[1].getId();
+
+
+        int[][][] grid2d = IMGR.getGrid();
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                System.out.print(grid2d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
+
+        tank[1].getParent().getNeighbor(Direction.Left).setFieldTerrain(new Water());
+        tank[1].getParent().getNeighbor(Direction.Right).setFieldTerrain(new Water());
+
+        tank[1].getParent().getNeighbor(Direction.Right).clearImprovement();
+        tank[1].getParent().getNeighbor(Direction.Left).clearImprovement();
+
+        tank[1].getParent().getNeighbor(Direction.Right).setImprovementEntity(new Deck());
+
+        IMGR.turn(tank[1].getId(), Direction.Left);
+
+        System.out.println("\n\n\n");
+
+        grid2d = IMGR.getGrid();
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                System.out.print(grid2d[i][j][1] + "\t");
+            }
+            System.out.println();
+        }
+
+        Thread.sleep(1000); //Letting server catch up
+
+        LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis() - 2000);
+
+        GridEvent testEvent = new GridEvent();
+
+        for (GridEvent e : update) {
+
+            if (e.getType() == "restriction") {
+
+                System.out.println("Found it");
+                System.out.println("Restrictions: " + e.getRestrictions()[0] + e.getRestrictions()[1] + e.getRestrictions()[2]);
+                testEvent = e;
+                break;
+
+            }
+
+        }
+
+
+        assertEquals(0, testEvent.getRestrictions()[0]);
+        assertEquals(1, testEvent.getRestrictions()[1]);
+        assertEquals(1, testEvent.getRestrictions()[2]);
+
+
 
     }
 

@@ -240,7 +240,7 @@ public class TankController {
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
-        Log.d("TankController", "Tank Changed to: " + currentVehicle);
+        //Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
         if (currentVehicle == Vehicle.BUILDER) {
             currentTankID = tankID[2];
