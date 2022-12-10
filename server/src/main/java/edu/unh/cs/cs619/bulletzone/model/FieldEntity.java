@@ -1,7 +1,5 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-import com.google.common.eventbus.EventBus;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class FieldEntity {
@@ -9,9 +7,9 @@ public abstract class FieldEntity {
     protected FieldHolder parent;
 
     /**
-     * Serializes the current {@link edu.unh.cs.cs619.bulletzone.model.FieldEntity} instance.
+     * Serializes the current {@link FieldEntity} instance.
      *
-     * @return Integer representation of the current {@link edu.unh.cs.cs619.bulletzone.model.FieldEntity}
+     * @return Integer representation of the current {@link FieldEntity}
      */
     public abstract int getIntValue();
 
@@ -26,6 +24,10 @@ public abstract class FieldEntity {
     public abstract FieldEntity copy();
 
     public void hit(int damage) {
+    }
+
+    public boolean gather(Tank tank){
+        return false;
     }
 
     public int getLife(){return 0;}

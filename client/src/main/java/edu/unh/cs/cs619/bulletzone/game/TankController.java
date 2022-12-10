@@ -13,9 +13,11 @@ import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.ShakeService;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
+import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
 import edu.unh.cs.cs619.bulletzone.rest.BoardUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
+import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class TankController {
@@ -49,8 +51,11 @@ public class TankController {
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
+    String username;
 
     private int[] boardTankOn = { 0, 0, 0 };
+
+    private ButtonState[] buttonStates;
 
     /**
      * TankController
@@ -214,6 +219,7 @@ public class TankController {
     @Background
     public void joinGame(String username){
         try {
+            this.username = username;
             tankID = restClient.join(username).getResult();
             currentTankID = tankID[0];
         } catch (Exception e) {
@@ -362,6 +368,12 @@ public class TankController {
 
     @Background
     public void respawn() {
+        TankTile tile = TankList.getTankList().getLocation(Math.toIntExact(tankID[0]));
+        TankTile tile1 = TankList.getTankList().getLocation(Math.toIntExact(tankID[2]));
+        TankTile tile2 = TankList.getTankList().getLocation(Math.toIntExact(tankID[1]));
+        if (tile == null && tile1 == null && tile2 == null) {
+            joinGame(username);
+        }
         restClient.rebuild(currentTankID);
     }
 
@@ -370,4 +382,39 @@ public class TankController {
         restClient.destroy(getCurrentTankID());
     }
 
+    @Background
+    public void eject() {
+        restClient.powerDown(getCurrentTankID());
+    }
+    public void buttonStateSetup(ButtonState[] buttonStates){
+
+        this.buttonStates = buttonStates;
+
+    }
+
+    public void buttonStateHandler(int[] restrictions){
+
+        System.out.println("Orientation: " + getTankOrientation());
+        System.out.println("Restrictions: " + restrictions[0] + restrictions[1] + restrictions[2]);
+
+        if(getTankOrientation() == 0 || getTankOrientation() == 4){
+            buttonStates[0].Handle(restrictions);
+            buttonStates[2].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set left and right to always true
+            buttonStates[1].setEnabled();
+            buttonStates[3].setEnabled();
+        }
+        else{
+            buttonStates[1].Handle(restrictions);
+            buttonStates[3].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set up and down to always true
+            buttonStates[0].setEnabled();
+            buttonStates[2].setEnabled();
+        }
+
+    }
 }

@@ -1,6 +1,5 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
@@ -13,7 +12,9 @@ public abstract class FieldResource extends FieldEntity {
     public static void setItemsOnGrid(ConcurrentMap<Integer, FieldResource> i){
         itemsOnGrid = i;
     }
-    private EventManager eventManager = EventManager.getInstance();
+    protected static Game game;
+    public static void setGame(Game g){game = g;}
+    protected EventManager eventManager = EventManager.getInstance();
 
     /**
      * Serializes the current {@link FieldResource} instance.
@@ -38,13 +39,7 @@ public abstract class FieldResource extends FieldEntity {
         eventManager.addEvent(new DestroyResourceEvent(parent.getPos(),""));
     }
 
-    /*public static final void registerEventBusListener(Object listener) {
-        checkNotNull(listener);
-        eventBus.register(listener);
-    }
+    @Override
+    public abstract boolean gather(Tank tank);
 
-    public static final void unregisterEventBusListener(Object listener) {
-        checkNotNull(listener);
-        eventBus.unregister(listener);
-    }*/
 }

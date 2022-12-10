@@ -2,17 +2,11 @@ package edu.unh.cs.cs619.bulletzone.model;
 
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUser;
-import edu.unh.cs.cs619.bulletzone.datalayer.user.GameUserRepository;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
 import java.util.HashMap;
 
-import edu.unh.cs.cs619.bulletzone.datalayer.terrain.TerrainType;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.InvalidResourceTileType;
@@ -226,7 +220,7 @@ public class TankControllerTest {
     public void fire_MinerFiringTooManyBullets_LeavesMaxNumberOfBullets() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
-        Thread.sleep(1000); //Letting server catch up
+        //Thread.sleep(1000); //Letting server catch up
         //#1
         IMGR.fire(tanks[1].getId(), 1);
         IMGR.turn(tanks[1].getId(), Direction.Right);

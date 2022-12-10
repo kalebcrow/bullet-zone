@@ -23,6 +23,7 @@ public class ExecutableEvent {
         resource = gridEvent.getResource();
         buildType = gridEvent.buildType;
         resources = gridEvent.resources;
+        restriction = gridEvent.restrictions;
     }
 
     protected Long time;
@@ -34,6 +35,7 @@ public class ExecutableEvent {
     protected String resource = "";
     public TileUpdateEvent tileUpdateEvent;
     protected int[] resources = new int[]{0, 0, 0};
+    protected int[] restriction = new int[]{0, 0, 0};
     protected Integer buildType;
 
 

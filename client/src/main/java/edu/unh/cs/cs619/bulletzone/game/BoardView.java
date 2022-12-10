@@ -8,9 +8,8 @@ import com.squareup.otto.Subscribe;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-
 import java.util.Arrays;
-
+import java.util.Map;
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.GroundTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
@@ -238,7 +237,7 @@ public class BoardView {
 
     public void updateHealth() {
         StringBuilder health = new StringBuilder();
-        health.append("Health\n");
+        health.append("Health\nYour Tanks\n");
 
         TankList tankList = TankList.getTankList();
         TankController tankController = TankController.getTankController();
@@ -250,6 +249,12 @@ public class BoardView {
             }
         }
 
+        health.append("Enemy Tanks\n");
+        for (Map.Entry<Integer, TankTile> mapElement : tankList.tanks.entrySet()) {
+            if (!tankController.containsTankID(mapElement.getKey().longValue())) {
+                health.append("TankID: ").append(mapElement.getValue().ID).append(" Health ").append(mapElement.getValue().health).append("\n");
+            }
+        }
         if (healthText != null) {
             healthText.setText(health.toString());
         }

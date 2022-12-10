@@ -9,12 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
+import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
-import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.PortalEvent;
+import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import jdk.internal.org.jline.utils.Log;
@@ -25,37 +26,30 @@ public class Tank extends FieldEntity {
 
     private static final String TAG = "Tank";
     private static Game game;
-    private final long id;
-    private final String ip;
     private EventManager eventManager = EventManager.getInstance();
     private DataRepository data = new DataRepository();
 
     public boolean allowMovement = true;
-    private long lastMoveTime;
-    private final int[] allowedMoveIntervals = {500,800,1000};
-    private final int[] allowedTurnIntervals = {500,800,300};
-    private final double[] takesDamage = {.1, .05, .1};
-    private final double[] givesDamage = {.1, .1, .05};
+    private long lastFireTime = System.currentTimeMillis();
+    private long lastMoveTime = System.currentTimeMillis();
+    private int numberOfBullets = 0;
 
-    private long lastFireTime;
-    private final int[] allowedFireIntervals = {1500,200,1000};
-
-    private int numberOfBullets;
-    private final int[] allowedNumbersOfBullets = {2,4,6};
-
-    private final int[] healths = {100,300,80};
     private int life;
-
+    private Direction direction;
+    private int typeIndex;
+    private String username;
+    private String ip;
+    private long id;
+    private PowerUp powerUp = new UnPowered(typeIndex);
     private int[] resources;
     //rock = index 0
     //iron = index 1
     //clay = index 2
     //wood = index 3
 
-    private Direction direction;
-
-    private int typeIndex;
-    private String username;
+    private final double[] takesDamage = {.1, .05, .1};
+    private final double[] givesDamage = {.1, .1, .05};
+    private final int[] healths = {100,300,80};
 
     public Tank(String username, long id, Direction direction, String ip, int typeIndex) {
         this.id = id;
@@ -67,21 +61,16 @@ public class Tank extends FieldEntity {
         if (typeIndex == 1) {
             resources = new int[]{0,0,0,0};
         }
-        this.lastMoveTime = 0;
-        this.lastFireTime = 0;
-        this.numberOfBullets = 0;
     }
 
     public Tank(){
         ip = null;
         id = 0;
-        typeIndex = -1;
+        typeIndex = 0;
     }
 
     @Override
-    public FieldEntity copy() {
-        return new Tank(username, id, direction, ip, typeIndex);
-    }
+    public FieldEntity copy(){ return new Tank(username,id, direction, ip, typeIndex); }
 
     @Override
     public void hit(int damage) {
@@ -96,7 +85,58 @@ public class Tank extends FieldEntity {
         }
     }
 
-    public boolean moveTank(Direction direction){
+    //Make it so dock doesn't count as a disable
+    public void setRestrictions() {
+        int[] restrictions = new int[]{1,1,1,1,1};
+        switch(getTypeIndex()) {
+            case 0: //tank
+                if (isWaterOrForest(getParent().getNeighbor(getDirection()))) {
+                    restrictions[0] = 0;
+                }
+                if (isWaterOrForest(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))))) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+            case 1: //miner
+                System.out.println("Forward: " + getParent().getNeighbor(getDirection()).getTerrain());
+                System.out.println("Backwards: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain());
+                String test = getParent().getNeighbor(getDirection()).getTerrain().toString();
+                System.out.println("Actual Forward: " + test);
+
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("W")){
+                    restrictions[0] = 0;
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("W")) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+            case 2: //builder
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("F")) {
+                    restrictions[0] = 0;
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("F")) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+        }
+        eventManager.addEvent(new RestrictionsEvent(getId(), restrictions));
+    }
+
+    public void enhance(Powered power){
+        power.setSubject(powerUp);
+        powerUp = power;
+    }
+
+    public boolean advance(Direction direction){
         boolean isCompleted;
         FieldHolder nextField = parent.getNeighbor(direction);
         // check if next field is empty and go there if it is
@@ -195,44 +235,64 @@ public class Tank extends FieldEntity {
                 eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
             }
             else {
+        boolean present = nextField.isEntityPresent();
+        FieldEntity ent = null;
+        if(present) ent = nextField.getEntity();
+
+        if (!present || ent.gather(this)) {
+            nextField.setFieldEntity(this);
+            parent.clearField();
+            setParent(nextField);
+            eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+            isCompleted = true;
+        } else {
                 // hit the whatever is there
                 ent.hit((int) Math.ceil(life * giveDamageModifier()));
                 // do appropriate damage to tank
                 hit((int) Math.floor(ent.getLife() * getDamageModifier()));
+                isCompleted = false;
             }
-            }
+        if (isCompleted) {
+            setRestrictions();
+            System.out.println("Restrictions added");
+        }
         return isCompleted;
         }
 
-    public long getLastMoveTime() {
-        return lastMoveTime;
-    }
-    public void setLastMoveTime(long lastMoveTime) {
-        this.lastMoveTime = lastMoveTime;
-    }
-    public long getAllowedMoveInterval() { return allowedMoveIntervals[typeIndex]; }
-    public long getAllowedTurnInterval() { return allowedTurnIntervals[typeIndex]; }
+    public long getAllowedMoveInterval(){ return powerUp.getAllowedMoveInterval(); }
+    public long getAllowedTurnInterval(){ return powerUp.getAllowedTurnInterval(); }
+    public long getAllowedFireInterval(){ return powerUp.getAllowedFireInterval(); }
+    public int getAllowedNumberOfBullets(){ return powerUp.getAllowedNumberOfBullets(); }
 
+    public long getLastMoveTime() { return lastMoveTime; }
+    public void setLastMoveTime(long lastMoveTime) { this.lastMoveTime = lastMoveTime; }
 
-    public long getLastFireTime() {
-        return lastFireTime;
-    }
+    public long getLastFireTime() { return lastFireTime; }
     public void setLastFireTime(long lastFireTime) { this.lastFireTime = lastFireTime; }
-    public long getAllowedFireInterval() { return allowedFireIntervals[typeIndex]; }
 
-    public int getNumberOfBullets() {
-        return numberOfBullets;
-    }
-    public void setNumberOfBullets(int numberOfBullets) {
-        this.numberOfBullets = numberOfBullets;
-    }
-    public int getAllowedNumberOfBullets() { return allowedNumbersOfBullets[typeIndex]; }
+    public int getNumberOfBullets() { return numberOfBullets; }
+    public void setNumberOfBullets(int numberOfBullets) { this.numberOfBullets = numberOfBullets; }
 
-    public Direction getDirection() {
-        return direction;
-    }
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public Direction getDirection() { return direction; }
+    public void setDirection(Direction direction) { this.direction = direction; }
+
+    public void strip(){
+        if(powerUp.getFieldElement() != null) {
+            if (!parent.getNeighbor(Direction.Up).isEntityPresent()) {
+                parent.getNeighbor(Direction.Up).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Up).getPos(),powerUp.toString()));
+            } else if (!parent.getNeighbor(Direction.Down).isEntityPresent()) {
+                parent.getNeighbor(Direction.Down).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Down).getPos(),powerUp.toString()));
+            } else if (!parent.getNeighbor(Direction.Left).isEntityPresent()) {
+                parent.getNeighbor(Direction.Left).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Left).getPos(),powerUp.toString()));
+            } else if (!parent.getNeighbor(Direction.Right).isEntityPresent()) {
+                parent.getNeighbor(Direction.Right).setFieldEntity(powerUp.getFieldElement());
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Right).getPos(),powerUp.toString()));
+            }
+        }
+        powerUp = powerUp.powerDown();
     }
 
     @JsonIgnore
@@ -312,6 +372,11 @@ public class Tank extends FieldEntity {
 
         }
         return false;
+    }
+
+    private boolean isWaterOrForest(FieldHolder nextField) {
+        FieldTerrain fr = nextField.getTerrain();
+        return fr.toString().equals("W") || fr.toString().equals("F");
     }
 
     public static void setGame(Game g){game = g;}
