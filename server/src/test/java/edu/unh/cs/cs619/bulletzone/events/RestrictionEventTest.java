@@ -428,7 +428,7 @@ public class RestrictionEventTest {
             System.out.println();
         }
 
-        tank[2].setNumberOfBullets(2);
+        tank[2].setNumberOfBullets(0);
 
         tank[2].getParent().getNeighbor(Direction.Left).setFieldTerrain(new Water());
         tank[2].getParent().getNeighbor(Direction.Right).setFieldTerrain(new Water());
