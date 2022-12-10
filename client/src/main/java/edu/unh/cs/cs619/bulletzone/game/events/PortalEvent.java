@@ -37,7 +37,6 @@ public class PortalEvent extends ExecutableEvent {
             Integer prevlocation = tile.getLocation();
             tile.setLocation(pos);
             tile.setOrientation((int) direction);
-            Log.d("Location", "Prev " + prevlocation + " Next " + pos );
 
 
             tileUpdateEvent = new TileUpdateEvent(pos, tile);

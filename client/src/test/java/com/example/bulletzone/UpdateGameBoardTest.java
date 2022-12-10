@@ -6,10 +6,14 @@ import org.mockito.Mockito;
 import static org.junit.Assert.*;
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.events.FireEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.game.events.PortalEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.TurnEvent;
+import edu.unh.cs.cs619.bulletzone.game.tiles.PortalTile;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.TileUpdateEvent;
 
@@ -154,6 +158,44 @@ public class UpdateGameBoardTest {
         else{
             assertTrue(false);
         }
+
+    }
+
+    @Test
+    public void portalTest(){
+
+        testBoardView = new BoardView();
+
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
+            for(int j = 0; j < 16; j++){
+
+                mimicJSONArray[i][j][0] = 0;
+
+            }
+        }
+        Long[] jim = new Long[]{0L, 1L, 2L};
+        TankController.getTankController().setTankIDs(jim);
+        //tank of id 222, 100 health, facing right
+        mimicJSONArray[0][0][0] = 10001002;
+        testBoardView.setUsingJSON(mimicJSONArray);
+        TankTile testTankTile =  TankList.getTankList().getLocation(0);
+
+        GridEvent newGridEvent = new GridEvent();
+        newGridEvent.setID(testTankTile.getID());
+        newGridEvent.setDirection((byte) 2);
+        newGridEvent.setPos(612);
+        newGridEvent.setType("portal");
+        newGridEvent.setTime(System.currentTimeMillis());
+
+        //BusProvider testBusProvider = new BusProvider();
+        mBus = Mockito.mock(Bus.class);
+        PortalEvent newFireEvent = new PortalEvent(newGridEvent);
+        newFireEvent.execute(mBus);
+
+        TileUpdateEvent tileUpdateEvent = newFireEvent.tileUpdateEvent;
+        assertEquals(java.util.Optional.of(611), java.util.Optional.of(tileUpdateEvent.location));
+
 
     }
 

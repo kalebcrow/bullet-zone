@@ -3,6 +3,7 @@ package edu.unh.cs.cs619.bulletzone.game;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
@@ -385,7 +386,26 @@ public class BoardView {
 
     }
 
+    /**
+     *
+     */
+    public void reRegister(Bus busProvider) {
+        busProvider.register(tileEventHandler);
+        busProvider.register(gridEventHandler);
+        busProvider.register(resourceEventHandler);
+        busProvider.register(roadEventHandler);
+        busProvider.register(balanceEventHandler);
+        busProvider.register(terrainEventHandler);
+        busProvider.register(updateBoard);
+
+    }
+
+    public int getCurrentBoard() {
+        return currentBoard;
+    }
+
     public void setCurrentBoard(int currentBoard) {
+        Log.d("Yeah", "Yeah");
         this.currentBoard = currentBoard;
         if (gridAdapter != null) {
             gridAdapter.updateList(boards[currentBoard].tiles);
