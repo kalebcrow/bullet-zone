@@ -11,6 +11,7 @@ import edu.unh.cs.cs619.bulletzone.events.GridEvent;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.IllegalTransitionException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.LimitExceededException;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.TankDoesNotExistException;
+import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import edu.unh.cs.cs619.bulletzone.repository.InMemoryGameRepository;
 
 public class PowerUpTests {
@@ -245,5 +246,85 @@ public class PowerUpTests {
         //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
+
+    @Test
+    public void PowerUpCredit_Leave_GetCorrectCredit() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[2].getId();
+        System.out.println(tanks[2].parent.getNeighbor(Direction.Up).getPos());
+        repo.insertResource(new GravAssist(), 235);
+        repo.move(id, Direction.Up);
+
+        repo.leave(id);
+
+        double actualBalance = data.getUserAccountBalance(username);
+        double expectedBalance = data.getUserAccountBalance(username);
+
+        Thread.sleep(2000);
+        // set balance back to 1000 by subtracting 10
+        // if this ever fails then the thingamajig test will always fail because modify balance isn't working there either
+        if (actualBalance == expectedBalance) {
+            // actually fix the balance if the test passed
+            double sub10 = 10.0 - 310.0; // this is hard coded bc '-10' did not act like a negative number
+            data.modifyAccountBalance(username, sub10);
+        }
+
+        assertEquals(expectedBalance, actualBalance, 10);
+
+    }
+
+    @Test
+    public void PowerUp_DismantlePowerUp_DismantleTrueAndBalance() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        DataRepository data = new DataRepository(true);
+        String username = "testuseronlyfortesting";
+        data.validateUser(username, username, false);
+
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[2].getId();
+        System.out.println(tanks[2].parent.getNeighbor(Direction.Up).getPos());
+        repo.insertResource(new GravAssist(), 235);
+        repo.move(id, Direction.Up);
+        Thread.sleep(2000);
+        assert(repo.turn(id, Direction.Left));
+        Thread.sleep(2000);
+        assert (repo.turn(id, Direction.Down));
+
+        repo.powerDown(id);
+
+        assert(repo.dismantle(id));
+
+        double actualBalance = data.getUserAccountBalance(username);
+        double expectedBalance = data.getUserAccountBalance(username);
+
+        Thread.sleep(2000);
+        // set balance back to 1000 by subtracting 10
+        // if this ever fails then the thingamajig test will always fail because modify balance isn't working there either
+        if (actualBalance == expectedBalance) {
+            // actually fix the balance if the test passed
+            double sub10 = 10.0 - 310.0; // this is hard coded bc '-10' did not act like a negative number
+            data.modifyAccountBalance(username, sub10);
+        }
+
+        assertEquals(expectedBalance, actualBalance, 10);
+        assert(repo.dismantle(id));
+    }
+    @Test
+    public void PowerUp_EjectPowerUp_OnSpace() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        System.out.println(tanks[0].parent.getNeighbor(Direction.Up).getPos());
+        repo.insertResource(new GravAssist(), 0);
+        repo.move(id, Direction.Up);
+
+        repo.powerDown(id);
+        assert(tanks[0].getParent().getNeighbor(Direction.Up).getEntity() != null);
+    }
 
 }
