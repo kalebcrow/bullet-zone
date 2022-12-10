@@ -572,6 +572,22 @@ public class InMemoryGameRepository implements GameRepository {
                 eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),5));
                 return true;
             }
+            else if(structure.toString().equals("FG"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 400);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
+            else if(structure.toString().equals("GA"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 300);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
             else
             {
                 return false;
@@ -592,30 +608,6 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(3,5);
                 behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 4));
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if(behind.isRoadPresent()) // [HUH]<(0_0<)
-        {
-            FieldResource resource = behind.getResource();
-            if(resource.toString() == "FG")
-            {
-                behind.clearResource();
-                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
-                data.modifyAccountBalance(miner.getUsername(), 400);
-                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
-                return true;
-            }
-            else if(resource.toString() == "GA")
-            {
-                behind.clearResource();
-                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
-                data.modifyAccountBalance(miner.getUsername(), 300);
-                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
                 return true;
             }
             else
@@ -1016,7 +1008,9 @@ public class InMemoryGameRepository implements GameRepository {
     }
 
     public void powerDown(long tankId){
-        game.getTank(tankId).strip();
+        Tank tank = game.getTank(tankId);
+        FieldResource fr = tank.strip();
+        if(fr != null) itemsOnGrid.put(tank.getParent().getPos(),fr);
     }
 
     /**
