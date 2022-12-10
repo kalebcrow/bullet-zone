@@ -9,11 +9,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.internal.matchers.Null;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
@@ -317,7 +319,7 @@ public class BuilderTest {
     }
 
     @Test
-    public void testDismantle_dismantleDecking_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+    public void testDismantleBuild_dismantleBuildDecking_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
         Tank[] tank = repo.join("i","");
         Long tankId = tank[2].getId();
@@ -328,6 +330,18 @@ public class BuilderTest {
         assert(repo.build(tankId,4));
         assert(repo.dismantle(tankId));
     }
-
+    @Test
+    public void testMoveBuild_moveIntoWaterThenDeckingOnWater_returnsFalseThenTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+        repo.create();
+        Tank[] tank = repo.join("i","test");
+        Long tankId = tank[1].getId();
+        tank[1].getParent().getNeighbor(Direction.Down).setTerrain(new Water());
+        tank[1].getParent().getNeighbor(Direction.Down).setImprovementEntity(new Road());
+        tank[1].getParent().getNeighbor(Direction.Down).clearField();
+        assert(!(repo.move(tankId,Direction.Down)));
+        tank[1].getParent().getNeighbor(Direction.Down).clearImprovement();
+        tank[1].getParent().getNeighbor(Direction.Down).setImprovementEntity(new Deck());
+        assert(repo.move(tankId, Direction.Down));
+    }
 
 }

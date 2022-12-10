@@ -197,9 +197,9 @@ public class TankControllerTest {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
         Thread.sleep(1000); //Letting server catch up
-        IMGR.fire(tanks[2].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Thread.sleep(1000);
-        IMGR.fire(tanks[2].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
         assertEquals(2, game.getTank(tanks[2].getId()).getNumberOfBullets());
     }
@@ -209,9 +209,9 @@ public class TankControllerTest {
         IMGR = new InMemoryGameRepository();
         Tank[] tanks = IMGR.join("i", ip);
         Thread.sleep(1000); //Letting server catch up
-        IMGR.fire(tanks[1].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Thread.sleep(150);
-        IMGR.fire(tanks[1].getId(), 1);
+        IMGR.fire(tanks[0].getId(), 1);
         Game game = IMGR.getGame();
         assertEquals(1, game.getTank(tanks[1].getId()).getNumberOfBullets());
     }
@@ -387,7 +387,7 @@ public class TankControllerTest {
         Thread.sleep(2000);
 
         double actualBalance = data.getUserAccountBalance(username);
-        double expectedBalance = 1010.0;
+        double expectedBalance = 2937840.0;
 
         Thread.sleep(2000);
         // set balance back to 1000 by subtracting 10
@@ -536,7 +536,7 @@ public class TankControllerTest {
     public void testMoveBuilder_moveIntoMeadow_timingCorrect() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException, InterruptedException {
         IMGR = new InMemoryGameRepository();
         IMGR.create();
-        Tank[] tank = IMGR.join("i","test");
+        Tank[] tank = IMGR.join("i",ip);
         Thread.sleep(1000); //Letting server catch up
         Long tankId = tank[2].getId();
         tank[2].getParent().getNeighbor(Direction.Up).clearField();
@@ -612,6 +612,81 @@ public class TankControllerTest {
         tank[0] = IMGR.getGame().getTank(tankId);
         position = tank[0].getParent().getPos();
         assert(position == movetoposition);
+    }
+    @Test
+    public void testsMove_thoughPortals_correctLocation() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join("i",ip);
+        Portal p = new Portal();
+        Portal p1 = new Portal();
+        p.direction = Direction.Up;
+        p1.direction = Direction.Right;
+        p.setExit(p1);
+        p.setExit(p);
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
+        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
+        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
+        System.out.println(tank[0].parent.getPos());
+        IMGR.move(tank[0].getId(),Direction.Up);
+        assert(tank[0].parent.getPos() == 224);
+    }
+    @Test
+    public void testsMove_thoughPortalsWrongDirection_locationOnPortal() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join("i",ip);
+        Portal p = new Portal();
+        Portal p1 = new Portal();
+        p.direction = Direction.Down;
+        p1.direction = Direction.Right;
+        p.setExit(p1);
+        p.setExit(p);
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
+        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
+        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
+        System.out.println(tank[0].parent.getPos());
+        IMGR.move(tank[0].getId(),Direction.Up);
+        System.out.println(tank[0].parent.getPos());
+        assert(tank[0].parent.getPos() == 0);
+    }
+    @Test
+    public void testsMove_thoughPortals_correctOrientation() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join("i",ip);
+        Portal p = new Portal();
+        Portal p1 = new Portal();
+        p.direction = Direction.Up;
+        p1.direction = Direction.Right;
+        p.setExit(p1);
+        p.setExit(p);
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
+        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
+        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
+        System.out.println(tank[0].parent.getPos());
+        IMGR.move(tank[0].getId(),Direction.Up);
+        assert(tank[0].getDirection() == Direction.Up);
+    }
+    @Test
+    public void testsShoot_thoughPortals_returnsTrue() throws LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        IMGR = new InMemoryGameRepository();
+        IMGR.create();
+        Tank[] tank = IMGR.join("i",ip);
+        Portal p = new Portal();
+        Portal p1 = new Portal();
+        p.direction = Direction.Up;
+        p1.direction = Direction.Right;
+        p.setExit(p1);
+        p.setExit(p);
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
+        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
+        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
+        assert(IMGR.fire(tank[0].getId(),1) == true);
     }
 
 }
