@@ -122,7 +122,7 @@ public class Tank extends FieldEntity {
                     nextField.setFieldEntity(parent.getEntity());
                     parent.clearField();
                     setParent(nextField);
-                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
                     isCompleted = true;
                 }
             }
@@ -131,7 +131,7 @@ public class Tank extends FieldEntity {
                 nextField.setFieldEntity(parent.getEntity());
                 parent.clearField();
                 setParent(nextField);
-                eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
                 isCompleted = true;
             }
         } else { // if it's not then you have to "hit" whatever is there
@@ -180,7 +180,7 @@ public class Tank extends FieldEntity {
                 nextField.setFieldEntity(parent.getEntity());
                 parent.clearField();
                 setParent(nextField);
-                eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
+                eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
             }
             else {
                 // hit the whatever is there
