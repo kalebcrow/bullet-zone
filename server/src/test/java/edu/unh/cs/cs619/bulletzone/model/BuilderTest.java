@@ -9,11 +9,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.internal.matchers.Null;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 import edu.unh.cs.cs619.bulletzone.model.Direction;
 import edu.unh.cs.cs619.bulletzone.model.Exceptions.BuildingDoesNotExistException;
@@ -317,7 +319,7 @@ public class BuilderTest {
     }
 
     @Test
-    public void testDismantle_dismantleDecking_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
+    public void testDismantleBuild_dismantleBuildDecking_returnsTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
         Tank[] tank = repo.join("i","");
         Long tankId = tank[2].getId();
@@ -328,25 +330,18 @@ public class BuilderTest {
         assert(repo.build(tankId,4));
         assert(repo.dismantle(tankId));
     }
-
     @Test
-    public void testshit_portals() throws LimitExceededException, TankDoesNotExistException {
+    public void testMoveBuild_moveIntoWaterThenDeckingOnWater_returnsFalseThenTrue() throws BuildingDoesNotExistException, TankDoesNotExistException, LimitExceededException, IllegalTransitionException {
         repo.create();
         Tank[] tank = repo.join("i","test");
-        Portal p = new Portal();
-        Portal p1 = new Portal();
-        p.direction = Direction.Up;
-        p1.direction = Direction.Right;
-        p.setExit(p1);
-        p.setExit(p);
-        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
-        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
-        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
-        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
-        System.out.println(tank[0].parent.getPos());
-        repo.fire(tank[0].getId(),0);
-        System.out.println(tank[0].parent.getPos());
+        Long tankId = tank[1].getId();
+        tank[1].getParent().getNeighbor(Direction.Down).setTerrain(new Water());
+        tank[1].getParent().getNeighbor(Direction.Down).setImprovementEntity(new Road());
+        tank[1].getParent().getNeighbor(Direction.Down).clearField();
+        assert(!(repo.move(tankId,Direction.Down)));
+        tank[1].getParent().getNeighbor(Direction.Down).clearImprovement();
+        tank[1].getParent().getNeighbor(Direction.Down).setImprovementEntity(new Deck());
+        assert(repo.move(tankId, Direction.Down));
     }
-
 
 }

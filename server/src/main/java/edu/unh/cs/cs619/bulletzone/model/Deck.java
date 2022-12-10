@@ -9,7 +9,7 @@ public class Deck extends FieldEntity {
     private EventManager eventManager = EventManager.getInstance();
     public Deck(){
         this.destructValue = 1000;
-        this.name = "F";
+        this.name = "D";
         this.ip = "";
     }
 
