@@ -226,7 +226,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
                 if (improvementGrid[i][j].equals("I")) {
                     game.getHolderGrid().get(count).setFieldEntity(new Wall());
                 } else if (improvementGrid[i][j].equals("D")) {
-                    game.getHolderGrid().get(count).setFieldEntity(new Wall(1500, count));
+                    game.getHolderGrid().get(count).setFieldEntity(new Wall(1100, count));
                 } else if (improvementGrid[i][j].equals("P1")){
                     p1.setParent(game.getHolderGrid().get(count));
                     game.getHolderGrid().get(count).setImprovementEntity(p1);

@@ -22,7 +22,7 @@ public class Wall extends FieldEntity {
         if (destructValue > 1000 && destructValue < 2000 ){
             destructValue -= damage;
             if(destructValue <= 1000){
-                eventManager.addEvent(new DestroyWallEvent(pos));
+                eventManager.addEvent(new DestroyWallEvent(pos+1));
                 parent.clearField();
                 parent = null;
             }
