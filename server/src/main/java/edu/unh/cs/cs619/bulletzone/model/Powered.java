@@ -21,7 +21,28 @@ public abstract class Powered extends PowerUp {
 
     @Override
     public PowerUp powerDown(){
-        return this.subject;
+        PowerUp p = this.subject;
+        this.subject = null;
+        return p;
     };
+
+    @Override
+    public int getHealth() {
+        return subject.getHealth();
+    }
+
+    @Override
+    public void setHealth(int health) {
+        subject.setHealth(health);
+    }
+
+    @Override
+    public int getMaxHealth(){return subject.getMaxHealth();}
+
+    @Override
+    public void setMaxHealth(int health){subject.setMaxHealth(health);}
+
+    @Override
+    public long getId(){return subject.getId();}
 
 }

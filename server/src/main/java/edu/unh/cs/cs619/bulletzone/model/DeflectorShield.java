@@ -3,6 +3,11 @@ package edu.unh.cs.cs619.bulletzone.model;
 public class DeflectorShield extends FieldResource{
 
     @Override
+    public int getCredits(){
+        return 300;
+    }
+
+    @Override
     public String toString(){
         return "DS";
     }
@@ -19,6 +24,7 @@ public class DeflectorShield extends FieldResource{
 
     @Override
     public boolean gather(Tank tank) {
-        return false;
+        tank.enhance(new DeflectorShielded());
+        return true;
     }
 }

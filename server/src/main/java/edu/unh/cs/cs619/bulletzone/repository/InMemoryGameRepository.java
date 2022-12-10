@@ -27,9 +27,11 @@ import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
+import edu.unh.cs.cs619.bulletzone.model.AutomatedRepair;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
 import edu.unh.cs.cs619.bulletzone.model.Deck;
+import edu.unh.cs.cs619.bulletzone.model.DeflectorShield;
 import edu.unh.cs.cs619.bulletzone.model.FusionGenerator;
 import edu.unh.cs.cs619.bulletzone.model.GravAssist;
 import edu.unh.cs.cs619.bulletzone.model.Direction;
@@ -588,6 +590,22 @@ public class InMemoryGameRepository implements GameRepository {
                 eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
                 return true;
             }
+            else if(structure.toString().equals("RK"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 200);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
+            else if(structure.toString().equals("DS"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 300);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
             else
             {
                 return false;
@@ -1036,28 +1054,30 @@ public class InMemoryGameRepository implements GameRepository {
         ArrayList<FieldHolder> holderGrid = game.getHolderGrid();
         synchronized (holderGrid) {
             double prob = 0.25 * (double) (numPlayers / (itemsOnGrid.size() + 1));
-            boolean addingRandomResource = false;
             FieldResource fr;
             Random r = new Random();
             double randomValue = r.nextDouble(); // TODO this will be every second
             if (randomValue <= prob) {
                 // add a random resource
-                addingRandomResource = true;
-                double itemType = (Math.random() * (7));
+                double itemType = (Math.random() * (8));
                 if (itemType >= 0 && itemType < 1) {
-                    fr = new Clay();
+                    fr = new AutomatedRepair();
                 } else if (itemType >= 1 && itemType < 2) {
-                    fr = new Iron();
+                    fr = new AutomatedRepair();
                 } else if (itemType >= 2 && itemType < 3) {
-                    fr = new Rock();
+                    fr = new AutomatedRepair();
                 } else if (itemType >= 3 && itemType < 4) {
-                    fr = new Wood();
+                    fr = new DeflectorShield();
                 } else if (itemType >= 4 && itemType < 5) {
-                    fr = new FusionGenerator();
+                    fr = new DeflectorShield();
                 } else if (itemType >= 5 && itemType < 6) {
-                    fr = new GravAssist();
+                    fr = new AutomatedRepair();
+                } else if (itemType >= 6 && itemType < 7) {
+                    fr = new AutomatedRepair();
+                } else if (itemType >= 7 && itemType < 8) {
+                    fr = new DeflectorShield();
                 } else {
-                    fr = new Thingamajig();
+                    fr = new DeflectorShield();
                 }
 
                 boolean added = false;
@@ -1070,7 +1090,6 @@ public class InMemoryGameRepository implements GameRepository {
                         added = true;
                     }
                 }
-                added = false;
             }
         }
     }
