@@ -103,7 +103,7 @@ public class Bullet extends FieldEntity {
                     FieldHolder nextField = parent.getNeighbor(direction);
                     if (nextField.getTerrain().toString().equals("F") || nextField.isEntityPresent()) {
                         // Something is there, hit it
-                        if(fireIndicator == 1){
+                        if(fireIndicator >= 1){
                             eventManager.addEvent(new DestroyBulletEvent(tankId, bulletId));
                             parent.clearField();
                         }
