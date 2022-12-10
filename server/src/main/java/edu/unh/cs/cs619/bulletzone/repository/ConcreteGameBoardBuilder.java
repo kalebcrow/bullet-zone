@@ -201,10 +201,10 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
         Portal p2 = new Portal(Direction.Down);
         Portal p3 = new Portal(Direction.Left);
         Portal p4 = new Portal(Direction.Right);
-        p1.setExit(p3);
-        p2.setExit(p4);
-        p3.setExit(p1);
-        p4.setExit(p2);
+        p1.setExit(p4);
+        p2.setExit(p3);
+        p3.setExit(p2);
+        p4.setExit(p1);
         int count = 0;
         // row
         for (int i = 0; i < FIELD_DIM_ROW; i++) {
