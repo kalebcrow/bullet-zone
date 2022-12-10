@@ -31,8 +31,10 @@ import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
 import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
@@ -97,8 +99,6 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
-
-    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -205,7 +205,7 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        tankController.move(gridnum, direction);
+        tankController.move(direction);
     }
 
     /**
@@ -304,8 +304,7 @@ public class ClientActivity extends Activity {
     void changeBoard(boolean selected, int position){
         // once portals get implemented, something will have to change the board the tank is on
         // tankController.setBoardTankOn(gridnum);
-        gridnum = position;
-        gridPollTask.changeBoard(gridnum);
+        boardView.setCurrentBoard(position);
     }
 
     /**

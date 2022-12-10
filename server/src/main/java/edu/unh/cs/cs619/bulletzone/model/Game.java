@@ -160,7 +160,14 @@ public final class Game {
                     // check for improvements
                     if(holder.isImprovementPresent())
                     {
-                        grid[i][j][2] = 30000001;
+                        if(holder.getImprovement().toString() == "P")
+                        {
+                            grid[i][j][2] = holder.getImprovement().getIntValue();
+                        }
+                        else
+                        {
+                            grid[i][j][2] = 30000001;
+                        }
                     }
                     else
                     {
@@ -189,8 +196,25 @@ public final class Game {
             System.out.println("leave() called, tank ID: " + tank.getId());
             System.out.println("leave() called, tank ID: " + miner.getId());
             System.out.println("leave() called, tank ID: " + builder.getId());
+            double amount = 0;
+            FieldResource powerUp = tank.strip();
+            while(powerUp != null){
+                amount += powerUp.getCredits();
+                powerUp = tank.strip();
+            }
+            powerUp = miner.strip();
+            while(powerUp != null) {
+                amount += powerUp.getCredits();
+                powerUp = miner.strip();
+            }
+            powerUp = builder.strip();
+            while(powerUp != null) {
+                amount += powerUp.getCredits();
+                powerUp = builder.strip();
+            }
 
-            double amount = (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
+
+                amount += (miner.getResourcesByResource(0) * 25) + (miner.getResourcesByResource(1) * 78) + (miner.getResourcesByResource(2) * 16);
             System.out.println("AMOUNT: " + amount);
             data.modifyAccountBalance(tank.getUsername(), amount);
             eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(tank.getUsername()), tankId));

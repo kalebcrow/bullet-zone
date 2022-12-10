@@ -8,6 +8,11 @@ public class FusionGenerator extends FieldResource {
     }
 
     @Override
+    public int getCredits(){
+        return 400;
+    }
+
+    @Override
     public int getIntValue() {
         return 3121;
     }

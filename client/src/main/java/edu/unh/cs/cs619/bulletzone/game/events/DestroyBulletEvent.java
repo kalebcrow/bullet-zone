@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
 import com.squareup.otto.Bus;
 
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
@@ -24,7 +26,6 @@ public class DestroyBulletEvent extends ExecutableEvent {
         if (tile == null) {
             return;
         }
-
         bus.post(new TileUpdateEvent(tile.getLocation(), new GroundTile(-1, tile.getLocation())));
         BulletList.getBulletList().removeBullet(ID);
     }

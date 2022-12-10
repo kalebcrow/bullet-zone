@@ -54,8 +54,8 @@ public class ButtonEnableDisableTests {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
@@ -64,6 +64,8 @@ public class ButtonEnableDisableTests {
 
             }
         }
+
+        TankController.getTankController().setTankID(0, 222L);
 
         //tank of id 222, 100 health, facing right
         mimicJSONArray[0][0][1] = 12221002;
@@ -111,7 +113,7 @@ public class ButtonEnableDisableTests {
         tankIDs[1] = Long.valueOf(1);
         tankIDs[2] = Long.valueOf(2);
         TankController.getTankController().setTankIDs(tankIDs);
-        TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
+        //TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
         TankController.getTankController().setCurrentTankID(0);
         TankController.getTankController().setTankOrientation(2, 0);
 
@@ -131,8 +133,8 @@ public class ButtonEnableDisableTests {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
@@ -141,6 +143,8 @@ public class ButtonEnableDisableTests {
 
             }
         }
+
+        TankController.getTankController().setTankID(0, 222L);
 
         //tank of id 222, 100 health, facing right
         mimicJSONArray[0][0][1] = 12221002;
@@ -188,7 +192,7 @@ public class ButtonEnableDisableTests {
         tankIDs[1] = Long.valueOf(1);
         tankIDs[2] = Long.valueOf(2);
         TankController.getTankController().setTankIDs(tankIDs);
-        TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
+        //TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
         TankController.getTankController().setCurrentTankID(0);
         TankController.getTankController().setTankOrientation(4, 0);
 
@@ -208,8 +212,8 @@ public class ButtonEnableDisableTests {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
@@ -218,6 +222,8 @@ public class ButtonEnableDisableTests {
 
             }
         }
+
+        TankController.getTankController().setTankID(0, 222L);
 
         //tank of id 222, 100 health, facing right
         mimicJSONArray[0][0][1] = 12221002;
@@ -265,7 +271,7 @@ public class ButtonEnableDisableTests {
         tankIDs[1] = Long.valueOf(1);
         tankIDs[2] = Long.valueOf(2);
         TankController.getTankController().setTankIDs(tankIDs);
-        TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
+        //TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
         TankController.getTankController().setCurrentTankID(0);
         TankController.getTankController().setTankOrientation(2, 0);
 
@@ -284,8 +290,8 @@ public class ButtonEnableDisableTests {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
@@ -294,6 +300,8 @@ public class ButtonEnableDisableTests {
 
             }
         }
+
+        TankController.getTankController().setTankID(0, 222L);
 
         //tank of id 222, 100 health, facing right
         mimicJSONArray[0][0][1] = 12221002;
@@ -341,7 +349,7 @@ public class ButtonEnableDisableTests {
         tankIDs[1] = Long.valueOf(1);
         tankIDs[2] = Long.valueOf(2);
         TankController.getTankController().setTankIDs(tankIDs);
-        TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
+        //TankController.getTankController().setCurrentVehicle(TankController.Vehicle.TANK);
         TankController.getTankController().setCurrentTankID(0);
         TankController.getTankController().setTankOrientation(2, 0);
 

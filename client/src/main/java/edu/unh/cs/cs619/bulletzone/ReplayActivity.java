@@ -25,6 +25,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.Rest;
@@ -36,8 +37,10 @@ import java.io.Serializable;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryInterpreter;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryReader;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
@@ -106,12 +109,7 @@ public class ReplayActivity extends Activity {
         HistoryReader historyReader = new HistoryReader(this);
         gridView.setAdapter(mGridAdapter);
 
-        mBoardSpinner = findViewById(R.id.boardSpinner);
 
-        String[] boards = {"1", "2", "3"};
-        ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
-        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBoardSpinner.setAdapter(bb);
         setGarageTextView();
 
         if (historyReader.array == null) {
@@ -124,22 +122,20 @@ public class ReplayActivity extends Activity {
             boardView.setUsingJSON(historyReader.array);
             boardView.setGarageText(findViewById(R.id.textViewGarage));
             boardView.setHealthText(findViewById(R.id.HealthText));
-            mGridAdapter.updateList(boardView.getTiles());
+            mGridAdapter.updateList(boardView.getTiles()[0].tiles);
             historyInterpreter.setEventHistory(historyReader.history);
             running = 0;
         }
 
+        mBoardSpinner = findViewById(R.id.boardSpinner);
+
+        String[] boards = {"1", "2", "3"};
+        ArrayAdapter bb = new ArrayAdapter(this, android.R.layout.simple_spinner_item, boards);
+        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBoardSpinner.setAdapter(bb);
+
     }
 
-
-    /**
-     * login: Opens login activity via "login" button press
-     */
-    @Click(R.id.buttonLogin)
-    void login() {
-        Intent intent = new Intent(this, AuthenticateActivity_.class);
-        startActivityForResult(intent, 1);
-    }
 
     /**
      * Get output from closing authenticate activity and logging in
@@ -161,13 +157,13 @@ public class ReplayActivity extends Activity {
     /**
      * Set the garage text view with the user balance and garage.
      *
-     * @param data The intent data
      */
     private void setGarageTextView() {
         String message =
                 "Rock: " + 0 + "\n" +
                         "Iron: " + 0 + "\n" +
-                        "Clay: " + 0;
+                        "Clay: " + 0 + "\n" +
+                        "Wood: " + 0;
 
         textViewGarage.setText(message);
     }
@@ -197,6 +193,16 @@ public class ReplayActivity extends Activity {
             historyInterpreter.start(); //<-- put your code in here.
             running =1;
         }
+    }
+
+    /**
+     * changeBoard: Changes to a selected board
+     */
+    @ItemSelect(R.id.boardSpinner)
+    void changeBoard(boolean selected, int position){
+        // once portals get implemented, something will have to change the board the tank is on
+        // tankController.setBoardTankOn(gridnum);
+        boardView.setCurrentBoard(position);
     }
 
     /**
