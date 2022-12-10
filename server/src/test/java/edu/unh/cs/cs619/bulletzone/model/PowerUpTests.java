@@ -1,6 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -21,45 +22,230 @@ public class PowerUpTests {
 
 
     @Test
-    public void GravityAssistedTank_PowerUpApplied_MakesTankTwiceAsFast() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+    public void GravityAssistedTank_PowerUpAppliedOnMeadow_MakesTankTwiceAsFast() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
         repo = new InMemoryGameRepository();
         tanks = repo.join(username,ip);
         long id = tanks[0].getId();
-        repo.insertResource(new GravAssist(), 17);
-        repo.insertResource(new Iron(), 19);
-        repo.turn(id, Direction.Right);
-        Thread.sleep(500);
+        Tank tank = repo.getGame().getTank(id);
+        repo.insertResource(new GravAssist(), tank.getParent().getNeighbor(Direction.Up).getPos());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
 
 
-        repo.move(id, Direction.Right);
-        Thread.sleep(300);
-        repo.move(id, Direction.Right);
-        Thread.sleep(250);
-        repo.move(id, Direction.Right);
-        LinkedList<GridEvent> action = repo.getEvents(System.currentTimeMillis()-10000);
-        for(int i=0;i<action.size();i++) System.out.println(action.get(i).getType());
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2000);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(1000);
+        assertTrue(repo.move(id, Direction.Up));
         //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
     @Test
-    public void GravityAssistedTank_PowerUpApplied_ReducesFiringRateFiftyPercent(){
+    public void GravityAssistedTank_PowerUpAppliedOnMeadow_ReducesFiringRateFiftyPercent() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(2000);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new GravAssist(), tank.getParent().getNeighbor(Direction.Up).getPos());
 
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(4000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(4000);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
     @Test
-    public void FusionGeneratorTank_PowerUpApplied_DoublesFiringRate(){
+    public void FusionGeneratorTank_PowerUpAppliedOnMeadow_DoublesFiringRate() throws InterruptedException, LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(2000);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
 
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(3000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(1000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(1000);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
     @Test
-    public void FusionGeneratorTank_PowerUpApplied_IncreasesMaxNumberOfBulletsByTwo(){
+    public void FusionGeneratorTank_PowerUpAppliedOnMeadow_IncreasesMaxNumberOfBulletsByTwo() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(6000);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
 
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(3000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
 
     @Test
-    public void FusionGeneratorTank_PowerUpApplied_ReducesMovementSpeedByFiftyPercent(){
+    public void FusionGeneratorTank_PowerUpAppliedOnMeadow_ReducesMovementSpeedByFiftyPercent() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2500);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(2500);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
 
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(5000);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(5000);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
+
+    @Test
+    public void GravityAssistedTank_PowerUpAppliedOnOtherTerrain_MakesTankTwiceAsFast() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setTerrain(new Hilly());
+        tank.getParent().getNeighbor(Direction.Up).setTerrain(new Hilly());
+        repo.insertResource(new GravAssist(), tank.getParent().getNeighbor(Direction.Up).getPos());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+
+
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2000);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(1000);
+        assertTrue(repo.move(id, Direction.Up));
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
+    }
+
+    @Test
+    public void GravityAssistedTank_PowerUpAppliedOnRoads_ReducesFiringRateFiftyPercent() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setImprovementEntity(new Road());
+        tank.getParent().getNeighbor(Direction.Up).setImprovementEntity(new Road());
+        repo.insertResource(new GravAssist(), tank.getParent().getNeighbor(Direction.Up).getPos());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+
+
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2000);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(1000);
+        assertTrue(repo.move(id, Direction.Up));
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
+    }
+
+    @Test
+    public void FusionGeneratorTank_PowerUpAppliedOnDeck_DoublesFiringRate() throws InterruptedException, LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setImprovementEntity(new Deck());
+        tank.getParent().getNeighbor(Direction.Up).setImprovementEntity(new Deck());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(2000);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
+
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(3000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(1000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(1000);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
+    }
+
+    @Test
+    public void FusionGeneratorTank_PowerUpAppliedOnOtherTerrain_IncreasesMaxNumberOfBulletsByTwo() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setTerrain(new Rocky());
+        tank.getParent().getNeighbor(Direction.Up).setTerrain(new Hilly());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(6000);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
+
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(3000);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        assertTrue(repo.fire(id, 1));
+        Thread.sleep(750);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
+    }
+
+    @Test
+    public void FusionGeneratorTank_PowerUpAppliedOnRoad_ReducesMovementSpeedByFiftyPercent() throws InterruptedException, IllegalTransitionException, LimitExceededException, TankDoesNotExistException {
+        repo = new InMemoryGameRepository();
+        tanks = repo.join(username,ip);
+        long id = tanks[0].getId();
+        Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setImprovementEntity(new Road());
+        tank.getParent().getNeighbor(Direction.Up).setImprovementEntity(new Road());
+        //repo.insertResource(new Iron(), 19);
+        Thread.sleep(2000);
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(2500);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(2500);
+        //Let bullets hit tank to reset them
+        repo.insertResource(new FusionGenerator(), tank.getParent().getNeighbor(Direction.Up).getPos());
+
+        assertTrue(repo.move(id, Direction.Up));
+        Thread.sleep(5000);
+        assertTrue(repo.move(id, Direction.Down));
+        Thread.sleep(5000);
+        //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
+    }
+
 
     @Test
     public void PowerUpCredit_Leave_GetCorrectCredit() throws IllegalTransitionException, LimitExceededException, TankDoesNotExistException, InterruptedException {
