@@ -91,6 +91,19 @@ public class Tank extends FieldEntity {
         int[] restrictions = new int[]{1,1,1,1,1};
         switch(getTypeIndex()) {
             case 0: //tank
+
+                System.out.println("Forward Terrain: " + getParent().getNeighbor(getDirection()).getTerrain());
+                System.out.println("BackwardsTerrain: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain());
+                System.out.println("Is forward improvement present: " + getParent().getNeighbor(getDirection()).isImprovementPresent());
+                System.out.println("Is back improvement present: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).isImprovementPresent());
+
+                if(getParent().getNeighbor(getDirection()).isImprovementPresent()){
+                    System.out.println("Forward Improvement " + getParent().getNeighbor(getDirection()).getImprovement());
+                }
+                if(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).isImprovementPresent()){
+                    System.out.println("Back Improvement " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getImprovement());
+                }
+
                 if (isWaterOrForest(getParent().getNeighbor(getDirection()))) {
                     restrictions[0] = 0;
                 }
@@ -102,16 +115,18 @@ public class Tank extends FieldEntity {
                 }
                 break;
             case 1: //miner
-                System.out.println("Forward: " + getParent().getNeighbor(getDirection()).getTerrain());
-                System.out.println("Backwards: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain());
-                String test = getParent().getNeighbor(getDirection()).getTerrain().toString();
-                System.out.println("Actual Forward: " + test);
-
                 if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("W")){
                     restrictions[0] = 0;
+                    if(getParent().getNeighbor(getDirection()).isImprovementPresent() && getParent().getNeighbor(getDirection()).getImprovement().toString().equals("D")){
+                        restrictions[0] = 1;
+                    }
+
                 }
                 if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("W")) {
                     restrictions[1] = 0;
+                    if(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).isImprovementPresent() && getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getImprovement().toString().equals("D")){
+                        restrictions[1] = 1;
+                    }
                 }
                 if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
@@ -321,6 +336,9 @@ public class Tank extends FieldEntity {
 
     private boolean isWaterOrForest(FieldHolder nextField) {
         FieldTerrain fr = nextField.getTerrain();
+        if(nextField.isImprovementPresent() && nextField.getImprovement().toString().equals("D")){
+            return false;
+        }
         return fr.toString().equals("W") || fr.toString().equals("F");
     }
 
