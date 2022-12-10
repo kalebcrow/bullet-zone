@@ -329,5 +329,24 @@ public class BuilderTest {
         assert(repo.dismantle(tankId));
     }
 
+    @Test
+    public void testshit_portals() throws LimitExceededException, TankDoesNotExistException {
+        repo.create();
+        Tank[] tank = repo.join("i","test");
+        Portal p = new Portal();
+        Portal p1 = new Portal();
+        p.direction = Direction.Up;
+        p1.direction = Direction.Right;
+        p.setExit(p1);
+        p.setExit(p);
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up));
+        p.setParent(tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up));
+        tank[0].getParent().getNeighbor(Direction.Up).setImprovementEntity(p);
+        tank[0].getParent().getNeighbor(Direction.Up).getNeighbor(Direction.Up).setImprovementEntity(p1);
+        System.out.println(tank[0].parent.getPos());
+        repo.fire(tank[0].getId(),0);
+        System.out.println(tank[0].parent.getPos());
+    }
+
 
 }

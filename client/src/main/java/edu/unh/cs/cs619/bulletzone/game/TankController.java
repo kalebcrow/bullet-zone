@@ -12,9 +12,12 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.ShakeService;
+import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.tiles.TankTile;
 import edu.unh.cs.cs619.bulletzone.rest.BZRestErrorhandler;
+import edu.unh.cs.cs619.bulletzone.rest.BoardUpdate;
 import edu.unh.cs.cs619.bulletzone.rest.BulletZoneRestClient;
+import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class TankController {
@@ -31,6 +34,9 @@ public class TankController {
     @Bean
     BZRestErrorhandler bzRestErrorhandler;
 
+    @Bean
+    BusProvider busProvider;
+
     private Long[] tankID;
 
     public Long getCurrentTankID() {
@@ -41,13 +47,15 @@ public class TankController {
         this.currentTankID = tankID[index];
     }
 
-    private Long currentTankID;
+    private Long currentTankID = 0L;
     private int[] tankOrientation;
     private static volatile TankController INSTANCE = null;
     private Vehicle currentVehicle = Vehicle.TANK;
     String username;
 
     private int[] boardTankOn = { 0, 0, 0 };
+
+    private ButtonState[] buttonStates;
 
     /**
      * TankController
@@ -119,7 +127,7 @@ public class TankController {
 
     public boolean containsTankID(Long tankID) {
         for (int i = 0; i < 3; i++) {
-            if (Objects.equals(this.tankID[i], tankID)) {
+            if (this.tankID[i].equals(tankID)) {
                 return true;
             }
         }
@@ -187,16 +195,12 @@ public class TankController {
      * @param direction direction
      */
     @Background
-    public void move(int gridnum, byte direction) {
+    public void move(byte direction) {
         int othervalue = 0;
         if (currentVehicle == Vehicle.BUILDER) {
             othervalue = 2;
         } else if (currentVehicle == Vehicle.MINER) {
             othervalue = 1;
-        }
-        if (getBoardTankOn() != gridnum) {
-            // don't move the tank if its on a different grid
-            return;
         }
 
 
@@ -237,7 +241,6 @@ public class TankController {
     }
 
     public void setCurrentVehicle(Vehicle currentVehicle){
-        Log.d("TankController", "Tank Changed to: " + currentVehicle);
         this.currentVehicle = currentVehicle;
         if (currentVehicle == Vehicle.BUILDER) {
             currentTankID = tankID[2];
@@ -245,6 +248,12 @@ public class TankController {
             currentTankID = tankID[1];
         } else {
             currentTankID = tankID[0];
+        }
+
+        if (currentTankID != null) {
+            if (TankList.getTankList().getLocation(Math.toIntExact(currentTankID)) != null){
+                busProvider.getEventBus().post(new BoardUpdate(TankList.getTankList().getLocation(Math.toIntExact(currentTankID)).location/256));
+            }
         }
 
 
@@ -376,5 +385,36 @@ public class TankController {
     @Background
     public void eject() {
         restClient.powerDown(getCurrentTankID());
+    }
+    public void buttonStateSetup(ButtonState[] buttonStates){
+
+        this.buttonStates = buttonStates;
+
+    }
+
+    public void buttonStateHandler(int[] restrictions){
+
+        System.out.println("Orientation: " + getTankOrientation());
+        System.out.println("Restrictions: " + restrictions[0] + restrictions[1] + restrictions[2]);
+
+        if(getTankOrientation() == 0 || getTankOrientation() == 4){
+            buttonStates[0].Handle(restrictions);
+            buttonStates[2].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set left and right to always true
+            buttonStates[1].setEnabled();
+            buttonStates[3].setEnabled();
+        }
+        else{
+            buttonStates[1].Handle(restrictions);
+            buttonStates[3].Handle(restrictions);
+            buttonStates[4].Handle(restrictions);
+
+            //set up and down to always true
+            buttonStates[0].setEnabled();
+            buttonStates[2].setEnabled();
+        }
+
     }
 }

@@ -13,7 +13,11 @@ import edu.unh.cs.cs619.bulletzone.events.AddResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DamageEvent;
 import edu.unh.cs.cs619.bulletzone.events.DestroyTankEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
+import edu.unh.cs.cs619.bulletzone.events.MineEvent;
 import edu.unh.cs.cs619.bulletzone.events.MoveTankEvent;
+import edu.unh.cs.cs619.bulletzone.events.PortalEvent;
+import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
+import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.repository.DataRepository;
 import jdk.internal.org.jline.utils.Log;
 
@@ -82,32 +86,119 @@ public class Tank extends FieldEntity {
         }
     }
 
+    //Make it so dock doesn't count as a disable
+    public void setRestrictions() {
+        int[] restrictions = new int[]{1,1,1,1,1};
+        switch(getTypeIndex()) {
+            case 0: //tank
+                if (isWaterOrForest(getParent().getNeighbor(getDirection()))) {
+                    restrictions[0] = 0;
+                }
+                if (isWaterOrForest(getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))))) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+            case 1: //miner
+                System.out.println("Forward: " + getParent().getNeighbor(getDirection()).getTerrain());
+                System.out.println("Backwards: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain());
+                String test = getParent().getNeighbor(getDirection()).getTerrain().toString();
+                System.out.println("Actual Forward: " + test);
+
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("W")){
+                    restrictions[0] = 0;
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("W")) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+            case 2: //builder
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("F")) {
+                    restrictions[0] = 0;
+                }
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("F")) {
+                    restrictions[1] = 0;
+                }
+                if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
+                    restrictions[2] = 0;
+                }
+                break;
+        }
+        eventManager.addEvent(new RestrictionsEvent(getId(), restrictions));
+    }
+
     public void enhance(Powered power){
         power.setSubject(powerUp);
         powerUp = power;
     }
 
-    public boolean advance(Direction direction){
-
+    public boolean advance(Direction direction) {
+        boolean isCompleted;
         FieldHolder nextField = parent.getNeighbor(direction);
         boolean present = nextField.isEntityPresent();
         FieldEntity ent = null;
-        if(present) ent = nextField.getEntity();
+        if (present) ent = nextField.getEntity();
 
+        // check if next field is empty and go there if it is
         if (!present || ent.gather(this)) {
-            nextField.setFieldEntity(this);
-            parent.clearField();
-            setParent(nextField);
-            eventManager.addEvent(new MoveTankEvent(id, toByte(direction)));
-            return true;
-        } else {
-                // hit the whatever is there
-                ent.hit((int) Math.ceil(life * giveDamageModifier()));
-                // do appropriate damage to tank
-                hit((int) Math.floor(ent.getLife() * getDamageModifier()));
-                return false;
+
+            if (nextField.isImprovementPresent()) {
+                if (nextField.getImprovement().toString() == "P") {
+                    Portal p = (Portal) nextField.getImprovement();
+                    if (p.direction == direction) {
+                        nextField = p.exit.getParent().getNeighbor(p.exit.direction);
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        byte Ndirection = (byte) (Direction.toByte(p.exit.direction) - Direction.toByte(p.direction));
+                        byte Ydirection = (byte) ((Direction.toByte(this.direction) + Ndirection) % 8);
+                        if (Ydirection < 0) {
+                            Ydirection = (byte) (Ydirection + 8);
+                        }
+                        this.direction = Direction.fromByte(Ydirection);
+                        eventManager.addEvent(new PortalEvent(id, Ydirection, parent.getPos() + 1));
+                        isCompleted = true;
+                    } else {
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                        isCompleted = true;
+                    }
+                } else {
+                    nextField.setFieldEntity(parent.getEntity());
+                    parent.clearField();
+                    setParent(nextField);
+                    eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                    isCompleted = true;
+                }
+            } else {
+                nextField.setFieldEntity(parent.getEntity());
+                parent.clearField();
+                setParent(nextField);
+                eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                isCompleted = true;
             }
+
+        } else {
+            // hit the whatever is there
+            ent.hit((int) Math.ceil(life * giveDamageModifier()));
+            // do appropriate damage to tank
+            hit((int) Math.floor(ent.getLife() * getDamageModifier()));
+            isCompleted = false;
         }
+        if (isCompleted) {
+            setRestrictions();
+            System.out.println("Restrictions added");
+        }
+        return isCompleted;
+
+    }
 
     public long getAllowedMoveInterval(){ return powerUp.getAllowedMoveInterval(); }
     public long getAllowedTurnInterval(){ return powerUp.getAllowedTurnInterval(); }
@@ -215,6 +306,22 @@ public class Tank extends FieldEntity {
 
     public double giveDamageModifier() {
         return givesDamage[typeIndex];
+    }
+
+    private boolean isResource(FieldHolder nextField) {
+        if (nextField.isEntityPresent()) {
+            FieldEntity fr = nextField.getEntity();
+            return fr.getIntValue() == 501 || fr.getIntValue() == 502 ||
+                    fr.getIntValue() == 503 || fr.getIntValue() == 504 ||
+                    fr.getIntValue() == 7;
+
+        }
+        return false;
+    }
+
+    private boolean isWaterOrForest(FieldHolder nextField) {
+        FieldTerrain fr = nextField.getTerrain();
+        return fr.toString().equals("W") || fr.toString().equals("F");
     }
 
     public static void setGame(Game g){game = g;}

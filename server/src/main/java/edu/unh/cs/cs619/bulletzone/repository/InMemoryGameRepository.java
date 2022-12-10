@@ -26,6 +26,7 @@ import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
+import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
@@ -123,6 +124,7 @@ public class InMemoryGameRepository implements GameRepository {
                 FieldResource.setItemsOnGrid(itemsOnGrid);
                 FieldResource.setGame(game);
                 // since its creating the game also start spawning resources
+            }
                 getRandomResources();
             }
             return game.join(username,ip);
@@ -182,6 +184,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             tank.setDirection(direction);
             eventManager.addEvent(new TurnEvent(tankId, toByte(direction)));
+            tank.setRestrictions();
 
             return true; // TODO check
         }

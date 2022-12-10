@@ -26,15 +26,24 @@ import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.api.BackgroundExecutor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import edu.unh.cs.cs619.bulletzone.events.BusProvider;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.BulletList;
 import edu.unh.cs.cs619.bulletzone.game.CommandInterpreter;
 import edu.unh.cs.cs619.bulletzone.game.TankController;
+import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.replay.HistoryWriter;
 import edu.unh.cs.cs619.bulletzone.rest.GridPollerTask;
+import edu.unh.cs.cs619.bulletzone.ui.ButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.DownButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.FireButtonState;
 import edu.unh.cs.cs619.bulletzone.ui.GridAdapter;
+import edu.unh.cs.cs619.bulletzone.ui.LeftButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.RightButtonState;
+import edu.unh.cs.cs619.bulletzone.ui.UpButtonState;
 import edu.unh.cs.cs619.bulletzone.util.GridWrapper;
 
 @EActivity(R.layout.activity_client)
@@ -90,8 +99,6 @@ public class ClientActivity extends Activity {
     private String username = "";
     // TODO make work
     boolean testing = true;
-
-    public int gridnum = 0;
 
     /**
      * Creates the instance, and starts the shake service.
@@ -198,7 +205,7 @@ public class ClientActivity extends Activity {
                 Log.e(TAG, "Unknown movement button id: " + viewId);
                 break;
         }
-        tankController.move(gridnum, direction);
+        tankController.move(direction);
     }
 
     /**
@@ -268,6 +275,22 @@ public class ClientActivity extends Activity {
             vehicleSpinner.setAdapter(aa);
 
             loggedIn = true;
+
+            ButtonState[] buttonStates = new ButtonState[5];
+            UpButtonState upButtonState = new UpButtonState(buttonUp);
+            RightButtonState rightButtonState = new RightButtonState(buttonRight);
+            DownButtonState downButtonState = new DownButtonState(buttonDown);
+            LeftButtonState leftButtonState = new LeftButtonState(buttonLeft);
+            FireButtonState fireButtonState = new FireButtonState(buttonFire);
+
+            buttonStates[0] = upButtonState;
+            buttonStates[1] = rightButtonState;
+            buttonStates[2] = downButtonState;
+            buttonStates[3] = leftButtonState;
+            buttonStates[4] = fireButtonState;
+
+            TankController.getTankController().buttonStateSetup(buttonStates);
+
         } else {
             textViewGarage.setText(R.string.LogInBeforePlayingMessage);
         }
@@ -281,8 +304,7 @@ public class ClientActivity extends Activity {
     void changeBoard(boolean selected, int position){
         // once portals get implemented, something will have to change the board the tank is on
         // tankController.setBoardTankOn(gridnum);
-        gridnum = position;
-        gridPollTask.changeBoard(gridnum);
+        boardView.setCurrentBoard(position);
     }
 
     /**

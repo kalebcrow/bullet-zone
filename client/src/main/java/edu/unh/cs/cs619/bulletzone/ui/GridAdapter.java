@@ -101,7 +101,7 @@ public class GridAdapter extends BaseAdapter {
 
                     //terrain.setRotation(mEntities[position][0].getOrientation()/2 * 90);
                     entity.setRotation(mEntities[position][1].getOrientation()/2 * 90);
-                    //road.setRotation(mEntities[position][2].getOrientation()/2 * 90);
+                    road.setRotation(mEntities[position][2].getOrientation()/2 * 90);
 
                 } else {
                     // somethings wrong
