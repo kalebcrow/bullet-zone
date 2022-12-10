@@ -30,19 +30,20 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][0];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
 
             }
         }
-
+        Long[] jim = new Long[]{0L, 1L, 2L};
+        TankController.getTankController().setTankIDs(jim);
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 10001002;
         testBoardView.setUsingJSON(mimicJSONArray);
-        TankTile testTankTile = (TankTile) testBoardView.getTile(0);
+        TankTile testTankTile =  TankList.getTankList().getLocation(0);
 
         GridEvent newGridEvent = new GridEvent();
         newGridEvent.setID(testTankTile.getID() * 10);
@@ -76,19 +77,20 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
 
             }
         }
-
+        Long[] jim = new Long[]{0L, 1L, 2L};
+        TankController.getTankController().setTankIDs(jim);
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 10001002;
         testBoardView.setUsingJSON(mimicJSONArray);
-        TankTile testTankTile = (TankTile) testBoardView.getTile(0);
+        TankTile testTankTile =  TankList.getTankList().getLocation(0);
 
         GridEvent newGridEvent = new GridEvent();
         newGridEvent.setID(testTankTile.getID());
@@ -122,23 +124,24 @@ public class UpdateGameBoardTest {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
-        for(int i = 0; i < 16; i++){
+        int[][][] mimicJSONArray = new int[48][16][3];
+        for(int i = 0; i < 48; i++){
             for(int j = 0; j < 16; j++){
 
                 mimicJSONArray[i][j][0] = 0;
 
             }
         }
-
+        Long[] jim = new Long[]{0L, 1L, 2L};
+        TankController.getTankController().setTankIDs(jim);
         //tank of id 222, 100 health, facing right
-        mimicJSONArray[0][0][0] = 12221002;
+        mimicJSONArray[0][0][0] = 10001002;
         testBoardView.setUsingJSON(mimicJSONArray);
-        TankTile testTankTile = (TankTile) testBoardView.getTile(0);
+        TankTile testTankTile =  TankList.getTankList().getLocation(0);
 
         GridEvent newGridEvent = new GridEvent();
         newGridEvent.setID(testTankTile.getID());
-        newGridEvent.setDirection((byte) 0);
+        newGridEvent.setDirection((byte) 2);
         newGridEvent.setPos(0);
         newGridEvent.setType("turn");
         newGridEvent.setTime(System.currentTimeMillis());
@@ -153,7 +156,7 @@ public class UpdateGameBoardTest {
         Integer testOrientation = tileUpdateEvent.movedTile.orientation;
 
         if(testOrientation != null){
-            assertTrue(testOrientation == 0);
+            assertTrue(testOrientation == 2);
         }
         else{
             assertTrue(false);
