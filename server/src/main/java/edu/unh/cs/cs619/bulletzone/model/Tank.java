@@ -110,26 +110,34 @@ public class Tank extends FieldEntity {
                 if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
+                break;
             case 1: //miner
-                if (getParent().getNeighbor(getDirection()).toString().equals("W")) {
+                System.out.println("Forward: " + getParent().getNeighbor(getDirection()).getTerrain());
+                System.out.println("Backwards: " + getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain());
+                String test = getParent().getNeighbor(getDirection()).getTerrain().toString();
+                System.out.println("Actual Forward: " + test);
+
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("W")){
                     restrictions[0] = 0;
                 }
-                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("W")) {
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("W")) {
                     restrictions[1] = 0;
                 }
                 if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
-            case 2: //build
-                if (getParent().getNeighbor(getDirection()).toString().equals("F")) {
+                break;
+            case 2: //builder
+                if (getParent().getNeighbor(getDirection()).getTerrain().toString().equals("F")) {
                     restrictions[0] = 0;
                 }
-                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).toString().equals("F")) {
+                if (getParent().getNeighbor(Direction.fromByte((byte) ((Direction.toByte(getDirection()) + 4) % 8))).getTerrain().toString().equals("F")) {
                     restrictions[1] = 0;
                 }
                 if (getNumberOfBullets() >= getAllowedNumberOfBullets()) {
                     restrictions[2] = 0;
                 }
+                break;
         }
         eventManager.addEvent(new RestrictionsEvent(getId(), restrictions));
     }
@@ -201,6 +209,7 @@ public class Tank extends FieldEntity {
             }
         if (isCompleted) {
             setRestrictions();
+            System.out.println("Restrictions added");
         }
         return isCompleted;
         }
