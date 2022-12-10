@@ -127,9 +127,9 @@ public class InMemoryGameRepository implements GameRepository {
             }
                 getRandomResources();
             }
-            return game.join(username,ip);
-        }
+        return game.join(username,ip);
     }
+
 
 
     /**
