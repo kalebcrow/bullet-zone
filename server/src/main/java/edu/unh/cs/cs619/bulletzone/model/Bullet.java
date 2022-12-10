@@ -101,7 +101,6 @@ public class Bullet extends FieldEntity {
 
                     System.out.println("Active Bullet: "+tank.getNumberOfBullets()+"---- Bullet ID: "+getIntValue());
                     FieldHolder nextField = parent.getNeighbor(direction);
-
                     if (nextField.getTerrain().toString().equals("F") || nextField.isEntityPresent()) {
                         // Something is there, hit it
                         if(fireIndicator){
@@ -112,14 +111,48 @@ public class Bullet extends FieldEntity {
                         if(nextField.getEntity().getParent() == null) nextField.getEntity().setParent(nextField);
                         nextField.getEntity().hit(damage);
                         cancel();
-                    } else {
+                    }
+                    else if (nextField.getImprovement().toString() == "P") {
+                        Portal p = (Portal)nextField.getImprovement();
+                        if(p.direction == direction)
+                        {
+                            direction = p.exit.direction;
+                            nextField = p.exit.parent.getNeighbor(p.exit.direction);
+                            if(!fireIndicator){
+                                System.out.println("++++++++++++++");
+                                eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction), nextField.getPos()));
+                                fireIndicator = true;
+                            } else {
+                                System.out.println("------------------");
+                                eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction), nextField.getPos()));
+                                parent.clearField();
+                            }
+                            nextField.setFieldEntity(copy());
+                            setParent(nextField);
+                        }
+                        else
+                        {
+                            if(!fireIndicator){
+                                System.out.println("++++++++++++++");
+                                eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction), nextField.getPos()));
+                                fireIndicator = true;
+                            } else {
+                                System.out.println("------------------");
+                                eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction), nextField.getPos()));
+                                parent.clearField();
+                            }
+                            nextField.setFieldEntity(copy());
+                            setParent(nextField);
+                        }
+                    }
+                    else {
                         if(!fireIndicator){
                             System.out.println("++++++++++++++");
-                            eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction)));
+                            eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction),nextField.getPos()));
                             fireIndicator = true;
                             } else {
                             System.out.println("------------------");
-                            eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction)));
+                            eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction),nextField.getPos()));
                             parent.clearField();
                         }
                         nextField.setFieldEntity(copy());
