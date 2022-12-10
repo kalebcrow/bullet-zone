@@ -30,11 +30,11 @@ import edu.unh.cs.cs619.bulletzone.util.LongWrapper;
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
 //@Rest(rootUrl = "http://10.21.105.211:8080/games",
 //@Rest(rootUrl = "http://10.21.99.8:8080/games",
-@Rest(rootUrl = "http://10.21.111.182:8080/games",
+//@Rest(rootUrl = "http://10.21.111.182:8080/games",
 //@Rest(rootUrl = "http://10.21.99.8:8080/games",
 //@Rest(rootUrl = "http://10.21.169.112:8080/games",
 //@Rest(rootUrl = "http://stman1.cs.unh.edu:6192/games",
-//@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
+@Rest(rootUrl = "http://stman1.cs.unh.edu:61902/games",
 //@Rest(rootUrl = "localhost:8080",
         converters = {StringHttpMessageConverter.class, MappingJackson2HttpMessageConverter.class}
         // TODO: disable intercepting and logging
