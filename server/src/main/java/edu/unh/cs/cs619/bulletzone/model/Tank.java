@@ -113,7 +113,13 @@ public class Tank extends FieldEntity {
                     nextField.setFieldEntity(parent.getEntity());
                     parent.clearField();
                     setParent(nextField);
-                    this.direction = p.exit.direction;
+                    byte Ndirection = (byte) (Direction.toByte(p.exit.direction) - Direction.toByte(p.direction));
+                    byte Ydirection = (byte) ((Direction.toByte(this.direction) + Ndirection) % 8);
+                    if(Ydirection < 0)
+                    {
+                        Ydirection = (byte) (Ydirection + 8);
+                    }
+                    this.direction = Direction.fromByte(Ydirection);
                     eventManager.addEvent(new PortalEvent(id, toByte(direction), parent.getPos()+1));
                     isCompleted = true;
                 }

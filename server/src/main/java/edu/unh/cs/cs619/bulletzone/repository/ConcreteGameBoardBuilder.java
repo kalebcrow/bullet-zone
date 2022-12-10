@@ -87,7 +87,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "P1", " ", " ", " ", " "}, // 6
-            {" ", " ", " ", " ", "P4", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 7
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 8
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", "P3", " ", " ", " "}, // 9
             {" ", "I", " ", " ", " ", "D", " ", " ", " ", "I", " ", " ", " ", " ", " ", " "}, // 10
@@ -116,7 +116,7 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
 
             {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", " ", " ", " "}, // 1
-            {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
+            {" ", "I", " ", " ", "P4", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 2
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 3
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 4
             {" ", "I", " ", " ", " ", " ", " ", " ", " ", "D", " ", " ", " ", "I", " ", " "}, // 5
@@ -201,10 +201,10 @@ public class ConcreteGameBoardBuilder implements GameBoardBuilder {
         Portal p2 = new Portal(Direction.Down);
         Portal p3 = new Portal(Direction.Left);
         Portal p4 = new Portal(Direction.Right);
-        p1.setExit(p2);
-        p2.setExit(p1);
-        p3.setExit(p4);
-        p4.setExit(p3);
+        p1.setExit(p3);
+        p2.setExit(p4);
+        p3.setExit(p1);
+        p4.setExit(p2);
         int count = 0;
         // row
         for (int i = 0; i < FIELD_DIM_ROW; i++) {
