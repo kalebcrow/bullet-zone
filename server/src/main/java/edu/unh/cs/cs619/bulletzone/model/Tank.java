@@ -106,22 +106,28 @@ public class Tank extends FieldEntity {
                 if(nextField.getImprovement().toString() == "P")
                 {
                     Portal p = (Portal)nextField.getImprovement();
-                    if(p.direction == direction)
-                    {
+                    if(p.direction == direction) {
                         nextField = p.exit.getParent().getNeighbor(p.exit.direction);
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        byte Ndirection = (byte) (Direction.toByte(p.exit.direction) - Direction.toByte(p.direction));
+                        byte Ydirection = (byte) ((Direction.toByte(this.direction) + Ndirection) % 8);
+                        if (Ydirection < 0) {
+                            Ydirection = (byte) (Ydirection + 8);
+                        }
+                        this.direction = Direction.fromByte(Ydirection);
+                        eventManager.addEvent(new PortalEvent(id, Ydirection, parent.getPos() + 1));
+                        isCompleted = true;
                     }
-                    nextField.setFieldEntity(parent.getEntity());
-                    parent.clearField();
-                    setParent(nextField);
-                    byte Ndirection = (byte) (Direction.toByte(p.exit.direction) - Direction.toByte(p.direction));
-                    byte Ydirection = (byte) ((Direction.toByte(this.direction) + Ndirection) % 8);
-                    if(Ydirection < 0)
+                    else
                     {
-                        Ydirection = (byte) (Ydirection + 8);
+                        nextField.setFieldEntity(parent.getEntity());
+                        parent.clearField();
+                        setParent(nextField);
+                        eventManager.addEvent(new MoveTankEvent(id, toByte(direction), parent.getPos()));
+                        isCompleted = true;
                     }
-                    this.direction = Direction.fromByte(Ydirection);
-                    eventManager.addEvent(new PortalEvent(id, Ydirection, parent.getPos()+1));
-                    isCompleted = true;
                 }
                 else
                 {
