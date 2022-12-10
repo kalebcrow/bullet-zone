@@ -122,6 +122,7 @@ public class Bullet extends FieldEntity {
                             if(fireIndicator == 1)
                             {
                                 eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction), getParent().getPos()));
+                                parent.clearField();
                                 fireIndicator++;
                             }
                             if(fireIndicator > 1)
