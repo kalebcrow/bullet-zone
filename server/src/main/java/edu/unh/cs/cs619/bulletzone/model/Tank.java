@@ -35,13 +35,12 @@ public class Tank extends FieldEntity {
     private long lastMoveTime = System.currentTimeMillis();
     private int numberOfBullets = 0;
 
-    private int life;
     private Direction direction;
     private int typeIndex;
     private String username;
     private String ip;
     private long id;
-    private PowerUp powerUp = new UnPowered(typeIndex);
+    private PowerUp powerUp;
     private int[] resources;
     //rock = index 0
     //iron = index 1
@@ -50,7 +49,6 @@ public class Tank extends FieldEntity {
 
     private final double[] takesDamage = {.1, .05, .1};
     private final double[] givesDamage = {.1, .1, .05};
-    private final int[] healths = {100,300,80};
 
     public Tank(String username, long id, Direction direction, String ip, int typeIndex) {
         this.id = id;
@@ -58,7 +56,7 @@ public class Tank extends FieldEntity {
         this.direction = direction;
         this.ip = ip;
         this.typeIndex = typeIndex;
-        this.life = healths[typeIndex];
+        powerUp = new UnPowered(typeIndex, id);
         if (typeIndex == 1) {
             resources = new int[]{0,0,0,0};
         }
@@ -75,11 +73,12 @@ public class Tank extends FieldEntity {
 
     @Override
     public void hit(int damage) {
-        life -= damage;
-        System.out.println("Tank life: " + id + " : " + life);
+        int newHealth = powerUp.getHealth() - damage;
+        powerUp.setHealth(newHealth);
+        System.out.println("Tank life: " + id + " : " + newHealth);
 		//Log.d(TAG, "TankId: " + id + " hit -> life: " + life);
-        eventManager.addEvent(new DamageEvent(Math.toIntExact(id), life + 1));
-        if (life <= 0 ){
+        eventManager.addEvent(new DamageEvent(Math.toIntExact(id), newHealth + 1));
+        if (newHealth <= 0 ){
             eventManager.addEvent(new DestroyTankEvent(id));
             parent.clearField();
             parent = null;
@@ -202,7 +201,7 @@ public class Tank extends FieldEntity {
 
         } else {
             // hit the whatever is there
-            ent.hit((int) Math.ceil(life * giveDamageModifier()));
+            ent.hit((int) Math.ceil(powerUp.getHealth() * giveDamageModifier()));
             // do appropriate damage to tank
             hit((int) Math.floor(ent.getLife() * getDamageModifier()));
             isCompleted = false;
@@ -267,7 +266,7 @@ public class Tank extends FieldEntity {
 
     @Override
     public int getIntValue() {
-        return (int) (10000000 + 10000 * id + 10 * life + Direction
+        return (int) (10000000 + 10000 * id + 10 * powerUp.getHealth() + Direction
                 .toByte(direction));
     }
 
@@ -278,10 +277,10 @@ public class Tank extends FieldEntity {
 
     @Override
     public int getLife() {
-        return life;
+        return powerUp.getHealth();
     }
 
-    public void setLife(int life) {this.life = life;}
+    public void setLife(int life) {powerUp.setHealth(life);}
 
     public String getIp(){
         return ip;
