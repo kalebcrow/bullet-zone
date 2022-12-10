@@ -26,7 +26,7 @@ public class EventManagerTest {
     public void getEvents_MinutesOfAddingEvents_ReturnsEventsAtLeastOneMinuteOld() throws InterruptedException {
         eventManager.addEvent(new AddTankEvent(0,0,id));
         for(int i=0;i<60;i++){
-            eventManager.addEvent(new MoveTankEvent(id,Direction.toByte(Direction.Up)));
+            eventManager.addEvent(new MoveTankEvent(id,Direction.toByte(Direction.Up),0));
             Thread.sleep(1000);
         }
         LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis() - 100000);
@@ -40,7 +40,7 @@ public class EventManagerTest {
     public void getEvents_MinutesOfAddingEvents_ReturnsEventsNoMoreThanThreeMinutesOld() throws InterruptedException {
         eventManager.addEvent(new AddTankEvent(0,0,id));
         for(int i=0;i<180;i++){
-            eventManager.addEvent(new MoveTankEvent(id,Direction.toByte(Direction.Up)));
+            eventManager.addEvent(new MoveTankEvent(id,Direction.toByte(Direction.Up),0));
             Thread.sleep(1000);
         }
         LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis() - 100000);
@@ -52,7 +52,7 @@ public class EventManagerTest {
     @Test
     public void getEvents_GetsCertainOrderOfEvents_ReturnsSameOrder(){
         eventManager.addEvent(new AddTankEvent(0,0, id));
-        eventManager.addEvent(new MoveTankEvent(id, Direction.toByte(Direction.Up)));
+        eventManager.addEvent(new MoveTankEvent(id, Direction.toByte(Direction.Up),0));
         eventManager.addEvent(new TurnEvent(id, Direction.toByte(Direction.Left)));
         LinkedList<GridEvent> update = eventManager.getEvents(System.currentTimeMillis()-10000);
         assertEquals(update.size(), 3);

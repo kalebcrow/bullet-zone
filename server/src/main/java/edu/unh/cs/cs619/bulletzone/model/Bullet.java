@@ -12,7 +12,7 @@ import edu.unh.cs.cs619.bulletzone.events.MoveBulletEvent;
 
 public class Bullet extends FieldEntity {
 
-    private boolean fireIndicator = false;
+    private int fireIndicator = 0;
     private EventManager eventManager = EventManager.getInstance();
     private long tankId;
     private Direction direction;
@@ -97,26 +97,36 @@ public class Bullet extends FieldEntity {
 
                     System.out.println("Active Bullet: "+tank.getNumberOfBullets()+"---- Bullet ID: "+getIntValue());
                     FieldHolder nextField = parent.getNeighbor(direction);
-
                     if (nextField.getTerrain().toString().equals("F") || nextField.isEntityPresent()) {
                         // Something is there, hit it
-                        if(fireIndicator){
+                        if(fireIndicator >= 1){
                             eventManager.addEvent(new DestroyBulletEvent(tankId, bulletId));
                             parent.clearField();
                         }
                         tank.setNumberOfBullets(tank.getNumberOfBullets()-1);
+                        tank.setRestrictions();
                         if(nextField.getEntity().getParent() == null) nextField.getEntity().setParent(nextField);
                         nextField.getEntity().hit(damage);
                         cancel();
-                    } else {
-                        if(!fireIndicator){
+                    }
+                    else {
+                        if(fireIndicator == 0){
                             System.out.println("++++++++++++++");
-                            eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction)));
-                            fireIndicator = true;
-                            } else {
+                            fireIndicator = 1;
+                        }
+                        else {
                             System.out.println("------------------");
-                            eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction)));
-                            parent.clearField();
+                            if(fireIndicator == 1)
+                            {
+                                eventManager.addEvent(new FireEvent(tankId, bulletId, toByte(direction), getParent().getPos()));
+                                parent.clearField();
+                                fireIndicator++;
+                            }
+                            if(fireIndicator > 1)
+                            {
+                                eventManager.addEvent(new MoveBulletEvent(tankId, bulletId, toByte(direction), getParent().getPos()));
+                                parent.clearField();
+                            }
                         }
                         nextField.setFieldEntity(copy());
                         setParent(nextField);

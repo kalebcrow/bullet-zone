@@ -4,6 +4,10 @@ import edu.unh.cs.cs619.bulletzone.model.Powered;
 
 public class GravityAssisted extends Powered {
 
+    GravityAssisted(){
+        fieldElement = new GravAssist();
+    }
+
     @Override
     public long getAllowedMoveInterval() {
         return subject.getAllowedMoveInterval()/2;

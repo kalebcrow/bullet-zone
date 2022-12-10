@@ -18,6 +18,7 @@ public class PortalTile extends GroundTile {
         String r = String.valueOf(row);
         String c = String.valueOf(column);
         orientation = findOrientation(JsonValue);
+        orientation = orientation + 4 % 8;
 
         //This is what was the default in the grid adapter view (By plumdog)
         this.resourceID = R.drawable.portal;

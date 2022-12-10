@@ -56,7 +56,6 @@ public class TankTile extends GroundTile {
         if (friendly) {
             TankController.getTankController().setTankOrientation(orientation, ID % 3);
         }
-
         TankList.getTankList().addTank(ID, this);
     }
 
@@ -107,6 +106,7 @@ public class TankTile extends GroundTile {
 
     private Integer findHealth(Integer JSONValue) {
         String number = String.valueOf(JSONValue);
+        //Log.d("Tank Health", "Json Value " + number);
         char[] digits1 = number.toCharArray();
         int offset = 4;
         return Integer.parseInt(String.copyValueOf(digits1, offset, 3));

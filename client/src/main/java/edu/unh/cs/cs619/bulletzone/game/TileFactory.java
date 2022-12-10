@@ -56,7 +56,7 @@ public class TileFactory {
             return new ResourceTile(JsonValue, location);
         } else if (JsonValue == 3111 || JsonValue == 3121) {
             return  new ItemTile(JsonValue, location);
-        } else if (JsonValue >= 2000 && JsonValue <= 2004) {
+        } else if (JsonValue >= 2000 && JsonValue <= 2006) {
             return new PortalTile(JsonValue, location);
         } if (JsonValue >= 1000 && JsonValue <= 3000) {
             return new ObstacleTile(JsonValue, location);

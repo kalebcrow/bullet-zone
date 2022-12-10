@@ -26,6 +26,7 @@ import edu.unh.cs.cs619.bulletzone.events.DestroyResourceEvent;
 import edu.unh.cs.cs619.bulletzone.events.DismantleEvent;
 import edu.unh.cs.cs619.bulletzone.events.EventManager;
 import edu.unh.cs.cs619.bulletzone.events.MineEvent;
+import edu.unh.cs.cs619.bulletzone.events.RestrictionsEvent;
 import edu.unh.cs.cs619.bulletzone.events.balanceEvent;
 import edu.unh.cs.cs619.bulletzone.model.Bullet;
 import edu.unh.cs.cs619.bulletzone.model.Clay;
@@ -124,9 +125,11 @@ public class InMemoryGameRepository implements GameRepository {
                 FieldResource.setGame(game);
                 // since its creating the game also start spawning resources
             }
-            return game.join(username,ip);
-        }
+                getRandomResources();
+            }
+        return game.join(username,ip);
     }
+
 
 
     /**
@@ -181,6 +184,7 @@ public class InMemoryGameRepository implements GameRepository {
 
             tank.setDirection(direction);
             eventManager.addEvent(new TurnEvent(tankId, toByte(direction)));
+            tank.setRestrictions();
 
             return true; // TODO check
         }
@@ -204,6 +208,7 @@ public class InMemoryGameRepository implements GameRepository {
             if (tank == null) {
                 throw new TankDoesNotExistException(tankId);
             }
+
             if (tank.getTypeIndex() == 1) {
                 mine = false;
             }
@@ -570,6 +575,22 @@ public class InMemoryGameRepository implements GameRepository {
                 eventManager.addEvent(new DismantleEvent(tankId,miner.getAllResources(),behind.getPos(),5));
                 return true;
             }
+            else if(structure.toString().equals("FG"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 400);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
+            else if(structure.toString().equals("GA"))
+            {
+                behind.clearResource();
+                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
+                data.modifyAccountBalance(miner.getUsername(), 300);
+                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
+                return true;
+            }
             else
             {
                 return false;
@@ -590,30 +611,6 @@ public class InMemoryGameRepository implements GameRepository {
                 miner.addBundleOfResources(3,5);
                 behind.clearImprovement();
                 eventManager.addEvent(new DismantleEvent(tankId, miner.getAllResources(), behind.getPos(), 4));
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if(behind.isRoadPresent()) // [HUH]<(0_0<)
-        {
-            FieldResource resource = behind.getResource();
-            if(resource.toString() == "FG")
-            {
-                behind.clearResource();
-                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
-                data.modifyAccountBalance(miner.getUsername(), 400);
-                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
-                return true;
-            }
-            else if(resource.toString() == "GA")
-            {
-                behind.clearResource();
-                eventManager.addEvent(new DestroyResourceEvent(behind.getPos(),"thing"));
-                data.modifyAccountBalance(miner.getUsername(), 300);
-                eventManager.addEvent(new balanceEvent(data.getUserAccountBalance(miner.getUsername()),miner.getId()));
                 return true;
             }
             else
@@ -1014,7 +1011,9 @@ public class InMemoryGameRepository implements GameRepository {
     }
 
     public void powerDown(long tankId){
-        game.getTank(tankId).strip();
+        Tank tank = game.getTank(tankId);
+        FieldResource fr = tank.strip();
+        if(fr != null) itemsOnGrid.put(tank.getParent().getPos(),fr);
     }
 
     /**

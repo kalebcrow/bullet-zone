@@ -39,6 +39,10 @@ public abstract class FieldResource extends FieldEntity {
         eventManager.addEvent(new DestroyResourceEvent(parent.getPos(),""));
     }
 
+    public int getCredits(){
+        return 0;
+    }
+
     @Override
     public abstract boolean gather(Tank tank);
 

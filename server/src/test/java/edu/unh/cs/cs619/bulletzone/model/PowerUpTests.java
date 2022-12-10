@@ -172,11 +172,13 @@ public class PowerUpTests {
     }
 
     @Test
-    public void FusionGeneratorTank_PowerUpAppliedOnDecking_DoublesFiringRate() throws InterruptedException, LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
+    public void FusionGeneratorTank_PowerUpAppliedOnDeck_DoublesFiringRate() throws InterruptedException, LimitExceededException, TankDoesNotExistException, IllegalTransitionException {
         repo = new InMemoryGameRepository();
         tanks = repo.join(username,ip);
         long id = tanks[0].getId();
         Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setImprovementEntity(new Deck());
+        tank.getParent().getNeighbor(Direction.Up).setImprovementEntity(new Deck());
         //repo.insertResource(new Iron(), 19);
         Thread.sleep(2000);
         assertTrue(repo.fire(id, 1));
@@ -199,6 +201,8 @@ public class PowerUpTests {
         tanks = repo.join(username,ip);
         long id = tanks[0].getId();
         Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setTerrain(new Rocky());
+        tank.getParent().getNeighbor(Direction.Up).setTerrain(new Hilly());
         //repo.insertResource(new Iron(), 19);
         Thread.sleep(2000);
         assertTrue(repo.fire(id, 1));
@@ -223,6 +227,8 @@ public class PowerUpTests {
         tanks = repo.join(username,ip);
         long id = tanks[0].getId();
         Tank tank = repo.getGame().getTank(id);
+        tank.getParent().setImprovementEntity(new Road());
+        tank.getParent().getNeighbor(Direction.Up).setImprovementEntity(new Road());
         //repo.insertResource(new Iron(), 19);
         Thread.sleep(2000);
         assertTrue(repo.move(id, Direction.Up));
@@ -238,5 +244,6 @@ public class PowerUpTests {
         Thread.sleep(5000);
         //assertEquals( 5, repo.getEvents(System.currentTimeMillis()-10000).size());
     }
+
 
 }
