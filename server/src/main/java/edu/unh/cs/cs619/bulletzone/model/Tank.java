@@ -217,23 +217,27 @@ public class Tank extends FieldEntity {
     public Direction getDirection() { return direction; }
     public void setDirection(Direction direction) { this.direction = direction; }
 
-    public void strip(){
-        if(powerUp.getFieldElement() != null) {
+    public FieldResource strip(){
+        FieldResource fr = powerUp.getFieldElement();
+        System.out.println("stripping powerUp");
+        if(fr != null) {
+            System.out.println("trying to place powerUp");
             if (!parent.getNeighbor(Direction.Up).isEntityPresent()) {
-                parent.getNeighbor(Direction.Up).setFieldEntity(powerUp.getFieldElement());
-                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Up).getPos(),powerUp.toString()));
+                parent.getNeighbor(Direction.Up).setFieldEntity(fr);
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Up).getPos()+1,fr.toString()));
             } else if (!parent.getNeighbor(Direction.Down).isEntityPresent()) {
-                parent.getNeighbor(Direction.Down).setFieldEntity(powerUp.getFieldElement());
-                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Down).getPos(),powerUp.toString()));
+                parent.getNeighbor(Direction.Down).setFieldEntity(fr);
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Down).getPos()+1,fr.toString()));
             } else if (!parent.getNeighbor(Direction.Left).isEntityPresent()) {
-                parent.getNeighbor(Direction.Left).setFieldEntity(powerUp.getFieldElement());
-                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Left).getPos(),powerUp.toString()));
+                parent.getNeighbor(Direction.Left).setFieldEntity(fr);
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Left).getPos()+1,fr.toString()));
             } else if (!parent.getNeighbor(Direction.Right).isEntityPresent()) {
-                parent.getNeighbor(Direction.Right).setFieldEntity(powerUp.getFieldElement());
-                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Right).getPos(),powerUp.toString()));
+                parent.getNeighbor(Direction.Right).setFieldEntity(fr);
+                eventManager.addEvent(new AddResourceEvent(parent.getNeighbor(Direction.Right).getPos()+1,fr.toString()));
             }
         }
         powerUp = powerUp.powerDown();
+        return fr;
     }
 
     @JsonIgnore
