@@ -1,5 +1,7 @@
 package edu.unh.cs.cs619.bulletzone.game.events;
 
+import android.util.Log;
+
 import com.squareup.otto.Bus;
 
 import edu.unh.cs.cs619.bulletzone.game.BulletList;
