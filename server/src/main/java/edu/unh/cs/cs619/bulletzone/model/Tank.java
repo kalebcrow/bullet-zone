@@ -201,7 +201,7 @@ public class Tank extends FieldEntity {
 
         } else {
             // hit the whatever is there
-            ent.hit((int) Math.ceil(life * giveDamageModifier()));
+            ent.hit((int) Math.ceil(powerUp.getHealth() * giveDamageModifier()));
             // do appropriate damage to tank
             hit((int) Math.floor(ent.getLife() * getDamageModifier()));
             isCompleted = false;

@@ -1064,23 +1064,23 @@ public class InMemoryGameRepository implements GameRepository {
                 // add a random resource
                 double itemType = (Math.random() * (8));
                 if (itemType >= 0 && itemType < 1) {
-                    fr = new AutomatedRepair();
+                    fr = new Clay();
                 } else if (itemType >= 1 && itemType < 2) {
-                    fr = new AutomatedRepair();
+                    fr = new Iron();
                 } else if (itemType >= 2 && itemType < 3) {
-                    fr = new AutomatedRepair();
+                    fr = new Rock();
                 } else if (itemType >= 3 && itemType < 4) {
-                    fr = new DeflectorShield();
+                    fr = new Wood();
                 } else if (itemType >= 4 && itemType < 5) {
-                    fr = new DeflectorShield();
+                    fr = new FusionGenerator();
                 } else if (itemType >= 5 && itemType < 6) {
-                    fr = new AutomatedRepair();
+                    fr = new GravAssist();
                 } else if (itemType >= 6 && itemType < 7) {
                     fr = new AutomatedRepair();
                 } else if (itemType >= 7 && itemType < 8) {
                     fr = new DeflectorShield();
                 } else {
-                    fr = new DeflectorShield();
+                    fr = new Thingamajig();
                 }
 
                 boolean added = false;
