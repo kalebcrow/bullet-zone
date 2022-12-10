@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import edu.unh.cs.cs619.bulletzone.R;
 import edu.unh.cs.cs619.bulletzone.game.BoardView;
+import edu.unh.cs.cs619.bulletzone.game.TankController;
 import edu.unh.cs.cs619.bulletzone.game.TankList;
 import edu.unh.cs.cs619.bulletzone.game.events.DamageTankEvent;
 import edu.unh.cs.cs619.bulletzone.game.events.FireEvent;
@@ -29,7 +30,7 @@ public class HealthInTankList {
 
         testBoardView = new BoardView();
 
-        int[][][] mimicJSONArray = new int[16][16][3];
+        int[][][] mimicJSONArray = new int[48][16][3];
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 16; j++){
 
@@ -37,6 +38,8 @@ public class HealthInTankList {
 
             }
         }
+
+        TankController.getTankController().setTankID(0, 222L);
 
         //tank of id 222, 100 health, facing right
         mimicJSONArray[0][0][0] = 12221002;

@@ -3,6 +3,11 @@ package edu.unh.cs.cs619.bulletzone.model;
 public class AutomatedRepair extends FieldResource{
 
     @Override
+    public int getCredits(){
+        return 200;
+    }
+
+    @Override
     public String toString(){
         return "RK";
     }
@@ -19,7 +24,8 @@ public class AutomatedRepair extends FieldResource{
 
     @Override
     public boolean gather(Tank tank) {
-        return false;
+        tank.enhance(new AutomatedRepaired());
+        return true;
     }
 
 
